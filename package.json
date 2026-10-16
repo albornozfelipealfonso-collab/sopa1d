@@ -1,0 +1,21 @@
+{
+  "name": "sopa1d",
+  "version": "1.0.0",
+  "description": "Sopa1D Pro — Hub de Streaming y Canales en Vivo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  },
+  "keywords": [
+    "iptv",
+    "streaming",
+    "tv",
+    "tnt-sports"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
