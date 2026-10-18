@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+      Muchas señales IPTV de la lista van por HTTP plano contra IPs crudas
+      (200.59.191.177, 205.235.6.29, ...). Android 9+ bloquea cleartext por
+      defecto, así que hay que permitirlo explícitamente o esos canales
+      fallan en silencio.
+    -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sopa1D</string>
+    <string name="channels_title">CANALES</string>
+    <string name="connecting">Conectando…</string>
+    <string name="software_fallback">Ajustando decodificador…</string>
+    <string name="reconnecting">Señal interrumpida, reconectando…</string>
+</resources>

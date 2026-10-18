@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sopa_bg">#07080C</color>
+    <color name="sopa_accent">#E11D48</color>
+    <color name="sopa_focus">#332F3545</color>
+</resources>

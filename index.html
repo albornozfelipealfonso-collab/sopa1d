@@ -1004,6 +1004,21 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1;
         }
+        /* Pantalla completa propia: el botón del iframe pertenece al proveedor
+           y su petición no siempre llega al WebView de la APK, así que aquí se
+           expande el contenedor por CSS, que funciona en cualquier caso. */
+        .video-container.embed-fullscreen {
+            position: fixed !important;
+            top: 0; left: 0;
+            width: 100vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            padding-bottom: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            z-index: 99999 !important;
+            background: #000;
+        }
         .video-container video, .video-container iframe, .video-js {
             position: absolute !important;
             top: 0; left: 0;
@@ -2769,6 +2784,7 @@
                     <button class="player-quick-btn" onclick="seekRelative(-10)" title="Retroceder 10 segundos">⏪ -10s</button>
                     <button class="player-quick-btn" onclick="seekRelative(10)" title="Adelantar 10 segundos">+10s ⏩</button>
                     <button class="player-quick-btn" onclick="togglePiP()" title="Modo Picture-in-Picture (Ventana flotante)">📺 PiP</button>
+                    <button class="player-quick-btn" id="embedFsBtn" onclick="toggleEmbedFullscreen()" title="Pantalla completa (Esc para salir)">⛶ Pantalla Completa</button>
                     <button class="cast-trigger-btn" onclick="transmitirATV()" title="Transmitir a Google Chromecast o Smart TV">📡 Transmitir a TV</button>
                 </div>
             </div>
@@ -4129,7 +4145,7 @@
             return `${getApiBase()}/proxyvideo?url=${encodeURIComponent(streamUrl)}`;
         }
 
-        let currentActiveServer = 'tonplayer';
+        let currentActiveServer = 'multiembed';
         let adBlockShieldEnabled = true;
 
         function getLocalAdFreeBase() {
@@ -4158,6 +4174,40 @@
 
             return [
                 {
+                    id: 'multiembed',
+                    name: '✨ Servidor MultiEmbed',
+                    tag: '4K / HD',
+                    color: '#f5c518',
+                    type: 'iframe',
+                    // Rechaza cargar dentro de un iframe sandboxed ("Sandboxing is not allowed!")
+                    allowSandbox: false,
+                    url: isTv
+                        ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`
+                        : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+                },
+                {
+                    id: 'vidsrcme',
+                    name: '🚀 Servidor VidSrc ME',
+                    tag: 'RÁPIDO',
+                    color: '#a855f7',
+                    type: 'iframe',
+                    allowSandbox: false,
+                    url: isTv
+                        ? `https://vidsrc.me/embed/tv?tmdb=${id}&sea=${s}&epi=${e}`
+                        : `https://vidsrc.me/embed/movie?tmdb=${id}`
+                },
+                {
+                    id: 'vidsrc',
+                    name: '🎬 Servidor VidSrc Pro',
+                    tag: 'MULTI-AUDIO',
+                    color: '#06b6d4',
+                    type: 'iframe',
+                    allowSandbox: false,
+                    url: isTv
+                        ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}`
+                        : `https://vidsrc.to/embed/movie/${id}`
+                },
+                {
                     id: 'tonplayer',
                     name: '⚡ Servidor Latino (TONPlayer)',
                     tag: 'SIN ADS · HLS',
@@ -4173,36 +4223,6 @@
                         : (isTv
                             ? `https://player.tonplayer.space/play/tv/${id}/${s}/${e}`
                             : `https://player.tonplayer.space/play/movie/${id}`)
-                },
-                {
-                    id: 'vidsrc',
-                    name: '🎬 Servidor VidSrc Pro',
-                    tag: 'MULTI-AUDIO',
-                    color: '#06b6d4',
-                    type: 'iframe',
-                    url: isTv 
-                        ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}` 
-                        : `https://vidsrc.to/embed/movie/${id}`
-                },
-                {
-                    id: 'multiembed',
-                    name: '✨ Servidor MultiEmbed',
-                    tag: '4K / HD',
-                    color: '#f5c518',
-                    type: 'iframe',
-                    url: isTv 
-                        ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` 
-                        : `https://multiembed.mov/?video_id=${id}&tmdb=1`
-                },
-                {
-                    id: 'vidsrcme',
-                    name: '🚀 Servidor VidSrc ME',
-                    tag: 'RÁPIDO',
-                    color: '#a855f7',
-                    type: 'iframe',
-                    url: isTv 
-                        ? `https://vidsrc.me/embed/tv?tmdb=${id}&sea=${s}&epi=${e}` 
-                        : `https://vidsrc.me/embed/movie?tmdb=${id}`
                 }
             ];
         }
@@ -4280,8 +4300,10 @@
                 currentPlayer = null;
             }
 
-            // Sandbox estricto cuando AdBlock está activo: impide window.open (popups) y redirecciones top-frame
-            const sandboxAttr = adBlockShieldEnabled
+            // Sandbox estricto cuando AdBlock está activo: impide window.open (popups) y redirecciones top-frame.
+            // Algunos proveedores (MultiEmbed, VidSrc) detectan el atributo y se niegan a cargar
+            // ("Sandboxing is not allowed!"), así que se omite en los que lo rechazan.
+            const sandboxAttr = (adBlockShieldEnabled && selected.allowSandbox !== false)
                 ? 'sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"'
                 : '';
 
@@ -4519,9 +4541,16 @@
         }
 
         function closeModal() {
-            if (currentPlayer) { 
-                try { currentPlayer.dispose(); } catch(e) {} 
-                currentPlayer = null; 
+            // Salir de la pantalla completa propia antes de cerrar, o la
+            // orientación y las barras del sistema se quedan bloqueadas.
+            const fsCont = document.getElementById('playerContainer');
+            if (fsCont && fsCont.classList.contains('embed-fullscreen')) {
+                toggleEmbedFullscreen();
+            }
+
+            if (currentPlayer) {
+                try { currentPlayer.dispose(); } catch(e) {}
+                currentPlayer = null;
             }
             // Destruir por completo cualquier iframe de película/serie embebido para que no siga sonando en segundo plano
             const container = document.getElementById('playerContainer');
@@ -5121,6 +5150,25 @@
             const fallbackOverlay = document.getElementById('tvFallbackOverlay');
             if (fallbackOverlay) fallbackOverlay.style.display = 'none';
 
+            // Dentro de la APK, la TV en vivo la reproduce ExoPlayer nativo:
+            // decodifica el audio MP2 sin transcodificar y la petición sale
+            // desde la IP del teléfono, así que no hace falta ni el proxy ni ffmpeg.
+            if (window.Sopa1D && typeof window.Sopa1D.playLiveList === 'function') {
+                if (statusEl) {
+                    statusEl.textContent = '📱 Reproductor nativo';
+                    statusEl.style.color = '#10b981';
+                    statusEl.style.background = 'rgba(16, 185, 129, 0.12)';
+                }
+                // Se envía la lista completa para poder zapear con el mando
+                // sin volver a esta pantalla.
+                const listaNativa = allLiveChannels.map(c => ({
+                    id: String(c.id), name: c.name, url: c.url
+                }));
+                const idx = Math.max(0, allLiveChannels.findIndex(c => c.id === ch.id));
+                window.Sopa1D.playLiveList(JSON.stringify(listaNativa), idx);
+                return;
+            }
+
             // Determinar URL de transmisión
             const streamUrl = getTvStreamUrl(ch);
             const isUsingProxy = streamUrl.startsWith('/proxy');
@@ -5512,6 +5560,84 @@
 
             observer.observe(screenBox);
         }
+
+        /**
+         * Pantalla completa para los embeds de películas.
+         *
+         * No se usa la API Fullscreen del navegador porque el botón que trae
+         * el reproductor del proveedor vive dentro de un iframe de otro origen
+         * y su petición no llega al WebView de la APK. Expandir el contenedor
+         * por CSS funciona igual en navegador y en la app; en la app además se
+         * avisa a Android para que rote y oculte las barras del sistema.
+         */
+        // Estilos inline originales de los contenedores padre, para restaurarlos al salir.
+        let embedFsSavedStyles = [];
+
+        function toggleEmbedFullscreen() {
+            const cont = document.getElementById('playerContainer');
+            if (!cont) return;
+
+            const activando = !cont.classList.contains('embed-fullscreen');
+
+            if (activando) {
+                // Un padre con backdrop-filter / transform / filter se convierte en
+                // el contenedor de referencia de los hijos position:fixed. El modal
+                // tiene backdrop-filter, así que sin esto la "pantalla completa"
+                // queda encerrada en el modal y se va con su scroll.
+                embedFsSavedStyles = [];
+                for (let p = cont.parentElement; p && p !== document.documentElement; p = p.parentElement) {
+                    embedFsSavedStyles.push([p, p.style.cssText]);
+                    p.style.setProperty('transform', 'none', 'important');
+                    p.style.setProperty('filter', 'none', 'important');
+                    p.style.setProperty('backdrop-filter', 'none', 'important');
+                    p.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
+                    p.style.setProperty('will-change', 'auto', 'important');
+                    p.style.setProperty('contain', 'none', 'important');
+                    p.style.setProperty('animation', 'none', 'important');
+                }
+            } else {
+                for (const [p, css] of embedFsSavedStyles) p.style.cssText = css;
+                embedFsSavedStyles = [];
+            }
+
+            cont.classList.toggle('embed-fullscreen', activando);
+            document.body.style.overflow = activando ? 'hidden' : '';
+
+            // En pantalla completa la barra del reproductor queda tapada:
+            // botón flotante para salir (además de Atrás / Esc).
+            let salir = document.getElementById('embedFsExit');
+            if (activando && !salir) {
+                salir = document.createElement('button');
+                salir.id = 'embedFsExit';
+                salir.textContent = '✕';
+                salir.title = 'Salir de pantalla completa';
+                salir.setAttribute('aria-label', 'Salir de pantalla completa');
+                salir.style.cssText = 'position:fixed;top:12px;right:12px;z-index:100000;' +
+                    'width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.3);' +
+                    'background:rgba(7,8,12,.7);color:#fff;font-size:20px;cursor:pointer;';
+                salir.onclick = toggleEmbedFullscreen;
+                document.body.appendChild(salir);
+            } else if (!activando && salir) {
+                salir.remove();
+            }
+
+            const btn = document.getElementById('embedFsBtn');
+            if (btn) btn.textContent = activando ? '⛶ Salir' : '⛶ Pantalla Completa';
+
+            if (window.Sopa1D && typeof window.Sopa1D.setFullscreen === 'function') {
+                window.Sopa1D.setFullscreen(activando);
+            }
+        }
+
+        // Esc sale de la pantalla completa propia antes de cerrar el modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const cont = document.getElementById('playerContainer');
+            if (cont && cont.classList.contains('embed-fullscreen')) {
+                e.stopPropagation();
+                toggleEmbedFullscreen();
+            }
+        }, true);
 
         function toggleTvFullscreen() {
             if (tvLivePlayer) {

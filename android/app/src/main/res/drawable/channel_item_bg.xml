@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Resalta el canal enfocado con el mando: imprescindible en TV -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:drawable="@color/sopa_accent" />
+    <item android:state_pressed="true" android:drawable="@color/sopa_accent" />
+    <item android:state_selected="true" android:drawable="@color/sopa_focus" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

@@ -992,7 +992,28 @@ const server = http.createServer(async (req, res) => {
                     'Referer': 'https://player.tonplayer.space/'
                 }
             });
-            let data = await upRes.json();
+            const raw = await upRes.text();
+            let data;
+            try {
+                data = JSON.parse(raw);
+            } catch (_) {
+                // El proveedor respondió HTML (caído o sin fuentes). Devolvemos un JSON
+                // válido para que el frontend pueda saltar al siguiente servidor en vez
+                // de romperse con un 502 opaco.
+                console.warn(`[UPSTREAM] Respuesta no-JSON de tonplayer (${upRes.status}) en ${req.url}`);
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Control-Allow-Origin': '*',
+                    'Cache-Control': 'no-cache'
+                });
+                res.end(JSON.stringify({
+                    success: false,
+                    unavailable: true,
+                    error: 'El proveedor TONPlayer no entregó servidores disponibles',
+                    servers: []
+                }));
+                return;
+            }
             if (data && Array.isArray(data.servers)) {
                 // Ordenar servidores para priorizar los que entregan stream HLS nativo 100% libre de anuncios
                 data.servers.sort((a, b) => serverPriorityScore(a) - serverPriorityScore(b));
