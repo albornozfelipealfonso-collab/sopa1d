@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Todos los canales de channels_spa.json, leídos una sola vez por proceso
- * (son ~2 MB y los usan la revisión diaria y el cambio automático de señal).
+ * (son ~2 MB; los usa la revisión diaria de canales).
  */
 final class ChannelCatalog {
 
@@ -47,23 +47,5 @@ final class ChannelCatalog {
         }
         all = Collections.unmodifiableList(out);
         return all;
-    }
-
-    /**
-     * Otras señales del mismo canal ("TNT Sports Premium HD (Chile 1)" y
-     * "(Señal 2 60fps)" se normalizan igual), vivas, primero las del mismo
-     * país. Es lo que usa el cambio automático de señal.
-     */
-    static List<Channel> alternatives(Context ctx, Channel current) {
-        String key = Epg.norm(current.name);
-        List<Channel> same = new ArrayList<>(), other = new ArrayList<>();
-        if (key.isEmpty()) return same;
-        for (Channel ch : all(ctx)) {
-            if (ch.url.equals(current.url) || ChannelHealth.isHidden(ch.url, ch.assetDead)) continue;
-            if (!key.equals(Epg.norm(ch.name))) continue;
-            if (current.country != null && current.country.equals(ch.country)) same.add(ch); else other.add(ch);
-        }
-        same.addAll(other);
-        return same;
     }
 }

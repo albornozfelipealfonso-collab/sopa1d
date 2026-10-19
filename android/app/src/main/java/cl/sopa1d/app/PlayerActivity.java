@@ -169,7 +169,6 @@ public class PlayerActivity extends Activity {
         scheduleList = findViewById(R.id.scheduleList);
         Epg.init(this);
         Epg.addListener(onEpgUpdate);
-        new Thread(() -> ChannelCatalog.all(getApplicationContext()), "sopa1d-catalog").start();
         ChannelHealth.load(this);
 
         // Celular: botón para pasar el canal a la TV (aparece al tocar la pantalla)
@@ -387,16 +386,11 @@ public class PlayerActivity extends Activity {
         showOsd(ch);
         showStatus(getString(R.string.connecting));
 
-        // Señal nueva: se olvidan las alternativas y fallos del canal anterior
         activeUrl = ch.url;
-        alternatives = null;
-        altPos = -1;
-        switches = 0;
-        failTimes.clear();
         playActive();
     }
 
-    /** Reproduce la señal activa (la del canal o una alternativa). */
+    /** Reproduce la señal del canal actual. */
     private void playActive() {
         retries = 0;
         firstFrameShown = false;
@@ -414,8 +408,6 @@ public class PlayerActivity extends Activity {
         player.setMediaSource(buildSource(activeUrl, LIVE_TARGET_OFFSET_MS));
         player.prepare();
         player.setPlayWhenReady(true);
-        ui.removeCallbacks(stallWatchdog);
-        ui.postDelayed(stallWatchdog, STALL_MS + 5000); // la primera conexión tiene algo más de margen
 
         // Hay chips que no dan error: se quedan colgados sin pintar nada.
         ui.removeCallbacks(firstFrameWatchdog);
@@ -491,11 +483,8 @@ public class PlayerActivity extends Activity {
                 if (state == Player.STATE_READY) {
                     retries = 0;
                     hideStatus();
-                    ui.removeCallbacks(stallWatchdog);
                 } else if (state == Player.STATE_BUFFERING) {
                     showStatus(getString(R.string.connecting));
-                    ui.removeCallbacks(stallWatchdog);
-                    ui.postDelayed(stallWatchdog, STALL_MS);
                 }
             }
 
@@ -636,11 +625,6 @@ public class PlayerActivity extends Activity {
             return;
         }
 
-        long now = System.currentTimeMillis();
-        failTimes.addLast(now);
-        while (!failTimes.isEmpty() && now - failTimes.peekFirst() > FAIL_WINDOW_MS) failTimes.pollFirst();
-        if (failTimes.size() >= FAILS_TO_SWITCH && switchSignal("se cortó " + failTimes.size() + " veces")) return;
-
         if (retries >= MAX_RETRIES) {
             showStatus("No se pudo reproducir: " + error.getErrorCodeName());
             return;
@@ -659,51 +643,8 @@ public class PlayerActivity extends Activity {
         }, RETRY_DELAY_MS);
     }
 
-    // ------------------------------------------------ cambio de señal
-
-    /** Fallos seguidos dentro de esta ventana que hacen cambiar de señal. */
-    private static final int FAILS_TO_SWITCH = 3;
-    private static final long FAIL_WINDOW_MS = 60000;
-    /** Cargando sin parar este tiempo = señal colgada. */
-    private static final long STALL_MS = 20000;
-
+    /** Señal que se está reproduciendo (la URL del canal actual). */
     private String activeUrl;
-    private List<Channel> alternatives;
-    private int altPos = -1;
-    private int switches;
-    private final java.util.ArrayDeque<Long> failTimes = new java.util.ArrayDeque<>();
-
-    private final Runnable stallWatchdog = () -> {
-        if (player != null && player.getPlaybackState() != Player.STATE_READY) {
-            switchSignal("se quedó cargando");
-        }
-    };
-
-    /**
-     * Pasa a otra señal del mismo canal (TNT Sports Premium Señal 1 → 2 → 3…,
-     * primero las del mismo país). Tras probarlas todas vuelve a la original.
-     * Devuelve false si el canal no tiene otra señal.
-     */
-    private boolean switchSignal(String reason) {
-        Channel ch = ChannelStore.at(index);
-        if (ch == null || player == null) return false;
-        if (alternatives == null) alternatives = ChannelCatalog.alternatives(this, ch);
-        if (alternatives.isEmpty()) return false;
-        int total = alternatives.size() + 1;
-        if (++switches > 2 * total) {
-            showStatus("Ninguna señal de " + ch.name + " responde ahora 😕");
-            return true;
-        }
-        altPos = (altPos + 1) % total;
-        Channel next = altPos < alternatives.size() ? alternatives.get(altPos) : ch;
-        activeUrl = next.url;
-        failTimes.clear();
-        Log.w(TAG, "Señal inestable en " + ch.name + " (" + reason + "): pasando a " + next.name);
-        showBanner("⚠️ Señal inestable: cambiando a " + next.name);
-        showStatus(getString(R.string.connecting));
-        playActive();
-        return true;
-    }
 
     /** Cicla el encuadre: útil cuando la señal deja bandas negras en TV. */
     private void cycleResize() {
