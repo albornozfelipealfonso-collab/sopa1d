@@ -4307,7 +4307,10 @@
             // Sandbox estricto cuando AdBlock está activo: impide window.open (popups) y redirecciones top-frame.
             // Algunos proveedores (MultiEmbed, VidSrc) detectan el atributo y se niegan a cargar
             // ("Sandboxing is not allowed!"), así que se omite en los que lo rechazan.
-            const sandboxAttr = (adBlockShieldEnabled && selected.allowSandbox !== false)
+            // En la APK no se usa: el sandbox se hereda a los iframes internos de
+            // TONPlayer (Streamwish, Vidhide...) y estos muestran "Sandboxed embed
+            // is not allowed". Allí los popups los frena el escudo nativo.
+            const sandboxAttr = (adBlockShieldEnabled && selected.allowSandbox !== false && !IS_NATIVE_APP)
                 ? 'sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"'
                 : '';
 

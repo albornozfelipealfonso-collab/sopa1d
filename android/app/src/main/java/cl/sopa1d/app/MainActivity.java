@@ -70,14 +70,19 @@ public class MainActivity extends Activity {
             "sharethrough.com", "unrulymedia.com", "teads.tv", "springserve.com",
             "displayvertising.com", "dolohen.com", "go.ad2up.com", "ad2up.com",
             "ptp22.com", "inklinkor.com", "tagdeliver.com", "trk.bz",
-            "shorte.st", "ouo.io", "linkvertise.com", "adf.ly"
+            "shorte.st", "ouo.io", "linkvertise.com", "adf.ly",
+            // Vistos en el reproductor de MultiEmbed (streamingnow.mov)
+            "cdn4ads.com", "adsco.re", "llvpn.com", "predictivdisplay.com",
+            "usrpubtrk.com", "adexchangerapid.com", "dydgzmzpdbfqm.com"
     ));
 
     /** Fragmentos que delatan un dominio publicitario aunque no esté en la lista. */
     private static final String[] AD_PATTERNS = {
             "popunder", "popads", "/ads/", "adserver", "ad-delivery",
             "banner-ad", "/advert", "clickunder", "trafficstars",
-            "cpmgate", "revenuegate", "/pop.js", "/popup.js", "vast.xml", "/vast?",
+            // No incluir "/pop.js": Vimeus lo usa de cebo y, si no carga,
+            // muestra "Disable ADBlock". Los popups ya los frena ad_shield.js.
+            "cpmgate", "revenuegate", "vast.xml", "/vast?",
             "prebid", "adsbygoogle"
     };
 

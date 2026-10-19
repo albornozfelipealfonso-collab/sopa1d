@@ -10,6 +10,11 @@
     if (window.__sopaShield) return;
     window.__sopaShield = true;
 
+    // Las verificaciones anti-bot (Cloudflare Turnstile, hCaptcha, reCAPTCHA)
+    // detectan funciones del navegador modificadas y fallan: no se tocan.
+    if (/(^|\.)(challenges\.cloudflare\.com|hcaptcha\.com|recaptcha\.net)$/.test(location.hostname) ||
+        /^www\.google\.com$/.test(location.hostname) && /recaptcha/.test(location.pathname)) return;
+
     // Ventana falsa: si window.open devolviera null, algunos reproductores
     // detectan "bloqueador de anuncios" y se niegan a reproducir.
     var fakeWin = {
@@ -57,6 +62,19 @@
 
     if (isTop) return; // Lo que sigue solo aplica dentro de los reproductores.
 
+    // Los anuncios "vignette" (el "Go to website / Skip ad" de MultiEmbed) se
+    // esconden en shadow roots cerrados para que nadie los encuentre: se
+    // fuerzan abiertos para poder barrerlos.
+    var nativeAttachShadow = Element.prototype.attachShadow;
+    if (nativeAttachShadow) {
+        Element.prototype.attachShadow = function (init) {
+            var opts = {};
+            for (var k in init) opts[k] = init[k];
+            opts.mode = 'open';
+            return nativeAttachShadow.call(this, opts);
+        };
+    }
+
     // Capas transparentes encima del vídeo: el primer toque abre un anuncio en
     // vez de dar play. Se eliminan si cubren casi todo el frame, están por
     // encima del resto y no contienen el reproductor.
@@ -80,15 +98,30 @@
         return transparent || tag === 'A';
     }
 
-    function sweep() {
-        var all = document.body ? document.body.querySelectorAll('div, a, span, ins') : [];
+    // Interstitial publicitario: capa fija con el z-index máximo posible que no
+    // contiene el vídeo (puede contener el iframe del anunciante).
+    function looksLikeInterstitial(el) {
+        if (el.tagName === 'VIDEO' || (el.querySelector && el.querySelector('video'))) return false;
+        if (el.hasAttribute && (el.hasAttribute('prclck') || el.hasAttribute('doskip'))) return true;
+        var cs = getComputedStyle(el);
+        return cs.position === 'fixed' && parseInt(cs.zIndex, 10) >= 2147483000;
+    }
+
+    function sweepRoot(root) {
+        var all = root.querySelectorAll('div, a, span, ins, iframe');
         for (var i = 0; i < all.length; i++) {
-            if (looksLikeClickjack(all[i])) all[i].remove();
+            var el = all[i];
+            if (el.shadowRoot) sweepRoot(el.shadowRoot);
+            if (looksLikeInterstitial(el) || looksLikeClickjack(el)) el.remove();
         }
+    }
+
+    function sweep() {
+        if (document.body) sweepRoot(document.body);
         // Huecos clásicos de banners
         var banners = document.querySelectorAll(
             'ins.adsbygoogle, [id^="google_ads"], [id*="popunder"], [class*="popunder"], ' +
-            'iframe[src*="ads"], iframe[src*="banner"], div[id^="ad-"], div[class^="ad-"]');
+            'div[id^="ad-"], div[class^="ad-"]');
         for (var j = 0; j < banners.length; j++) banners[j].remove();
     }
 
