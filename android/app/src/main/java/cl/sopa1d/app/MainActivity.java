@@ -155,6 +155,8 @@ public class MainActivity extends Activity {
                 FrameLayout.LayoutParams.MATCH_PARENT));
 
         setContentView(root);
+        // La web no debe quedar debajo de la barra de estado ni de la de botones
+        SystemBars.pad(this);
 
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);

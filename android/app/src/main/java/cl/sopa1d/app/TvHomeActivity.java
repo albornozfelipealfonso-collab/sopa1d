@@ -93,10 +93,14 @@ public class TvHomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tv_home);
-        portrait = getResources().getConfiguration().orientation
-                == android.content.res.Configuration.ORIENTATION_PORTRAIT;
-        if (portrait) cardScale = 0.78f;
+        // Diseño según el aparato, no según cómo se sostiene: el de TV en el
+        // celular horizontal dejaba fuera la mitad del menú y no se podía tocar.
+        portrait = !SystemBars.isTv(this);
+        setContentView(portrait ? R.layout.activity_phone_home : R.layout.activity_tv_home);
+        if (portrait) {
+            cardScale = 0.78f;
+            SystemBars.pad(this);
+        }
 
         heroBackdrop = findViewById(R.id.heroBackdrop);
         heroTitle = findViewById(R.id.heroTitle);
@@ -200,10 +204,19 @@ public class TvHomeActivity extends Activity {
         tvIp = TvLink.startReceiver(this);
         Epg.addListener(onEpgUpdate);
 
-        select(findViewById(R.id.navHome));
+        // Al girar el celular se rehace la pantalla: se vuelve a la misma sección
+        int startNav = savedInstanceState != null ? savedInstanceState.getInt("nav", R.id.navHome) : R.id.navHome;
+        View startView = findViewById(startNav);
+        select(startView != null ? startView : findViewById(R.id.navHome));
         if (savedInstanceState == null) playSplash();
         // Se entra directo a las carátulas, con el menú plegado
         ui.postDelayed(this::focusFirstCard, savedInstanceState == null ? 1700 : 300);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle out) {
+        super.onSaveInstanceState(out);
+        if (selectedNav != null) out.putInt("nav", selectedNav.getId());
     }
 
     @Override
@@ -859,7 +872,32 @@ public class TvHomeActivity extends Activity {
                 h.image.setPadding(0, 0, 0, 0);
             }
             h.itemView.setLayoutParams(lp);
-            load(h.image, item.poster);
+            if (item.isLive() && item.poster != null) {
+                // Logo roto: se ve el nombre grande del fondo y la franja con el
+                // nombre lo repetía encima; se deja la franja solo si hay programa.
+                final CatalogItem shown = item;
+                Glide.with(h.image).load(item.poster)
+                        .transition(DrawableTransitionOptions.withCrossFade(200))
+                        .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(com.bumptech.glide.load.engine.GlideException e, Object model,
+                                                        com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> t,
+                                                        boolean first) {
+                                if (Epg.nowNext(shown.title, shown.overview)[0] == null) h.badge.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(android.graphics.drawable.Drawable r, Object model,
+                                                           com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> t,
+                                                           com.bumptech.glide.load.DataSource ds, boolean first) {
+                                return false;
+                            }
+                        })
+                        .into(h.image);
+            } else {
+                load(h.image, item.poster);
+            }
         }
 
         private void load(ImageView view, String url) {

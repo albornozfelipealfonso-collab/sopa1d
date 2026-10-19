@@ -16,7 +16,7 @@
         <FrameLayout
             android:id="@+id/heroInfo"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="@dimen/phone_hero_height"
             android:clickable="true"
             android:focusable="false">
 

@@ -50,7 +50,9 @@ public class DetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        boolean tv = SystemBars.isTv(this);
+        setContentView(tv ? R.layout.activity_detail : R.layout.activity_detail_phone);
+        if (!tv) SystemBars.pad(this);
 
         item = (CatalogItem) getIntent().getSerializableExtra(EXTRA_ITEM);
         if (item == null) {

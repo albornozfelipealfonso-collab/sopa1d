@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Celular en horizontal: la portada no puede comerse la pantalla -->
+    <dimen name="phone_hero_height">170dp</dimen>
+    <dimen name="phone_detail_hero_height">150dp</dimen>
+</resources>
