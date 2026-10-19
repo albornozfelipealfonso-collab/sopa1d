@@ -79,6 +79,10 @@ public class TvHomeActivity extends Activity {
     private boolean heroFilled;
     private String heroImage;
     private boolean navExpanded;
+    /** Celular en vertical: barra de secciones abajo y carátulas más chicas. */
+    private boolean portrait;
+    /** Escala de las carátulas (1 en TV). */
+    private float cardScale = 1f;
     private String tvIp;
     private ValueAnimator navAnim;
     private long lastBackPress;
@@ -90,6 +94,9 @@ public class TvHomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tv_home);
+        portrait = getResources().getConfiguration().orientation
+                == android.content.res.Configuration.ORIENTATION_PORTRAIT;
+        if (portrait) cardScale = 0.78f;
 
         heroBackdrop = findViewById(R.id.heroBackdrop);
         heroTitle = findViewById(R.id.heroTitle);
@@ -121,7 +128,7 @@ public class TvHomeActivity extends Activity {
         navItems = new View[]{
                 findViewById(R.id.navHome), findViewById(R.id.navSearch), findViewById(R.id.navMovies),
                 findViewById(R.id.navSeries), findViewById(R.id.navAnime), findViewById(R.id.navLive),
-                findViewById(R.id.navMyList), findViewById(R.id.navWeb)};
+                findViewById(R.id.navMyList), findViewById(R.id.navGuide), findViewById(R.id.navWeb)};
         for (View v : navItems) {
             v.setOnClickListener(this::onNavClick);
             // ▶ desde el menú entra al contenido: la búsqueda de foco por
@@ -173,6 +180,15 @@ public class TvHomeActivity extends Activity {
             }
         });
 
+        // Celular: tocar la portada destacada abre su ficha
+        findViewById(R.id.heroInfo).setOnClickListener(v -> {
+            CatalogItem it = pendingHero;
+            if (it == null || it.isLive()) return;
+            Intent i = new Intent(this, DetailActivity.class);
+            i.putExtra(DetailActivity.EXTRA_ITEM, it);
+            startActivity(i);
+        });
+
         // Programación de los canales: se baja en segundo plano
         Epg.init(this);
         // Receptor de "Ver en la TV" (órdenes desde la app del celular)
@@ -216,7 +232,7 @@ public class TvHomeActivity extends Activity {
     }
 
     private void setNavExpanded(boolean expand) {
-        if (expand == navExpanded) return;
+        if (portrait || expand == navExpanded) return;
         navExpanded = expand;
         for (View v : navItems) {
             String[] parts = String.valueOf(v.getTag()).split("\\|");
@@ -242,6 +258,10 @@ public class TvHomeActivity extends Activity {
     private void onNavClick(View v) {
         if (v.getId() == R.id.navWeb) {
             startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+        if (v.getId() == R.id.navGuide) {
+            startActivity(new Intent(this, GuideActivity.class));
             return;
         }
         select(v);
@@ -279,6 +299,7 @@ public class TvHomeActivity extends Activity {
 
     private void showHome() {
         lastSignature = personalSignature();
+        heroFilled = false; // la portada se rehace con el primer título de la lista nueva
         List<Catalog.Row> list = new ArrayList<>();
         List<CatalogItem> cont = WatchHistory.continueWatching(this);
         if (!cont.isEmpty()) list.add(new Catalog.Row("▶ Seguir viendo", cont).style(Catalog.Row.WIDE));
@@ -290,6 +311,7 @@ public class TvHomeActivity extends Activity {
 
     private void showMyList() {
         lastSignature = personalSignature();
+        heroFilled = false; // la portada se rehace con el primer título de la lista nueva
         List<Catalog.Row> list = new ArrayList<>();
         List<CatalogItem> favs = WatchHistory.favorites(this);
         if (!favs.isEmpty()) list.add(new Catalog.Row("❤️ Mi lista", favs));
@@ -319,6 +341,7 @@ public class TvHomeActivity extends Activity {
     }
 
     private void focusFirstCard() {
+        if (portrait) return; // en el celular se toca; el foco es cosa del control de la TV
         RecyclerView.ViewHolder vh = rows.findViewHolderForAdapterPosition(0);
         if (vh == null) return;
         RecyclerView inner = vh.itemView.findViewById(R.id.rowItems);
@@ -364,6 +387,8 @@ public class TvHomeActivity extends Activity {
 
     private List<Catalog.Row> liveRows() {
         List<Catalog.Row> list = new ArrayList<>();
+        List<CatalogItem> favs = Favorites.asItems(this);
+        if (!favs.isEmpty()) list.add(new Catalog.Row("★ Mis canales", favs));
         for (Map.Entry<String, List<CatalogItem>> e : liveByCategory.entrySet()) {
             list.add(new Catalog.Row(e.getKey(), e.getValue()));
         }
@@ -390,7 +415,8 @@ public class TvHomeActivity extends Activity {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 String url = o.optString("url");
-                if (url.isEmpty()) continue;
+                // Marcados por tools/check_channels.mjs como caídos: no se muestran
+                if (url.isEmpty() || o.optBoolean("dead")) continue;
                 String name = o.optString("name");
                 String cat = o.optString("category", "General");
                 CatalogItem ch = new CatalogItem("live", url, name, "", 0,
@@ -460,6 +486,7 @@ public class TvHomeActivity extends Activity {
         heroChips.removeAllViews();
         if (item.isLive()) {
             addChip("● EN VIVO", 0xFFE50914, true);
+            if (Favorites.contains(this, item.id)) addChip("★ Favorito", 0xFFF5C518, true);
             if (!item.genres.isEmpty()) addChip(item.genres, 0, false);
             if (!item.overview.isEmpty()) addChip(item.overview, 0, false);
             heroOverview.setText(liveGuideText(item));
@@ -492,7 +519,7 @@ public class TvHomeActivity extends Activity {
     private CharSequence liveGuideText(CatalogItem item) {
         Epg.Program[] nn = Epg.nowNext(item.title, item.overview);
         if (nn[0] == null && nn[1] == null) {
-            return "Pulsa OK para ver. En el reproductor, ▲ ▼ cambian de canal y OK abre la lista.";
+            return "Pulsa OK para ver · Mantén OK para ★ favorito. En el reproductor, ▲ ▼ cambian de canal.";
         }
         android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
         if (nn[0] != null) {
@@ -681,7 +708,22 @@ public class TvHomeActivity extends Activity {
             int layout = viewType == Catalog.Row.TOP10 ? R.layout.item_tv_top10
                     : viewType == Catalog.Row.WIDE ? R.layout.item_tv_wide
                     : R.layout.item_tv_card;
-            return new CardHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
+            View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+            if (cardScale != 1f && viewType != Catalog.Row.POSTER) {
+                // Top 10 y "Seguir viendo" vienen con tamaño fijo del XML
+                ViewGroup.LayoutParams lp = v.getLayoutParams();
+                lp.width = Math.round(lp.width * cardScale);
+                lp.height = Math.round(lp.height * cardScale);
+                View frame = v.findViewById(R.id.cardFrame);
+                if (frame != null) {
+                    ViewGroup.LayoutParams f = frame.getLayoutParams();
+                    f.width = Math.round(f.width * cardScale);
+                    f.height = Math.round(f.height * cardScale);
+                }
+                TextView rank = v.findViewById(R.id.rankNumber);
+                if (rank != null) rank.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, rank.getTextSize() * cardScale);
+            }
+            return new CardHolder(v);
         }
 
         @Override
@@ -689,6 +731,7 @@ public class TvHomeActivity extends Activity {
             final CatalogItem item = items.get(position);
             if (!heroFilled) {
                 heroFilled = true;
+                pendingHero = item;
                 showHeroNow(item);
             }
 
@@ -719,6 +762,20 @@ public class TvHomeActivity extends Activity {
                     showHero(item);
                 }
             });
+            h.itemView.setOnLongClickListener(v -> {
+                if (!item.isLive()) return false;
+                boolean fav = Favorites.toggle(TvHomeActivity.this, item.title, item.id, item.poster,
+                        item.genres, item.overview);
+                Toast.makeText(TvHomeActivity.this, fav ? "★ Agregado a Mis canales" : "Quitado de Mis canales",
+                        Toast.LENGTH_SHORT).show();
+                showHeroNow(item);
+                if (selectedNav != null && selectedNav.getId() == R.id.navLive) {
+                    View keep = v;
+                    rowsAdapter.setRows(liveRows());
+                    ui.postDelayed(() -> { if (keep.isAttachedToWindow()) keep.requestFocus(); }, 200);
+                }
+                return true;
+            });
             h.itemView.setOnClickListener(v -> {
                 if (item.isLive()) {
                     playLive(items, h.getBindingAdapterPosition());
@@ -741,8 +798,8 @@ public class TvHomeActivity extends Activity {
             ViewGroup.LayoutParams lp = h.itemView.getLayoutParams();
             if (item.isLive()) {
                 // Los logos de canales son apaisados
-                lp.width = dp(220);
-                lp.height = dp(140);
+                lp.width = dp(Math.round(220 * cardScale));
+                lp.height = dp(Math.round(140 * cardScale));
                 h.image.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 h.image.setPadding(dp(18), dp(26), dp(18), dp(34));
                 // Con logo, el nombre va en una franja abajo; sin logo ya se
@@ -757,8 +814,8 @@ public class TvHomeActivity extends Activity {
                 h.liveProgress.setVisibility(now != null ? View.VISIBLE : View.GONE);
                 if (now != null) h.liveProgress.setProgress(Math.round(now.progress(System.currentTimeMillis()) * 1000));
             } else {
-                lp.width = dp(140);
-                lp.height = dp(210);
+                lp.width = dp(Math.round(140 * cardScale));
+                lp.height = dp(Math.round(210 * cardScale));
                 h.liveProgress.setVisibility(View.GONE);
                 h.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 h.image.setPadding(0, 0, 0, 0);

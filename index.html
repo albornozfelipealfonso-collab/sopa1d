@@ -4951,7 +4951,10 @@
                     const res = await fetch('channels_spa.json?v=' + Date.now());
                     if (res.ok) {
                         loaded = await res.json();
-                        console.log('Canales cargados desde channels_spa.json:', loaded.length);
+                        // tools/check_channels.mjs marca los que no responden
+                        const total = loaded.length;
+                        loaded = loaded.filter(c => !c.dead);
+                        console.log(`Canales cargados desde channels_spa.json: ${loaded.length} (ocultos ${total - loaded.length} caídos)`);
                     }
                 } catch(e) {}
 

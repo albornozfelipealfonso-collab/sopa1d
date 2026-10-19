@@ -57,6 +57,13 @@ public class VodPlayerActivity extends Activity {
     static final String EXTRA_POSITION = "position";
 
     private static final long SEEK_STEP_MS = 10000;
+    /** Salto por defecto de "Saltar intro" (la intro típica dura 60-90 s). */
+    private static final long INTRO_SKIP_MS = 85000;
+    /** "Saltar intro" solo se ofrece en los primeros minutos del episodio. */
+    private static final long INTRO_WINDOW_MS = 240000;
+    /** "Siguiente episodio" aparece cuando quedan estos milisegundos. */
+    private static final long NEXT_AT_REMAINING_MS = 30000;
+    private static final int NEXT_COUNTDOWN_S = 10;
     /** Cuántos servidores se intentan resolver a la vez al empezar. */
     private static final int PARALLEL_RESOLVE = 5;
 
@@ -88,6 +95,23 @@ public class VodPlayerActivity extends Activity {
     /** Para no reanudar dos veces ni guardar progreso de otro episodio. */
     private int loadGeneration;
     private boolean destroyed;
+
+    private View skipIntro, nextCard;
+    private TextView nextTitle, nextCountdown;
+    /** Por episodio: ya se saltó la intro / ya se mostró y canceló el siguiente. */
+    private boolean introDone, nextDismissed;
+    /** El título no tenía servidores: OK / toque reintenta. */
+    private boolean unavailable;
+    private int countdown = -1;
+
+    /** Cada segundo: decide si mostrar "Saltar intro" o "Siguiente episodio". */
+    private final Runnable episodeTicker = new Runnable() {
+        @Override
+        public void run() {
+            updateEpisodeOverlays();
+            ui.postDelayed(this, 1000);
+        }
+    };
 
     private final Runnable saveProgress = new Runnable() {
         @Override
@@ -160,8 +184,98 @@ public class VodPlayerActivity extends Activity {
             send.setOnClickListener(v -> sendToTv());
         }
 
+        skipIntro = findViewById(R.id.vodSkipIntro);
+        nextCard = findViewById(R.id.vodNextCard);
+        nextTitle = findViewById(R.id.vodNextTitle);
+        nextCountdown = findViewById(R.id.vodNextCountdown);
+        skipIntro.setOnClickListener(v -> doSkipIntro());
+        statusBox.setOnClickListener(v -> { if (unavailable) loadEpisode(); });
+        nextCard.setOnClickListener(v -> goNextNow());
+        ui.post(episodeTicker);
+
         initPlayer();
         loadEpisode();
+    }
+
+    // ------------------------------------------- intro / siguiente episodio
+
+    private boolean hasNextEpisode() {
+        if (!"tv".equals(item.type) || episodeCounts == null) return false;
+        int count = season < episodeCounts.length ? episodeCounts[season] : 0;
+        return episode < count || (season + 1 < episodeCounts.length && episodeCounts[season + 1] > 0);
+    }
+
+    private String nextLabel() {
+        int count = season < episodeCounts.length ? episodeCounts[season] : 0;
+        return episode < count ? "T" + season + " E" + (episode + 1) : "T" + (season + 1) + " E1";
+    }
+
+    private android.content.SharedPreferences introPrefs() {
+        return getSharedPreferences("sopa1d_intro", MODE_PRIVATE);
+    }
+
+    /** Dónde termina la intro de esta serie, aprendido la primera vez que se salta. */
+    private long learnedIntroEnd() {
+        return introPrefs().getLong("intro:" + item.id, -1);
+    }
+
+    private void doSkipIntro() {
+        if (player == null) return;
+        long pos = player.getCurrentPosition();
+        long learned = learnedIntroEnd();
+        long target = learned > pos ? learned : pos + INTRO_SKIP_MS;
+        player.seekTo(target);
+        if (learned < 0) introPrefs().edit().putLong("intro:" + item.id, target).apply();
+        introDone = true;
+        skipIntro.setVisibility(View.GONE);
+        playerView.requestFocus();
+    }
+
+    private void goNextNow() {
+        nextCard.setVisibility(View.GONE);
+        countdown = -1;
+        persistPosition();
+        playNextEpisode();
+    }
+
+    private void updateEpisodeOverlays() {
+        if (player == null || !"tv".equals(item.type) || current < 0) {
+            skipIntro.setVisibility(View.GONE);
+            nextCard.setVisibility(View.GONE);
+            return;
+        }
+        boolean playing = player.getPlaybackState() == Player.STATE_READY;
+        long pos = player.getCurrentPosition();
+        long dur = player.getDuration();
+        boolean menus = panel.getVisibility() == View.VISIBLE || Pip.active(this);
+
+        // Saltar intro: primeros minutos (o hasta donde termina la aprendida)
+        long learned = learnedIntroEnd();
+        long until = learned > 0 ? learned - 3000 : INTRO_WINDOW_MS;
+        boolean showSkip = playing && !introDone && !menus && pos > 15000 && pos < until;
+        if (showSkip != (skipIntro.getVisibility() == View.VISIBLE)) {
+            skipIntro.setVisibility(showSkip ? View.VISIBLE : View.GONE);
+            if (showSkip && !playerView.isControllerFullyVisible()) skipIntro.requestFocus();
+        }
+
+        // Siguiente episodio: en los créditos, con cuenta regresiva
+        if (dur > 0 && hasNextEpisode() && !nextDismissed && !menus && playing
+                && dur - pos <= NEXT_AT_REMAINING_MS) {
+            if (countdown < 0) {
+                countdown = NEXT_COUNTDOWN_S;
+                nextTitle.setText("Siguiente episodio · " + nextLabel());
+                String img = item.backdrop != null ? item.backdrop : item.poster;
+                if (img != null) com.bumptech.glide.Glide.with(this).load(img)
+                        .into((android.widget.ImageView) findViewById(R.id.vodNextImage));
+                nextCard.setVisibility(View.VISIBLE);
+                nextCard.requestFocus();
+            }
+            nextCountdown.setText("Empieza en " + countdown + " s");
+            if (countdown-- <= 0) goNextNow();
+        } else if (countdown >= 0 && (dur - pos > NEXT_AT_REMAINING_MS || nextDismissed)) {
+            nextCard.setVisibility(View.GONE);
+            countdown = -1;
+        }
     }
 
     private void initPlayer() {
@@ -200,6 +314,12 @@ public class VodPlayerActivity extends Activity {
 
     private void loadEpisode() {
         final int gen = ++loadGeneration;
+        unavailable = false;
+        introDone = false;
+        nextDismissed = false;
+        countdown = -1;
+        if (skipIntro != null) skipIntro.setVisibility(View.GONE);
+        if (nextCard != null) nextCard.setVisibility(View.GONE);
         current = -1;
         servers = new ArrayList<>();
         title.setText(item.title);
@@ -214,16 +334,28 @@ public class VodPlayerActivity extends Activity {
         getIntent().removeExtra(EXTRA_POSITION); // solo vale para el primer episodio
         final long resumeAt = forced >= 0 ? forced : WatchHistory.position(this, item.type, item.id, season, episode);
         pool.execute(() -> {
-            List<StreamResolver.Server> list;
-            try {
-                list = StreamResolver.listServers(item.type, item.id, season, episode, lang);
-            } catch (Exception e) {
-                Log.w(TAG, "VOD: no se pudieron listar servidores", e);
-                list = new ArrayList<>();
+            // TONPlayer a veces responde vacío mientras arma la lista por
+            // primera vez (pasó con Stranger Things T1 E3): se reintenta.
+            List<StreamResolver.Server> list = new ArrayList<>();
+            for (int attempt = 0; attempt < 3 && list.isEmpty() && gen == loadGeneration; attempt++) {
+                if (attempt > 0) {
+                    ui.post(() -> { if (gen == loadGeneration) showStatus("Buscando servidor sin anuncios… (reintento)"); });
+                    try { Thread.sleep(3000); } catch (InterruptedException ie) { return; }
+                }
+                try {
+                    list = StreamResolver.listServers(item.type, item.id, season, episode, lang);
+                } catch (Exception e) {
+                    Log.w(TAG, "VOD: no se pudieron listar servidores", e);
+                    list = new ArrayList<>();
+                }
             }
             final List<StreamResolver.Server> found = list;
             if (found.isEmpty()) {
-                ui.post(() -> { if (gen == loadGeneration) showStatus("Este título aún no está disponible 😕"); });
+                ui.post(() -> {
+                    if (gen != loadGeneration) return;
+                    unavailable = true;
+                    showStatus("Este título aún no está disponible 😕\nPulsa OK para reintentar");
+                });
                 return;
             }
 
@@ -308,8 +440,31 @@ public class VodPlayerActivity extends Activity {
                 .setAllowCrossProtocolRedirects(true)
                 .setDefaultRequestProperties(headers);
 
-        player.setMediaSource(new HlsMediaSource.Factory(http)
-                .createMediaSource(MediaItem.fromUri(stream.m3u8)));
+        // Subtítulos aparte del servidor: se cargan con las mismas cabeceras.
+        // Con el idioma "Subtitulado" se activan solos; si no, quedan en CC.
+        boolean wantSubs = stream.server.language.toLowerCase(java.util.Locale.ROOT).contains("sub");
+        List<MediaItem.SubtitleConfiguration> subs = new ArrayList<>();
+        for (String[] s : stream.subtitles) {
+            subs.add(new MediaItem.SubtitleConfiguration.Builder(android.net.Uri.parse(s[0]))
+                    .setMimeType(s[0].contains(".srt") ? androidx.media3.common.MimeTypes.APPLICATION_SUBRIP
+                            : androidx.media3.common.MimeTypes.TEXT_VTT)
+                    .setLanguage("es")
+                    .setLabel(s[1].isEmpty() ? "Español" : s[1])
+                    .setSelectionFlags(wantSubs ? androidx.media3.common.C.SELECTION_FLAG_DEFAULT : 0)
+                    .build());
+        }
+        MediaItem media = new MediaItem.Builder().setUri(stream.m3u8)
+                .setMimeType(androidx.media3.common.MimeTypes.APPLICATION_M3U8)
+                .setSubtitleConfigurations(subs).build();
+        player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
+                .setPreferredTextLanguage("es")
+                .setSelectUndeterminedTextLanguage(wantSubs)
+                .build());
+        // DefaultMediaSourceFactory: además del HLS, monta los subtítulos aparte
+        player.setMediaSource(new androidx.media3.exoplayer.source.DefaultMediaSourceFactory(http)
+                .createMediaSource(media));
+        subtitle.setText(subtitle.getText().toString().replace("   ·   💬 subtítulos (CC)", "")
+                + (subs.isEmpty() ? "" : "   ·   💬 subtítulos (CC)"));
         player.prepare();
         if (positionMs > 0) player.seekTo(positionMs);
         player.setPlayWhenReady(true);
@@ -397,6 +552,32 @@ public class VodPlayerActivity extends Activity {
         boolean panelOpen = panel.getVisibility() == View.VISIBLE;
         boolean controls = playerView.isControllerFullyVisible();
 
+        // Con "Siguiente episodio" a la vista: OK lo pone ya, Atrás lo cancela
+        if (nextCard.getVisibility() == View.VISIBLE && !panelOpen) {
+            int k = event.getKeyCode();
+            if (k == KeyEvent.KEYCODE_BACK) {
+                nextDismissed = true;
+                nextCard.setVisibility(View.GONE);
+                countdown = -1;
+                return true;
+            }
+            if (k == KeyEvent.KEYCODE_DPAD_CENTER || k == KeyEvent.KEYCODE_ENTER) {
+                goNextNow();
+                return true;
+            }
+        }
+        // "No disponible": OK reintenta
+        if (unavailable && (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+            loadEpisode();
+            return true;
+        }
+        // "Saltar intro" a la vista y sin controles: OK salta
+        if (skipIntro.getVisibility() == View.VISIBLE && !controls && !panelOpen
+                && (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_CENTER || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+            doSkipIntro();
+            return true;
+        }
+
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_MENU:
                 togglePanel(!panelOpen);
@@ -439,7 +620,36 @@ public class VodPlayerActivity extends Activity {
     protected void onPause() {
         super.onPause();
         persistPosition();
-        if (player != null) player.pause();
+        // En ventana flotante (PiP) la actividad queda en pausa pero se sigue viendo
+        if (player != null && !Pip.active(this)) player.pause();
+    }
+
+    /** Inicio mientras se ve algo: sigue en un cuadrito flotante (celular). */
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        Pip.enter(this, player != null && player.isPlaying());
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean inPip, android.content.res.Configuration cfg) {
+        super.onPictureInPictureModeChanged(inPip, cfg);
+        // En el cuadrito solo el vídeo
+        playerView.setUseController(!inPip);
+        if (inPip) {
+            playerView.hideController();
+            topBar.setVisibility(View.GONE);
+            panel.setVisibility(View.GONE);
+            skipIntro.setVisibility(View.GONE);
+            nextCard.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Se cerró el cuadrito flotante: dejar de sonar
+        if (player != null && !Pip.active(this)) player.pause();
     }
 
     @Override

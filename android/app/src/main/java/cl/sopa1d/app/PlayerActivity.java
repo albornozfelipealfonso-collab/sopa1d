@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.OptIn;
 import androidx.media3.common.C;
@@ -253,6 +254,7 @@ public class PlayerActivity extends Activity {
         findViewById(R.id.touchDown).setOnClickListener(v -> { switchBy(-1); showTouchControls(); });
         findViewById(R.id.touchList).setOnClickListener(v -> togglePanel(true));
         findViewById(R.id.touchGuide).setOnClickListener(v -> toggleSchedule(true));
+        findViewById(R.id.touchFav).setOnClickListener(v -> { toggleFavorite(ChannelStore.at(index)); showTouchControls(); });
 
         // Con miles de canales, en el celular se busca escribiendo
         EditText search = findViewById(R.id.channelSearch);
@@ -264,8 +266,17 @@ public class PlayerActivity extends Activity {
         });
     }
 
+    private void toggleFavorite(Channel ch) {
+        if (ch == null) return;
+        boolean fav = Favorites.toggle(this, ch.name, ch.url, ch.logo, ch.category, ch.country);
+        Toast.makeText(this, fav ? "★ " + ch.name + " agregado a Mis canales" : "Quitado de Mis canales",
+                Toast.LENGTH_SHORT).show();
+        Channel cur = ChannelStore.at(index);
+        if (cur == ch) showOsd(ch);
+    }
+
     private void showTouchControls() {
-        if (touchControls == null || panelOpen() || scheduleOpen()) return;
+        if (touchControls == null || panelOpen() || scheduleOpen() || Pip.active(this)) return;
         touchControls.setVisibility(View.VISIBLE);
         ui.removeCallbacks(hideTouchControls);
         ui.postDelayed(hideTouchControls, 5000);
@@ -304,7 +315,9 @@ public class PlayerActivity extends Activity {
                 android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
                 // Nombre en una sola línea: si no, los largos tapaban el programa
                 String name = ch.name.length() > 30 ? ch.name.substring(0, 29) + "…" : ch.name;
-                sb.append(String.format(Locale.ROOT, "%3d   %s", (number == null ? position : number) + 1, name));
+                boolean fav = Favorites.contains(getContext(), ch.url);
+                sb.append(String.format(Locale.ROOT, "%3d %s %s", (number == null ? position : number) + 1,
+                        fav ? "★" : "  ", name));
                 Epg.Program now = Epg.nowNext(ch.name, ch.country)[0];
                 if (now != null) {
                     int st = sb.length();
@@ -318,6 +331,12 @@ public class PlayerActivity extends Activity {
         };
         channelAdapter = adapter;
         list.setAdapter(adapter);
+        // Mantener OK (TV) o presionado (celular) sobre un canal: favorito
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            toggleFavorite(channelAdapter.getItem(position));
+            channelAdapter.notifyDataSetChanged();
+            return true;
+        });
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -636,7 +655,9 @@ public class PlayerActivity extends Activity {
      */
     private void showOsd(Channel ch) {
         osdNumber.setText(String.valueOf(index + 1));
-        osdName.setText(ch.name);
+        osdName.setText((Favorites.contains(this, ch.url) ? "★ " : "") + ch.name);
+        View favBtn = findViewById(R.id.touchFav);
+        if (favBtn != null) ((TextView) favBtn).setText(Favorites.contains(this, ch.url) ? "★  Favorito" : "☆  Favorito");
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
         osdInfo.setText(cat + (isTv
                 ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   0-9 ir al número"
@@ -959,6 +980,28 @@ public class PlayerActivity extends Activity {
     protected void onDestroy() {
         Epg.removeListener(onEpgUpdate);
         super.onDestroy();
+    }
+
+    /** Inicio mientras se ve un canal: sigue en un cuadrito flotante (celular). */
+    @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        Pip.enter(this, player != null && player.isPlaying());
+    }
+
+    @Override
+    public void onPictureInPictureModeChanged(boolean inPip, android.content.res.Configuration cfg) {
+        super.onPictureInPictureModeChanged(inPip, cfg);
+        if (inPip) {
+            // En el cuadrito solo el vídeo
+            ui.removeCallbacks(hideOsd);
+            osd.setVisibility(View.GONE);
+            panel.setVisibility(View.GONE);
+            schedulePanel.setVisibility(View.GONE);
+            if (touchControls != null) touchControls.setVisibility(View.GONE);
+            sendToTv.setVisibility(View.GONE);
+            banner.setVisibility(View.GONE);
+        }
     }
 
     @Override

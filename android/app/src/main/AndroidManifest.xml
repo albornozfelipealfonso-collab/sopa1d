@@ -27,35 +27,39 @@
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
+        </activity>
+
+        <!-- Inicio nativo estilo Netflix, en la TV (horizontal, con control) y
+             en el celular (vertical, táctil). La web queda en "🌐 Web". -->
+        <activity
+            android:name=".TvHomeActivity"
+            android:exported="true"
+            android:theme="@style/TvTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Inicio nativo para Android TV (estilo Netflix): es lo que abre el
-             carrusel de la TV. En el celular se sigue entrando por la web. -->
-        <activity
-            android:name=".TvHomeActivity"
-            android:screenOrientation="landscape"
-            android:exported="true"
-            android:theme="@style/TvTheme"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Guía de programación en grilla -->
+        <activity
+            android:name=".GuideActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:theme="@style/TvTheme" />
+
         <activity
             android:name=".DetailActivity"
-            android:screenOrientation="landscape"
             android:exported="false"
             android:theme="@style/TvTheme" />
 
         <activity
             android:name=".VodPlayerActivity"
             android:exported="false"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true"
             android:screenOrientation="sensorLandscape"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:theme="@style/PlayerTheme" />
@@ -64,6 +68,8 @@
             android:name=".PlayerActivity"
             android:launchMode="singleTop"
             android:exported="false"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true"
             android:screenOrientation="sensorLandscape"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:theme="@style/PlayerTheme" />

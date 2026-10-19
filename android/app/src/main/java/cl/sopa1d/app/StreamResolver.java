@@ -55,12 +55,40 @@ final class StreamResolver {
         final Server server;
         final String m3u8;
         final String referer;
+        /** Subtítulos aparte que trae el reproductor del servidor: {url, etiqueta}. */
+        final List<String[]> subtitles;
 
-        Stream(Server server, String m3u8, String referer) {
+        Stream(Server server, String m3u8, String referer, List<String[]> subtitles) {
             this.server = server;
             this.m3u8 = m3u8;
             this.referer = referer;
+            this.subtitles = subtitles;
         }
+    }
+
+    /**
+     * Pistas de subtítulos del reproductor JW del embed:
+     * tracks:[{file:"https://…/xxx_spa.vtt",label:"Spanish",kind:"captions"}].
+     * Las hay en algunos servidores (Vimeus, Streamwish 2, Filelions 3…) y en
+     * otros no; los "Subtitulado" suelen traerlos grabados en la imagen.
+     */
+    private static final Pattern SUB_TRACK = Pattern.compile(
+            "file\\s*:\\s*\"(https?://[^\"]+\\.(?:vtt|srt)[^\"]*)\"\\s*,\\s*label\\s*:\\s*\"([^\"]*)\"");
+
+    private static List<String[]> findSubtitles(String html) {
+        List<String[]> out = new ArrayList<>();
+        StringBuilder text = new StringBuilder(html);
+        int idx = html.indexOf("eval(function(p,a,c,k,e,d)");
+        if (idx >= 0) {
+            String un = unpack(html.substring(idx, Math.min(html.length(), idx + 60000)));
+            if (un != null) text.append(un);
+        }
+        Matcher m = SUB_TRACK.matcher(text);
+        java.util.Set<String> seen = new java.util.HashSet<>();
+        while (m.find()) {
+            if (seen.add(m.group(1))) out.add(new String[]{m.group(1), m.group(2)});
+        }
+        return out;
     }
 
     private static final Pattern M3U8 = Pattern.compile("https?://[^'\"\\s\\\\]+\\.m3u8[^'\"\\s\\\\]*");
@@ -172,7 +200,7 @@ final class StreamResolver {
                     Log.i(TAG, "Resolver: " + server.label() + " entregó un enlace que no responde");
                     return null;
                 }
-                return new Stream(server, m3u8, referer);
+                return new Stream(server, m3u8, referer, findSubtitles(html));
             }
         } catch (Exception e) {
             Log.i(TAG, "Resolver: " + server.label() + " falló: " + e.getMessage());
