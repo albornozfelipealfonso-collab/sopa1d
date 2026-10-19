@@ -178,10 +178,22 @@ public class VodPlayerActivity extends Activity {
 
         // En el celular: botón para seguir viendo en la TV (en la TV no aplica)
         View send = findViewById(R.id.vodSendToTv);
+        View servers = findViewById(R.id.vodServers);
         if (isTelevision()) {
             send.setVisibility(View.GONE);
+            servers.setVisibility(View.GONE);
         } else {
             send.setOnClickListener(v -> sendToTv());
+            // En el celular no hay ▲ ni MENÚ: el panel se abre tocando aquí
+            servers.setOnClickListener(v -> togglePanel(panel.getVisibility() != View.VISIBLE));
+            // …y se cierra tocando el vídeo
+            playerView.setOnTouchListener((v, e) -> {
+                if (e.getAction() == android.view.MotionEvent.ACTION_DOWN && panel.getVisibility() == View.VISIBLE) {
+                    togglePanel(false);
+                    return true;
+                }
+                return false;
+            });
         }
 
         skipIntro = findViewById(R.id.vodSkipIntro);
@@ -379,8 +391,8 @@ public class VodPlayerActivity extends Activity {
         servers = new ArrayList<>();
         title.setText(item.title);
         subtitle.setText("tv".equals(item.type)
-                ? "Temporada " + season + " · Episodio " + episode + "   ·   ▲ idioma y servidor"
-                : (item.year.isEmpty() ? "" : item.year + "   ·   ") + "▲ idioma y servidor");
+                ? "Temporada " + season + " · Episodio " + episode + (isTelevision() ? "   ·   ▲ idioma y servidor" : "")
+                : (item.year.isEmpty() ? "" : item.year) + (isTelevision() ? (item.year.isEmpty() ? "" : "   ·   ") + "▲ idioma y servidor" : ""));
         topBar.setVisibility(View.VISIBLE);
         showStatus("Buscando servidor sin anuncios…");
 
