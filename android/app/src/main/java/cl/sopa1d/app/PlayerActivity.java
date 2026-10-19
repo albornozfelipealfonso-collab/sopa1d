@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.OptIn;
@@ -106,7 +107,11 @@ public class PlayerActivity extends Activity {
     private TextView banner;
     private View osd;
     private ImageView osdLogo;
-    private TextView osdNumber, osdName, osdInfo, osdClock;
+    private TextView osdNumber, osdName, osdInfo, osdClock, osdNow, osdNext;
+    private ProgressBar osdProgress;
+    private View schedulePanel;
+    private TextView scheduleTitle;
+    private ListView scheduleList;
     private TextView status;
     private LinearLayout panel;
     private ListView list;
@@ -151,6 +156,14 @@ public class PlayerActivity extends Activity {
         osdName = findViewById(R.id.osdName);
         osdInfo = findViewById(R.id.osdInfo);
         osdClock = findViewById(R.id.osdClock);
+        osdNow = findViewById(R.id.osdNow);
+        osdNext = findViewById(R.id.osdNext);
+        osdProgress = findViewById(R.id.osdProgress);
+        schedulePanel = findViewById(R.id.schedulePanel);
+        scheduleTitle = findViewById(R.id.scheduleTitle);
+        scheduleList = findViewById(R.id.scheduleList);
+        Epg.init(this);
+        Epg.addListener(onEpgUpdate);
         // En vivo no hay nada que adelantar ni pausar con sentido: los
         // controles de ExoPlayer solo tapaban el rótulo del canal. En TV el
         // mando ya cambia de canal (▲ ▼) y abre la lista (OK); en el celular
@@ -186,10 +199,28 @@ public class PlayerActivity extends Activity {
 
     private void setupPanel() {
         List<Channel> all = ChannelStore.get();
-        List<String> labels = new ArrayList<>();
-        for (int i = 0; i < all.size(); i++) labels.add(String.format(Locale.ROOT, "%3d   %s", i + 1, all.get(i).name));
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this, R.layout.item_channel, R.id.channelName, labels);
+        // El texto se arma al mostrar cada fila: así "▶ programa" está al día
+        // y no se consulta la guía de miles de canales de golpe.
+        ArrayAdapter<Channel> adapter = new ArrayAdapter<Channel>(this, R.layout.item_channel_epg, R.id.channelName, all) {
+            @Override
+            public View getView(int position, View convertView, android.view.ViewGroup parent) {
+                TextView v = (TextView) super.getView(position, convertView, parent);
+                Channel ch = getItem(position);
+                android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
+                // Nombre en una sola línea: si no, los largos tapaban el programa
+                String name = ch.name.length() > 30 ? ch.name.substring(0, 29) + "…" : ch.name;
+                sb.append(String.format(Locale.ROOT, "%3d   %s", position + 1, name));
+                Epg.Program now = Epg.nowNext(ch.name, ch.country)[0];
+                if (now != null) {
+                    int st = sb.length();
+                    sb.append("\n        ▶ ").append(now.title);
+                    sb.setSpan(new android.text.style.ForegroundColorSpan(0xB3FFFFFF), st, sb.length(), 0);
+                    sb.setSpan(new android.text.style.RelativeSizeSpan(0.85f), st, sb.length(), 0);
+                }
+                v.setText(sb);
+                return v;
+            }
+        };
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -499,7 +530,8 @@ public class PlayerActivity extends Activity {
         osdNumber.setText(String.valueOf(index + 1));
         osdName.setText(ch.name);
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
-        osdInfo.setText(cat + "▲ ▼ cambiar canal   ·   OK lista   ·   0-9 ir al número");
+        osdInfo.setText(cat + "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   0-9 ir al número");
+        fillOsdGuide(ch);
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
         if (ch.logo != null && !ch.logo.isEmpty()) {
             osdLogo.setVisibility(View.VISIBLE);
@@ -531,6 +563,101 @@ public class PlayerActivity extends Activity {
         ui.postDelayed(hideOsd, 5000);
     }
 
+    /** "AHORA 21:00 – 23:00  Programa" con su avance y "DESPUÉS 23:00  Programa". */
+    private void fillOsdGuide(Channel ch) {
+        Epg.Program[] nn = Epg.nowNext(ch.name, ch.country);
+        long nowMs = System.currentTimeMillis();
+        if (nn[0] != null) {
+            osdNow.setText(guideLine("AHORA  ", 0xFFE50914, nn[0].hours() + "   ", nn[0].title));
+            osdNow.setVisibility(View.VISIBLE);
+            osdProgress.setProgress(Math.round(nn[0].progress(nowMs) * 1000));
+            osdProgress.setVisibility(View.VISIBLE);
+        } else {
+            osdNow.setVisibility(View.GONE);
+            osdProgress.setVisibility(View.GONE);
+        }
+        if (nn[1] != null) {
+            String at = new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(nn[1].start) + "   ";
+            osdNext.setText(guideLine("DESPUÉS  ", 0xFFB3B3B3, at, nn[1].title));
+            osdNext.setVisibility(View.VISIBLE);
+        } else {
+            osdNext.setVisibility(View.GONE);
+        }
+    }
+
+    private static CharSequence guideLine(String label, int color, String hours, String title) {
+        android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder(label);
+        sb.setSpan(new android.text.style.ForegroundColorSpan(color), 0, label.length(), 0);
+        sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, label.length(), 0);
+        sb.append(hours);
+        int st = sb.length();
+        sb.append(title);
+        sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), st, sb.length(), 0);
+        return sb;
+    }
+
+    // ------------------------------------------------------- programación
+
+    private void toggleSchedule(boolean show) {
+        if (!show) {
+            schedulePanel.setVisibility(View.GONE);
+            playerView.requestFocus();
+            return;
+        }
+        Channel ch = ChannelStore.at(index);
+        if (ch == null) return;
+        List<Epg.Program> progs = Epg.upcoming(ch.name, ch.country, 40);
+        if (progs.isEmpty()) {
+            showBanner("Sin programación disponible para este canal");
+            return;
+        }
+        scheduleTitle.setText(ch.name);
+        final long nowMs = System.currentTimeMillis();
+        java.text.SimpleDateFormat day = new java.text.SimpleDateFormat("EEE d", new Locale("es"));
+        String today = day.format(nowMs);
+        List<CharSequence> rows = new ArrayList<>();
+        for (Epg.Program p : progs) {
+            boolean live = p.start <= nowMs && nowMs < p.stop;
+            String d = day.format(p.start);
+            String hours = (d.equals(today) ? "" : d + "  ") + p.hours() + "   ";
+            android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
+            if (live) {
+                sb.append("● AHORA  ");
+                // Amarillo: la fila seleccionada se resalta en rojo y el rojo no se leía
+                sb.setSpan(new android.text.style.ForegroundColorSpan(0xFFF5C518), 0, sb.length(), 0);
+                sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, sb.length(), 0);
+            }
+            int st = sb.length();
+            sb.append(hours);
+            sb.setSpan(new android.text.style.ForegroundColorSpan(0xB3FFFFFF), st, sb.length(), 0);
+            st = sb.length();
+            sb.append(p.title);
+            sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), st, sb.length(), 0);
+            if (live && !p.desc.isEmpty()) {
+                st = sb.length();
+                sb.append("\n").append(p.desc);
+                sb.setSpan(new android.text.style.ForegroundColorSpan(0xB3FFFFFF), st, sb.length(), 0);
+                sb.setSpan(new android.text.style.RelativeSizeSpan(0.85f), st, sb.length(), 0);
+            }
+            rows.add(sb);
+        }
+        scheduleList.setAdapter(new ArrayAdapter<>(this, R.layout.item_schedule, R.id.scheduleText, rows));
+        schedulePanel.setVisibility(View.VISIBLE);
+        scheduleList.requestFocus();
+        scheduleList.setSelection(0);
+    }
+
+    private boolean scheduleOpen() {
+        return schedulePanel.getVisibility() == View.VISIBLE;
+    }
+
+    /** Llegó programación nueva: se actualiza lo que esté a la vista. */
+    private final Runnable onEpgUpdate = () -> {
+        Channel cur = ChannelStore.at(index);
+        if (cur != null && osd.getVisibility() == View.VISIBLE && PlayerActivity.this.typedNumber.length() == 0) fillOsdGuide(cur);
+        if (list.getAdapter() instanceof ArrayAdapter) ((ArrayAdapter<?>) list.getAdapter()).notifyDataSetChanged();
+    };
+
     private final Runnable hideOsd = new Runnable() {
         @Override public void run() {
             osd.animate().alpha(0f).setDuration(300).withEndAction(() -> osd.setVisibility(View.GONE)).start();
@@ -559,6 +686,9 @@ public class PlayerActivity extends Activity {
         osdNumber.setText(typedNumber + "_");
         osdName.setText("Ir al canal…");
         osdInfo.setText("");
+        osdNow.setVisibility(View.GONE);
+        osdNext.setVisibility(View.GONE);
+        osdProgress.setVisibility(View.GONE);
         osdLogo.setVisibility(View.GONE);
         osd.setVisibility(View.VISIBLE);
         osd.setAlpha(1f);
@@ -603,6 +733,16 @@ public class PlayerActivity extends Activity {
 
         int code = event.getKeyCode();
 
+        if (scheduleOpen()) {
+            if (code == KeyEvent.KEYCODE_BACK || code == KeyEvent.KEYCODE_DPAD_LEFT
+                    || code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_GUIDE
+                    || code == KeyEvent.KEYCODE_DPAD_CENTER || code == KeyEvent.KEYCODE_ENTER) {
+                toggleSchedule(false);
+                return true;
+            }
+            return super.dispatchKeyEvent(event); // ▲ ▼ recorren la programación
+        }
+
         if (panelOpen()) {
             if (code == KeyEvent.KEYCODE_BACK) {
                 togglePanel(false);
@@ -645,8 +785,15 @@ public class PlayerActivity extends Activity {
                 togglePanel(true);
                 return true;
 
-            // Agrandar / encuadrar la imagen
+            // Programación del canal
             case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_GUIDE:
+                toggleSchedule(true);
+                return true;
+
+            // Agrandar / encuadrar la imagen (en el celular: doble toque)
+            case KeyEvent.KEYCODE_TV_ZOOM_MODE:
+            case KeyEvent.KEYCODE_PROG_YELLOW:
             case KeyEvent.KEYCODE_ZOOM_IN:
             case KeyEvent.KEYCODE_BUTTON_L1:
                 cycleResize();
@@ -658,6 +805,10 @@ public class PlayerActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (scheduleOpen()) {
+            toggleSchedule(false);
+            return;
+        }
         if (panelOpen()) {
             togglePanel(false);
             return;
@@ -683,6 +834,12 @@ public class PlayerActivity extends Activity {
     protected void onStart() {
         super.onStart();
         openChannel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Epg.removeListener(onEpgUpdate);
+        super.onDestroy();
     }
 
     @Override

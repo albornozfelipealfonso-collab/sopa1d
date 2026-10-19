@@ -7,6 +7,8 @@ public class Channel {
     /** Logo y categoría: solo para el rótulo del reproductor (pueden ser ""). */
     public final String logo;
     public final String category;
+    /** País de la señal: elige la guía de programación correcta. */
+    public String country = "";
 
     public Channel(String id, String name, String url) {
         this(id, name, url, "", "");

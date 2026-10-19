@@ -172,6 +172,10 @@ public class TvHomeActivity extends Activity {
             }
         });
 
+        // Programación de los canales: se baja en segundo plano
+        Epg.init(this);
+        Epg.addListener(onEpgUpdate);
+
         select(findViewById(R.id.navHome));
         if (savedInstanceState == null) playSplash();
         // Se entra directo a las carátulas, con el menú plegado
@@ -422,7 +426,8 @@ public class TvHomeActivity extends Activity {
             JSONArray arr = new JSONArray();
             for (CatalogItem c : row) {
                 arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id)
-                        .put("logo", c.poster == null ? "" : c.poster).put("category", c.genres));
+                        .put("logo", c.poster == null ? "" : c.poster).put("category", c.genres)
+                        .put("country", c.overview));
             }
             ChannelStore.set(arr.toString());
             Intent i = new Intent(this, PlayerActivity.class);
@@ -451,7 +456,7 @@ public class TvHomeActivity extends Activity {
             addChip("● EN VIVO", 0xFFE50914, true);
             if (!item.genres.isEmpty()) addChip(item.genres, 0, false);
             if (!item.overview.isEmpty()) addChip(item.overview, 0, false);
-            heroOverview.setText("Pulsa OK para ver. En el reproductor, ▲ ▼ cambian de canal y OK abre la lista.");
+            heroOverview.setText(liveGuideText(item));
         } else {
             if (item.rating > 0) addChip(String.format(Locale.ROOT, "⭐ %.1f", item.rating), 0xFFF5C518, true);
             if (!item.year.isEmpty()) addChip(item.year, 0, false);
@@ -472,6 +477,40 @@ public class TvHomeActivity extends Activity {
                     .transition(DrawableTransitionOptions.withCrossFade(450))
                     .into(heroBackdrop);
         }
+    }
+
+    /**
+     * "AHORA 21:00 – 23:00  Colo-Colo vs. U. de Chile" + sinopsis + "DESPUÉS ...".
+     * Sin guía para el canal, la ayuda de siempre.
+     */
+    private CharSequence liveGuideText(CatalogItem item) {
+        Epg.Program[] nn = Epg.nowNext(item.title, item.overview);
+        if (nn[0] == null && nn[1] == null) {
+            return "Pulsa OK para ver. En el reproductor, ▲ ▼ cambian de canal y OK abre la lista.";
+        }
+        android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
+        if (nn[0] != null) {
+            appendLabel(sb, "AHORA ", 0xFFE50914);
+            sb.append(nn[0].hours()).append("   ");
+            int st = sb.length();
+            sb.append(nn[0].title);
+            sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), st, sb.length(), 0);
+            if (!nn[0].desc.isEmpty()) sb.append("  ·  ").append(nn[0].desc);
+            sb.append('\n');
+        }
+        if (nn[1] != null) {
+            appendLabel(sb, "DESPUÉS ", 0xFFB3B3B3);
+            sb.append(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(nn[1].start))
+                    .append("   ").append(nn[1].title);
+        }
+        return sb;
+    }
+
+    private static void appendLabel(android.text.SpannableStringBuilder sb, String label, int color) {
+        int st = sb.length();
+        sb.append(label);
+        sb.setSpan(new android.text.style.ForegroundColorSpan(color), st, sb.length(), 0);
+        sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), st, sb.length(), 0);
     }
 
     /** Etiqueta de la cartelera; con color sólido si fill != 0. */
@@ -527,8 +566,20 @@ public class TvHomeActivity extends Activity {
         }
     }
 
+    /** Llegó programación: se repintan los canales y la cartelera si es un canal. */
+    private final Runnable onEpgUpdate = () -> {
+        if (selectedNav != null && selectedNav.getId() == R.id.navLive) {
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                RecyclerView inner = rows.getChildAt(i).findViewById(R.id.rowItems);
+                if (inner != null && inner.getAdapter() != null) inner.getAdapter().notifyDataSetChanged();
+            }
+        }
+        if (pendingHero != null && pendingHero.isLive()) showHeroNow(pendingHero);
+    };
+
     @Override
     protected void onDestroy() {
+        Epg.removeListener(onEpgUpdate);
         ui.removeCallbacksAndMessages(null);
         io.shutdownNow();
         super.onDestroy();
@@ -690,11 +741,19 @@ public class TvHomeActivity extends Activity {
                 h.image.setPadding(dp(18), dp(26), dp(18), dp(34));
                 // Con logo, el nombre va en una franja abajo; sin logo ya se
                 // ve el nombre grande del fondo y la franja lo repetiría.
-                h.badge.setText(item.title);
-                h.badge.setVisibility(item.poster != null ? View.VISIBLE : View.GONE);
+                Epg.Program now = Epg.nowNext(item.title, item.overview)[0];
+                // Con guía, la franja dice qué se emite (el nombre ya está en la
+                // cartelera); sin guía, el nombre bajo el logo.
+                CharSequence badge = now != null ? "▶ " + now.title
+                        : item.poster != null ? item.title : null;
+                h.badge.setText(badge);
+                h.badge.setVisibility(badge != null ? View.VISIBLE : View.GONE);
+                h.liveProgress.setVisibility(now != null ? View.VISIBLE : View.GONE);
+                if (now != null) h.liveProgress.setProgress(Math.round(now.progress(System.currentTimeMillis()) * 1000));
             } else {
                 lp.width = dp(140);
                 lp.height = dp(210);
+                h.liveProgress.setVisibility(View.GONE);
                 h.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 h.image.setPadding(0, 0, 0, 0);
             }
@@ -734,7 +793,7 @@ public class TvHomeActivity extends Activity {
     private static final class CardHolder extends RecyclerView.ViewHolder {
         final ImageView image;
         final TextView title, badge, live, rank, play;
-        final ProgressBar progress;
+        final ProgressBar progress, liveProgress;
 
         CardHolder(View v) {
             super(v);
@@ -745,6 +804,7 @@ public class TvHomeActivity extends Activity {
             rank = v.findViewById(R.id.rankNumber);
             play = v.findViewById(R.id.cardPlay);
             progress = v.findViewById(R.id.cardProgress);
+            liveProgress = v.findViewById(R.id.cardLiveProgress);
         }
     }
 }

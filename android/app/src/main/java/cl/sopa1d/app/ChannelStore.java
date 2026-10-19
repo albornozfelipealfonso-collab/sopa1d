@@ -27,12 +27,14 @@ public final class ChannelStore {
                 JSONObject o = arr.getJSONObject(i);
                 String url = o.optString("url", "");
                 if (url.isEmpty()) continue;
-                out.add(new Channel(
+                Channel ch = new Channel(
                         o.optString("id", String.valueOf(i)),
                         o.optString("name", "Canal " + (i + 1)),
                         url,
                         o.optString("logo", ""),
-                        o.optString("category", "")));
+                        o.optString("category", ""));
+                ch.country = o.optString("country", "");
+                out.add(ch);
             }
         } catch (Exception ignored) {
             // Una lista corrupta no debe tumbar la app: se queda con lo que haya.
