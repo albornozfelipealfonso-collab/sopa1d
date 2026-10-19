@@ -168,6 +168,15 @@ final class WatchHistory {
         return out;
     }
 
+    /** Calidad elegida a mano: altura del vídeo (1080, 720…) o 0 = automática. */
+    static int quality(Context c) {
+        return prefs(c).getInt("quality", 0);
+    }
+
+    static void setQuality(Context c, int height) {
+        prefs(c).edit().putInt("quality", height).apply();
+    }
+
     static String language(Context c) {
         return prefs(c).getString(KEY_LANG, "Latino");
     }

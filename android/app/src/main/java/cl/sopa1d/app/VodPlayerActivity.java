@@ -170,9 +170,18 @@ public class VodPlayerActivity extends Activity {
         serverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                togglePanel(false);
-                WatchHistory.setLanguage(VodPlayerActivity.this, servers.get(position).language);
-                playServer(position, player != null ? player.getCurrentPosition() : 0);
+                if (position >= panelRows.size()) return;
+                Object row = panelRows.get(position);
+                if (row instanceof Integer) {             // calidad
+                    togglePanel(false);
+                    chooseQuality((Integer) row);
+                } else if (row instanceof StreamResolver.Server) {
+                    togglePanel(false);
+                    int s = servers.indexOf(row);
+                    WatchHistory.setLanguage(VodPlayerActivity.this, servers.get(s).language);
+                    playServer(s, player != null ? player.getCurrentPosition() : 0);
+                }
+                // los títulos de sección no hacen nada
             }
         });
 
@@ -308,6 +317,7 @@ public class VodPlayerActivity extends Activity {
         rebuffers.addLast(now);
         while (!rebuffers.isEmpty() && now - rebuffers.peekFirst() > 120_000) rebuffers.pollFirst();
         if (rebuffers.size() < 2 || player == null) return;
+        if (WatchHistory.quality(this) > 0) return; // el usuario fijó la calidad: se respeta
         androidx.media3.common.Format f = player.getVideoFormat();
         if (f == null || f.height <= 360) return; // ya está en lo más bajo razonable
         int cap = f.height >= 1000 ? 720 : f.height >= 700 ? 480 : 360;
@@ -356,6 +366,11 @@ public class VodPlayerActivity extends Activity {
                     ui.removeCallbacks(seekDone);
                     ui.postDelayed(seekDone, 4000);
                 }
+            }
+
+            @Override
+            public void onTracksChanged(androidx.media3.common.Tracks tracks) {
+                if (panel.getVisibility() != View.VISIBLE) refreshServerList();
             }
 
             @Override
@@ -497,8 +512,7 @@ public class VodPlayerActivity extends Activity {
         everReady = false;
         rebuffers.clear();
         qualityLabel = "";
-        player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
-                .clearVideoSizeConstraints().build());
+        applyQuality();
         refreshServerList();
         Log.i(TAG, "VOD: reproduciendo " + stream.server.label() + " -> " + stream.m3u8);
 
@@ -599,20 +613,93 @@ public class VodPlayerActivity extends Activity {
         return current >= 0 && current < servers.size() ? servers.get(current).label() : "?";
     }
 
+    /** Filas del panel: String = título de sección, Integer = calidad (0 = auto), Server = servidor. */
+    private final List<Object> panelRows = new ArrayList<>();
+
+    /** Calidades que ofrece el servidor actual (alturas, de mayor a menor). */
+    private List<Integer> availableHeights() {
+        java.util.TreeSet<Integer> hs = new java.util.TreeSet<>(java.util.Collections.reverseOrder());
+        if (player != null) {
+            for (androidx.media3.common.Tracks.Group g : player.getCurrentTracks().getGroups()) {
+                if (g.getType() != androidx.media3.common.C.TRACK_TYPE_VIDEO) continue;
+                for (int i = 0; i < g.length; i++) {
+                    int h = g.getTrackFormat(i).height;
+                    if (h > 0 && g.isTrackSupported(i)) hs.add(h);
+                }
+            }
+        }
+        return new ArrayList<>(hs);
+    }
+
     private void refreshServerList() {
+        panelRows.clear();
         List<String> labels = new ArrayList<>();
+        int chosen = WatchHistory.quality(this);
+        List<Integer> heights = availableHeights();
+        if (heights.size() > 1 || chosen > 0) {
+            panelRows.add("📶 CALIDAD");
+            labels.add("📶  CALIDAD" + (qualityLabel.isEmpty() ? "" : "   (ahora " + qualityLabel + ")"));
+            panelRows.add(0);
+            labels.add((chosen == 0 ? "▶ " : "    ") + "Automática (según tu internet)");
+            for (int h : heights) {
+                panelRows.add(h);
+                labels.add((chosen == h ? "▶ " : "    ") + Quality.label(h) + (h >= 700 ? "  HD" : ""));
+            }
+            panelRows.add("🌐 IDIOMA Y SERVIDOR");
+            labels.add("🌐  IDIOMA Y SERVIDOR");
+        }
         for (int i = 0; i < servers.size(); i++) {
+            panelRows.add(servers.get(i));
             labels.add((i == current ? "▶ " : "    ") + servers.get(i).label());
         }
-        serverList.setAdapter(new ArrayAdapter<>(this, R.layout.item_channel, R.id.channelName, labels));
+        serverList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_channel, R.id.channelName, labels) {
+            @Override
+            public boolean isEnabled(int position) {
+                return !(panelRows.get(position) instanceof String); // títulos: no se eligen
+            }
+
+            @Override
+            public View getView(int position, View convertView, android.view.ViewGroup parent) {
+                TextView v = (TextView) super.getView(position, convertView, parent);
+                boolean header = panelRows.get(position) instanceof String;
+                v.setTextColor(header ? 0xFFE11D48 : 0xFFFFFFFF);
+                v.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, header ? 14 : 17);
+                return v;
+            }
+        });
+    }
+
+    /**
+     * Calidad a mano: se fija la altura (mínimo y máximo) y ExoPlayer elige esa
+     * pista. 0 = automática según el internet. Queda guardada para lo próximo.
+     */
+    private void chooseQuality(int height) {
+        WatchHistory.setQuality(this, height);
+        applyQuality();
+        android.widget.Toast.makeText(this, height == 0 ? "📶 Calidad automática"
+                : "📶 Calidad fija: " + Quality.label(height), android.widget.Toast.LENGTH_SHORT).show();
+        refreshServerList();
+    }
+
+    private void applyQuality() {
+        if (player == null) return;
+        int h = WatchHistory.quality(this);
+        androidx.media3.common.TrackSelectionParameters.Builder b =
+                player.getTrackSelectionParameters().buildUpon().clearVideoSizeConstraints();
+        if (h > 0) b.setMinVideoSize(0, h).setMaxVideoSize(Integer.MAX_VALUE, h);
+        player.setTrackSelectionParameters(b.build());
     }
 
     private void togglePanel(boolean show) {
         panel.setVisibility(show ? View.VISIBLE : View.GONE);
         if (show) {
             playerView.hideController();
+            refreshServerList();
             serverList.requestFocus();
-            if (current >= 0) serverList.setSelection(current);
+            // Se abre en la calidad elegida (arriba); si no hay calidades, en el servidor actual
+            int pos = panelRows.indexOf(WatchHistory.quality(this));
+            if (pos < 0 && current >= 0 && current < servers.size()) pos = panelRows.indexOf(servers.get(current));
+            if (pos >= 0) serverList.setSelection(panelRows.get(pos) instanceof Integer ? 0 : pos);
         } else {
             playerView.requestFocus();
         }
