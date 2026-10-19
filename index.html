@@ -4145,7 +4145,11 @@
             return `${getApiBase()}/proxyvideo?url=${encodeURIComponent(streamUrl)}`;
         }
 
-        let currentActiveServer = 'multiembed';
+        // Dentro de la APK no existe server.js: el escudo anti-ads lo pone la
+        // propia app en todos los iframes, así que TONPlayer (Latino, el que
+        // trae menos publicidad de origen) se carga directo y va primero.
+        const IS_NATIVE_APP = !!(window.Sopa1D && typeof window.Sopa1D.isNative === 'function');
+        let currentActiveServer = IS_NATIVE_APP ? 'tonplayer' : 'multiembed';
         let adBlockShieldEnabled = true;
 
         function getLocalAdFreeBase() {
@@ -4216,7 +4220,7 @@
                     externalUrl: isTv
                         ? `https://player.tonplayer.space/play/tv/${id}/${s}/${e}`
                         : `https://player.tonplayer.space/play/movie/${id}`,
-                    url: adBlockShieldEnabled
+                    url: (adBlockShieldEnabled && !IS_NATIVE_APP)
                         ? (isTv
                             ? `${localBase}/tonplayer/play/tv/${id}/${s}/${e}`
                             : `${localBase}/tonplayer/play/movie/${id}`)
@@ -5934,6 +5938,9 @@
         function setupTvKeyboardShortcuts() {
             window.addEventListener('keydown', (e) => {
                 if (currentType !== 'channels') return;
+                // En la APK la TV en vivo va en el reproductor nativo y las
+                // flechas se usan para moverse por la pantalla con el control.
+                if (IS_NATIVE_APP) return;
                 // No activar si el usuario está escribiendo en un input
                 if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
@@ -6065,6 +6072,182 @@
 
 
         console.log('🍜 Sopa1D Pro — Hub de Streaming Activo');
+    </script>
+    <!-- CONTROL REMOTO (Android TV) Y BOTÓN ATRÁS DE LA APK -->
+    <style>
+        body.tv-mode .tv-focus {
+            outline: 4px solid #f5c518 !important;
+            outline-offset: 3px;
+            box-shadow: 0 0 0 8px rgba(245, 197, 24, 0.25), 0 12px 30px rgba(0, 0, 0, 0.6) !important;
+            transform: scale(1.06);
+            z-index: 20;
+        }
+        body.tv-mode input.tv-focus, body.tv-mode select.tv-focus { transform: none; }
+        body.tv-mode iframe.tv-focus { transform: none; outline-offset: -4px; }
+        /* En TV no hay cursor: los efectos hover confunden más de lo que ayudan */
+        body.tv-mode { cursor: none; }
+    </style>
+    <script>
+    (function () {
+        /*
+         * Atrás de Android: lo llama MainActivity antes de salir de la app.
+         * Devuelve true si cerró algo (reproductor, ajustes, buscador...).
+         */
+        window.sopaHandleBack = function () {
+            var fs = document.getElementById('playerContainer');
+            if (fs && fs.classList.contains('embed-fullscreen')) { toggleEmbedFullscreen(); return true; }
+
+            var subs = document.querySelectorAll('.sub-modal.active');
+            if (subs.length) {
+                var sub = subs[subs.length - 1];
+                if (sub.id === 'settingsModal') closeSettingsModal();
+                else if (sub.id === 'shortcutsModal') closeShortcutsModal();
+                else sub.classList.remove('active');
+                return true;
+            }
+            var overlays = document.querySelectorAll('.modal-overlay.active');
+            if (overlays.length) {
+                var ov = overlays[overlays.length - 1];
+                if (ov.id === 'modalOverlay') closeModal();
+                else ov.classList.remove('active');
+                return true;
+            }
+            var search = document.getElementById('searchInput');
+            if (search && document.activeElement === search) { search.blur(); return true; }
+            return false;
+        };
+
+        /*
+         * Navegación espacial con las flechas del control remoto. Los cards de
+         * películas son <div onclick>, que no reciben foco por sí solos, así
+         * que se elige "el elemento más cercano en esa dirección" a mano.
+         */
+        var tvMode = false;
+        try { tvMode = !!(window.Sopa1D && window.Sopa1D.isTv && window.Sopa1D.isTv()); } catch (e) {}
+        if (/[?&]tv=1/.test(location.search)) tvMode = true;
+        if (!tvMode) return;
+
+        document.body.classList.add('tv-mode');
+
+        var FOCUSABLE = 'a[href], button, input, select, textarea, iframe, [onclick], [tabindex]:not([tabindex="-1"]), ' +
+            '.media-card, .shelf-card, .channel-card, .ep-card-btn, .genre-pill, .tv-shelf-card, .tv-guide-item';
+        var CARD = '.media-card, .shelf-card, .channel-card, .tv-shelf-card';
+        var current = null;
+
+        function scope() {
+            var subs = document.querySelectorAll('.sub-modal.active');
+            if (subs.length) return subs[subs.length - 1];
+            var ovs = document.querySelectorAll('.modal-overlay.active');
+            if (ovs.length) return ovs[ovs.length - 1];
+            return document.body;
+        }
+
+        function visible(el) {
+            if (el.disabled) return false;
+            var r = el.getBoundingClientRect();
+            if (r.width < 4 || r.height < 4) return false;
+            var cs = getComputedStyle(el);
+            return cs.visibility !== 'hidden' && cs.display !== 'none' && parseFloat(cs.opacity) > 0.05;
+        }
+
+        function candidates() {
+            var list = scope().querySelectorAll(FOCUSABLE);
+            var out = [];
+            for (var i = 0; i < list.length; i++) {
+                var el = list[i];
+                // Dentro de un card se navega al card entero, no a cada botón suyo
+                if (el.parentElement && el.parentElement.closest(CARD)) continue;
+                if (visible(el)) out.push(el);
+            }
+            return out;
+        }
+
+        function focusEl(el) {
+            if (!el) return;
+            if (current) current.classList.remove('tv-focus');
+            current = el;
+            el.classList.add('tv-focus');
+            if (!el.hasAttribute('tabindex') && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA|IFRAME)$/.test(el.tagName)) {
+                el.setAttribute('tabindex', '-1');
+            }
+            try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
+            el.scrollIntoView({ block: 'center', inline: 'center', behavior: 'smooth' });
+        }
+
+        function move(dir) {
+            var list = candidates();
+            if (!list.length) return;
+            if (!current || !document.body.contains(current) || list.indexOf(current) === -1) {
+                focusEl(list[0]);
+                return;
+            }
+            var c = current.getBoundingClientRect();
+            var cx = c.left + c.width / 2, cy = c.top + c.height / 2;
+            var best = null, bestScore = Infinity;
+            for (var i = 0; i < list.length; i++) {
+                var el = list[i];
+                if (el === current) continue;
+                var r = el.getBoundingClientRect();
+                var x = r.left + r.width / 2, y = r.top + r.height / 2;
+                var main, cross;
+                if (dir === 'down')  { if (r.top < c.bottom - 6) continue; main = r.top - c.bottom; cross = Math.abs(x - cx); }
+                if (dir === 'up')    { if (r.bottom > c.top + 6) continue; main = c.top - r.bottom; cross = Math.abs(x - cx); }
+                if (dir === 'right') { if (r.left < c.right - 6) continue; main = r.left - c.right; cross = Math.abs(y - cy); }
+                if (dir === 'left')  { if (r.right > c.left + 6) continue; main = c.left - r.right; cross = Math.abs(y - cy); }
+                var score = Math.max(0, main) + cross * 2.5;
+                if (score < bestScore) { bestScore = score; best = el; }
+            }
+            if (best) focusEl(best);
+        }
+
+        var DIRS = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+
+        document.addEventListener('keydown', function (e) {
+            var dir = DIRS[e.key];
+            var tag = (document.activeElement && document.activeElement.tagName) || '';
+            var typing = tag === 'INPUT' || tag === 'TEXTAREA';
+
+            if (dir) {
+                // Dentro del buscador, izquierda/derecha mueven el cursor del texto
+                if (typing && (dir === 'left' || dir === 'right')) return;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                move(dir);
+                return;
+            }
+            if (e.key === 'Enter' && current && current === document.activeElement) {
+                if (/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(current.tagName)) return; // ya lo hace el navegador
+                e.preventDefault();
+                current.click();
+            }
+        }, true);
+
+        // Al abrir o cerrar un modal el foco salta a su primer elemento, para
+        // que no quede "perdido" detrás.
+        var lastScope = null;
+        setInterval(function () {
+            var sc = scope();
+            if (sc !== lastScope) {
+                var first = lastScope === null;
+                lastScope = sc;
+                // En el reproductor se parte en "Pantalla Completa": un OK y a ver.
+                if (!first) setTimeout(function () {
+                    var pref = sc.querySelector('#embedFsBtn');
+                    var l = candidates();
+                    focusEl(pref && visible(pref) ? pref : l[0]);
+                }, 250);
+            } else if (current && !document.body.contains(current)) {
+                current = null;
+            }
+        }, 300);
+
+        // Foco inicial en cuanto haya contenido
+        var tries = 0;
+        var boot = setInterval(function () {
+            var first = document.querySelector('.media-card, .shelf-card') || document.querySelector('.nav-link');
+            if (first || ++tries > 40) { clearInterval(boot); if (first) focusEl(first); }
+        }, 250);
+    })();
     </script>
 </body>
 </html>

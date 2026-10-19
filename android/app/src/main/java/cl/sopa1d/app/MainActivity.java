@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.widget.Toast;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebChromeClient;
@@ -22,9 +24,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.webkit.WebViewAssetLoader;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,29 +55,31 @@ public class MainActivity extends Activity {
             "mgid.com", "outbrain.com", "taboola.com", "revcontent.com",
             "smartadserver.com", "criteo.com", "pubmatic.com", "rubiconproject.com",
             "zedo.com", "adcash.com", "bidvertiser.com", "hotjar.com",
-            "trackwilltrk.com", "poweradnetwork.com", "stpd.cloud", "tsyndicate.com"
+            "trackwilltrk.com", "poweradnetwork.com", "stpd.cloud", "tsyndicate.com",
+            // Redes que usan MultiEmbed / VidSrc para popunders y redirecciones
+            "pemsrv.com", "magsrv.com", "realsrv.com", "a-ads.com", "adskeeper.com",
+            "adskeeper.co.uk", "acscdn.com", "aclib.net", "admaven.com", "ad-maven.com",
+            "wpadmngr.com", "hpyrdr.com", "highperformanceformat.com",
+            "highperformancedisplayformat.com", "profitablegatecpm.com",
+            "effectiveratecpm.com", "toprevenuegate.com", "dtscout.com", "dtscdn.com",
+            "jads.co", "rtmark.net", "notix.io", "onesignal.com", "pushwhy.com",
+            "richads.com", "monetag.com", "galaksion.com", "clickaine.com",
+            "histats.com", "whos.amung.us", "mc.yandex.ru", "yandex.ru",
+            "cloudflareinsights.com", "lijit.com", "33across.com", "amazon-adsystem.com",
+            "ads.pubmatic.com", "imasdk.googleapis.com", "vidoomy.com", "adform.net",
+            "sharethrough.com", "unrulymedia.com", "teads.tv", "springserve.com",
+            "displayvertising.com", "dolohen.com", "go.ad2up.com", "ad2up.com",
+            "ptp22.com", "inklinkor.com", "tagdeliver.com", "trk.bz",
+            "shorte.st", "ouo.io", "linkvertise.com", "adf.ly"
     ));
 
     /** Fragmentos que delatan un dominio publicitario aunque no esté en la lista. */
     private static final String[] AD_PATTERNS = {
             "popunder", "popads", "/ads/", "adserver", "ad-delivery",
-            "banner-ad", "/advert", "clickunder", "trafficstars"
+            "banner-ad", "/advert", "clickunder", "trafficstars",
+            "cpmgate", "revenuegate", "/pop.js", "/popup.js", "vast.xml", "/vast?",
+            "prebid", "adsbygoogle"
     };
-
-    /**
-     * Desactiva los vectores de popup más comunes de estos embeds. El sandbox
-     * del navegador no servía porque los proveedores se niegan a cargar dentro
-     * de un iframe sandboxed; esto actúa desde dentro de la propia página.
-     */
-    private static final String ANTI_POPUP_JS =
-            "(function(){"
-          + "  window.open=function(){return null;};"
-          + "  try{Object.defineProperty(window,'open',{value:function(){return null;},writable:false});}catch(e){}"
-          + "  document.addEventListener('click',function(e){"
-          + "    var a=e.target&&e.target.closest?e.target.closest('a[target=\"_blank\"]'):null;"
-          + "    if(a){e.preventDefault();e.stopPropagation();}"
-          + "  },true);"
-          + "})();";
 
     /**
      * Modo ligero para TV. index.html usa 13 backdrop-filter (desenfoque
@@ -96,6 +106,9 @@ public class MainActivity extends Activity {
     private boolean webFullscreen;
     private WebChromeClient chromeClient;
     private WebChromeClient.CustomViewCallback customViewCallback;
+    private String adShieldJs;
+    private boolean shieldInAllFrames;
+    private long lastBackPress;
 
     private void hideSystemUi(boolean hide) {
         getWindow().getDecorView().setSystemUiVisibility(hide
@@ -149,6 +162,17 @@ public class MainActivity extends Activity {
         s.setJavaScriptCanOpenWindowsAutomatically(false);
 
         webView.addJavascriptInterface(new NativeBridge(), "Sopa1D");
+
+        // El escudo tiene que correr dentro de los iframes de los embeds, que
+        // es donde están los popups. onPageFinished solo alcanza a index.html.
+        adShieldJs = readRaw(R.raw.ad_shield);
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT)) {
+            WebViewCompat.addDocumentStartJavaScript(
+                    webView, adShieldJs, Collections.singleton("*"));
+            shieldInAllFrames = true;
+        } else {
+            Log.w(TAG, "WebView sin DOCUMENT_START_SCRIPT: el escudo solo cubre index.html");
+        }
 
         chromeClient = new WebChromeClient() {
             @Override
@@ -219,7 +243,14 @@ public class MainActivity extends Activity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 // Los iframes (los embeds de películas) deben poder navegar
                 // libremente: bloquearlos impedía que el reproductor cargara.
-                if (!request.isForMainFrame()) return false;
+                // Excepto hacia intent://, market:// y similares, que solo usan
+                // los anuncios para saltar a Play Store o a otra app.
+                if (!request.isForMainFrame()) {
+                    String scheme = request.getUrl().getScheme();
+                    return !"http".equals(scheme) && !"https".equals(scheme)
+                            && !"about".equals(scheme) && !"data".equals(scheme)
+                            && !"blob".equals(scheme);
+                }
 
                 // Solo se restringe la navegación principal, para que ningún
                 // anuncio se lleve la app fuera de index.html.
@@ -228,7 +259,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                view.evaluateJavascript(ANTI_POPUP_JS, null);
+                if (!shieldInAllFrames) view.evaluateJavascript(adShieldJs, null);
                 if (isTv()) view.evaluateJavascript(TV_LITE_JS, null);
             }
         });
@@ -271,10 +302,42 @@ public class MainActivity extends Activity {
             webView.evaluateJavascript("toggleEmbedFullscreen();", null);
             return;
         }
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
+        // Atrás cierra primero lo que esté abierto en la web (reproductor,
+        // ajustes, buscador...). Solo si no había nada, sale de la app.
+        webView.evaluateJavascript(
+                "(window.sopaHandleBack && window.sopaHandleBack()) ? '1' : '0'",
+                new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String handled) {
+                        // No se usa webView.goBack(): index.html hace pushState
+                        // al abrir y al cerrar cada título, y volver atrás en ese
+                        // historial reabría la película que se acababa de cerrar.
+                        if (!"\"1\"".equals(handled)) confirmExit();
+                    }
+                });
+    }
+
+    /** En TV es fácil salir sin querer apretando Atrás de más: se pide doble pulsación. */
+    private void confirmExit() {
+        long now = System.currentTimeMillis();
+        if (now - lastBackPress < 2000) {
+            finish();
         } else {
-            super.onBackPressed();
+            lastBackPress = now;
+            Toast.makeText(this, "Pulsa Atrás otra vez para salir", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String readRaw(int resId) {
+        try (InputStream in = getResources().openRawResource(resId);
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = in.read(buf)) != -1) out.write(buf, 0, n);
+            return out.toString("UTF-8");
+        } catch (IOException e) {
+            Log.e(TAG, "No se pudo leer el recurso " + resId, e);
+            return "";
         }
     }
 
@@ -332,6 +395,12 @@ public class MainActivity extends Activity {
         @JavascriptInterface
         public boolean isNative() {
             return true;
+        }
+
+        /** Activa en la web la navegación con flechas del control remoto. */
+        @JavascriptInterface
+        public boolean isTv() {
+            return MainActivity.this.isTv();
         }
     }
 }
