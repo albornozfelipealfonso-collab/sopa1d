@@ -428,6 +428,29 @@ public class MainActivity extends Activity {
                     "movie".equals(item.type) ? 0 : Math.max(1, episode), episodeCounts));
         }
 
+        /** Igual que playVod, pero lo reproduce la app Sopa1D de la TV. */
+        @JavascriptInterface
+        public void sendVodToTv(String type, String id, int season, int episode, String title,
+                                String poster, String backdrop, String overview, String year,
+                                String episodeCountsCsv) {
+            final CatalogItem item = new CatalogItem("movie".equals(type) ? "movie" : "tv", id,
+                    title == null ? "" : title, year == null ? "" : year, 0,
+                    overview == null ? "" : overview, emptyToNull(poster), emptyToNull(backdrop));
+            int[] counts = null;
+            if (episodeCountsCsv != null && !episodeCountsCsv.isEmpty()) {
+                String[] parts = episodeCountsCsv.split(",");
+                counts = new int[parts.length];
+                for (int i = 0; i < parts.length; i++) {
+                    try { counts[i] = Integer.parseInt(parts[i].trim()); } catch (NumberFormatException ignored) {}
+                }
+            }
+            final int s = "movie".equals(item.type) ? 0 : Math.max(1, season);
+            final int e = "movie".equals(item.type) ? 0 : Math.max(1, episode);
+            final org.json.JSONObject cmd = TvLink.vodCommand(item, s, e, counts, -1,
+                    WatchHistory.language(MainActivity.this));
+            runOnUiThread(() -> TvLink.sendWithPicker(MainActivity.this, cmd, null));
+        }
+
         private String emptyToNull(String s) {
             return s == null || s.isEmpty() || "null".equals(s) || "undefined".equals(s) ? null : s;
         }

@@ -3081,6 +3081,8 @@
         }
 
         async function transmitirATV() {
+            // Dentro de la APK no hay Chromecast web: se manda a la app de la TV
+            if (IS_NATIVE_APP && window._nativeMeta) { sendNativoToTv(window._nativeMeta); return; }
             if (!currentCastSource) { showToast('⚠️ Primero reproduce un video', 3000, 'warning'); return; }
             if (!window.cast || !window.chrome || !window.chrome.cast) {
                 showToast('❌ El SDK de Google Cast no está disponible en este navegador', 4000, 'error');
@@ -4319,7 +4321,10 @@
                 window._nativeMeta = meta;
                 container.innerHTML = `
                     <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000 center/cover no-repeat;${meta.poster ? `background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),url('${meta.poster}');` : ''}border-radius:var(--radius-md);">
-                        <button class="btn btn-primary" style="font-size:20px;padding:16px 34px;border-radius:40px;" onclick="playNativo(window._nativeMeta)">▶ Reproducir</button>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+                            <button class="btn btn-primary" style="font-size:20px;padding:16px 30px;border-radius:40px;" onclick="playNativo(window._nativeMeta)">▶ Reproducir</button>
+                            <button class="btn btn-glass" style="font-size:20px;padding:16px 30px;border-radius:40px;" onclick="sendNativoToTv(window._nativeMeta)">📺 Ver en la TV</button>
+                        </div>
                         <span style="color:#d1fae5;font-size:13px;">Sin publicidad · ${meta.season ? `T${meta.season} E${meta.episode}` : 'Película'}</span>
                     </div>
                 `;
@@ -4370,6 +4375,33 @@
                 duration: 3600
             });
             renderContinueWatchingShelf();
+        }
+
+        // Argumentos comunes de playVod / sendVodToTv (puente de la APK)
+        function nativeVodArgs(meta) {
+            const isTv = meta.type === 'tv' || currentType === 'tvshows' || currentType === 'anime';
+            const counts = [];
+            (seriesDetails?.seasons || []).forEach(se => {
+                const n = Number(se.season_number);
+                if (n > 0) counts[n] = Number(se.episode_count) || 0;
+            });
+            const csv = Array.from({ length: counts.length }, (_, i) => counts[i] || 0).join(',');
+            return [
+                isTv ? 'tv' : 'movie', String(meta.id),
+                Number(meta.season) || 1, Number(meta.episode) || 1,
+                meta.title || seriesDetails?.title || seriesDetails?.name || '',
+                meta.poster || seriesDetails?.poster || '',
+                seriesDetails?.backdrop || '',
+                seriesDetails?.overview || '',
+                String(seriesDetails?.year || ''),
+                isTv ? csv : ''
+            ];
+        }
+
+        // "Ver en la TV": la app Sopa1D de la TV lo reproduce (sin anuncios)
+        function sendNativoToTv(meta) {
+            if (!meta || !window.Sopa1D || typeof window.Sopa1D.sendVodToTv !== 'function') return;
+            window.Sopa1D.sendVodToTv(...nativeVodArgs(meta));
         }
 
         // Abre la película o el episodio en el reproductor nativo de la APK

@@ -4,6 +4,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- "Ver en la TV": encontrar la TV con Sopa1D en el wifi (mDNS) -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <!-- Android TV: sin táctil, con mando a distancia -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />

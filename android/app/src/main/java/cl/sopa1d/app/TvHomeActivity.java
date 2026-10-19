@@ -79,6 +79,7 @@ public class TvHomeActivity extends Activity {
     private boolean heroFilled;
     private String heroImage;
     private boolean navExpanded;
+    private String tvIp;
     private ValueAnimator navAnim;
     private long lastBackPress;
 
@@ -174,6 +175,8 @@ public class TvHomeActivity extends Activity {
 
         // Programación de los canales: se baja en segundo plano
         Epg.init(this);
+        // Receptor de "Ver en la TV" (órdenes desde la app del celular)
+        tvIp = TvLink.startReceiver(this);
         Epg.addListener(onEpgUpdate);
 
         select(findViewById(R.id.navHome));
@@ -220,6 +223,9 @@ public class TvHomeActivity extends Activity {
             ((TextView) v).setText(expand ? parts[0] + "   " + parts[1] : parts[0]);
         }
         navLogo.setText(expand ? "🍜 SOPA1D" : "🍜");
+        TextView ipView = findViewById(R.id.navIp);
+        ipView.setText("📱 Desde el celular: " + tvIp);
+        ipView.setVisibility(expand && tvIp != null ? View.VISIBLE : View.GONE);
 
         final ViewGroup.LayoutParams lp = nav.getLayoutParams();
         int target = dp(expand ? NAV_EXPANDED_DP : NAV_COLLAPSED_DP);

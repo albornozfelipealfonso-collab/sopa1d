@@ -52,6 +52,19 @@
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
+            <!-- Para "Ver en la TV" desde el celular, si la red no la encuentra sola -->
+            <TextView
+                android:id="@+id/navIp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"
+                android:paddingLeft="28dp"
+                android:paddingBottom="18dp"
+                android:singleLine="true"
+                android:textColor="#80FFFFFF"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
             <TextView android:id="@+id/navHome" style="@style/TvNavItem" android:tag="🏠|Inicio" android:text="🏠" />
             <TextView android:id="@+id/navSearch" style="@style/TvNavItem" android:tag="🔍|Buscar" android:text="🔍" />
             <TextView android:id="@+id/navMovies" style="@style/TvNavItem" android:tag="🎬|Películas" android:text="🎬" />

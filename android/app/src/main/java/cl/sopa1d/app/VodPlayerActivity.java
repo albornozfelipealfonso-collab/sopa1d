@@ -53,6 +53,8 @@ public class VodPlayerActivity extends Activity {
     static final String EXTRA_EPISODE = "episode";
     /** Episodios por temporada: índice = número de temporada. */
     static final String EXTRA_EPISODE_COUNTS = "episodeCounts";
+    /** Minuto exacto donde empezar (lo manda el celular); -1 = donde quedó. */
+    static final String EXTRA_POSITION = "position";
 
     private static final long SEEK_STEP_MS = 10000;
     /** Cuántos servidores se intentan resolver a la vez al empezar. */
@@ -150,6 +152,14 @@ public class VodPlayerActivity extends Activity {
             }
         });
 
+        // En el celular: botón para seguir viendo en la TV (en la TV no aplica)
+        View send = findViewById(R.id.vodSendToTv);
+        if (isTelevision()) {
+            send.setVisibility(View.GONE);
+        } else {
+            send.setOnClickListener(v -> sendToTv());
+        }
+
         initPlayer();
         loadEpisode();
     }
@@ -200,7 +210,9 @@ public class VodPlayerActivity extends Activity {
         showStatus("Buscando servidor sin anuncios…");
 
         final String lang = WatchHistory.language(this);
-        final long resumeAt = WatchHistory.position(this, item.type, item.id, season, episode);
+        long forced = getIntent().getLongExtra(EXTRA_POSITION, -1);
+        getIntent().removeExtra(EXTRA_POSITION); // solo vale para el primer episodio
+        final long resumeAt = forced >= 0 ? forced : WatchHistory.position(this, item.type, item.id, season, episode);
         pool.execute(() -> {
             List<StreamResolver.Server> list;
             try {
@@ -332,6 +344,21 @@ public class VodPlayerActivity extends Activity {
         long pos = player.getCurrentPosition();
         long dur = player.getDuration();
         if (pos > 5000) WatchHistory.save(this, item, season, episode, pos, dur);
+    }
+
+    private boolean isTelevision() {
+        android.app.UiModeManager ui = (android.app.UiModeManager) getSystemService(UI_MODE_SERVICE);
+        return ui != null && ui.getCurrentModeType() == android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
+    }
+
+    /** Pasa lo que se está viendo a la TV, en el mismo minuto, y cierra aquí. */
+    private void sendToTv() {
+        long pos = player != null ? player.getCurrentPosition() : 0;
+        if (player != null) player.pause();
+        persistPosition();
+        TvLink.sendWithPicker(this,
+                TvLink.vodCommand(item, season, episode, episodeCounts, pos, WatchHistory.language(this)),
+                this::finish);
     }
 
     // --------------------------------------------------------------- ui

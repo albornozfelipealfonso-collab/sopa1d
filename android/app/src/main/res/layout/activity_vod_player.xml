@@ -44,6 +44,23 @@
             android:layout_marginTop="4dp"
             android:textColor="#B3FFFFFF"
             android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/vodSendToTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:text="📺  Enviar a la TV"
+            android:textColor="@color/button_text"
+            android:textSize="15sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <!-- Estado mientras se busca servidor -->

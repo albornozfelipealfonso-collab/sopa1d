@@ -112,6 +112,9 @@ public class PlayerActivity extends Activity {
     private View schedulePanel;
     private TextView scheduleTitle;
     private ListView scheduleList;
+    private TextView sendToTv;
+    private boolean isTv;
+    private final Runnable hideSendToTv = () -> sendToTv.setVisibility(View.GONE);
     private TextView status;
     private LinearLayout panel;
     private ListView list;
@@ -164,6 +167,15 @@ public class PlayerActivity extends Activity {
         scheduleList = findViewById(R.id.scheduleList);
         Epg.init(this);
         Epg.addListener(onEpgUpdate);
+
+        // Celular: botón para pasar el canal a la TV (aparece al tocar la pantalla)
+        sendToTv = findViewById(R.id.liveSendToTv);
+        android.app.UiModeManager uim = (android.app.UiModeManager) getSystemService(UI_MODE_SERVICE);
+        isTv = uim != null && uim.getCurrentModeType() == android.content.res.Configuration.UI_MODE_TYPE_TELEVISION;
+        sendToTv.setOnClickListener(v -> {
+            if (player != null) player.pause();
+            TvLink.sendWithPicker(this, TvLink.liveCommand(ChannelStore.get(), index), this::finish);
+        });
         // En vivo no hay nada que adelantar ni pausar con sentido: los
         // controles de ExoPlayer solo tapaban el rótulo del canal. En TV el
         // mando ya cambia de canal (▲ ▼) y abre la lista (OK); en el celular
@@ -190,6 +202,10 @@ public class PlayerActivity extends Activity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 gestures.onTouchEvent(event);
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Channel cur = ChannelStore.at(index);
+                    if (cur != null) showOsd(cur); // muestra rótulo y "Enviar a la TV"
+                }
                 return false; // PlayerView sigue recibiendo el toque
             }
         });
@@ -555,6 +571,11 @@ public class PlayerActivity extends Activity {
                     .into(osdLogo);
         } else {
             osdLogo.setVisibility(View.GONE);
+        }
+        if (!isTv) {
+            sendToTv.setVisibility(View.VISIBLE);
+            ui.removeCallbacks(hideSendToTv);
+            ui.postDelayed(hideSendToTv, 5000);
         }
         osd.setVisibility(View.VISIBLE);
         osd.setAlpha(0f);

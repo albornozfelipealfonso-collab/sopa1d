@@ -143,6 +143,26 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Celular: pasar el canal a la TV -->
+    <TextView
+        android:id="@+id/liveSendToTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="24dp"
+        android:background="@drawable/button_bg"
+        android:clickable="true"
+        android:focusable="false"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:text="📺  Enviar a la TV"
+        android:textColor="@color/button_text"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <!-- Estado de carga / reconexión -->
     <TextView
         android:id="@+id/statusText"
