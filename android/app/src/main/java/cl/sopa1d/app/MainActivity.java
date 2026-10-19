@@ -402,6 +402,36 @@ public class MainActivity extends Activity {
             return true;
         }
 
+        /**
+         * Películas y series en el reproductor nativo, sin los reproductores
+         * web del proveedor (que son los que meten la publicidad).
+         * episodeCountsCsv: episodios por temporada, índice = temporada ("0,10,8").
+         */
+        @JavascriptInterface
+        public void playVod(String type, String id, int season, int episode, String title,
+                            String poster, String backdrop, String overview, String year,
+                            String episodeCountsCsv) {
+            final CatalogItem item = new CatalogItem("movie".equals(type) ? "movie" : "tv", id,
+                    title == null ? "" : title, year == null ? "" : year, 0,
+                    overview == null ? "" : overview, emptyToNull(poster), emptyToNull(backdrop));
+            int[] counts = null;
+            if (episodeCountsCsv != null && !episodeCountsCsv.isEmpty()) {
+                String[] parts = episodeCountsCsv.split(",");
+                counts = new int[parts.length];
+                for (int i = 0; i < parts.length; i++) {
+                    try { counts[i] = Integer.parseInt(parts[i].trim()); } catch (NumberFormatException ignored) {}
+                }
+            }
+            final int[] episodeCounts = counts;
+            runOnUiThread(() -> VodPlayerActivity.start(MainActivity.this, item,
+                    "movie".equals(item.type) ? 0 : Math.max(1, season),
+                    "movie".equals(item.type) ? 0 : Math.max(1, episode), episodeCounts));
+        }
+
+        private String emptyToNull(String s) {
+            return s == null || s.isEmpty() || "null".equals(s) || "undefined".equals(s) ? null : s;
+        }
+
         /** Activa en la web la navegación con flechas del control remoto. */
         @JavascriptInterface
         public boolean isTv() {

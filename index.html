@@ -4149,7 +4149,7 @@
         // propia app en todos los iframes, así que TONPlayer (Latino, el que
         // trae menos publicidad de origen) se carga directo y va primero.
         const IS_NATIVE_APP = !!(window.Sopa1D && typeof window.Sopa1D.isNative === 'function');
-        let currentActiveServer = IS_NATIVE_APP ? 'tonplayer' : 'multiembed';
+        let currentActiveServer = IS_NATIVE_APP ? 'nativo' : 'multiembed';
         let adBlockShieldEnabled = true;
 
         function getLocalAdFreeBase() {
@@ -4176,7 +4176,18 @@
             const e = episode || 1;
             const localBase = getLocalAdFreeBase();
 
+            // En la APK va primero el reproductor nativo: saca el vídeo directo
+            // del servidor y nunca carga los reproductores web con publicidad.
+            const nativo = IS_NATIVE_APP ? [{
+                id: 'nativo',
+                name: '📱 Reproductor sin anuncios',
+                tag: 'SIN ADS',
+                color: '#10b981',
+                type: 'native'
+            }] : [];
+
             return [
+                ...nativo,
                 {
                     id: 'multiembed',
                     name: '✨ Servidor MultiEmbed',
@@ -4304,6 +4315,25 @@
                 currentPlayer = null;
             }
 
+            if (selected.type === 'native') {
+                window._nativeMeta = meta;
+                container.innerHTML = `
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000 center/cover no-repeat;${meta.poster ? `background-image:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),url('${meta.poster}');` : ''}border-radius:var(--radius-md);">
+                        <button class="btn btn-primary" style="font-size:20px;padding:16px 34px;border-radius:40px;" onclick="playNativo(window._nativeMeta)">▶ Reproducir</button>
+                        <span style="color:#d1fae5;font-size:13px;">Sin publicidad · ${meta.season ? `T${meta.season} E${meta.episode}` : 'Película'}</span>
+                    </div>
+                `;
+                currentCastSource = null;
+                upsertContinueWatching({
+                    id: meta.id, type: meta.type, season: meta.season, episode: meta.episode,
+                    title: meta.title || seriesDetails?.title || seriesDetails?.name || 'Sopa1D',
+                    poster: meta.poster || (seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w300${seriesDetails.poster_path}` : null),
+                    currentTime: 60, duration: 3600
+                });
+                renderContinueWatchingShelf();
+                return;
+            }
+
             // Sandbox estricto cuando AdBlock está activo: impide window.open (popups) y redirecciones top-frame.
             // Algunos proveedores (MultiEmbed, VidSrc) detectan el atributo y se niegan a cargar
             // ("Sandboxing is not allowed!"), así que se omite en los que lo rechazan.
@@ -4340,6 +4370,28 @@
                 duration: 3600
             });
             renderContinueWatchingShelf();
+        }
+
+        // Abre la película o el episodio en el reproductor nativo de la APK
+        function playNativo(meta) {
+            if (!meta || !window.Sopa1D || typeof window.Sopa1D.playVod !== 'function') return;
+            const isTv = meta.type === 'tv' || currentType === 'tvshows' || currentType === 'anime';
+            const counts = [];
+            (seriesDetails?.seasons || []).forEach(se => {
+                const n = Number(se.season_number);
+                if (n > 0) counts[n] = Number(se.episode_count) || 0;
+            });
+            const csv = Array.from({ length: counts.length }, (_, i) => counts[i] || 0).join(',');
+            window.Sopa1D.playVod(
+                isTv ? 'tv' : 'movie', String(meta.id),
+                Number(meta.season) || 1, Number(meta.episode) || 1,
+                meta.title || seriesDetails?.title || seriesDetails?.name || '',
+                meta.poster || seriesDetails?.poster || '',
+                seriesDetails?.backdrop || '',
+                seriesDetails?.overview || '',
+                String(seriesDetails?.year || ''),
+                isTv ? csv : ''
+            );
         }
 
         function loadEpisode(id, type) {

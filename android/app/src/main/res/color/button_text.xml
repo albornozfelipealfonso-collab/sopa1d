@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texto negro sobre el botón enfocado (fondo blanco), blanco en el resto -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:color="#07080C" />
+    <item android:color="#FFFFFF" />
+</selector>

@@ -27,10 +27,35 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <!-- Aparece en el carrusel de Android TV -->
+            </intent-filter>
+        </activity>
+
+        <!-- Inicio nativo para Android TV (estilo Netflix): es lo que abre el
+             carrusel de la TV. En el celular se sigue entrando por la web. -->
+        <activity
+            android:name=".TvHomeActivity"
+            android:screenOrientation="landscape"
+            android:exported="true"
+            android:theme="@style/TvTheme"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".DetailActivity"
+            android:screenOrientation="landscape"
+            android:exported="false"
+            android:theme="@style/TvTheme" />
+
+        <activity
+            android:name=".VodPlayerActivity"
+            android:exported="false"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:theme="@style/PlayerTheme" />
 
         <activity
             android:name=".PlayerActivity"

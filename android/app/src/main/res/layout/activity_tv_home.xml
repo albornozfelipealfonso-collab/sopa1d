@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pantalla principal de TV: menú a la izquierda, contenido a la derecha -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sopa_bg"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/tvNav"
+        android:layout_width="230dp"
+        android:layout_height="match_parent"
+        android:background="#0B0D14"
+        android:orientation="vertical"
+        android:paddingTop="28dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="26dp"
+            android:paddingBottom="26dp"
+            android:text="🍜 SOPA1D"
+            android:textColor="#E11D48"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView android:id="@+id/navHome" style="@style/TvNavItem" android:text="🏠  Inicio" />
+        <TextView android:id="@+id/navSearch" style="@style/TvNavItem" android:text="🔍  Buscar" />
+        <TextView android:id="@+id/navMovies" style="@style/TvNavItem" android:text="🎬  Películas" />
+        <TextView android:id="@+id/navSeries" style="@style/TvNavItem" android:text="📺  Series" />
+        <TextView android:id="@+id/navAnime" style="@style/TvNavItem" android:text="🌸  Anime" />
+        <TextView android:id="@+id/navLive" style="@style/TvNavItem" android:text="📡  TV en Vivo" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView android:id="@+id/navWeb" style="@style/TvNavItem"
+            android:layout_marginBottom="24dp"
+            android:text="🌐  Versión web"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <!-- Fondo: portada del título enfocado -->
+        <ImageView
+            android:id="@+id/heroBackdrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.45"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/hero_scrim" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Datos del título enfocado -->
+            <LinearLayout
+                android:id="@+id/heroInfo"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:orientation="vertical"
+                android:paddingLeft="40dp"
+                android:paddingTop="36dp"
+                android:paddingRight="200dp">
+
+                <TextView
+                    android:id="@+id/heroTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="#FFFFFF"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/heroMeta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="#F5C518"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/heroOverview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="3dp"
+                    android:maxLines="3"
+                    android:textColor="#D9FFFFFF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Buscador (solo en la sección Buscar) -->
+            <EditText
+                android:id="@+id/searchBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/search_bg"
+                android:hint="Escribe una película, serie o anime y pulsa OK"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="16dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#80FFFFFF"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rows"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="120dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/homeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#B3FFFFFF"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

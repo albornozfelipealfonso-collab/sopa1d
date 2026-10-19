@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Oscurece la portada por la izquierda, donde va el texto -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="0"
+        android:centerColor="#B307080C"
+        android:endColor="#3307080C"
+        android:startColor="#F207080C" />
+</shape>
