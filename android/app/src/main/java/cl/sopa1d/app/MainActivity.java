@@ -167,6 +167,7 @@ public class MainActivity extends Activity {
         s.setJavaScriptCanOpenWindowsAutomatically(false);
 
         webView.addJavascriptInterface(new NativeBridge(), "Sopa1D");
+        ChannelHealth.maybeCheck(this);
 
         // El escudo tiene que correr dentro de los iframes de los embeds, que
         // es donde están los popups. onPageFinished solo alcanza a index.html.
@@ -453,6 +454,18 @@ public class MainActivity extends Activity {
 
         private String emptyToNull(String s) {
             return s == null || s.isEmpty() || "null".equals(s) || "undefined".equals(s) ? null : s;
+        }
+
+        /**
+         * Canales caídos según la revisión diaria de la app (JSON con URLs),
+         * o null si aún no corrió: la web usa entonces la marca del JSON.
+         */
+        @JavascriptInterface
+        public String deadChannels() {
+            ChannelHealth.load(MainActivity.this);
+            java.util.Set<String> d = ChannelHealth.deadUrls();
+            if (d.isEmpty()) return null;
+            return new org.json.JSONArray(d).toString();
         }
 
         /** Activa en la web la navegación con flechas del control remoto. */

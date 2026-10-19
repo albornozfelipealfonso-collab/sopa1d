@@ -189,6 +189,10 @@ public class TvHomeActivity extends Activity {
             startActivity(i);
         });
 
+        // Revisión diaria de canales caídos (en segundo plano, solo con wifi)
+        ChannelHealth.addListener(onHealthUpdate);
+        ChannelHealth.maybeCheck(this);
+
         // Programación de los canales: se baja en segundo plano
         Epg.init(this);
         // Receptor de "Ver en la TV" (órdenes desde la app del celular)
@@ -415,8 +419,9 @@ public class TvHomeActivity extends Activity {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 String url = o.optString("url");
-                // Marcados por tools/check_channels.mjs como caídos: no se muestran
-                if (url.isEmpty() || o.optBoolean("dead")) continue;
+                // Caídos según la revisión de la app (o, si aún no corrió, según
+                // la marca que dejó tools/check_channels.mjs): no se muestran
+                if (url.isEmpty() || ChannelHealth.isHidden(url, o.optBoolean("dead"))) continue;
                 String name = o.optString("name");
                 String cat = o.optString("category", "General");
                 CatalogItem ch = new CatalogItem("live", url, name, "", 0,
@@ -610,8 +615,15 @@ public class TvHomeActivity extends Activity {
         if (pendingHero != null && pendingHero.isLive()) showHeroNow(pendingHero);
     };
 
+    /** Terminó una revisión de canales: se rehace la lista en vivo. */
+    private final Runnable onHealthUpdate = () -> {
+        liveByCategory = null;
+        if (selectedNav != null && selectedNav.getId() == R.id.navLive) showLive();
+    };
+
     @Override
     protected void onDestroy() {
+        ChannelHealth.removeListener(onHealthUpdate);
         Epg.removeListener(onEpgUpdate);
         ui.removeCallbacksAndMessages(null);
         io.shutdownNow();

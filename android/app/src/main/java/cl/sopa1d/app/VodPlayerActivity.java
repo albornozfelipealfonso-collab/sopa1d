@@ -278,12 +278,44 @@ public class VodPlayerActivity extends Activity {
         }
     }
 
+    // ---------------------------------------------------- calidad
+
+    /** Ya reprodujo alguna vez (los "cargando" del arranque no son cortes). */
+    private boolean everReady, seeking;
+    private String qualityLabel = "";
+    private final java.util.ArrayDeque<Long> rebuffers = new java.util.ArrayDeque<>();
+    private final Runnable seekDone = () -> seeking = false;
+
+    /**
+     * Se quedó cargando a mitad de la reproducción. Dos veces en 2 minutos =
+     * internet que no da para esta calidad: se fija un techo más bajo que la
+     * calidad actual (ExoPlayer sola tarda en reaccionar).
+     */
+    private void onRebuffer() {
+        long now = System.currentTimeMillis();
+        rebuffers.addLast(now);
+        while (!rebuffers.isEmpty() && now - rebuffers.peekFirst() > 120_000) rebuffers.pollFirst();
+        if (rebuffers.size() < 2 || player == null) return;
+        androidx.media3.common.Format f = player.getVideoFormat();
+        if (f == null || f.height <= 360) return; // ya está en lo más bajo razonable
+        int cap = f.height >= 1000 ? 720 : f.height >= 700 ? 480 : 360;
+        player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
+                .setMaxVideoSize(Integer.MAX_VALUE, cap)
+                .build());
+        rebuffers.clear();
+        android.widget.Toast.makeText(this, "📶 Conexión lenta: bajando a " + cap + "p",
+                android.widget.Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "VOD: cortes seguidos en " + f.height + "p, techo " + cap + "p");
+    }
+
     private void initPlayer() {
         DefaultRenderersFactory renderers = new DefaultRenderersFactory(this)
                 // Audio AC3/EAC3/MP2 por FFmpeg cuando el equipo no trae decodificador
                 .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
                 .setEnableDecoderFallback(true);
         player = new ExoPlayer.Builder(this, renderers)
+                .setBandwidthMeter(Quality.bandwidthMeter(this))
+                .setTrackSelector(Quality.trackSelector(this))
                 .setSeekBackIncrementMs(SEEK_STEP_MS)
                 .setSeekForwardIncrementMs(SEEK_STEP_MS)
                 .build();
@@ -295,9 +327,32 @@ public class VodPlayerActivity extends Activity {
             public void onPlaybackStateChanged(int state) {
                 if (state == Player.STATE_READY) {
                     statusBox.setVisibility(View.GONE);
+                    everReady = true;
+                } else if (state == Player.STATE_BUFFERING && everReady && !seeking) {
+                    onRebuffer();
                 } else if (state == Player.STATE_ENDED) {
                     persistPosition();
                     playNextEpisode();
+                }
+            }
+
+            @Override
+            public void onPositionDiscontinuity(Player.PositionInfo o, Player.PositionInfo n, int reason) {
+                // Un salto (◀ ▶, saltar intro) también vacía el buffer: no cuenta como corte
+                if (reason == Player.DISCONTINUITY_REASON_SEEK) {
+                    seeking = true;
+                    ui.removeCallbacks(seekDone);
+                    ui.postDelayed(seekDone, 4000);
+                }
+            }
+
+            @Override
+            public void onVideoSizeChanged(androidx.media3.common.VideoSize size) {
+                String q = Quality.label(size.height);
+                if (!q.isEmpty() && !q.equals(qualityLabel)) {
+                    qualityLabel = q;
+                    String base = subtitle.getText().toString().replaceAll("   ·   📶 \\S+", "");
+                    subtitle.setText(base + "   ·   📶 " + q);
                 }
             }
 
@@ -427,6 +482,11 @@ public class VodPlayerActivity extends Activity {
 
     private void startStream(int index, StreamResolver.Stream stream, long positionMs) {
         current = index;
+        everReady = false;
+        rebuffers.clear();
+        qualityLabel = "";
+        player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
+                .clearVideoSizeConstraints().build());
         refreshServerList();
         Log.i(TAG, "VOD: reproduciendo " + stream.server.label() + " -> " + stream.m3u8);
 

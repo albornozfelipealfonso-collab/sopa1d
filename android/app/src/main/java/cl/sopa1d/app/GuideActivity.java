@@ -77,6 +77,7 @@ public class GuideActivity extends Activity {
 
         Epg.init(this);
         Epg.addListener(onEpg);
+        ChannelHealth.load(this);
         rebuild();
         grid.requestFocus();
     }
@@ -109,7 +110,7 @@ public class GuideActivity extends Activity {
             JSONArray arr = new JSONArray(buf.toString("UTF-8"));
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
-                if (o.optBoolean("dead") || o.optString("url").isEmpty()) continue;
+                if (o.optString("url").isEmpty() || ChannelHealth.isHidden(o.optString("url"), o.optBoolean("dead"))) continue;
                 Channel ch = new Channel(o.optString("id"), o.optString("name"), o.optString("url"),
                         o.optString("logo"), o.optString("category"));
                 ch.country = o.optString("country");

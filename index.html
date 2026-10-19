@@ -4951,9 +4951,15 @@
                     const res = await fetch('channels_spa.json?v=' + Date.now());
                     if (res.ok) {
                         loaded = await res.json();
-                        // tools/check_channels.mjs marca los que no responden
+                        // Caídos: según la revisión diaria de la APK si ya corrió;
+                        // si no, la marca que deja tools/check_channels.mjs
                         const total = loaded.length;
-                        loaded = loaded.filter(c => !c.dead);
+                        let appDead = null;
+                        try {
+                            const raw = window.Sopa1D && window.Sopa1D.deadChannels && window.Sopa1D.deadChannels();
+                            if (raw) appDead = new Set(JSON.parse(raw));
+                        } catch (e) {}
+                        loaded = loaded.filter(c => appDead ? !appDead.has(c.url) : !c.dead);
                         console.log(`Canales cargados desde channels_spa.json: ${loaded.length} (ocultos ${total - loaded.length} caídos)`);
                     }
                 } catch(e) {}

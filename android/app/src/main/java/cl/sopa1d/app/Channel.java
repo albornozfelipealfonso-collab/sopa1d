@@ -9,6 +9,8 @@ public class Channel {
     public final String category;
     /** País de la señal: elige la guía de programación correcta. */
     public String country = "";
+    /** Marcado como caído en channels_spa.json (tools/check_channels.mjs). */
+    public boolean assetDead;
 
     public Channel(String id, String name, String url) {
         this(id, name, url, "", "");
