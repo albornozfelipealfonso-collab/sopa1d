@@ -56655,5 +56655,2717 @@
     "category": "Noticias",
     "country": "EE.UU.",
     "url": "https://nmxlive.akamaized.net/hls/live/529965/Live_1/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_epatv_cl_1",
+    "name": "EPA! TV",
+    "logo": "https://cdn.m3u.cl/logo/1649_EPA__TV.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "https://v4.tustreaming.cl/edusauriotv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_solobailalo_cl_2",
+    "name": "Solo Bailalo",
+    "logo": "https://i.imgur.com/SImJE7c.png",
+    "category": "Música",
+    "country": "Chile",
+    "url": "https://5ff3d9babae13.streamlock.net/8016/8016/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_opa_cr_3",
+    "name": "¡OPA!",
+    "logo": "https://i.imgur.com/300c1ZH.png",
+    "category": "Entretenimiento",
+    "country": "Costa Rica",
+    "url": "https://5fc584f3f19c9.streamlock.net/genteopa/videogenteopa/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_12tv_es_4",
+    "name": "12tv",
+    "logo": "https://i.imgur.com/VSTgXsh.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://cloud.streamingconnect.tv/hls/12tv/12tv2.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_5tv_ar_5",
+    "name": "5tv",
+    "logo": "https://i.imgur.com/mSn7ACs.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://www.coninfo.net:1935/tvcinco/live1/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_a24_ar_6",
+    "name": "A24",
+    "logo": "https://i.imgur.com/LnXQkIU.png",
+    "category": "Noticias",
+    "country": "Argentina",
+    "url": "https://g5.vxral-slo.transport.edge-access.net/a12/ngrp:a24-100056_all/playlist.m3u8?sense=true"
+  },
+  {
+    "id": "ch_iptvorg_a24_ar_7",
+    "name": "A24",
+    "logo": "https://i.imgur.com/LnXQkIU.png",
+    "category": "Noticias",
+    "country": "Argentina",
+    "url": "https://g1.proy-hor.transport.edge-access.net/a15/ngrp:a24-100056_all/Playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_agapetv_sv_8",
+    "name": "Agape TV",
+    "logo": "https://i.imgur.com/DsGmrnc.png",
+    "category": "General",
+    "country": "El Salvador",
+    "url": "https://5fc584f3f19c9.streamlock.net/agape/videoagape/chunklist_w153454298.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_agrotv_pe_9",
+    "name": "Agro TV",
+    "logo": "https://i.imgur.com/1uLGa3w.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://play.agenciastreaming.com:8081/agrotv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_airedesantafe_ar_10",
+    "name": "Aire de Santa Fe",
+    "logo": "https://files.catbox.moe/9tm8wx.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://mdstrm.com/live-stream-playlist/6931a0eb06778645348008e0.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_alcarriatv_es_11",
+    "name": "Alcarria TV",
+    "logo": "https://i.imgur.com/pzJAYan.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://cls.alcarria.tv/alcarriatv/livestream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_alturatv_pe_12",
+    "name": "Altura TV",
+    "logo": "https://i.imgur.com/U6GwIL7.jpeg",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://play.agenciastreaming.com:8081/tvalturalimalive/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_amazonicatv_pe_13",
+    "name": "Amazonica TV",
+    "logo": "https://i.imgur.com/22ebHAX.jpeg",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://videoserver.tmcreativos.com:19360/amazonicatv/amazonicatv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_americatelevision_pe_14",
+    "name": "America Television",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Am%C3%A9rica_Televisi%C3%B3n.svg/500px-Am%C3%A9rica_Televisi%C3%B3n.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.93.224.42/AMERICA-TV/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_americatelevision_pe_15",
+    "name": "America Television",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Am%C3%A9rica_Televisi%C3%B3n.svg/500px-Am%C3%A9rica_Televisi%C3%B3n.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://187.102.210.46/AMERICA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_americatelevision_pe_16",
+    "name": "America Television",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Am%C3%A9rica_Televisi%C3%B3n.svg/500px-Am%C3%A9rica_Televisi%C3%B3n.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/america.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_andestelevision_pe_17",
+    "name": "Andes Television",
+    "logo": "https://i.imgur.com/CsW4Op8.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://stmv2.srvif.com/tvsicuani/tvsicuani/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_antena1_pe_18",
+    "name": "Antena 1",
+    "logo": "https://i.imgur.com/Bt0yGtw.jpeg",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg8.tv360.bitel.com.pe/bitel/aunoSRT/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_antenasur_pe_19",
+    "name": "Antena SUR",
+    "logo": "https://i.imgur.com/4aHrD2l.jpeg",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg8.tv360.bitel.com.pe/bitel/antenasurtv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_arpegiotv_pe_20",
+    "name": "Arpegio TV",
+    "logo": "https://i.imgur.com/mxnKK1a.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://vdo.oyotunserver.com/arpegio/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_atv_pe_21",
+    "name": "ATV",
+    "logo": "https://i.imgur.com/eUzYZfg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://187.102.210.46/ATV/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_atvsur_pe_22",
+    "name": "ATV Sur",
+    "logo": "https://i.imgur.com/LnyVa5H.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/atvsur.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_atvplus_pe_23",
+    "name": "ATV+",
+    "logo": "https://i.imgur.com/fY9256H.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://190.93.224.42/ATV-PLUS/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_atvplus_pe_24",
+    "name": "ATV+",
+    "logo": "https://i.imgur.com/fY9256H.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/atvplus.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_axncee_es_25",
+    "name": "AXN CEE (CzechRepublic)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/AXN_logo_%282015%29.svg/960px-AXN_logo_%282015%29.svg.png",
+    "category": "Cine & Series",
+    "country": "España",
+    "url": "http://88.212.15.17/live/test_axn/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_axncee_es_26",
+    "name": "AXN CEE (Hungary)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/AXN_logo_%282015%29.svg/960px-AXN_logo_%282015%29.svg.png",
+    "category": "Cine & Series",
+    "country": "España",
+    "url": "http://88.212.15.17/live/axn_hun/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_aynitv_bo_27",
+    "name": "AYNI TV",
+    "logo": "https://i.ibb.co/SPCkBR8/ayni-tv-bo.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://59d39900ebfb8.streamlock.net/Aynitv/Aynitv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_azcinema_mx_28",
+    "name": "Az Cinema",
+    "logo": "https://i.imgur.com/B5UN7C8.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://15.204.196.147:22880/CABLE-MAGES-AZCINEMA/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_aztecadeportesnetwork_mx_29",
+    "name": "Azteca Deportes Network",
+    "logo": "https://match-images.icdb.tv/5913207f2494844101287828e87625eb.jpg",
+    "category": "Deportes",
+    "country": "México",
+    "url": "https://live-manifest.production-public.tubi.io/live/6bf131c3-d664-424c-93c9-49188a788980/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_aztecainternacional_mx_30",
+    "name": "Azteca Internacional",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Azteca_Internacional_logo_2023.png",
+    "category": "Entretenimiento",
+    "country": "México",
+    "url": "http://167.249.23.102:8000/play/a0a3/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_bestclasicostv_cr_31",
+    "name": "BestClasicosTV",
+    "logo": "https://i.imgur.com/a/BRb8AVL.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "https://acceso.mediosdecostarica.com:3873/live/bestclasicostvlive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_boliviatv_bo_32",
+    "name": "Bolivia TV",
+    "logo": "https://i.imgur.com/tKLYYys.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://hls.tvabierta.net/hls/boliviatv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_bondiatv_es_33",
+    "name": "Bon Dia TV",
+    "logo": "https://i.imgur.com/VgRCu2U.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://directes-tv-int.3catdirectes.cat/live-origin/bondia-hls/master.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_bragadotv_ar_34",
+    "name": "Bragado TV",
+    "logo": "https://i.imgur.com/xP88fKG.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://vivo.solumedia.com:19360/bragadato/bragadato.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_bumtelevision_co_35",
+    "name": "BUM Television",
+    "logo": "https://i.imgur.com/I0eGYI0.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/visiondorada.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cadenaa_bo_36",
+    "name": "Cadena A",
+    "logo": "https://i.imgur.com/BxQPPAA.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://5fe2654d6127d.streamlock.net/cadenaa/videocadenaa/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cadena103tv_ar_37",
+    "name": "Cadena103.TV",
+    "logo": "https://i.imgur.com/vBsry35.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://arcast.net:1935/cadena103/cadena103/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal1_co_38",
+    "name": "Canal 1",
+    "logo": "https://i.imgur.com/MiYlN0t.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.121.15.230:9002/CANAL-UNO/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal1_co_39",
+    "name": "Canal 1",
+    "logo": "https://i.imgur.com/MiYlN0t.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.61.47.54:8000/play/a00u/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal1_co_40",
+    "name": "Canal 1",
+    "logo": "https://i.imgur.com/MiYlN0t.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://38.134.250.110:8000/play/a014/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal1_co_41",
+    "name": "Canal 1",
+    "logo": "https://i.imgur.com/MiYlN0t.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/canal-1-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal10_cr_42",
+    "name": "Canal 10",
+    "logo": "https://i.imgur.com/TO6WQbW.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "https://acceso.mediosdecostarica.com:3606/live/canal10costaricalive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal11_cr_43",
+    "name": "Canal 11",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Repretel_11_logo.png/960px-Repretel_11_logo.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://45.5.117.188:8000/play/a02w/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal11_gt_44",
+    "name": "Canal 11",
+    "logo": "https://i.imgur.com/N4DM2YO.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "http://179.60.224.196:8000/play/a0dv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal11_hn_45",
+    "name": "Canal 11",
+    "logo": "https://i.imgur.com/Sht2Rd4.png",
+    "category": "General",
+    "country": "Honduras",
+    "url": "https://redirector.rudo.video/hls-video/c54ac2799874375c81c1672abb700870537c5223/canal11hn/canal11hn.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal13_gt_46",
+    "name": "Canal 13",
+    "logo": "https://i.imgur.com/C1yVU3J.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "http://168.196.127.137:6001/play/a064/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal21huancayo_pe_47",
+    "name": "Canal 21 Huancayo",
+    "logo": "https://i.imgur.com/Kfdkm06.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg11.tv360.bitel.com.pe/bitel/tvwanka/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal26_mx_48",
+    "name": "Canal 26",
+    "logo": "https://i.imgur.com/PAvnVN9.png",
+    "category": "Noticias",
+    "country": "México",
+    "url": "https://5fe2654d6127d.streamlock.net:443/telemetrika3/_definst_/videotelemetrika3/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal3_gt_49",
+    "name": "Canal 3",
+    "logo": "https://i.imgur.com/yCykjIp.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "http://181.119.177.253:8000/play/a03o/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal4_cr_50",
+    "name": "Canal 4",
+    "logo": "https://i.imgur.com/5arZEgO.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://45.186.106.207:8000/play/a09t/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal4posadas_ar_51",
+    "name": "Canal 4 Posadas",
+    "logo": "https://i.imgur.com/tElJr3e.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://iptv.ixfo.com.ar:30443/live/C4POS/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal5_mx_52",
+    "name": "Canal 5",
+    "logo": "https://i.imgur.com/uZdVSoW.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://45.189.151.7:8000/play/a05s"
+  },
+  {
+    "id": "ch_iptvorg_canal5_mx_53",
+    "name": "Canal 5",
+    "logo": "https://i.imgur.com/uZdVSoW.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://132.255.210.69:8000/play/a06e"
+  },
+  {
+    "id": "ch_iptvorg_canal5ellider_hn_54",
+    "name": "Canal 5 El Lider",
+    "logo": "https://i.imgur.com/4hEYFa9.png",
+    "category": "General",
+    "country": "Honduras",
+    "url": "https://mdstrm.com/live-stream-playlist/6287fda8ea3b8b397d1ca2ed.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal7_gt_55",
+    "name": "Canal 7",
+    "logo": "https://i.imgur.com/yVhUkot.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "http://181.119.177.253:8000/play/a03n/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal7salta_ar_56",
+    "name": "Canal 7 Salta",
+    "logo": "https://i.imgur.com/CudG6sl.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://vivo.solumedia.com:19360/canal7salta/canal7salta.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal8_cr_57",
+    "name": "Canal 8",
+    "logo": "https://platform-static.cdn.mdstrm.com/player/logo/5efe501c21d05a0722152f6d.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://mdstrm.com/live-stream-playlist/5a7b1e63a8da282c34d65445.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canal8tvplus_co_58",
+    "name": "Canal 8 TV+",
+    "logo": "https://i.imgur.com/peOIG1F.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/canal8tv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalcapital_co_59",
+    "name": "Canal Capital",
+    "logo": "https://i.imgur.com/zAYtbYi.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.61.47.54:8000/play/a00x/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalcapital_co_60",
+    "name": "Canal Capital",
+    "logo": "https://i.imgur.com/zAYtbYi.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/canal-capital-banda-ku/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaldos_co_61",
+    "name": "Canal Dos",
+    "logo": "https://i.imgur.com/BYsyNHZ.jpg",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://stream2.micanal2.tv/hls/canal2.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalinstitucional_co_62",
+    "name": "Canal Institucional",
+    "logo": "https://i.imgur.com/CKnf3Ua.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.121.15.230:9002/CANAL-INSTITUCIONAL/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalinstitucional_co_63",
+    "name": "Canal Institucional",
+    "logo": "https://i.imgur.com/CKnf3Ua.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://streaming.rtvc.gov.co/TV_CanalInstitucional_live/smil:live.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalinstitucional_co_64",
+    "name": "Canal Institucional",
+    "logo": "https://i.imgur.com/CKnf3Ua.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.109.2.92:8000/play/a00z/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalinstitucional_co_65",
+    "name": "Canal Institucional",
+    "logo": "https://i.imgur.com/CKnf3Ua.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/canal-institucional-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalipe_pe_66",
+    "name": "Canal IPe",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Logo_Canal_IPe_2024.png/960px-Logo_Canal_IPe_2024.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.93.224.42/IPE/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalipe_pe_67",
+    "name": "Canal IPe",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Logo_Canal_IPe_2024.png/960px-Logo_Canal_IPe_2024.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/ipemovil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalipe_pe_68",
+    "name": "Canal IPe",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Logo_Canal_IPe_2024.png/960px-Logo_Canal_IPe_2024.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://bantel-cdn1.iptvperu.tv:1936/btnscrtn/ipe.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalluztelevision_es_69",
+    "name": "Canal Luz Television",
+    "logo": "https://i.imgur.com/H3JzQ1G.jpg",
+    "category": "General",
+    "country": "España",
+    "url": "https://5f71743aa95e4.streamlock.net:1936/CanalLuz/enDirecto/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalmastelevision_co_70",
+    "name": "Canal Mas Television",
+    "logo": "https://i.imgur.com/ODMa27W.jpg",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/teledoradahd.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaln_pe_71",
+    "name": "Canal N",
+    "logo": "https://i.imgur.com/Xytvw3J.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://190.108.91.206:9050/play/a0bd/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalnets_co_72",
+    "name": "Canal Nets",
+    "logo": "https://i.imgur.com/edaAexc.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/nets.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_73",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.17.228:8081/RCN-HD/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_74",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.61.47.54:8000/play/a01f/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_75",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.60.46.228:8888/play/a04d/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_76",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://38.134.250.110:8000/play/a00i/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_77",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.205.130.194:4000/play/a0dl"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_78",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://45.173.231.22:8000/play/a00a/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_79",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/rcn-hd-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_80",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.79.131:8000/play/a0sc"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_81",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.109.2.92:8000/play/a00w/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_82",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://barinaslive1.boldmss.com/RCN/RCN.isml/RCN.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canalrcn_co_83",
+    "name": "Canal RCN",
+    "logo": "https://i.imgur.com/5PhTaHp.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.59.191.177:8000/play/a004/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaltro_co_84",
+    "name": "Canal TRO",
+    "logo": "https://i.imgur.com/bdBduvj.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.61.47.54:8000/play/a013/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaltro_co_85",
+    "name": "Canal TRO",
+    "logo": "https://i.imgur.com/bdBduvj.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.211.244:8005/play/a08c/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaltro_co_86",
+    "name": "Canal TRO",
+    "logo": "https://i.imgur.com/bdBduvj.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.94.3.106:8000/play/a07i/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_canaltro_co_87",
+    "name": "Canal TRO",
+    "logo": "https://i.imgur.com/bdBduvj.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.82.130:8000/play/a0o1/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolhd2_co_88",
+    "name": "Caracol HD2",
+    "logo": "https://i.imgur.com/Fww94l9.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.109.2.92:8000/play/a05u/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolinternacional_co_89",
+    "name": "Caracol Internacional",
+    "logo": "https://i.imgur.com/h7LWbt5.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.59.177.78:9999/play/a0a8/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolinternacional_co_90",
+    "name": "Caracol Internacional",
+    "logo": "https://i.imgur.com/h7LWbt5.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://168.196.127.137:6001/play/a09m/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolinternacional_co_91",
+    "name": "Caracol Internacional",
+    "logo": "https://i.imgur.com/h7LWbt5.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://132.255.210.69:8000/play/a049/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolinternacional_co_92",
+    "name": "Caracol Internacional",
+    "logo": "https://i.imgur.com/h7LWbt5.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://45.238.141.222:8000/play/a0oo/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracolinternacional_co_93",
+    "name": "Caracol Internacional",
+    "logo": "https://i.imgur.com/h7LWbt5.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://45.5.117.57:8200/play/a0e9/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_94",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.79.86.130:8000/play/a04w/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_95",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.110.96.238:8000/play/a0mu/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_96",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.79.86.130:8000/play/a077/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_97",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://168.228.44.241:9997/play/a03t/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_98",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.109.2.92:8000/play/a00q/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_99",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://167.249.23.102:8000/play/a0i1/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_100",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.205.130.194:4000/play/a0ck"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_101",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.94.3.106:8000/play/a06z"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_102",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://barinaslive1.boldmss.com/CARACOL/CARACOL.isml/CARACOL.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_103",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://38.190.100.202:8000/play/a09v/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_104",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.60.46.228:8888/play/a04c/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_105",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/caracol-tv-hd-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_106",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.21.38:8000/play/a0cv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_107",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.79.131:8000/play/a0sb"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_108",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://201.216.147.90:8729/play/a01v"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_109",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.115.120.1:8000/play/ca070/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_110",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/canal-caracol-banda-ku/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_111",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://45.173.231.22:8000/play/a009/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_112",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.59.191.177:8000/play/a001/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_113",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.8.199:8000/play/a0jz/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_114",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.115.96.61:9090/play/a0jk/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_caracoltv_co_115",
+    "name": "Caracol TV",
+    "logo": "https://i.imgur.com/WbfdJbk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.205.130.194:4000/play/a0dz"
+  },
+  {
+    "id": "ch_iptvorg_carastv_ar_116",
+    "name": "Caras TV",
+    "logo": "https://i.imgur.com/7dl4yQY.jpeg",
+    "category": "Entretenimiento",
+    "country": "Argentina",
+    "url": "http://190.61.90.17:40000/play/a043/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cinelatino_mx_117",
+    "name": "CineLatino",
+    "logo": "https://i.imgur.com/2V0R0xT.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://168.196.127.137:6001/play/a08o/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cinelatino_mx_118",
+    "name": "CineLatino",
+    "logo": "https://i.imgur.com/2V0R0xT.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://200.115.96.61:9090/play/a0i5/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_citytvbogota_co_119",
+    "name": "Citytv Bogota",
+    "logo": "https://i.imgur.com/h7K9EW9.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/city-tv-banda-ku/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_clan_es_120",
+    "name": "Clan",
+    "logo": "https://i.ibb.co/vv3FC2Nv/clan.png",
+    "category": "Infantil",
+    "country": "España",
+    "url": "https://rtvelivestream.rtve.es/rtvesec/clan/clan_main.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_clan_es_121",
+    "name": "Clan",
+    "logo": "https://i.ibb.co/vv3FC2Nv/clan.png",
+    "category": "Infantil",
+    "country": "España",
+    "url": "https://ztnr.rtve.es/ztnr/5466990.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_claninternacional_es_122",
+    "name": "Clan Internacional",
+    "logo": "https://i.ibb.co/vv3FC2Nv/clan.png",
+    "category": "Infantil",
+    "country": "España",
+    "url": "https://rtvelivestream-rtveplayplus.rtve.es/rtvesec/int/clan_int_main_1080.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cmbtelevision_co_123",
+    "name": "CMB Television",
+    "logo": "https://i.imgur.com/akGKPsk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://hls-m9hrfayq-livepush.akamaized.net/live_cdn/nsxlDfnVmUyEy/eme2QCj5oX02cY/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cncbugavision_co_124",
+    "name": "CNC Bugavision",
+    "logo": "https://i.imgur.com/zJAwnvd.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/cncbuga.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_cncsantanderdequilichao_co_125",
+    "name": "CNC Santander de Quilichao",
+    "logo": "https://i.imgur.com/LNl2o9q.jpg",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/cncsantander.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_colosaltv_cr_126",
+    "name": "Colosal TV",
+    "logo": "https://i.imgur.com/0DZB3eB.png",
+    "category": "Entretenimiento",
+    "country": "Costa Rica",
+    "url": "http://tv.ticosmedia.com:1935/COLOSAL/COLOSAL/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_depeliculalatinamerica_mx_127",
+    "name": "De Pelicula Latin America",
+    "logo": "https://i.imgur.com/aksM8pa.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://181.224.200.5:2277/play/a0d1/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_depeliculalatinamerica_mx_128",
+    "name": "De Pelicula Latin America",
+    "logo": "https://i.imgur.com/aksM8pa.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://15.204.196.147:22880/RECEPCION-DPELICULA-LATAM-FHD/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_deportestvc_hn_129",
+    "name": "Deportes TVC",
+    "logo": "https://i.imgur.com/Y1t8xkL.png",
+    "category": "Deportes",
+    "country": "Honduras",
+    "url": "http://190.61.101.11:7050/play/a06t/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_distritocomedia_mx_130",
+    "name": "Distrito Comedia",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/DistritoComediaLOGO2018.png/960px-DistritoComediaLOGO2018.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://138.121.15.230:9002/DISTRITO-COMEDIA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_distritocomedia_mx_131",
+    "name": "Distrito Comedia",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/DistritoComediaLOGO2018.png/960px-DistritoComediaLOGO2018.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://15.204.142.109:22880/TELEVISA-PROVEEDOR-DISTRITO-COMEDIA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_distritocomedia_mx_132",
+    "name": "Distrito Comedia",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/DistritoComediaLOGO2018.png/960px-DistritoComediaLOGO2018.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://45.5.57.58:8000/play/a07n/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ecotelevision_pe_133",
+    "name": "ECO Television",
+    "logo": "https://i.imgur.com/ly1KU6w.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://stream.ecoperu.tv/ECOTV/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ecuadortv_ec_134",
+    "name": "Ecuador TV",
+    "logo": "https://i.imgur.com/hj6EYwe.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "https://video-eu1.streamerr.co/hls/s64029a8fdf/live.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ecuavisa_ec_135",
+    "name": "Ecuavisa (Quito)",
+    "logo": "https://i.imgur.com/Hl5wowk.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://45.224.97.181:9999/Ecuavisa/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ecuavisa_ec_136",
+    "name": "Ecuavisa (Quito)",
+    "logo": "https://i.imgur.com/Hl5wowk.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "https://redirector.dps.live/hls-video/c54ac2799874375c81c1672abb700870537c5223/ecuavisa/ecuavisa.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_el33_es_137",
+    "name": "El 33 (Originals)",
+    "logo": "https://i.imgur.com/frKCBTN.png",
+    "category": "Cultura",
+    "country": "España",
+    "url": "https://directes-tv-int.3catdirectes.cat/live-origin/c33-super3-hls/master.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_elgourmet_ar_138",
+    "name": "El Gourmet (Panregional)",
+    "logo": "https://i.imgur.com/ByMyRI9.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.61.101.11:7050/play/a09s/index.m3u8?hls"
+  },
+  {
+    "id": "ch_iptvorg_eltrece_ar_139",
+    "name": "El Trece",
+    "logo": "https://i.imgur.com/TrgBAdA.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a01d/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_140",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://45.5.118.152:8000/play/a026/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_141",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://201.207.54.159:8000/play/a0ea/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_142",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://181.78.106.127:5000/play/ca042/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_143",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://200.115.120.1:8000/play/ca114/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_144",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://200.115.96.61:9090/play/a01r/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_145",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://177.234.247.66:9975/Enlace/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_enlace_cr_146",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/YwUVTmS.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://45.5.117.57:8999/play/a01c/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_esport3_es_147",
+    "name": "Esport3 (Originals)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Esport3.svg/960px-Esport3.svg.png",
+    "category": "Deportes",
+    "country": "España",
+    "url": "https://directes-tv-int.3catdirectes.cat/live-origin/esport3-hls/master.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_europaeuropa_ar_148",
+    "name": "Europa Europa",
+    "logo": "https://i.imgur.com/w5SOfyJ.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://138.121.15.230:9002/EUROPA-EUROPA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_exitosatv_pe_149",
+    "name": "Exitosa TV",
+    "logo": "https://i.imgur.com/pu0BSB7.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://187.102.210.46/EXITOSA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_exitosatv_pe_150",
+    "name": "Exitosa TV",
+    "logo": "https://i.imgur.com/pu0BSB7.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://luna-4-video.mediaserver.digital/exitosatv_233b-4b49-a726-5a451262/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_f10hd_bo_151",
+    "name": "F10 HD",
+    "logo": "https://i.imgur.com/OEsT0KN.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://tv2.bitstreaming.net:3235/multi_live/play.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_foxsports_ar_152",
+    "name": "Fox Sports",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/FOX_Sports_logo.svg/960px-FOX_Sports_logo.svg.png",
+    "category": "Deportes",
+    "country": "Argentina",
+    "url": "http://158.172.155.130:8000/play/a09x/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_gamavision_ec_153",
+    "name": "Gamavision",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/9/94/Gamavisi%C3%B3n2018new.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://181.78.211.244:8000/play/a0a2/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_gigavision_bo_154",
+    "name": "Gigavision",
+    "logo": "https://i.imgur.com/fE3BkcT.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://tv.bitstreaming.net:3348/live/gigavisionlive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_gigavision_bo_155",
+    "name": "Gigavision",
+    "logo": "https://i.imgur.com/fE3BkcT.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://tv2.bitstreaming.net:3576/multi_live/play.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_globaltv_pe_156",
+    "name": "Global TV",
+    "logo": "https://i.imgur.com/yuEou9C.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://187.102.210.46/GLOBAL/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_globaltv_pe_157",
+    "name": "Global TV",
+    "logo": "https://i.imgur.com/yuEou9C.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://cablered.iptvperu.tv:1936/cablered/global.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_globaltv_pe_158",
+    "name": "Global TV",
+    "logo": "https://i.imgur.com/yuEou9C.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg7.tv360.bitel.com.pe/bitel/global_abr/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_golden_mx_159",
+    "name": "Golden (Panregional)",
+    "logo": "https://i.imgur.com/NNd1lYl.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://138.121.15.230:9002/GOLDEN/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_golden_mx_160",
+    "name": "Golden (Panregional)",
+    "logo": "https://i.imgur.com/NNd1lYl.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://168.196.127.137:6001/play/a06y/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_golden_mx_161",
+    "name": "Golden (Panregional)",
+    "logo": "https://i.imgur.com/NNd1lYl.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://15.204.196.147:22880/RECEPCION-GOLDEN_LAT-FHD/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_goldenedge_mx_162",
+    "name": "Golden Edge (Panregional)",
+    "logo": "https://i.imgur.com/SlSbcp3.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://138.121.15.230:9002/GOLDEN-EDGE/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_goldenedge_mx_163",
+    "name": "Golden Edge (Panregional)",
+    "logo": "https://i.imgur.com/SlSbcp3.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://168.196.127.137:6001/play/a09p/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_goldenedge_mx_164",
+    "name": "Golden Edge (Panregional)",
+    "logo": "https://i.imgur.com/SlSbcp3.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://181.224.200.5:2277/play/a0bd/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_guatevision_gt_165",
+    "name": "Guatevision",
+    "logo": "https://i.imgur.com/mbmHPnO.png",
+    "category": "Noticias",
+    "country": "Guatemala",
+    "url": "http://168.196.127.137:6001/play/a04m/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_guatevision_gt_166",
+    "name": "Guatevision",
+    "logo": "https://i.imgur.com/mbmHPnO.png",
+    "category": "Noticias",
+    "country": "Guatemala",
+    "url": "https://mdstrm.com/live-stream-playlist/69f8df22a762c9b1ab3eabca.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_guatevision_gt_167",
+    "name": "Guatevision",
+    "logo": "https://i.imgur.com/mbmHPnO.png",
+    "category": "Noticias",
+    "country": "Guatemala",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/Guatevision.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_hopechannelproyectoja_cr_168",
+    "name": "Hope Channel PROYECTO JA",
+    "logo": "https://i.imgur.com/VDyf36C.png",
+    "category": "Música",
+    "country": "Costa Rica",
+    "url": "https://edge1-us-miami.picarto.tv/stream/hls/golive%2bXSTUDIOCODE/0_1/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_jbntv_hn_169",
+    "name": "JBN TV",
+    "logo": "https://i.imgur.com/4EbHIvf.png",
+    "category": "General",
+    "country": "Honduras",
+    "url": "https://viewhn.com/jbn_live/enlace/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_jemrtv_hn_170",
+    "name": "JEMR TV (HD)",
+    "logo": "https://i.imgur.com/CnR2m66.png",
+    "category": "General",
+    "country": "Honduras",
+    "url": "https://tv.webmedialive.com/jmrtv/live/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_jn19_pe_171",
+    "name": "JN 19",
+    "logo": "https://i.imgur.com/dudxyqk.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://servilive.com:3028/live/jntv19live.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_juntostv_pe_172",
+    "name": "Juntos TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Juntos_TV_Logo.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://45.70.201.81:8000/play/a019/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_justiciatv_pe_173",
+    "name": "Justicia TV",
+    "logo": "https://i.imgur.com/VOjLXJd.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/justicia.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_karibena_pe_174",
+    "name": "Karibena",
+    "logo": "https://i.imgur.com/cgHjg1e.png",
+    "category": "Música",
+    "country": "Perú",
+    "url": "https://iptv-pe-x-7-g3s-video.egostreaming.pe/karibenatv_685a-pe-a5676-584412/index.fmp4.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_l1max_pe_175",
+    "name": "L1 Max",
+    "logo": "https://i.imgur.com/2fziU2B.png",
+    "category": "Deportes",
+    "country": "Perú",
+    "url": "https://cablered.iptvperu.tv:1936/cablered/liga1max.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_la1_es_176",
+    "name": "La 1",
+    "logo": "https://i.ibb.co/MxJNPHsn/La-1.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://rtvelivestream.rtve.es/rtvesec/la1/la1_main.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_la1_es_177",
+    "name": "La 1",
+    "logo": "https://i.ibb.co/MxJNPHsn/La-1.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://ztnr.rtve.es/ztnr/1688877.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_la1canarias_es_178",
+    "name": "La 1 Canarias",
+    "logo": "https://i.ibb.co/MxJNPHsn/La-1.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://rtvelivestream.rtve.es/rtvesec/can/la1_can_main.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_la1catalunya_es_179",
+    "name": "La 1 Catalunya",
+    "logo": "https://i.ibb.co/MxJNPHsn/La-1.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://rtvelivestream.rtve.es/rtvesec/cat/la1_cat_main.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_lakalle_co_180",
+    "name": "La Kalle",
+    "logo": "https://www.tdtparatodos.tv/sites/default/files/la_kalle.png",
+    "category": "Música",
+    "country": "Colombia",
+    "url": "https://mdstrm.com/live-stream-playlist/58d191f07290fbb058025843.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_latele_pe_181",
+    "name": "La Tele",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/LaTele_Per%C3%BA_2018_Logo.png/960px-LaTele_Per%C3%BA_2018_Logo.png",
+    "category": "Entretenimiento",
+    "country": "Perú",
+    "url": "https://cablered.iptvperu.tv:1936/cablered/la_tele.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_lasestrellas_mx_182",
+    "name": "Las Estrellas",
+    "logo": "https://i.imgur.com/g5ShxZ7.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://45.189.151.7:8000/play/a07s"
+  },
+  {
+    "id": "ch_iptvorg_lasestrellaslatinamerica_mx_183",
+    "name": "Las Estrellas Latin America",
+    "logo": "https://i.imgur.com/g5ShxZ7.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://190.93.224.42/CANAL-LAS-ESTRELLAS/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_latina_pe_184",
+    "name": "Latina",
+    "logo": "https://i.imgur.com/MOsWriY.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://cablered.iptvperu.tv:1936/cablered/latina_new/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_latinaclasicos_pe_185",
+    "name": "Latina Clasicos",
+    "logo": "https://i.imgur.com/q0dAWyj.png",
+    "category": "Cine & Series",
+    "country": "Perú",
+    "url": "https://redirector.rudo.video/hls-video/plus226/latina2/latina2.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_latinanoticias247_pe_186",
+    "name": "Latina Noticias 24/7",
+    "logo": "https://assets.rudo.video/assets/latina/live/logoApi_4b43aad719f5bbf7aa2813c2199e6e3e1755620584.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://redirector.rudo.video/hls-video/567ffde3fa319fadf3419efda25619456231dfea/latinanoticias/latinanoticias.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_lossantostv_cr_187",
+    "name": "Los Santos TV",
+    "logo": "https://i.imgur.com/5xw86wu.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "https://lstv.duckdns.org:449/hls/lstv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_makaotv_do_188",
+    "name": "Makao TV",
+    "logo": "https://i.imgur.com/asD5y7i.png",
+    "category": "Música",
+    "country": "Rep. Dominicana",
+    "url": "https://live.obslivestream.com/makaomux/tracks-v2a1/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_makrodigitaltelevision_ec_189",
+    "name": "MakroDigital Television",
+    "logo": "https://makrodigitaltelevision.com/logo.jpg",
+    "category": "Entretenimiento",
+    "country": "Ecuador",
+    "url": "http://iptv.makrodigitaltv.makrodigital.com:8081/makrodigitaltelevision/iptv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mariavision_mx_190",
+    "name": "Maria Vision",
+    "logo": "https://i.imgur.com/GylOPxE.png",
+    "category": "General",
+    "country": "México",
+    "url": "https://1601580044.rsc.cdn77.org/live/_jcn_/amlst:Mariavision/master.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_masmusicafm_co_191",
+    "name": "MasMusica FM",
+    "logo": "https://i.imgur.com/tCg7owd.png",
+    "category": "Música",
+    "country": "Colombia",
+    "url": "https://video.ejeserver.com/live/masmusica.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mastertv_pe_192",
+    "name": "Master TV",
+    "logo": "https://i.imgur.com/K2ZimRv.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live.obslivestream.com/mastertv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mc_mx_193",
+    "name": "MC",
+    "logo": "https://i.imgur.com/TAjbaml.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://45.5.118.152:8000/play/a03r/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mieltv_pe_194",
+    "name": "Miel TV",
+    "logo": "https://i.imgur.com/dPSFrCs.png",
+    "category": "Música",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/mieltv/mieltv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mileniotelevision_mx_195",
+    "name": "Milenio Television",
+    "logo": "https://i.imgur.com/TG1T5Oh.png",
+    "category": "Noticias",
+    "country": "México",
+    "url": "https://mdstrm.com/live-stream-playlist/610178c7db32a4112d994650.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_mitv_py_196",
+    "name": "MiTV",
+    "logo": "https://i.imgur.com/sgrEt9z.png",
+    "category": "Entretenimiento",
+    "country": "Paraguay",
+    "url": "https://rds3.desdeparaguay.net/mitv/mitv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_monumentaltv_py_197",
+    "name": "Monumental TV",
+    "logo": "https://i.imgur.com/kEcOYML.png",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "http://190.128.214.97:64333/play/a046/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_movistarplus_pe_198",
+    "name": "Movistar Plus",
+    "logo": "https://i.imgur.com/yGQGDoi.png",
+    "category": "Entretenimiento",
+    "country": "Perú",
+    "url": "http://190.108.91.206:9050/play/a0bb/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_musictop_ar_199",
+    "name": "MusicTop",
+    "logo": "https://cdn.mitvstatic.com/channels/ar_musictop_m.png",
+    "category": "Música",
+    "country": "Argentina",
+    "url": "http://190.128.214.97:64333/play/a06o/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nacionaltvperu_pe_200",
+    "name": "Nacional Tv Peru",
+    "logo": "https://i.imgur.com/ad0GNqa.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://play.agenciastreaming.com:8081/nacionaltv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nanduti_py_201",
+    "name": "Nanduti",
+    "logo": "https://i.imgur.com/vnIkhRO.png",
+    "category": "Noticias",
+    "country": "Paraguay",
+    "url": "https://nanduti.b-cdn.net/720p.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nanduti_py_202",
+    "name": "Nanduti",
+    "logo": "https://i.imgur.com/vnIkhRO.png",
+    "category": "Noticias",
+    "country": "Paraguay",
+    "url": "http://190.128.214.97:64333/play/a02d/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nativa_pe_203",
+    "name": "Nativa",
+    "logo": "https://i.imgur.com/Y9k9XSO.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://oneplay.iptvperu.tv:1936/static/nativa1.stream/chunks.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nativatvsatipo_pe_204",
+    "name": "Nativa TV Satipo",
+    "logo": "https://i.imgur.com/ScCAgGB.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/nativatv/nativatv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_neotv_pe_205",
+    "name": "Neo TV",
+    "logo": "https://i.imgur.com/bS5JtYX.jpeg",
+    "category": "Entretenimiento",
+    "country": "Perú",
+    "url": "https://live-evg7.tv360.bitel.com.pe/bitel/neotvSRT/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nettv_ar_206",
+    "name": "NET TV",
+    "logo": "https://i.imgur.com/IhJ0BjF.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://unlimited6-cl.dps.live/nettv/nettv.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ngfederal_ar_207",
+    "name": "NG Federal",
+    "logo": "https://i.imgur.com/lJCIqYn.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "https://617c5175c970b.streamlock.net:4444/tvlink/live/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nowrock_uk_208",
+    "name": "NOW Rock",
+    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/plu-6568a78d635c3c0008765f41.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nowrock_uk_209",
+    "name": "NOW Rock",
+    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lightning-now90s-samsungse.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nowrock_uk_210",
+    "name": "NOW Rock",
+    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lightning-now90s-rakuten.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nowrock_uk_211",
+    "name": "NOW Rock (Poland)",
+    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lightning-now90s-rakuten.amagi.tv/hls/amagi_hls_data_rakutenAA-lightning-now90s-rakuten/CDN/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ntn24_co_212",
+    "name": "NTN24",
+    "logo": "https://i.imgur.com/UoKmSAP.png",
+    "category": "Noticias",
+    "country": "Colombia",
+    "url": "http://181.78.12.119:16123/play/ch80/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_nuestrateleinternacional_co_213",
+    "name": "Nuestra Tele Internacional",
+    "logo": "https://i.imgur.com/JoGQqmP.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.8.199:8000/play/a0a8/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_orbittv_do_214",
+    "name": "ORBIT TV",
+    "logo": "https://i.imgur.com/lizQs3n.png",
+    "category": "General",
+    "country": "Rep. Dominicana",
+    "url": "https://cnn.hostlagarto.com/orbittv/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_oromartv_ec_215",
+    "name": "Oromar TV",
+    "logo": "https://i.imgur.com/j5Vvxd5.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "https://stream.oromar.tv/hls/oromartv_hi/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ozonotv_pe_216",
+    "name": "Ozono TV",
+    "logo": "https://i.imgur.com/Wkdibpv.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://vps.chasquirouter.com/salida/ozono.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_palenquetv_bo_217",
+    "name": "Palenque TV",
+    "logo": "https://i.imgur.com/wAIBvaO.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://tv.bitstreaming.net:3234/live/palenquetvlive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_panamericanatv_pe_218",
+    "name": "Panamericana TV",
+    "logo": "https://i.imgur.com/uQhEDES.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.93.224.42/PANAMERICANA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_panamericanatv_pe_219",
+    "name": "Panamericana TV",
+    "logo": "https://i.imgur.com/uQhEDES.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://181.224.200.5:2277/play/kkio/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_panamericanatv_pe_220",
+    "name": "Panamericana TV",
+    "logo": "https://i.imgur.com/uQhEDES.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/panamericana.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_pbo_pe_221",
+    "name": "PBO",
+    "logo": "https://i.imgur.com/vBpxX4S.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://live-evg11.tv360.bitel.com.pe/bitel/pbo_abr/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_plimplim_ar_222",
+    "name": "Plim Plim",
+    "logo": "https://i.imgur.com/MYc8srh.png",
+    "category": "Infantil",
+    "country": "Argentina",
+    "url": "http://45.70.168.162:1503/play/a02a/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_poderdediostv_bo_223",
+    "name": "Poder de Dios TV",
+    "logo": "https://i.imgur.com/jUfRz3L.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://s3.tvdatta.com:3846/live/poderdedioslive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_poputv_py_224",
+    "name": "Popu TV",
+    "logo": "https://i.imgur.com/UqCogyZ.png",
+    "category": "Entretenimiento",
+    "country": "Paraguay",
+    "url": "https://copacogen.desdeparaguay.net/universotv/universotv_py_alta/playlist.m3u8?admin=nacion"
+  },
+  {
+    "id": "ch_iptvorg_productivatv_py_225",
+    "name": "Productiva TV",
+    "logo": "https://i.imgur.com/KXHK7UP.png",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "https://copacoradios.desdeparaguay.net/productivatv/productivatv_baja/playlist.m3u8?admin=nacion"
+  },
+  {
+    "id": "ch_iptvorg_promartv_ve_226",
+    "name": "PromarTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Promar_Television.png",
+    "category": "General",
+    "country": "Venezuela",
+    "url": "http://vcp1.myplaytv.com:1935/promar/promar/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_pxsports_mx_227",
+    "name": "PX Sports",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/PX_Sports_-_Logo.png/960px-PX_Sports_-_Logo.png",
+    "category": "Deportes",
+    "country": "México",
+    "url": "http://38.65.175.84:8000/play/a0ku/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_qosqotimes_pe_228",
+    "name": "Qosqo Times",
+    "logo": "https://i.imgur.com/oWJauwQ.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://stmv2.srvif.com/qtelevision/qtelevision/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_quinceucr_cr_229",
+    "name": "Quince UCR",
+    "logo": "https://i.imgur.com/U7DUlem.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "https://wowza.ucr.ac.cr/quinceucr/_definst_/quinceucr.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_radiorumbatv_pe_230",
+    "name": "Radio Rumba TV",
+    "logo": "https://i.imgur.com/BYcxI03.png",
+    "category": "Música",
+    "country": "Perú",
+    "url": "https://tv.sistemasandinos.org/rumbatv/video.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnmas_co_231",
+    "name": "RCN Mas",
+    "logo": "https://i.imgur.com/MJzuRAN.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "https://rcntv-rcnmas-1-us.roku.wurl.tv/3000.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnmas_co_232",
+    "name": "RCN Mas",
+    "logo": "https://i.imgur.com/MJzuRAN.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "https://rcntv-rcnmas-1-us.plex.wurl.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnmas_co_233",
+    "name": "RCN Mas",
+    "logo": "https://i.imgur.com/MJzuRAN.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "https://rcntv-rcnmas-1-us.roku.wurl.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnmas_co_234",
+    "name": "RCN Mas",
+    "logo": "https://i.imgur.com/MJzuRAN.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "http://45.224.96.220:18000/play/a098/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnmas_co_235",
+    "name": "RCN Mas",
+    "logo": "https://i.imgur.com/MJzuRAN.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "http://190.128.214.97:64333/play/a04v/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnnovelas_co_236",
+    "name": "RCN Novelas",
+    "logo": "https://i.imgur.com/9wxdWNQ.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "http://170.238.200.199/rcn-novelas/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnnovelas_co_237",
+    "name": "RCN Novelas",
+    "logo": "https://i.imgur.com/9wxdWNQ.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "http://181.78.8.199:8000/play/a0a7/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rcnnovelas_co_238",
+    "name": "RCN Novelas",
+    "logo": "https://i.imgur.com/9wxdWNQ.png",
+    "category": "Entretenimiento",
+    "country": "Colombia",
+    "url": "http://181.65.191.173:8069/play/a061"
+  },
+  {
+    "id": "ch_iptvorg_realmadridtvenglish_es_sd_239",
+    "name": "Real Madrid TV English",
+    "logo": "https://i.imgur.com/5pMo7dL.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://88.212.15.17/live/real_madrid_tv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_realmadridtvenglish_es_240",
+    "name": "Real Madrid TV English",
+    "logo": "https://i.imgur.com/5pMo7dL.png",
+    "category": "Deportes",
+    "country": "España",
+    "url": "https://rmtv.akamaized.net/hls/live/2043154/rmtv-en-web/bitrate_3.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_redcctv_bo_241",
+    "name": "Red CCTV",
+    "logo": "https://i.imgur.com/YC5FRmq.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://ares.disfrutaenlared.com:1936/redcctv/redcctv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_reduno_bo_242",
+    "name": "Red Uno",
+    "logo": "https://i.imgur.com/wfNaEV9.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://tv.centaurychile.com/interactiva/streams/KIgB6QvZ0L8XaSLd3211668845221245.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_regiontvcallao_pe_243",
+    "name": "Region TV Callao",
+    "logo": "https://i.imgur.com/I4grcqk.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://servilive.com:3757/live/regiontvlive.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_regionaltvyaguaron_py_244",
+    "name": "Regional TV Yaguaron",
+    "logo": "https://i.imgur.com/iL5JnSy.jpeg",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "http://190.128.214.97:64333/play/a05o/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rhematv_gt_245",
+    "name": "Rhema TV",
+    "logo": "https://i.imgur.com/5o821rT.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "http://190.61.90.17:40000/play/a0iw/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rhematv_gt_246",
+    "name": "Rhema TV",
+    "logo": "https://i.imgur.com/5o821rT.png",
+    "category": "General",
+    "country": "Guatemala",
+    "url": "https://5e85d90130e77.streamlock.net/6006/6006/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rpptv_pe_247",
+    "name": "RPP TV",
+    "logo": "https://i.imgur.com/oBz3CgE.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/RPP/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rpptv_pe_248",
+    "name": "RPP TV",
+    "logo": "https://i.imgur.com/oBz3CgE.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://redirector.rudo.video/hls-video/567ffde3fa319fadf3419efda25619456231dfea/rpptv/rpptv.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rselvatv_pe_249",
+    "name": "RSelvaTV",
+    "logo": "https://i.imgur.com/DAK5ZnD.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "https://live.obslivestream.com/selvatv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rtp_bo_250",
+    "name": "RTP",
+    "logo": "https://i.imgur.com/cECNvvr.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://rtp.noxun.net/hls720/stream3.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rtp_bo_251",
+    "name": "RTP",
+    "logo": "https://i.imgur.com/cECNvvr.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://rtp.noxun.net/hls/stream.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rtp_bo_252",
+    "name": "RTP",
+    "logo": "https://i.imgur.com/cECNvvr.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://rtp.noxun.net/hls480/stream2.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rts_ec_253",
+    "name": "RTS",
+    "logo": "https://i.imgur.com/PML8cJA.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://45.224.97.181:9999/RTS/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_rts_ec_254",
+    "name": "RTS",
+    "logo": "https://i.imgur.com/PML8cJA.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://157.100.248.242:8080/RTSHD/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_sarapiquitv_cr_255",
+    "name": "Sarapiqui TV",
+    "logo": "https://i.imgur.com/obTnd32.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "https://lstv.duckdns.org:449/hls/stv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_senalcolombia_co_256",
+    "name": "Senal Colombia",
+    "logo": "https://i.imgur.com/Y9x16vl.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.121.15.230:9002/SENAL-COLOMBIA/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_senalcolombia_co_257",
+    "name": "Senal Colombia",
+    "logo": "https://i.imgur.com/Y9x16vl.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://streaming.rtvc.gov.co/TV_Senal_Colombia_live/smil:live.smil/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_senalcolombia_co_258",
+    "name": "Senal Colombia",
+    "logo": "https://i.imgur.com/Y9x16vl.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/senal-colombia-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_sicomtelevision_mx_259",
+    "name": "SICOM Television (XHPBZCTDT)",
+    "logo": "https://i.imgur.com/dbJKErB.png",
+    "category": "General",
+    "country": "México",
+    "url": "https://5d0d1d7a6be9e.streamlock.net/sicom/canal2/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_solartelevision_pe_260",
+    "name": "Solar Television",
+    "logo": "https://i.imgur.com/ufnWpUf.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/corporacionperiodistica/corporacionperiodistica.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_supercanal_pe_261",
+    "name": "Super Canal",
+    "logo": "https://i.imgur.com/eotfCMd.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live.obslivestream.com/supercanal/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_super7fm_do_262",
+    "name": "Super7FM",
+    "logo": "https://i.imgur.com/TJEqwZo.png",
+    "category": "Entretenimiento",
+    "country": "Rep. Dominicana",
+    "url": "https://stream.haislin.com/super7fm/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tctelevision_ec_263",
+    "name": "TC Television",
+    "logo": "https://i.imgur.com/okK02EN.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://177.234.218.66:8084/play/a089/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantillas_do_264",
+    "name": "Tele Antillas",
+    "logo": "https://i.imgur.com/G1pJZkC.png",
+    "category": "General",
+    "country": "Rep. Dominicana",
+    "url": "http://168.196.127.137:6001/play/a04o/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_televid_co_265",
+    "name": "Tele Vid",
+    "logo": "https://i.imgur.com/kVHJU5V.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/a01n/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleamazonas_ec_266",
+    "name": "Teleamazonas (Quito)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Teleamazonas_Logo.png/960px-Teleamazonas_Logo.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://157.100.248.242:8080/TeleamazonasHD/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleamazonas_ec_267",
+    "name": "Teleamazonas (Quito)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Teleamazonas_Logo.png/960px-Teleamazonas_Logo.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://45.224.97.181:9999/Teleamazonas/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_268",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.61.47.54:8000/play/a00z/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_269",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.60.46.228:8888/play/a02r/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_270",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.82.130:8000/play/a0rs/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_271",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://38.134.250.110:8000/play/a012/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_272",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.211.244:8005/play/a07y/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquia_co_273",
+    "name": "Teleantioquia",
+    "logo": "https://i.imgur.com/6WMV2Az.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.115.120.1:8000/play/ca246/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleantioquiaplus_co_274",
+    "name": "Teleantioquia Plus",
+    "logo": "https://static.wikia.nocookie.net/logopedia/images/b/b0/TeleantioquiaPlus.svg/revision/latest/scale-to-width-down/320?cb=20260826013823&path-prefix=es",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/teleantioquia-go-tdt/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telecafe_co_275",
+    "name": "Telecafe",
+    "logo": "https://i.imgur.com/28XmS1J.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://138.121.15.230:9002/TELECAFE/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telecafe_co_276",
+    "name": "Telecafe",
+    "logo": "https://i.imgur.com/28XmS1J.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.16.156:18000/play/a0dt"
+  },
+  {
+    "id": "ch_iptvorg_telecafe_co_277",
+    "name": "Telecafe",
+    "logo": "https://i.imgur.com/28XmS1J.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://190.60.46.228:8888/play/a02z/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telecafe_co_278",
+    "name": "Telecafe",
+    "logo": "https://i.imgur.com/28XmS1J.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.211.244:8005/play/a083/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telecaribe_co_279",
+    "name": "Telecaribe",
+    "logo": "https://i.imgur.com/E35cXHt.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://38.134.250.110:8000/play/a013/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teledanli_hn_280",
+    "name": "TeleDanli",
+    "logo": "https://i.imgur.com/BACuUSc.png",
+    "category": "General",
+    "country": "Honduras",
+    "url": "https://live20.bozztv.com/giatv/giatv-canal9/canal9/chunks.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telefeinternacional_ar_281",
+    "name": "Telefe Internacional",
+    "logo": "https://i.imgur.com/HNcCX3h.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a08l/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telefuturo_py_282",
+    "name": "Telefuturo",
+    "logo": "https://i.imgur.com/6lVrFvb.png",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "http://158.172.217.18:8000/play/a0ns/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telehit_mx_283",
+    "name": "TeleHit",
+    "logo": "https://i.imgur.com/NVxHxJn.png",
+    "category": "Música",
+    "country": "México",
+    "url": "http://200.115.120.1:8000/play/ca048/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleislas_co_284",
+    "name": "Teleislas",
+    "logo": "https://i.imgur.com/aKHGRyk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://5ab772334c39c.streamlock.net/live-teleislas/teleislas/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleislas_co_285",
+    "name": "Teleislas",
+    "logo": "https://i.imgur.com/aKHGRyk.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.211.244:8005/play/a08d/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telelima_pe_286",
+    "name": "Telelima",
+    "logo": "https://i.imgur.com/HzWRvXc.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg11.tv360.bitel.com.pe/bitel/telelimaSRT/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telemedellin_co_287",
+    "name": "Telemedellin",
+    "logo": "https://i.imgur.com/6NGOIhH.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://181.78.82.130:8000/play/a0ru/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telepacifico_co_288",
+    "name": "Telepacifico",
+    "logo": "https://i.imgur.com/39hy97J.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "https://play.cdn.enetres.net/6E5C615AA5FF4123ACAF0DAB57B7B8DC021/022/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teleselva_pe_289",
+    "name": "Teleselva",
+    "logo": "https://i.imgur.com/cu7hTn8.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/tvnoticiassatipo/tvnoticiassatipo.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telesur_ve_290",
+    "name": "Telesur",
+    "logo": "https://i.imgur.com/P50VjRX.png",
+    "category": "Noticias",
+    "country": "Venezuela",
+    "url": "https://mblesmain01.telesur.ultrabase.net/mbliveMain/480p/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_telesur_ve_291",
+    "name": "Telesur",
+    "logo": "https://i.imgur.com/P50VjRX.png",
+    "category": "Noticias",
+    "country": "Venezuela",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/telesur.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_teletica7_cr_292",
+    "name": "Teletica 7",
+    "logo": "https://i.imgur.com/ctnvE3c.png",
+    "category": "General",
+    "country": "Costa Rica",
+    "url": "http://181.119.177.253:8000/play/a0da"
+  },
+  {
+    "id": "ch_iptvorg_televen_ve_293",
+    "name": "Televen",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Televen_logo.PNG",
+    "category": "General",
+    "country": "Venezuela",
+    "url": "http://181.78.8.199:8000/play/a09j/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_televisioncanaria_es_294",
+    "name": "Television Canaria",
+    "logo": "https://rtvc.es/archivos/2020/03/logo-mobilretina.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://d1oyt3v08gcy18.cloudfront.net/index-events.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_theretrochannel_pr_295",
+    "name": "The Retro Channel",
+    "logo": "https://i.imgur.com/t3i1HtE.jpg",
+    "category": "Música",
+    "country": "Puerto Rico",
+    "url": "https://583ed2f226ac2.streamlock.net/theretrochannel/stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tigosports_gt_296",
+    "name": "Tigo Sports",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Tigo_Sports_2025.png/960px-Tigo_Sports_2025.png",
+    "category": "Deportes",
+    "country": "Guatemala",
+    "url": "http://168.196.127.137:6001/play/a0b0/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tlnovelaslatinamerica_mx_297",
+    "name": "Tlnovelas Latin America",
+    "logo": "https://i.imgur.com/Rvm38Mu.png",
+    "category": "Cine & Series",
+    "country": "México",
+    "url": "http://138.121.15.230:9002/TELENOVELAS/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tn8_ni_298",
+    "name": "TN8",
+    "logo": "https://i.imgur.com/m0Zdxiz.png",
+    "category": "General",
+    "country": "Nicaragua",
+    "url": "http://190.61.101.11:7050/play/a07j/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_transmediatelevisionmorelia_mx_299",
+    "name": "Transmedia Television Morelia",
+    "logo": "https://i.imgur.com/jYMpVQA.png",
+    "category": "General",
+    "country": "México",
+    "url": "https://5ca3e84a76d30.streamlock.net/tmtv/videotmtv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_trivu_pe_300",
+    "name": "Trivu",
+    "logo": "https://i.imgur.com/QrUYjOS.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live-evg11.tv360.bitel.com.pe/bitel/trivutv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_trivu_pe_301",
+    "name": "Trivu",
+    "logo": "https://i.imgur.com/QrUYjOS.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://stream2.trivutv.com/memfs/1bc8358a-665e-4bc1-a580-e4fcb54b5103.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tsi_hn_302",
+    "name": "TSi",
+    "logo": "https://i.imgur.com/GEyxDnf.png",
+    "category": "Noticias",
+    "country": "Honduras",
+    "url": "https://mdstrm.com/live-stream-playlist/6287fdc9303e3008289ab711.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tudn_mx_303",
+    "name": "TUDN",
+    "logo": "https://i.imgur.com/oT5CAvd.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://45.5.118.152:8000/play/a08n/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_turbomixradiotv_pe_304",
+    "name": "Turbo Mix Radio TV",
+    "logo": "https://i.imgur.com/AsdBQa3.png",
+    "category": "Música",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/turbomixoficial/turbomixoficial.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvaire_py_305",
+    "name": "TV Aire",
+    "logo": "https://i.imgur.com/7gHFKPZ.png",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "https://video.hostingcaaguazu.com:19360/tvairepy/tvairepy.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvcamara_py_306",
+    "name": "TV Camara",
+    "logo": "https://i.imgur.com/Mfypr0t.png",
+    "category": "General",
+    "country": "Paraguay",
+    "url": "http://158.172.217.18:8000/play/a00m/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvcuatro41_mx_307",
+    "name": "TV Cuatro 4.1",
+    "logo": "https://i.imgur.com/Of044Jx.png",
+    "category": "General",
+    "country": "México",
+    "url": "https://5f1af61612fb5.streamlock.net/tv4/tv4.smil/.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvfamilia_ve_308",
+    "name": "TV Familia",
+    "logo": "https://i.imgur.com/A3bU5e7.png",
+    "category": "General",
+    "country": "Venezuela",
+    "url": "https://59d39900ebfb8.streamlock.net/tvfamilia_270p/tvfamilia_270p/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvlatina_bo_309",
+    "name": "TV Latina",
+    "logo": "https://i.imgur.com/V6wxEdh.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://master.tucableip.com/tvlatina/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperu_pe_310",
+    "name": "TV Peru",
+    "logo": "https://i.imgur.com/6io0IrX.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/tvperu.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperu_pe_311",
+    "name": "TV Peru",
+    "logo": "https://i.imgur.com/6io0IrX.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.93.224.42/VIVA-TV/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperu_pe_312",
+    "name": "TV Peru",
+    "logo": "https://i.imgur.com/6io0IrX.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://181.224.200.5:2277/play/a0dx/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperu_pe_313",
+    "name": "TV Peru",
+    "logo": "https://i.imgur.com/6io0IrX.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://187.102.210.46/TVPERU/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperu_pe_314",
+    "name": "TV Peru",
+    "logo": "https://i.imgur.com/6io0IrX.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://cablered.iptvperu.tv:1936/cablered/tvperu_new/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvperunoticias_pe_315",
+    "name": "TV Peru Noticias",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/TV_Per%C3%BA_Noticias_-_2019_logo.png/960px-TV_Per%C3%BA_Noticias_-_2019_logo.png",
+    "category": "Noticias",
+    "country": "Perú",
+    "url": "http://bantel-cdn1.iptvperu.tv:1935/btnscrtn/tvperunoticias.stream/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvc_ec_316",
+    "name": "TVC",
+    "logo": "https://i.imgur.com/k6h5Cz2.png",
+    "category": "General",
+    "country": "Ecuador",
+    "url": "http://157.100.248.242:8080/TVCHD/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tveinternacionaleurope_es_317",
+    "name": "TVE Internacional Europe",
+    "logo": "https://i.ibb.co/RpKLCMvp/tve.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://rtvelivestream-rtveplayplus.rtve.es/rtvesec/int/tvei_eu_main_576.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tvestar_es_318",
+    "name": "TVE Star (HD)",
+    "logo": "https://i.ibb.co/j98NY8Mr/starcolor.png",
+    "category": "Cine & Series",
+    "country": "España",
+    "url": "https://rtvelivestream-rtveplayplus.rtve.es/rtvesec/int/star_main_dvr_1080.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_tycsports_ar_319",
+    "name": "TyC Sports",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/TyC_Sports_logo.svg/960px-TyC_Sports_logo.svg.png",
+    "category": "Deportes",
+    "country": "Argentina",
+    "url": "https://live-04-11-tyc-app-web.vodgc.net/tyc24/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_ucl_uy_320",
+    "name": "UCL",
+    "logo": "https://i.imgur.com/BzQphbw.png",
+    "category": "Cultura",
+    "country": "Uruguay",
+    "url": "https://livedelta.cdn.antel.net.uy/out/u/url_canalu.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_umsatvuinternacional_bo_321",
+    "name": "UMSA TVU Internacional (HD)",
+    "logo": "https://tvu.umsa.bo/documents/780216/12171558/Logo+TVU-Int.png/b67c9c61-7516-e38a-a425-72e61f3824c6?t=1751574228493",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://live.enhdtv.com:8081/8026/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_umsatvulp_bo_322",
+    "name": "UMSA TVU LP",
+    "logo": "https://tvu.umsa.bo/documents/780216/12171558/logo+tvu+icon.png/4367e79e-4541-d340-0e82-3943b73e7b18?t=1747686917412",
+    "category": "Noticias",
+    "country": "Bolivia",
+    "url": "https://live.enhdtv.com:8081/8190/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_un24_ve_323",
+    "name": "UN24 (untv720)",
+    "logo": "https://i.imgur.com/nGJlulj.png",
+    "category": "Noticias",
+    "country": "Venezuela",
+    "url": "https://59d39900ebfb8.streamlock.net/untv-720/untv-720/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_unifranz_bo_324",
+    "name": "Unifranz (HD)",
+    "logo": "https://unifranz.edu.bo/wp-content/themes/unifranz-web/public/images/logos/logo-light-min.442cee.svg",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://live.enhdtv.com:8081/8192/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_univisionlatinamerica_mx_325",
+    "name": "Univision Latin America",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Logo_Univision_2019.svg/960px-Logo_Univision_2019.svg.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://190.93.224.42/UNIVISION/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_uraniotv_pe_326",
+    "name": "Uranio TV",
+    "logo": "https://i.imgur.com/EeNpfIr.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://live.obslivestream.com/uraniotv/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_vevoretrorock_us_327",
+    "name": "Vevo Retro Rock",
+    "logo": "https://i.imgur.com/H1Aap4E.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://d2hdqrshyzxswl.cloudfront.net/Vevo_Retro_Rock.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_videotourchannel_cr_328",
+    "name": "Video Tour Channel",
+    "logo": "https://i.imgur.com/zEi8eMC.png",
+    "category": "Música",
+    "country": "Costa Rica",
+    "url": "http://k4.usastreams.com/videotour/videotour/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_vmlatino_cr_329",
+    "name": "VM Latino",
+    "logo": "https://i.imgur.com/Dvo1b82.png",
+    "category": "Música",
+    "country": "Costa Rica",
+    "url": "https://59ef525c24caa.streamlock.net/vmtv/vmlatino/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_vostv_bo_330",
+    "name": "Vos TV",
+    "logo": "https://i.imgur.com/Cm1Xjeq.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "https://59d39900ebfb8.streamlock.net/vostv/vostv/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_voyagessaveurs_es_331",
+    "name": "Voyages & Saveurs (FR)",
+    "logo": "https://images.pluto.tv/channels/680291e38e1ff89c2427aefd/colorLogoPNG_1749650211442.png",
+    "category": "General",
+    "country": "España",
+    "url": "https://jmp2.uk/plu-680291e38e1ff89c2427aefd.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_winsports_co_332",
+    "name": "Win Sports",
+    "logo": "https://i.imgur.com/DuSSrHV.png",
+    "category": "Deportes",
+    "country": "Colombia",
+    "url": "http://181.78.12.119:16123/play/ch18/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_wiprtv61_pr_333",
+    "name": "WIPR-TV 6.1 (HD)",
+    "logo": "https://i.imgur.com/MGJaxFO.png",
+    "category": "General",
+    "country": "Puerto Rico",
+    "url": "https://ott3.streann.com/loadbalancer/services/public/channels-secure/6273ffeae4b037870081ff51/playlist.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_wkaqtv22_pr_334",
+    "name": "WKAQ-TV 2.2 (HD)",
+    "logo": "https://i.imgur.com/TL6xy4y.png",
+    "category": "General",
+    "country": "Puerto Rico",
+    "url": "https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream2/master.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_wtvcanal20_ni_335",
+    "name": "WTV Canal 20",
+    "logo": "https://i.imgur.com/nb81xeU.png",
+    "category": "Entretenimiento",
+    "country": "Nicaragua",
+    "url": "https://cloudvideo.servers10.com:8081/8130/index.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_xiterockxmetal_nl_336",
+    "name": "XITE Rock x Metal (US)",
+    "logo": "https://i.imgur.com/szDM09P.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/plu-623a1b5188ecdc0007c9ef5a.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_xtotv_bo_337",
+    "name": "XTOTV",
+    "logo": "https://i.imgur.com/MLwLlWl.png",
+    "category": "General",
+    "country": "Bolivia",
+    "url": "http://190.104.15.135/0.ts"
+  },
+  {
+    "id": "ch_iptvorg_zelevetv_pe_338",
+    "name": "Zeleve TV",
+    "logo": "https://i.imgur.com/CGWaunJ.jpeg",
+    "category": "General",
+    "country": "Perú",
+    "url": "https://7.innovatestream.pe:19360/zelevetv/zelevetv.m3u8"
+  },
+  {
+    "id": "ch_iptvorg_zoom_co_339",
+    "name": "Zoom",
+    "logo": "https://i.imgur.com/euy5zp6.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.122.223.13:55000/play/zoom-banda-ku/index.m3u8"
   }
 ]

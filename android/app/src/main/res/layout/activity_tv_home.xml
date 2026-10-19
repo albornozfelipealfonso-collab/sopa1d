@@ -71,6 +71,7 @@
             <TextView android:id="@+id/navSeries" style="@style/TvNavItem" android:tag="📺|Series" android:text="📺" />
             <TextView android:id="@+id/navAnime" style="@style/TvNavItem" android:tag="🌸|Anime" android:text="🌸" />
             <TextView android:id="@+id/navLive" style="@style/TvNavItem" android:tag="📡|TV en Vivo" android:text="📡" />
+            <TextView android:id="@+id/navMusic" style="@style/TvNavItem" android:tag="🎸|Música" android:text="🎸" />
             <TextView android:id="@+id/navGuide" style="@style/TvNavItem" android:tag="🗓️|Guía TV" android:text="🗓️" />
             <TextView android:id="@+id/navMyList" style="@style/TvNavItem" android:tag="❤️|Mi lista" android:text="❤️" />
 

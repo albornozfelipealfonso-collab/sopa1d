@@ -128,7 +128,8 @@ public class TvHomeActivity extends Activity {
         navItems = new View[]{
                 findViewById(R.id.navHome), findViewById(R.id.navSearch), findViewById(R.id.navMovies),
                 findViewById(R.id.navSeries), findViewById(R.id.navAnime), findViewById(R.id.navLive),
-                findViewById(R.id.navMyList), findViewById(R.id.navGuide), findViewById(R.id.navWeb)};
+                findViewById(R.id.navMyList), findViewById(R.id.navGuide), findViewById(R.id.navMusic),
+                findViewById(R.id.navWeb)};
         for (View v : navItems) {
             v.setOnClickListener(this::onNavClick);
             // ▶ desde el menú entra al contenido: la búsqueda de foco por
@@ -292,6 +293,7 @@ public class TvHomeActivity extends Activity {
         else if (id == R.id.navSeries) rowsAdapter.setRows(Catalog.seriesRows());
         else if (id == R.id.navAnime) rowsAdapter.setRows(Catalog.animeRows());
         else if (id == R.id.navLive) showLive();
+        else if (id == R.id.navMusic) showMusic();
         else if (id == R.id.navMyList) showMyList();
         else if (id == R.id.navSearch) {
             lastQuery = "";
@@ -373,8 +375,9 @@ public class TvHomeActivity extends Activity {
     // ------------------------------------------------------------ en vivo
 
     private void showLive() {
+        boolean forMusic = selectedNav != null && selectedNav.getId() == R.id.navMusic;
         if (liveByCategory != null) {
-            rowsAdapter.setRows(liveRows());
+            if (!forMusic) rowsAdapter.setRows(liveRows());
             return;
         }
         rowsAdapter.setRows(new ArrayList<>());
@@ -385,8 +388,30 @@ public class TvHomeActivity extends Activity {
                 liveByCategory = grouped;
                 message.setVisibility(View.GONE);
                 if (selectedNav != null && selectedNav.getId() == R.id.navLive) rowsAdapter.setRows(liveRows());
+                else if (selectedNav != null && selectedNav.getId() == R.id.navMusic) showMusic();
             });
         });
+    }
+
+    /** Música en vivo por género, con Rock & Metal primero. */
+    private void showMusic() {
+        if (liveByCategory == null) {
+            // Se cargan los canales; al terminar, showLive vuelve a llamar aquí
+            showLive();
+            return;
+        }
+        List<CatalogItem> music = null;
+        for (Map.Entry<String, List<CatalogItem>> e : liveByCategory.entrySet()) {
+            if (e.getKey().endsWith("Música")) music = e.getValue();
+        }
+        List<Catalog.Row> list = new ArrayList<>();
+        if (music != null) {
+            for (Map.Entry<String, List<CatalogItem>> e : MusicGenres.group(music).entrySet()) {
+                list.add(new Catalog.Row(e.getKey(), e.getValue()));
+            }
+        }
+        rowsAdapter.setRows(list);
+        if (list.isEmpty()) showMessage("Cargando música…");
     }
 
     private List<Catalog.Row> liveRows() {
@@ -493,6 +518,7 @@ public class TvHomeActivity extends Activity {
             addChip("● EN VIVO", 0xFFE50914, true);
             if (Favorites.contains(this, item.id)) addChip("★ Favorito", 0xFFF5C518, true);
             if (!item.genres.isEmpty()) addChip(item.genres, 0, false);
+            if ("Música".equals(item.genres)) addChip(MusicGenres.of(item.title), 0, false);
             if (!item.overview.isEmpty()) addChip(item.overview, 0, false);
             heroOverview.setText(liveGuideText(item));
         } else {
