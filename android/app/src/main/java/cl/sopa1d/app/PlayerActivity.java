@@ -18,11 +18,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.OptIn;
+import androidx.media3.common.C;
 import androidx.media3.common.Format;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Tracks;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
+import androidx.media3.common.Timeline;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.exoplayer.DefaultLoadControl;
@@ -66,8 +68,30 @@ public class PlayerActivity extends Activity {
     private static final int BUFFER_FOR_PLAYBACK_MS = 2500;
     private static final int BUFFER_AFTER_REBUFFER_MS = 4000;
 
-    /** Retardo respecto del borde: ~1.5 segmentos, con margen antes de que expiren. */
+    /**
+     * Retardo inicial respecto del directo, antes de conocer la ventana del
+     * canal. Luego se ajusta una vez con liveOffsetFor() (ver onTimelineChanged).
+     */
     private static final long LIVE_TARGET_OFFSET_MS = 8000;
+
+    /**
+     * Las ventanas varían mucho entre señales: TNT Chile 1 publica 4 segmentos
+     * de 5 s (20 s) con PROGRAM-DATE-TIME y la lista llega con 3-9 s de
+     * atraso; la Señal 2 publica 4 de 3 s (12 s) sin fecha. Un retardo fijo no
+     * sirve para ambas: 8 s dejaba a Chile 1 pegado al último segmento conocido
+     * (corte de ~1 s cada 5 s) y 14 s mandaba a la Señal 2 al inicio de la
+     * ventana, donde los segmentos expiran antes de terminar de bajarlos.
+     * Se apunta a la mitad de la ventana, sin pasar de 11 s antes del final.
+     */
+    private static long liveOffsetFor(long windowMs, boolean hasProgramDateTime) {
+        long fromEnd = Math.min(windowMs / 2, 11000);
+        // Con PROGRAM-DATE-TIME ExoPlayer mide contra el reloj, no contra el
+        // final de la lista: se suma el atraso típico con que esta se publica.
+        return hasProgramDateTime ? fromEnd + 3000 : fromEnd;
+    }
+
+    /** El retardo ya se ajustó a la ventana del canal actual. */
+    private boolean liveOffsetTuned;
 
     private static final int MAX_RETRIES = 30;
     private static final long RETRY_DELAY_MS = 2000;
@@ -183,6 +207,7 @@ public class PlayerActivity extends Activity {
 
         retries = 0;
         firstFrameShown = false;
+        liveOffsetTuned = false;
         showBanner((index + 1) + " · " + ch.name);
         showStatus(getString(R.string.connecting));
 
@@ -195,7 +220,7 @@ public class PlayerActivity extends Activity {
         }
         if (player == null) initPlayer(wantSoftware);
 
-        player.setMediaSource(buildSource(ch.url));
+        player.setMediaSource(buildSource(ch.url, LIVE_TARGET_OFFSET_MS));
         player.prepare();
         player.setPlayWhenReady(true);
 
@@ -276,6 +301,11 @@ public class PlayerActivity extends Activity {
             }
 
             @Override
+            public void onTimelineChanged(Timeline timeline, int reason) {
+                if (!liveOffsetTuned) tuneLiveOffset(timeline);
+            }
+
+            @Override
             public void onRenderedFirstFrame() {
                 firstFrameShown = true;
                 ui.removeCallbacks(firstFrameWatchdog);
@@ -328,7 +358,30 @@ public class PlayerActivity extends Activity {
         playerView.requestFocus();
     }
 
-    private MediaSource buildSource(String url) {
+    /**
+     * Con la primera playlist ya se sabe cuánto dura la ventana del canal. Si
+     * el retardo ideal difiere del inicial, se reabre la fuente una sola vez
+     * con el correcto: HlsMediaSource no admite cambiarlo en caliente y
+     * replaceMediaItem() perdería el User-Agent y las banderas del extractor.
+     */
+    private void tuneLiveOffset(Timeline timeline) {
+        if (timeline.isEmpty() || player == null) return;
+        Timeline.Window w = timeline.getWindow(player.getCurrentMediaItemIndex(), new Timeline.Window());
+        if (!w.isLive() || w.getDurationMs() == C.TIME_UNSET) return;
+        liveOffsetTuned = true;
+
+        long target = liveOffsetFor(w.getDurationMs(), w.windowStartTimeMs != C.TIME_UNSET);
+        Channel ch = ChannelStore.at(index);
+        Log.i(TAG, "Ventana en vivo " + w.getDurationMs() + " ms"
+                + (w.windowStartTimeMs != C.TIME_UNSET ? " con fecha" : " sin fecha")
+                + " -> retardo " + target + " ms");
+        if (ch == null || Math.abs(target - LIVE_TARGET_OFFSET_MS) < 1500) return;
+
+        player.setMediaSource(buildSource(ch.url, target));
+        player.prepare();
+    }
+
+    private MediaSource buildSource(String url, long targetOffsetMs) {
         // Varios orígenes IPTV rechazan peticiones sin User-Agent de navegador.
         DefaultHttpDataSource.Factory http = new DefaultHttpDataSource.Factory()
                 .setUserAgent("Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 "
@@ -340,7 +393,7 @@ public class PlayerActivity extends Activity {
         MediaItem item = new MediaItem.Builder()
                 .setUri(url)
                 .setLiveConfiguration(new MediaItem.LiveConfiguration.Builder()
-                        .setTargetOffsetMs(LIVE_TARGET_OFFSET_MS)
+                        .setTargetOffsetMs(targetOffsetMs)
                         // Ajuste fino de velocidad para absorber deriva sin saltos audibles
                         .setMinPlaybackSpeed(0.96f)
                         .setMaxPlaybackSpeed(1.04f)
@@ -356,7 +409,7 @@ public class PlayerActivity extends Activity {
         // Por defecto ExoPlayer descarta todo hasta ver un IDR, así que nunca
         // llegaba nada al decodificador y se quedaba "cargando" para siempre.
         // Medido en TNT Chile 1: 0 IDR en 12 s, 26 puntos de arranque I.
-        return new HlsMediaSource.Factory(http)
+        return new HlsMediaSource.Factory(new TolerantDataSource.Factory(http))
                 .setExtractorFactory(new DefaultHlsExtractorFactory(
                         DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES, true))
                 .setAllowChunklessPreparation(false)
@@ -375,8 +428,10 @@ public class PlayerActivity extends Activity {
         Log.w(TAG, "Error de reproducción: " + error.getErrorCodeName()
                 + " (" + error.errorCode + ")", error);
 
-        if (error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW) {
-            // Nos quedamos atrás del directo: volver al borde y seguir.
+        if (error.errorCode == PlaybackException.ERROR_CODE_BEHIND_LIVE_WINDOW
+                || error.errorCode == PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE) {
+            // Nos quedamos atrás del directo (o el servidor ya borró el
+            // segmento que se estaba bajando): volver al borde sin esperar.
             player.seekToDefaultPosition();
             player.prepare();
             return;
