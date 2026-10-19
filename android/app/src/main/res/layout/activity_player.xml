@@ -143,6 +143,23 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Celular: botones grandes para cambiar de canal sin control -->
+    <LinearLayout
+        android:id="@+id/liveTouchControls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView android:id="@+id/touchDown" style="@style/TouchButton" android:text="▼  Anterior" />
+        <TextView android:id="@+id/touchList" style="@style/TouchButton" android:text="☰  Canales" />
+        <TextView android:id="@+id/touchGuide" style="@style/TouchButton" android:text="📅  Guía" />
+        <TextView android:id="@+id/touchUp" style="@style/TouchButton" android:text="Siguiente  ▲" />
+    </LinearLayout>
+
     <!-- Celular: pasar el canal a la TV -->
     <TextView
         android:id="@+id/liveSendToTv"
@@ -236,6 +253,25 @@
             android:textColor="#E11D48"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <!-- Celular: filtrar entre miles de canales escribiendo el nombre -->
+        <EditText
+            android:id="@+id/channelSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/search_bg"
+            android:hint="🔍  Buscar canal (tnt, espn, mega…)"
+            android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <ListView
             android:id="@+id/channelList"

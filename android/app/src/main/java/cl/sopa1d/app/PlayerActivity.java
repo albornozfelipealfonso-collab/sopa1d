@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -189,7 +190,8 @@ public class PlayerActivity extends Activity {
         hideSystemUi();
         setupPanel();
 
-        // En móvil no hay mando: doble toque cambia el encuadre.
+        // En móvil no hay mando: doble toque cambia el encuadre y deslizar
+        // cambia de canal (↑ ↓), abre la lista (←) o la programación (→).
         final GestureDetector gestures = new GestureDetector(this,
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
@@ -197,35 +199,112 @@ public class PlayerActivity extends Activity {
                         cycleResize();
                         return true;
                     }
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float vx, float vy) {
+                        if (e1 == null || panelOpen() || scheduleOpen()) return false;
+                        float dx = e2.getX() - e1.getX(), dy = e2.getY() - e1.getY();
+                        float min = 60 * getResources().getDisplayMetrics().density;
+                        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > min) {
+                            switchBy(dy < 0 ? 1 : -1); // como pasar de canal hacia arriba
+                            return true;
+                        }
+                        if (Math.abs(dx) > min) {
+                            if (dx < 0) togglePanel(true); else toggleSchedule(true);
+                            return true;
+                        }
+                        return false;
+                    }
                 });
+
+        if (!isTv) setupTouchControls();
         playerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 gestures.onTouchEvent(event);
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     Channel cur = ChannelStore.at(index);
-                    if (cur != null) showOsd(cur); // muestra rótulo y "Enviar a la TV"
+                    if (cur != null && !panelOpen() && !scheduleOpen()) {
+                        showOsd(cur); // rótulo, "Enviar a la TV" y ▲ ☰ 📅 ▼
+                        showTouchControls();
+                    }
                 }
-                return false; // PlayerView sigue recibiendo el toque
+                // Se consume todo el gesto: si no, solo llega el primer toque y
+                // no se detecta el deslizamiento. Los controles de ExoPlayer
+                // (pausa, adelantar) no aplican a un canal en vivo.
+                return true;
             }
         });
     }
 
     // ---------------------------------------------------------------- panel
 
+    // --------------------------------------------------------- celular
+
+    private View touchControls;
+    private final Runnable hideTouchControls = () -> {
+        if (touchControls != null) touchControls.setVisibility(View.GONE);
+    };
+
+    /** ▲ ☰ 📅 ▼ a la derecha: aparecen al tocar la pantalla y se ocultan solos. */
+    private void setupTouchControls() {
+        touchControls = findViewById(R.id.liveTouchControls);
+        findViewById(R.id.touchUp).setOnClickListener(v -> { switchBy(1); showTouchControls(); });
+        findViewById(R.id.touchDown).setOnClickListener(v -> { switchBy(-1); showTouchControls(); });
+        findViewById(R.id.touchList).setOnClickListener(v -> togglePanel(true));
+        findViewById(R.id.touchGuide).setOnClickListener(v -> toggleSchedule(true));
+
+        // Con miles de canales, en el celular se busca escribiendo
+        EditText search = findViewById(R.id.channelSearch);
+        search.setVisibility(View.VISIBLE);
+        search.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void afterTextChanged(android.text.Editable s) { filterChannels(s.toString()); }
+        });
+    }
+
+    private void showTouchControls() {
+        if (touchControls == null || panelOpen() || scheduleOpen()) return;
+        touchControls.setVisibility(View.VISIBLE);
+        ui.removeCallbacks(hideTouchControls);
+        ui.postDelayed(hideTouchControls, 5000);
+    }
+
+    /** Número de cada canal en la lista completa (la búsqueda muestra un subconjunto). */
+    private final java.util.IdentityHashMap<Channel, Integer> channelNumber = new java.util.IdentityHashMap<>();
+    private ArrayAdapter<Channel> channelAdapter;
+
+    private void filterChannels(String query) {
+        String q = Epg.norm(query);
+        List<Channel> all = ChannelStore.get();
+        List<Channel> shown = new ArrayList<>();
+        for (Channel ch : all) {
+            if (q.isEmpty() || Epg.norm(ch.name).contains(q)) shown.add(ch);
+            if (shown.size() >= 400 && !q.isEmpty()) break;
+        }
+        channelAdapter.clear();
+        channelAdapter.addAll(q.isEmpty() ? all : shown);
+        list.setSelection(0);
+    }
+
     private void setupPanel() {
         List<Channel> all = ChannelStore.get();
+        channelNumber.clear();
+        for (int i = 0; i < all.size(); i++) channelNumber.put(all.get(i), i);
         // El texto se arma al mostrar cada fila: así "▶ programa" está al día
         // y no se consulta la guía de miles de canales de golpe.
-        ArrayAdapter<Channel> adapter = new ArrayAdapter<Channel>(this, R.layout.item_channel_epg, R.id.channelName, all) {
+        ArrayAdapter<Channel> adapter = new ArrayAdapter<Channel>(this, R.layout.item_channel_epg, R.id.channelName,
+                new ArrayList<>(all)) {
             @Override
             public View getView(int position, View convertView, android.view.ViewGroup parent) {
                 TextView v = (TextView) super.getView(position, convertView, parent);
                 Channel ch = getItem(position);
+                Integer number = channelNumber.get(ch);
                 android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
                 // Nombre en una sola línea: si no, los largos tapaban el programa
                 String name = ch.name.length() > 30 ? ch.name.substring(0, 29) + "…" : ch.name;
-                sb.append(String.format(Locale.ROOT, "%3d   %s", position + 1, name));
+                sb.append(String.format(Locale.ROOT, "%3d   %s", (number == null ? position : number) + 1, name));
                 Epg.Program now = Epg.nowNext(ch.name, ch.country)[0];
                 if (now != null) {
                     int st = sb.length();
@@ -237,11 +316,13 @@ public class PlayerActivity extends Activity {
                 return v;
             }
         };
+        channelAdapter = adapter;
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                index = position;
+                Integer number = channelNumber.get(channelAdapter.getItem(position));
+                index = number != null ? number : position;
                 togglePanel(false);
                 openChannel();
             }
@@ -251,9 +332,20 @@ public class PlayerActivity extends Activity {
     private void togglePanel(boolean show) {
         panel.setVisibility(show ? View.VISIBLE : View.GONE);
         if (show) {
-            list.setSelection(index);
+            hideTouchControls.run();
+            Integer pos = null;
+            Channel cur = ChannelStore.at(index);
+            for (int i = 0; channelAdapter != null && i < channelAdapter.getCount(); i++) {
+                if (channelAdapter.getItem(i) == cur) { pos = i; break; }
+            }
+            list.setSelection(pos != null ? pos : 0);
             list.requestFocus();
         } else {
+            // Al cerrar: búsqueda limpia y teclado fuera, para la próxima vez
+            EditText search = findViewById(R.id.channelSearch);
+            if (search.getText().length() > 0) search.setText("");
+            ((android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                    .hideSoftInputFromWindow(search.getWindowToken(), 0);
             playerView.requestFocus();
         }
     }
@@ -546,7 +638,9 @@ public class PlayerActivity extends Activity {
         osdNumber.setText(String.valueOf(index + 1));
         osdName.setText(ch.name);
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
-        osdInfo.setText(cat + "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   0-9 ir al número");
+        osdInfo.setText(cat + (isTv
+                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   0-9 ir al número"
+                : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía"));
         fillOsdGuide(ch);
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
         if (ch.logo != null && !ch.logo.isEmpty()) {
@@ -620,6 +714,7 @@ public class PlayerActivity extends Activity {
     // ------------------------------------------------------- programación
 
     private void toggleSchedule(boolean show) {
+        if (show) hideTouchControls.run();
         if (!show) {
             schedulePanel.setVisibility(View.GONE);
             playerView.requestFocus();
@@ -844,6 +939,9 @@ public class PlayerActivity extends Activity {
     protected void onNewIntent(android.content.Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        // Puede llegar con otra lista de canales (ChannelStore ya se cambió):
+        // el panel y su numeración se rehacen, o el buscador elegiría mal.
+        setupPanel();
         int nuevo = intent.getIntExtra(EXTRA_INDEX, index);
         if (nuevo != index || player == null) {
             index = nuevo;
