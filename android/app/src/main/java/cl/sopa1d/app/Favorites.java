@@ -62,6 +62,25 @@ final class Favorites {
         return !removed;
     }
 
+    /**
+     * Si la lista de canales cambió la señal de un canal (p. ej. se
+     * corrigieron las de TNT Premium Chile 1 y TNT Básico, que venían
+     * cruzadas), el favorito guardado sigue apuntando a la vieja: se
+     * actualiza por nombre. nameToUrl: nombre exacto → URL actual.
+     */
+    static void reconcile(Context c, java.util.Map<String, String> nameToUrl) {
+        JSONArray arr = load(c);
+        boolean changed = false;
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject o = arr.optJSONObject(i);
+            String now = nameToUrl.get(o.optString("name"));
+            if (now != null && !now.equals(o.optString("url"))) {
+                try { o.put("url", now); changed = true; } catch (Exception ignored) {}
+            }
+        }
+        if (changed) prefs(c).edit().putString(KEY, arr.toString()).apply();
+    }
+
     /** Favoritos como canales de la pantalla de inicio (mismo formato que los demás). */
     static List<CatalogItem> asItems(Context c) {
         List<CatalogItem> out = new ArrayList<>();

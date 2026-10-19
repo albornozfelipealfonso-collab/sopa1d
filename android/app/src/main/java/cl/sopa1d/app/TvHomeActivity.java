@@ -454,9 +454,11 @@ public class TvHomeActivity extends Activity {
                     "Entretenimiento", "Música", "Cultura", "General");
             Map<String, List<CatalogItem>> byCat = new HashMap<>();
             List<CatalogItem> featured = new ArrayList<>();
+            Map<String, String> nameToUrl = new HashMap<>();
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
                 String url = o.optString("url");
+                if (!url.isEmpty()) nameToUrl.put(o.optString("name"), url);
                 // Caídos según la revisión de la app (o, si aún no corrió, según
                 // la marca que dejó tools/check_channels.mjs): no se muestran
                 if (url.isEmpty() || ChannelHealth.isHidden(url, o.optBoolean("dead"))) continue;
@@ -469,6 +471,8 @@ public class TvHomeActivity extends Activity {
                 byCat.get(cat).add(ch);
                 if (FEATURED.matcher(name).find() && featured.size() < 60) featured.add(ch);
             }
+            // Favoritos guardados con una señal que la lista ya corrigió
+            Favorites.reconcile(this, nameToUrl);
             out.put("⭐ Destacados", featured);
             for (String cat : order) if (byCat.containsKey(cat)) out.put(iconFor(cat) + " " + cat, byCat.remove(cat));
             for (Map.Entry<String, List<CatalogItem>> e : byCat.entrySet()) out.put(e.getKey(), e.getValue());

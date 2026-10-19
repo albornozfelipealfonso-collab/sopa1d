@@ -94,7 +94,7 @@ const LIVE_RAM_MAX_SEGS = 90;           // ~4.5 minutos de video guardados en RA
 const LIVE_PLAYLIST_WINDOW = 20;        // segmentos visibles en la playlist publicada (~60s)
 const LIVE_DEFAULT_BUFFER_SEC = 18;     // retardo por defecto (s)
 const LIVE_PINNED_URLS = new Set([
-    'https://stream1.bitred.cl/tnt_sports/index.m3u8',      // TNT Sports Premium HD (Chile 1)
+    'http://190.108.83.69:8000/play/a03i/index.m3u8',      // TNT Sports Premium HD (Chile 1)
     'http://200.59.191.177:8000/play/a0o9/index.m3u8?hls', // TNT Sports Premium HD (Señal 2 60fps)
     'http://205.235.6.29:8000/play/a104/index.m3u8?hls'    // TNT Sports Premium HD (Señal 3 Backup)
 ]);
@@ -1160,7 +1160,7 @@ function startServer(port) {
         // Pre-calentar TNT Sports Premium HD (Chile 1) al iniciar para sintonización instantánea sin cortes
         setTimeout(() => {
             try {
-                getOrCreateLiveHlsSession('https://stream1.bitred.cl/tnt_sports/index.m3u8');
+                getOrCreateLiveHlsSession('http://190.108.83.69:8000/play/a03i/index.m3u8');
             } catch (e) {}
         }, 500);
     });
