@@ -30,6 +30,8 @@ public class DetailActivity extends Activity {
 
     private static final String TAG = "Sopa1D";
     static final String EXTRA_ITEM = "item";
+    /** Desde "Seguir viendo": reproducir en cuanto se sepan las temporadas. */
+    static final String EXTRA_AUTOPLAY = "autoplay";
 
     private static final String[] LANGUAGES = {"Latino", "Castellano", "Subtitulado"};
 
@@ -37,7 +39,8 @@ public class DetailActivity extends Activity {
     private final ExecutorService io = Executors.newSingleThreadExecutor();
 
     private CatalogItem item;
-    private TextView btnPlay, btnLanguage;
+    private TextView btnPlay, btnLanguage, btnMyList;
+    private boolean autoplay;
     private RecyclerView seasonsList, episodesList;
 
     private List<Catalog.Season> seasons = new ArrayList<>();
@@ -68,6 +71,15 @@ public class DetailActivity extends Activity {
 
         btnPlay = findViewById(R.id.btnPlay);
         btnLanguage = findViewById(R.id.btnLanguage);
+        btnMyList = findViewById(R.id.btnMyList);
+        btnMyList.setOnClickListener(v -> {
+            boolean added = WatchHistory.toggleFavorite(this, item);
+            updateMyListButton();
+            android.widget.Toast.makeText(this, added ? "Agregado a Mi lista" : "Quitado de Mi lista",
+                    android.widget.Toast.LENGTH_SHORT).show();
+        });
+        updateMyListButton();
+        autoplay = getIntent().getBooleanExtra(EXTRA_AUTOPLAY, false);
         seasonsList = findViewById(R.id.seasonsList);
         episodesList = findViewById(R.id.episodesList);
         seasonsList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -79,6 +91,7 @@ public class DetailActivity extends Activity {
         btnPlay.requestFocus();
 
         if ("tv".equals(item.type)) loadSeasons();
+        else if (autoplay) playResume();
     }
 
     @Override
@@ -99,6 +112,10 @@ public class DetailActivity extends Activity {
         for (int k = 0; k < LANGUAGES.length; k++) if (LANGUAGES[k].equalsIgnoreCase(cur)) i = k;
         WatchHistory.setLanguage(this, LANGUAGES[(i + 1) % LANGUAGES.length]);
         updateLanguageButton();
+    }
+
+    private void updateMyListButton() {
+        btnMyList.setText(WatchHistory.isFavorite(this, item) ? "✓  En mi lista" : "＋  Mi lista");
     }
 
     private void updateLanguageButton() {
@@ -147,7 +164,10 @@ public class DetailActivity extends Activity {
 
     private void showSeasons(List<Catalog.Season> list) {
         seasons = list;
-        if (list.isEmpty()) return;
+        if (list.isEmpty()) {
+            if (autoplay) { autoplay = false; playResume(); }
+            return;
+        }
         int max = 0;
         for (Catalog.Season s : list) max = Math.max(max, s.number);
         episodeCounts = new int[max + 1];
@@ -169,6 +189,10 @@ public class DetailActivity extends Activity {
             seasonsList.getAdapter().notifyDataSetChanged();
         }, pos -> seasons.get(pos).number == selectedSeason));
         showEpisodes();
+        if (autoplay) {
+            autoplay = false;
+            playResume();
+        }
     }
 
     private void showEpisodes() {

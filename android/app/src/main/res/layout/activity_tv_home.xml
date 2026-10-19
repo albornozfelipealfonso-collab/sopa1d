@@ -1,107 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Pantalla principal de TV: menú a la izquierda, contenido a la derecha -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Pantalla principal de TV: cartelera de fondo, menú a la izquierda que se
+     encoge a íconos, filas de carátulas, y la entrada animada encima. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sopa_bg"
-    android:orientation="horizontal">
+    android:background="@color/sopa_bg">
+
+    <!-- Cartelera: portada del título enfocado, a la derecha y arriba -->
+    <ImageView
+        android:id="@+id/heroBackdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="300dp"
+        android:alpha="0.9"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="300dp"
+        android:background="@drawable/hero_scrim_left" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/hero_scrim" />
 
     <LinearLayout
-        android:id="@+id/tvNav"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0B0D14"
-        android:orientation="vertical"
-        android:paddingTop="28dp">
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="26dp"
-            android:paddingBottom="26dp"
-            android:text="🍜 SOPA1D"
-            android:textColor="#E11D48"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView android:id="@+id/navHome" style="@style/TvNavItem" android:text="🏠  Inicio" />
-        <TextView android:id="@+id/navSearch" style="@style/TvNavItem" android:text="🔍  Buscar" />
-        <TextView android:id="@+id/navMovies" style="@style/TvNavItem" android:text="🎬  Películas" />
-        <TextView android:id="@+id/navSeries" style="@style/TvNavItem" android:text="📺  Series" />
-        <TextView android:id="@+id/navAnime" style="@style/TvNavItem" android:text="🌸  Anime" />
-        <TextView android:id="@+id/navLive" style="@style/TvNavItem" android:text="📡  TV en Vivo" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView android:id="@+id/navWeb" style="@style/TvNavItem"
-            android:layout_marginBottom="24dp"
-            android:text="🌐  Versión web"
-            android:textSize="15sp" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <!-- Fondo: portada del título enfocado -->
-        <ImageView
-            android:id="@+id/heroBackdrop"
-            android:layout_width="match_parent"
+        <!-- Menú lateral: solo íconos; se despliega al entrar en él -->
+        <LinearLayout
+            android:id="@+id/tvNav"
+            android:layout_width="92dp"
             android:layout_height="match_parent"
-            android:alpha="0.45"
-            android:scaleType="centerCrop" />
+            android:background="@drawable/nav_bg"
+            android:orientation="vertical"
+            android:paddingTop="28dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/hero_scrim" />
+            <TextView
+                android:id="@+id/navLogo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="28dp"
+                android:paddingBottom="30dp"
+                android:singleLine="true"
+                android:text="🍜"
+                android:textColor="#E11D48"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView android:id="@+id/navHome" style="@style/TvNavItem" android:tag="🏠|Inicio" android:text="🏠" />
+            <TextView android:id="@+id/navSearch" style="@style/TvNavItem" android:tag="🔍|Buscar" android:text="🔍" />
+            <TextView android:id="@+id/navMovies" style="@style/TvNavItem" android:tag="🎬|Películas" android:text="🎬" />
+            <TextView android:id="@+id/navSeries" style="@style/TvNavItem" android:tag="📺|Series" android:text="📺" />
+            <TextView android:id="@+id/navAnime" style="@style/TvNavItem" android:tag="🌸|Anime" android:text="🌸" />
+            <TextView android:id="@+id/navLive" style="@style/TvNavItem" android:tag="📡|TV en Vivo" android:text="📡" />
+            <TextView android:id="@+id/navMyList" style="@style/TvNavItem" android:tag="❤️|Mi lista" android:text="❤️" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView android:id="@+id/navWeb" style="@style/TvNavItem"
+                android:layout_marginBottom="24dp"
+                android:tag="🌐|Versión web"
+                android:text="🌐" />
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <!-- Datos del título enfocado -->
             <LinearLayout
                 android:id="@+id/heroInfo"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="250dp"
                 android:orientation="vertical"
-                android:paddingLeft="40dp"
-                android:paddingTop="36dp"
-                android:paddingRight="200dp">
+                android:paddingLeft="48dp"
+                android:paddingTop="40dp"
+                android:paddingRight="360dp">
 
                 <TextView
                     android:id="@+id/heroTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:fontFamily="sans-serif-condensed"
+                    android:maxLines="1"
+                    android:shadowColor="#CC000000"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"
                     android:textColor="#FFFFFF"
-                    android:textSize="34sp"
+                    android:textSize="40sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/heroMeta"
+                <LinearLayout
+                    android:id="@+id/heroChips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:textColor="#F5C518"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" />
 
                 <TextView
                     android:id="@+id/heroOverview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:ellipsize="end"
                     android:lineSpacingExtra="3dp"
                     android:maxLines="3"
-                    android:textColor="#D9FFFFFF"
+                    android:shadowColor="#CC000000"
+                    android:shadowRadius="6"
+                    android:textColor="#E6FFFFFF"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -110,11 +128,11 @@
                 android:id="@+id/searchBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/search_bg"
-                android:hint="Escribe una película, serie o anime y pulsa OK"
+                android:hint="🔍  Escribe una película, serie o anime"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
@@ -130,16 +148,40 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
-                android:paddingBottom="120dp" />
+                android:paddingBottom="160dp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/homeMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="92dp"
+        android:textColor="#B3FFFFFF"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <!-- Entrada animada al abrir la app -->
+    <FrameLayout
+        android:id="@+id/splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:clickable="true"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/homeMessage"
+            android:id="@+id/splashLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="#B3FFFFFF"
-            android:textSize="18sp"
-            android:visibility="gone" />
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.08"
+            android:shadowColor="#E11D48"
+            android:shadowRadius="40"
+            android:text="SOPA1D"
+            android:textColor="#E11D48"
+            android:textSize="96sp" />
     </FrameLayout>
-</LinearLayout>
+</FrameLayout>

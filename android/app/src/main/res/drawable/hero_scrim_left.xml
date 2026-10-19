@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Funde la portada con el fondo por la izquierda, donde va el texto -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="0"
+        android:centerColor="#8007080C"
+        android:centerX="0.35"
+        android:endColor="#0007080C"
+        android:startColor="#FF07080C" />
+</shape>

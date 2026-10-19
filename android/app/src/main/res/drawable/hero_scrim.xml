@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Oscurece la portada hacia abajo para que las filas se lean bien -->
+<!-- Oscurece hacia abajo: la portada se luce arriba y las filas se leen bien -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:angle="270"
-        android:centerColor="#B307080C"
+        android:centerColor="#4007080C"
+        android:centerY="0.3"
         android:endColor="#FF07080C"
-        android:startColor="#4007080C" />
+        android:startColor="#0007080C" />
 </shape>

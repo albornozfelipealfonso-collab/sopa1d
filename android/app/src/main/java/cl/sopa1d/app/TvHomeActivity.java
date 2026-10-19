@@ -1,20 +1,25 @@
 package cl.sopa1d.app;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,19 +46,27 @@ import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
- * Inicio para Android TV, estilo Netflix: menú lateral por secciones y filas
- * de carátulas por categoría, todo manejable con las flechas del control.
- * Arriba se muestra la portada y la sinopsis del título enfocado.
+ * Inicio para Android TV, estilo Netflix: cartelera con la portada del título
+ * enfocado, menú lateral que se encoge a íconos, y filas de carátulas por
+ * categoría ("Top 10" con números gigantes, "Seguir viendo" con progreso).
+ * Todo se maneja con las flechas y el OK del control.
  */
 public class TvHomeActivity extends Activity {
 
     private static final String TAG = "Sopa1D";
 
+    private static final int NAV_COLLAPSED_DP = 92;
+    private static final int NAV_EXPANDED_DP = 270;
+    /** Espera antes de cambiar la cartelera, para no recargar al pasar rápido. */
+    private static final long HERO_DELAY_MS = 220;
+
     private final Handler ui = new Handler(Looper.getMainLooper());
     private final ExecutorService io = Executors.newFixedThreadPool(4);
 
     private ImageView heroBackdrop;
-    private TextView heroTitle, heroMeta, heroOverview, message;
+    private TextView heroTitle, heroOverview, message, navLogo;
+    private LinearLayout heroChips;
+    private View nav;
     private EditText searchBox;
     private RecyclerView rows;
     private RowsAdapter rowsAdapter;
@@ -61,8 +75,11 @@ public class TvHomeActivity extends Activity {
     private View selectedNav;
     /** Última carátula enfocada, para volver a ella desde el menú. */
     private View lastCard;
-    /** La cabecera ya muestra algo (si no, se llena con el primer título). */
+    /** La cartelera ya muestra algo (si no, se llena con el primer título). */
     private boolean heroFilled;
+    private String heroImage;
+    private boolean navExpanded;
+    private ValueAnimator navAnim;
     private long lastBackPress;
 
     /** Canales agrupados por categoría (se cargan una vez desde los assets). */
@@ -75,13 +92,27 @@ public class TvHomeActivity extends Activity {
 
         heroBackdrop = findViewById(R.id.heroBackdrop);
         heroTitle = findViewById(R.id.heroTitle);
-        heroMeta = findViewById(R.id.heroMeta);
+        heroChips = findViewById(R.id.heroChips);
         heroOverview = findViewById(R.id.heroOverview);
         message = findViewById(R.id.homeMessage);
         searchBox = findViewById(R.id.searchBox);
         rows = findViewById(R.id.rows);
+        nav = findViewById(R.id.tvNav);
+        navLogo = findViewById(R.id.navLogo);
 
-        rows.setLayoutManager(new LinearLayoutManager(this));
+        // La fila enfocada siempre queda arriba, con su título a la vista. El
+        // desplazamiento por defecto solo mostraba la carátula (agrandada al
+        // enfocarse) y el título de la fila quedaba tapado.
+        rows.setLayoutManager(new LinearLayoutManager(this) {
+            @Override
+            public boolean requestChildRectangleOnScreen(RecyclerView parent, View child,
+                                                         android.graphics.Rect rect, boolean immediate,
+                                                         boolean focusedChildVisible) {
+                int dy = child.getTop() - parent.getPaddingTop();
+                if (dy != 0) parent.smoothScrollBy(0, dy);
+                return true;
+            }
+        });
         rows.setItemAnimator(null);
         rowsAdapter = new RowsAdapter();
         rows.setAdapter(rowsAdapter);
@@ -89,7 +120,7 @@ public class TvHomeActivity extends Activity {
         navItems = new View[]{
                 findViewById(R.id.navHome), findViewById(R.id.navSearch), findViewById(R.id.navMovies),
                 findViewById(R.id.navSeries), findViewById(R.id.navAnime), findViewById(R.id.navLive),
-                findViewById(R.id.navWeb)};
+                findViewById(R.id.navMyList), findViewById(R.id.navWeb)};
         for (View v : navItems) {
             v.setOnClickListener(this::onNavClick);
             // ▶ desde el menú entra al contenido: la búsqueda de foco por
@@ -107,13 +138,16 @@ public class TvHomeActivity extends Activity {
             });
         }
 
-        // Al volver del contenido al menú con ◀, el foco cae en la sección
-        // actual y no en la que por casualidad quedó a la misma altura.
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalFocusChangeListener((oldF, newF) -> {
-            if (newF != null && isNav(newF) && oldF != null && !isNav(oldF)
-                    && selectedNav != null && newF != selectedNav) {
+            if (newF == null) return;
+            // Al volver del contenido al menú con ◀, el foco cae en la sección
+            // actual y no en la que por casualidad quedó a la misma altura.
+            if (isNav(newF) && oldF != null && !isNav(oldF) && selectedNav != null && newF != selectedNav) {
                 selectedNav.requestFocus();
+                return;
             }
+            // Como en Netflix: el menú solo se despliega mientras se usa.
+            setNavExpanded(isNav(newF));
         });
 
         searchBox.setOnEditorActionListener((v, actionId, event) -> {
@@ -139,19 +173,60 @@ public class TvHomeActivity extends Activity {
         });
 
         select(findViewById(R.id.navHome));
-        findViewById(R.id.navHome).requestFocus();
+        if (savedInstanceState == null) playSplash();
+        // Se entra directo a las carátulas, con el menú plegado
+        ui.postDelayed(this::focusFirstCard, savedInstanceState == null ? 1700 : 300);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // "Seguir viendo" cambia después de ver algo
-        if (selectedNav != null && selectedNav.getId() == R.id.navHome) showHome();
+        // "Seguir viendo" y "Mi lista" cambian después de ver o guardar algo
+        if (selectedNav == null) return;
+        // Solo se recarga si cambió algo: recargar siempre hacía perder la
+        // carátula en la que estaba el usuario al volver de una ficha.
+        String sig = personalSignature();
+        if (sig.equals(lastSignature)) return;
+        if (selectedNav.getId() == R.id.navHome) showHome();
+        else if (selectedNav.getId() == R.id.navMyList) showMyList();
     }
+
+    private String lastSignature = "";
+
+    private String personalSignature() {
+        StringBuilder sb = new StringBuilder();
+        for (CatalogItem c : WatchHistory.continueWatching(this)) sb.append(c.id).append(c.label).append(Math.round(c.progress * 100)).append(',');
+        sb.append('|');
+        for (CatalogItem c : WatchHistory.favorites(this)) sb.append(c.id).append(',');
+        return sb.toString();
+    }
+
+    // -------------------------------------------------------------- menú
 
     private boolean isNav(View v) {
         for (View n : navItems) if (n == v) return true;
         return false;
+    }
+
+    private void setNavExpanded(boolean expand) {
+        if (expand == navExpanded) return;
+        navExpanded = expand;
+        for (View v : navItems) {
+            String[] parts = String.valueOf(v.getTag()).split("\\|");
+            ((TextView) v).setText(expand ? parts[0] + "   " + parts[1] : parts[0]);
+        }
+        navLogo.setText(expand ? "🍜 SOPA1D" : "🍜");
+
+        final ViewGroup.LayoutParams lp = nav.getLayoutParams();
+        int target = dp(expand ? NAV_EXPANDED_DP : NAV_COLLAPSED_DP);
+        if (navAnim != null) navAnim.cancel();
+        navAnim = ValueAnimator.ofInt(lp.width, target).setDuration(180);
+        navAnim.setInterpolator(new DecelerateInterpolator());
+        navAnim.addUpdateListener(a -> {
+            lp.width = (int) a.getAnimatedValue();
+            nav.setLayoutParams(lp);
+        });
+        navAnim.start();
     }
 
     private void onNavClick(View v) {
@@ -183,6 +258,7 @@ public class TvHomeActivity extends Activity {
         else if (id == R.id.navSeries) rowsAdapter.setRows(Catalog.seriesRows());
         else if (id == R.id.navAnime) rowsAdapter.setRows(Catalog.animeRows());
         else if (id == R.id.navLive) showLive();
+        else if (id == R.id.navMyList) showMyList();
         else if (id == R.id.navSearch) {
             lastQuery = "";
             rowsAdapter.setRows(new ArrayList<>());
@@ -192,11 +268,25 @@ public class TvHomeActivity extends Activity {
     }
 
     private void showHome() {
+        lastSignature = personalSignature();
         List<Catalog.Row> list = new ArrayList<>();
         List<CatalogItem> cont = WatchHistory.continueWatching(this);
-        if (!cont.isEmpty()) list.add(new Catalog.Row("▶ Seguir viendo", cont));
+        if (!cont.isEmpty()) list.add(new Catalog.Row("▶ Seguir viendo", cont).style(Catalog.Row.WIDE));
+        List<CatalogItem> favs = WatchHistory.favorites(this);
+        if (!favs.isEmpty()) list.add(new Catalog.Row("❤️ Mi lista", favs));
         list.addAll(Catalog.homeRows());
         rowsAdapter.setRows(list);
+    }
+
+    private void showMyList() {
+        lastSignature = personalSignature();
+        List<Catalog.Row> list = new ArrayList<>();
+        List<CatalogItem> favs = WatchHistory.favorites(this);
+        if (!favs.isEmpty()) list.add(new Catalog.Row("❤️ Mi lista", favs));
+        List<CatalogItem> cont = WatchHistory.continueWatching(this);
+        if (!cont.isEmpty()) list.add(new Catalog.Row("▶ Seguir viendo", cont).style(Catalog.Row.WIDE));
+        rowsAdapter.setRows(list);
+        if (list.isEmpty()) showMessage("Aún no guardas nada. En cada título pulsa “＋ Mi lista”.");
     }
 
     private final Runnable autoSearch = () -> runSearch(searchBox.getText().toString().trim());
@@ -218,28 +308,29 @@ public class TvHomeActivity extends Activity {
         message.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Deja la fila enfocada arriba del todo, con su título a la vista. Por
-     * defecto RecyclerView solo desplaza lo justo para mostrar la carátula y
-     * el título de la fila queda tapado.
-     */
-    private void alignRowOf(View card) {
-        // Se aplaza: RecyclerView hace su propio desplazamiento al recibir el
-        // foco justo después de este callback y pisaría el nuestro.
-        ui.post(() -> {
-            View rowView = rows.findContainingItemView(card);
-            if (rowView == null) return;
-            int pos = rows.getChildAdapterPosition(rowView);
-            if (pos == RecyclerView.NO_POSITION || rowView.getTop() == 0) return;
-            rows.smoothScrollBy(0, rowView.getTop());
-        });
-    }
-
     private void focusFirstCard() {
         RecyclerView.ViewHolder vh = rows.findViewHolderForAdapterPosition(0);
         if (vh == null) return;
         RecyclerView inner = vh.itemView.findViewById(R.id.rowItems);
         if (inner != null && inner.getChildCount() > 0) inner.getChildAt(0).requestFocus();
+    }
+
+    // ------------------------------------------------------------ entrada
+
+    /** Logo que crece y se desvanece, como el "tudum" de Netflix. */
+    private void playSplash() {
+        final View splash = findViewById(R.id.splash);
+        View logo = findViewById(R.id.splashLogo);
+        splash.setVisibility(View.VISIBLE);
+        logo.setScaleX(0.6f);
+        logo.setScaleY(0.6f);
+        logo.setAlpha(0f);
+        logo.animate().alpha(1f).scaleX(1.05f).scaleY(1.05f).setDuration(700)
+                .setInterpolator(new DecelerateInterpolator())
+                .withEndAction(() -> logo.animate().scaleX(1.6f).scaleY(1.6f).alpha(0f).setDuration(450).start())
+                .start();
+        splash.animate().alpha(0f).setStartDelay(1150).setDuration(400)
+                .withEndAction(() -> splash.setVisibility(View.GONE)).start();
     }
 
     // ------------------------------------------------------------ en vivo
@@ -291,9 +382,10 @@ public class TvHomeActivity extends Activity {
                 String url = o.optString("url");
                 if (url.isEmpty()) continue;
                 String name = o.optString("name");
+                String cat = o.optString("category", "General");
                 CatalogItem ch = new CatalogItem("live", url, name, "", 0,
                         o.optString("country", ""), emptyToNull(o.optString("logo")), null);
-                String cat = o.optString("category", "General");
+                ch.genres = cat;
                 if (!byCat.containsKey(cat)) byCat.put(cat, new ArrayList<CatalogItem>());
                 byCat.get(cat).add(ch);
                 if (FEATURED.matcher(name).find() && featured.size() < 60) featured.add(ch);
@@ -328,7 +420,10 @@ public class TvHomeActivity extends Activity {
     private void playLive(List<CatalogItem> row, int index) {
         try {
             JSONArray arr = new JSONArray();
-            for (CatalogItem c : row) arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id));
+            for (CatalogItem c : row) {
+                arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id)
+                        .put("logo", c.poster == null ? "" : c.poster).put("category", c.genres));
+            }
             ChannelStore.set(arr.toString());
             Intent i = new Intent(this, PlayerActivity.class);
             i.putExtra(PlayerActivity.EXTRA_INDEX, index);
@@ -338,27 +433,81 @@ public class TvHomeActivity extends Activity {
         }
     }
 
-    // ------------------------------------------------------------- hero
+    // ---------------------------------------------------------- cartelera
+
+    private CatalogItem pendingHero;
+    private final Runnable applyHero = () -> { if (pendingHero != null) showHeroNow(pendingHero); };
 
     private void showHero(CatalogItem item) {
+        pendingHero = item;
+        ui.removeCallbacks(applyHero);
+        ui.postDelayed(applyHero, HERO_DELAY_MS);
+    }
+
+    private void showHeroNow(CatalogItem item) {
         heroTitle.setText(item.title);
+        heroChips.removeAllViews();
         if (item.isLive()) {
-            heroMeta.setText("📡 En vivo" + (item.overview.isEmpty() ? "" : " · " + item.overview));
-            heroOverview.setText("Pulsa OK para ver. En el reproductor, ▲ ▼ cambian de canal.");
+            addChip("● EN VIVO", 0xFFE50914, true);
+            if (!item.genres.isEmpty()) addChip(item.genres, 0, false);
+            if (!item.overview.isEmpty()) addChip(item.overview, 0, false);
+            heroOverview.setText("Pulsa OK para ver. En el reproductor, ▲ ▼ cambian de canal y OK abre la lista.");
         } else {
-            StringBuilder meta = new StringBuilder();
-            if (item.rating > 0) meta.append(String.format(Locale.ROOT, "⭐ %.1f   ", item.rating));
-            if (!item.year.isEmpty()) meta.append(item.year).append("   ");
-            meta.append("movie".equals(item.type) ? "Película" : "Serie");
-            heroMeta.setText(meta);
+            if (item.rating > 0) addChip(String.format(Locale.ROOT, "⭐ %.1f", item.rating), 0xFFF5C518, true);
+            if (!item.year.isEmpty()) addChip(item.year, 0, false);
+            addChip("HD", 0, false);
+            addChip("movie".equals(item.type) ? "Película" : "Serie", 0, false);
+            if (!item.label.isEmpty()) addChip("Vas en " + item.label, 0xFFE50914, true);
+            if (!item.genres.isEmpty()) addText(item.genres);
             heroOverview.setText(item.overview);
         }
-        String img = item.backdrop != null ? item.backdrop : item.poster;
-        if (img != null && !item.isLive()) {
-            Glide.with(this).load(img).into(heroBackdrop);
-        } else {
+
+        String img = item.isLive() ? null : (item.backdrop != null ? item.backdrop : item.poster);
+        if (img == null) {
+            heroImage = null;
             heroBackdrop.setImageDrawable(null);
+        } else if (!img.equals(heroImage)) {
+            heroImage = img;
+            Glide.with(this).load(img)
+                    .transition(DrawableTransitionOptions.withCrossFade(450))
+                    .into(heroBackdrop);
         }
+    }
+
+    /** Etiqueta de la cartelera; con color sólido si fill != 0. */
+    private void addChip(String text, int fill, boolean bold) {
+        TextView t = new TextView(this);
+        t.setText(text);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        t.setTextColor(fill == 0xFFF5C518 ? 0xFF07080C : 0xFFFFFFFF);
+        if (bold) t.setTypeface(t.getTypeface(), android.graphics.Typeface.BOLD);
+        t.setPadding(dp(10), dp(3), dp(10), dp(3));
+        if (fill != 0) {
+            android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+            bg.setColor(fill);
+            bg.setCornerRadius(dp(6));
+            t.setBackground(bg);
+        } else {
+            t.setBackgroundResource(R.drawable.chip_bg);
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.rightMargin = dp(8);
+        heroChips.addView(t, lp);
+    }
+
+    private void addText(String text) {
+        TextView t = new TextView(this);
+        t.setText(text);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        t.setTextColor(0xCCFFFFFF);
+        t.setSingleLine(true);
+        t.setPadding(dp(6), 0, 0, 0);
+        heroChips.addView(t);
+    }
+
+    private int dp(int v) {
+        return Math.round(v * getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -380,6 +529,7 @@ public class TvHomeActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        ui.removeCallbacksAndMessages(null);
         io.shutdownNow();
         super.onDestroy();
     }
@@ -406,9 +556,10 @@ public class TvHomeActivity extends Activity {
         public void onBindViewHolder(final RowHolder h, int position) {
             final Catalog.Row row = data.get(position);
             h.title.setText(row.title);
-            h.cards.setItems(new ArrayList<CatalogItem>());
+            h.cards.setItems(new ArrayList<CatalogItem>(), row.style);
             if (row.fixed != null) {
-                h.cards.setItems(row.fixed);
+                h.boundUrl = null;
+                h.cards.setItems(row.fixed, row.style);
                 return;
             }
             final int gen = generation;
@@ -422,10 +573,11 @@ public class TvHomeActivity extends Activity {
                     Log.w(TAG, "Fila sin datos: " + url, e);
                     items = new ArrayList<>();
                 }
+                if (row.style == Catalog.Row.TOP10 && items.size() > 10) items = items.subList(0, 10);
                 final List<CatalogItem> result = items;
                 ui.post(() -> {
                     if (gen != generation || !url.equals(h.boundUrl)) return;
-                    h.cards.setItems(result);
+                    h.cards.setItems(result, row.style);
                     if (result.isEmpty() && data.size() == 1) showMessage("No se encontró nada 😕");
                 });
             });
@@ -454,15 +606,25 @@ public class TvHomeActivity extends Activity {
 
     private final class CardsAdapter extends RecyclerView.Adapter<CardHolder> {
         private List<CatalogItem> items = new ArrayList<>();
+        private int style = Catalog.Row.POSTER;
 
-        void setItems(List<CatalogItem> list) {
+        void setItems(List<CatalogItem> list, int rowStyle) {
             items = list;
+            style = rowStyle;
             notifyDataSetChanged();
         }
 
         @Override
+        public int getItemViewType(int position) {
+            return style;
+        }
+
+        @Override
         public CardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new CardHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tv_card, parent, false));
+            int layout = viewType == Catalog.Row.TOP10 ? R.layout.item_tv_top10
+                    : viewType == Catalog.Row.WIDE ? R.layout.item_tv_wide
+                    : R.layout.item_tv_card;
+            return new CardHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
 
         @Override
@@ -470,50 +632,42 @@ public class TvHomeActivity extends Activity {
             final CatalogItem item = items.get(position);
             if (!heroFilled) {
                 heroFilled = true;
-                showHero(item);
+                showHeroNow(item);
             }
-            h.title.setText(item.title);
-            h.badge.setVisibility(View.GONE);
 
-            ViewGroup.LayoutParams lp = h.itemView.getLayoutParams();
-            float d = h.itemView.getResources().getDisplayMetrics().density;
-            if (item.isLive()) {
-                // Los logos de canales son apaisados
-                lp.width = (int) (200 * d);
-                lp.height = (int) (130 * d);
-                h.image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                h.image.setPadding((int) (14 * d), (int) (10 * d), (int) (14 * d), (int) (34 * d));
-                // Con logo, el nombre va en una franja abajo; sin logo ya se
-                // ve el nombre grande del fondo y la franja lo repetiría.
-                h.badge.setText(item.title);
-                h.badge.setVisibility(item.poster != null ? View.VISIBLE : View.GONE);
+            if (style == Catalog.Row.TOP10) {
+                h.rank.setText(String.valueOf(position + 1));
+                load(h.image, item.poster);
+            } else if (style == Catalog.Row.WIDE) {
+                h.title.setText(item.title);
+                load(h.image, item.backdrop != null ? item.backdrop : item.poster);
+                h.badge.setText(item.label);
+                h.badge.setVisibility(item.label.isEmpty() ? View.GONE : View.VISIBLE);
+                h.progress.setProgress(Math.round(Math.max(0.03f, item.progress) * 1000));
             } else {
-                lp.width = (int) (140 * d);
-                lp.height = (int) (210 * d);
-                h.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                h.image.setPadding(0, 0, 0, 0);
-            }
-            h.itemView.setLayoutParams(lp);
-
-            if (item.poster != null) {
-                Glide.with(h.image).load(item.poster).into(h.image);
-            } else {
-                Glide.with(h.image).clear(h.image);
-                h.image.setImageDrawable(null);
+                bindPoster(h, item);
             }
 
             h.itemView.setOnFocusChangeListener((v, hasFocus) -> {
-                v.animate().scaleX(hasFocus ? 1.1f : 1f).scaleY(hasFocus ? 1.1f : 1f)
-                        .translationZ(hasFocus ? 12f : 0f).setDuration(120).start();
+                float scale = hasFocus ? (style == Catalog.Row.WIDE ? 1.08f : 1.12f) : 1f;
+                // En el Top 10 el contenedor es transparente (número + carátula):
+                // elevarlo dibujaba una sombra gris cuadrada detrás de ambos.
+                float z = hasFocus && style != Catalog.Row.TOP10 ? 16f : 0f;
+                v.animate().scaleX(scale).scaleY(scale)
+                        .translationZ(z).setDuration(140)
+                        .setInterpolator(new DecelerateInterpolator()).start();
+                if (h.play != null) h.play.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
                 if (hasFocus) {
                     lastCard = v;
                     showHero(item);
-                    alignRowOf(v);
                 }
             });
             h.itemView.setOnClickListener(v -> {
                 if (item.isLive()) {
                     playLive(items, h.getBindingAdapterPosition());
+                } else if (style == Catalog.Row.WIDE) {
+                    // "Seguir viendo" va directo al reproductor, donde quedó
+                    resume(item);
                 } else {
                     Intent i = new Intent(TvHomeActivity.this, DetailActivity.class);
                     i.putExtra(DetailActivity.EXTRA_ITEM, item);
@@ -522,21 +676,75 @@ public class TvHomeActivity extends Activity {
             });
         }
 
+        private void bindPoster(CardHolder h, CatalogItem item) {
+            h.title.setText(item.title);
+            h.badge.setVisibility(View.GONE);
+            h.live.setVisibility(item.isLive() ? View.VISIBLE : View.GONE);
+
+            ViewGroup.LayoutParams lp = h.itemView.getLayoutParams();
+            if (item.isLive()) {
+                // Los logos de canales son apaisados
+                lp.width = dp(220);
+                lp.height = dp(140);
+                h.image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                h.image.setPadding(dp(18), dp(26), dp(18), dp(34));
+                // Con logo, el nombre va en una franja abajo; sin logo ya se
+                // ve el nombre grande del fondo y la franja lo repetiría.
+                h.badge.setText(item.title);
+                h.badge.setVisibility(item.poster != null ? View.VISIBLE : View.GONE);
+            } else {
+                lp.width = dp(140);
+                lp.height = dp(210);
+                h.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                h.image.setPadding(0, 0, 0, 0);
+            }
+            h.itemView.setLayoutParams(lp);
+            load(h.image, item.poster);
+        }
+
+        private void load(ImageView view, String url) {
+            if (url != null) {
+                Glide.with(view).load(url).transition(DrawableTransitionOptions.withCrossFade(200)).into(view);
+            } else {
+                Glide.with(view).clear(view);
+                view.setImageDrawable(null);
+            }
+        }
+
         @Override
         public int getItemCount() {
             return items.size();
         }
     }
 
+    /** Reanuda una película o el último episodio de una serie. */
+    private void resume(CatalogItem item) {
+        if ("tv".equals(item.type)) {
+            // Sin la lista de temporadas no se sabría qué episodio sigue: se
+            // pasa por la ficha, que la carga, y desde ahí al reproductor.
+            Intent i = new Intent(this, DetailActivity.class);
+            i.putExtra(DetailActivity.EXTRA_ITEM, item);
+            i.putExtra(DetailActivity.EXTRA_AUTOPLAY, true);
+            startActivity(i);
+        } else {
+            VodPlayerActivity.start(this, item, 0, 0, null);
+        }
+    }
+
     private static final class CardHolder extends RecyclerView.ViewHolder {
         final ImageView image;
-        final TextView title, badge;
+        final TextView title, badge, live, rank, play;
+        final ProgressBar progress;
 
         CardHolder(View v) {
             super(v);
             image = v.findViewById(R.id.cardImage);
             title = v.findViewById(R.id.cardTitle);
             badge = v.findViewById(R.id.cardBadge);
+            live = v.findViewById(R.id.cardLive);
+            rank = v.findViewById(R.id.rankNumber);
+            play = v.findViewById(R.id.cardPlay);
+            progress = v.findViewById(R.id.cardProgress);
         }
     }
 }

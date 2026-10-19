@@ -8,6 +8,7 @@
     android:background="@drawable/card_bg"
     android:clickable="true"
     android:focusable="true"
+    android:defaultFocusHighlightEnabled="false"
     android:padding="3dp">
 
     <TextView
@@ -25,6 +26,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/cardLive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="6dp"
+        android:background="#E50914"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:text="● EN VIVO"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/cardBadge"

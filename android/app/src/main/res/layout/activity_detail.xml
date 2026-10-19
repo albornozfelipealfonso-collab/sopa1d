@@ -65,6 +65,12 @@
                 android:text="▶  Ver ahora" />
 
             <TextView
+                android:id="@+id/btnMyList"
+                style="@style/TvButton"
+                android:layout_marginLeft="14dp"
+                android:text="＋  Mi lista" />
+
+            <TextView
                 android:id="@+id/btnLanguage"
                 style="@style/TvButton"
                 android:layout_marginLeft="14dp"

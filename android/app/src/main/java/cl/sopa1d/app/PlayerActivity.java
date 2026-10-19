@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -38,8 +39,10 @@ import androidx.media3.exoplayer.source.MediaSource;
 import androidx.media3.ui.AspectRatioFrameLayout;
 import androidx.media3.ui.PlayerView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -101,6 +104,9 @@ public class PlayerActivity extends Activity {
     private ExoPlayer player;
     private PlayerView playerView;
     private TextView banner;
+    private View osd;
+    private ImageView osdLogo;
+    private TextView osdNumber, osdName, osdInfo, osdClock;
     private TextView status;
     private LinearLayout panel;
     private ListView list;
@@ -139,6 +145,17 @@ public class PlayerActivity extends Activity {
 
         playerView = findViewById(R.id.playerView);
         banner = findViewById(R.id.channelBanner);
+        osd = findViewById(R.id.channelOsd);
+        osdLogo = findViewById(R.id.osdLogo);
+        osdNumber = findViewById(R.id.osdNumber);
+        osdName = findViewById(R.id.osdName);
+        osdInfo = findViewById(R.id.osdInfo);
+        osdClock = findViewById(R.id.osdClock);
+        // En vivo no hay nada que adelantar ni pausar con sentido: los
+        // controles de ExoPlayer solo tapaban el rótulo del canal. En TV el
+        // mando ya cambia de canal (▲ ▼) y abre la lista (OK); en el celular
+        // se siguen mostrando al tocar la pantalla.
+        playerView.setControllerAutoShow(false);
         status = findViewById(R.id.statusText);
         panel = findViewById(R.id.channelPanel);
         list = findViewById(R.id.channelList);
@@ -169,8 +186,10 @@ public class PlayerActivity extends Activity {
 
     private void setupPanel() {
         List<Channel> all = ChannelStore.get();
-        ArrayAdapter<Channel> adapter =
-                new ArrayAdapter<>(this, R.layout.item_channel, R.id.channelName, all);
+        List<String> labels = new ArrayList<>();
+        for (int i = 0; i < all.size(); i++) labels.add(String.format(Locale.ROOT, "%3d   %s", i + 1, all.get(i).name));
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, R.layout.item_channel, R.id.channelName, labels);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -208,7 +227,7 @@ public class PlayerActivity extends Activity {
         retries = 0;
         firstFrameShown = false;
         liveOffsetTuned = false;
-        showBanner((index + 1) + " · " + ch.name);
+        showOsd(ch);
         showStatus(getString(R.string.connecting));
 
         // Cada canal usa el decodificador que ya se sabe que le funciona.
@@ -472,6 +491,82 @@ public class PlayerActivity extends Activity {
 
     // ------------------------------------------------------------------ ui
 
+    /**
+     * Rótulo de canal estilo TV: número grande, logo, nombre, categoría y
+     * hora, en una franja abajo que se oculta sola.
+     */
+    private void showOsd(Channel ch) {
+        osdNumber.setText(String.valueOf(index + 1));
+        osdName.setText(ch.name);
+        String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
+        osdInfo.setText(cat + "▲ ▼ cambiar canal   ·   OK lista   ·   0-9 ir al número");
+        osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
+        if (ch.logo != null && !ch.logo.isEmpty()) {
+            osdLogo.setVisibility(View.VISIBLE);
+            com.bumptech.glide.Glide.with(this).load(ch.logo)
+                    .listener(new com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(com.bumptech.glide.load.engine.GlideException e, Object model,
+                                                    com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target,
+                                                    boolean isFirstResource) {
+                            osdLogo.setVisibility(View.GONE); // logo roto: mejor nada que un recuadro vacío
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model,
+                                                       com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable> target,
+                                                       com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(osdLogo);
+        } else {
+            osdLogo.setVisibility(View.GONE);
+        }
+        osd.setVisibility(View.VISIBLE);
+        osd.setAlpha(0f);
+        osd.animate().alpha(1f).setDuration(200).start();
+        ui.removeCallbacks(hideOsd);
+        ui.postDelayed(hideOsd, 5000);
+    }
+
+    private final Runnable hideOsd = new Runnable() {
+        @Override public void run() {
+            osd.animate().alpha(0f).setDuration(300).withEndAction(() -> osd.setVisibility(View.GONE)).start();
+        }
+    };
+
+    /** Número tecleado con el control: se salta al canal tras una pausa. */
+    private final StringBuilder typedNumber = new StringBuilder();
+    private final Runnable jumpToTyped = new Runnable() {
+        @Override public void run() {
+            if (typedNumber.length() == 0) return;
+            int n = Integer.parseInt(typedNumber.toString());
+            typedNumber.setLength(0);
+            if (n >= 1 && n <= ChannelStore.size()) {
+                index = n - 1;
+                openChannel();
+            } else {
+                showBanner("No existe el canal " + n);
+            }
+        }
+    };
+
+    private void typeDigit(int d) {
+        if (typedNumber.length() >= 4) typedNumber.setLength(0);
+        typedNumber.append(d);
+        osdNumber.setText(typedNumber + "_");
+        osdName.setText("Ir al canal…");
+        osdInfo.setText("");
+        osdLogo.setVisibility(View.GONE);
+        osd.setVisibility(View.VISIBLE);
+        osd.setAlpha(1f);
+        ui.removeCallbacks(hideOsd);
+        ui.removeCallbacks(jumpToTyped);
+        ui.postDelayed(jumpToTyped, 1500);
+    }
+
     private void showBanner(String text) {
         banner.setText(text);
         banner.setVisibility(View.VISIBLE);
@@ -514,6 +609,20 @@ public class PlayerActivity extends Activity {
                 return true;
             }
             return super.dispatchKeyEvent(event); // la lista maneja el resto
+        }
+
+        if (code >= KeyEvent.KEYCODE_0 && code <= KeyEvent.KEYCODE_9) {
+            typeDigit(code - KeyEvent.KEYCODE_0);
+            return true;
+        }
+        if (code >= KeyEvent.KEYCODE_NUMPAD_0 && code <= KeyEvent.KEYCODE_NUMPAD_9) {
+            typeDigit(code - KeyEvent.KEYCODE_NUMPAD_0);
+            return true;
+        }
+        if (code == KeyEvent.KEYCODE_INFO) {
+            Channel cur = ChannelStore.at(index);
+            if (cur != null) showOsd(cur);
+            return true;
         }
 
         switch (code) {

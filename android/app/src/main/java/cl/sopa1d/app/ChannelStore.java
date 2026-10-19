@@ -30,7 +30,9 @@ public final class ChannelStore {
                 out.add(new Channel(
                         o.optString("id", String.valueOf(i)),
                         o.optString("name", "Canal " + (i + 1)),
-                        url));
+                        url,
+                        o.optString("logo", ""),
+                        o.optString("category", "")));
             }
         } catch (Exception ignored) {
             // Una lista corrupta no debe tumbar la app: se queda con lo que haya.

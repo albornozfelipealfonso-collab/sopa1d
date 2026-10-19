@@ -52,7 +52,9 @@ final class WatchHistory {
                     .put("type", item.type).put("id", item.id).put("title", item.title)
                     .put("poster", item.poster).put("backdrop", item.backdrop)
                     .put("overview", item.overview).put("year", item.year)
-                    .put("season", season).put("episode", episode);
+                    .put("rating", item.rating).put("genres", item.genres)
+                    .put("season", season).put("episode", episode)
+                    .put("pos", posMs).put("dur", durMs);
             if (!(finished && "movie".equals(item.type))) out.put(me);
             for (int i = 0; i < old.length() && out.length() < MAX_ITEMS; i++) {
                 JSONObject o = old.getJSONObject(i);
@@ -86,10 +88,81 @@ final class WatchHistory {
             JSONArray arr = new JSONArray(prefs(c).getString(KEY_LIST, "[]"));
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
-                out.add(new CatalogItem(o.optString("type"), o.optString("id"), o.optString("title"),
-                        o.optString("year"), 0, o.optString("overview"),
-                        o.optString("poster", null), o.optString("backdrop", null)));
+                CatalogItem it = fromStored(o);
+                long dur = o.optLong("dur", 0);
+                it.progress = dur > 0 ? Math.min(1f, o.optLong("pos", 0) / (float) dur) : 0.05f;
+                if ("tv".equals(it.type)) it.label = "T" + o.optInt("season", 1) + " E" + o.optInt("episode", 1);
+                out.add(it);
             }
+        } catch (Exception ignored) {
+        }
+        return out;
+    }
+
+    private static CatalogItem fromStored(JSONObject o) {
+        CatalogItem it = new CatalogItem(o.optString("type"), o.optString("id"), o.optString("title"),
+                o.optString("year"), o.optDouble("rating", 0), o.optString("overview"),
+                emptyToNull(o.optString("poster", null)), emptyToNull(o.optString("backdrop", null)));
+        it.genres = o.optString("genres", "");
+        return it;
+    }
+
+    private static String emptyToNull(String s) {
+        return s == null || s.isEmpty() || "null".equals(s) ? null : s;
+    }
+
+    // ------------------------------------------------------------ Mi lista
+
+    private static final String KEY_FAVS = "favorites";
+
+    static boolean isFavorite(Context c, CatalogItem item) {
+        try {
+            JSONArray arr = new JSONArray(prefs(c).getString(KEY_FAVS, "[]"));
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject o = arr.getJSONObject(i);
+                if (o.optString("id").equals(item.id) && o.optString("type").equals(item.type)) return true;
+            }
+        } catch (Exception ignored) {
+        }
+        return false;
+    }
+
+    /** Agrega o quita de "Mi lista". Devuelve true si quedó en la lista. */
+    static boolean toggleFavorite(Context c, CatalogItem item) {
+        try {
+            JSONArray old = new JSONArray(prefs(c).getString(KEY_FAVS, "[]"));
+            JSONArray out = new JSONArray();
+            boolean removed = false;
+            for (int i = 0; i < old.length(); i++) {
+                JSONObject o = old.getJSONObject(i);
+                if (o.optString("id").equals(item.id) && o.optString("type").equals(item.type)) {
+                    removed = true;
+                    continue;
+                }
+                out.put(o);
+            }
+            if (!removed) {
+                JSONArray withNew = new JSONArray();
+                withNew.put(new JSONObject()
+                        .put("type", item.type).put("id", item.id).put("title", item.title)
+                        .put("poster", item.poster).put("backdrop", item.backdrop)
+                        .put("overview", item.overview).put("year", item.year)
+                        .put("rating", item.rating).put("genres", item.genres));
+                for (int i = 0; i < out.length(); i++) withNew.put(out.get(i));
+                out = withNew;
+            }
+            prefs(c).edit().putString(KEY_FAVS, out.toString()).apply();
+            return !removed;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    static List<CatalogItem> favorites(Context c) {
+        List<CatalogItem> out = new ArrayList<>();
+        try {
+            JSONArray arr = new JSONArray(prefs(c).getString(KEY_FAVS, "[]"));
+            for (int i = 0; i < arr.length(); i++) out.add(fromStored(arr.getJSONObject(i)));
         } catch (Exception ignored) {
         }
         return out;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Top 10": número gigante contorneado y la carátula montada encima -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="230dp"
+    android:layout_height="216dp"
+    android:layout_marginRight="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:defaultFocusHighlightEnabled="false">
+
+    <cl.sopa1d.app.OutlineTextView
+        android:id="@+id/rankNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:fontFamily="sans-serif-black"
+        android:includeFontPadding="false"
+        android:letterSpacing="-0.12"
+        android:textSize="168sp" />
+
+    <FrameLayout
+        android:id="@+id/cardFrame"
+        android:layout_width="140dp"
+        android:layout_height="210dp"
+        android:layout_gravity="end|center_vertical"
+        android:background="@drawable/card_bg"
+        android:duplicateParentState="true"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/cardImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+</FrameLayout>

@@ -26,6 +26,90 @@
         android:textStyle="bold"
         android:visibility="gone" />
 
+    <!-- Rótulo de canal estilo TV: franja inferior con número, logo y nombre -->
+    <LinearLayout
+        android:id="@+id/channelOsd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/osd_scrim"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="48dp"
+        android:paddingTop="60dp"
+        android:paddingRight="48dp"
+        android:paddingBottom="36dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/osdNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="90dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="#E50914"
+            android:textSize="54sp" />
+
+        <ImageView
+            android:id="@+id/osdLogo"
+            android:layout_width="120dp"
+            android:layout_height="68dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitCenter" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/osdName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/osdInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#B3FFFFFF"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/osdClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#E50914"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="● EN VIVO"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
     <!-- Estado de carga / reconexión -->
     <TextView
         android:id="@+id/statusText"

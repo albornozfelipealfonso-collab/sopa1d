@@ -20,9 +20,17 @@ final class Catalog {
 
     /** Fila de la pantalla de inicio: título y de dónde salen sus carátulas. */
     static final class Row {
+        /** Carátula vertical normal. */
+        static final int POSTER = 0;
+        /** "Top 10": número gigante al lado de la carátula. */
+        static final int TOP10 = 1;
+        /** Horizontal con portada y barra de progreso ("Seguir viendo"). */
+        static final int WIDE = 2;
+
         final String title;
         final String url;            // null si los ítems vienen ya cargados
         final List<CatalogItem> fixed;
+        int style = POSTER;
 
         Row(String title, String url) {
             this.title = title;
@@ -34,6 +42,11 @@ final class Catalog {
             this.title = title;
             this.url = null;
             this.fixed = items;
+        }
+
+        Row style(int s) {
+            style = s;
+            return this;
         }
     }
 
@@ -90,8 +103,8 @@ final class Catalog {
 
     static List<Row> homeRows() {
         List<Row> rows = new ArrayList<>();
-        rows.add(new Row("🔥 Tendencias en películas", trending("movie")));
-        rows.add(new Row("📺 Series del momento", trending("tv")));
+        rows.add(new Row("🔟 Top 10 películas de hoy", trending("movie")).style(Row.TOP10));
+        rows.add(new Row("🔟 Top 10 series de hoy", trending("tv")).style(Row.TOP10));
         rows.add(new Row("🎬 Películas populares", list("movies", 0)));
         rows.add(new Row("⭐ Series imperdibles", best("tvshows", 0)));
         rows.add(new Row("🌸 Anime imperdible", best("anime", 0)));

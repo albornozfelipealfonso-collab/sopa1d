@@ -20,8 +20,12 @@ final class CatalogItem implements Serializable {
     final String poster;
     final String backdrop;
 
-    /** Solo canales en vivo: posición en la lista que se pasa al reproductor. */
-    int liveIndex = -1;
+    /** Géneros legibles ("Acción · Aventura"), o "" si la API no los trae. */
+    String genres = "";
+
+    /** "Seguir viendo": fracción vista (0..1) o -1, y "T1 E2" en series. */
+    float progress = -1;
+    String label = "";
 
     CatalogItem(String type, String id, String title, String year, double rating,
                 String overview, String poster, String backdrop) {
@@ -42,7 +46,7 @@ final class CatalogItem implements Serializable {
     static CatalogItem fromJson(JSONObject o) {
         String rawType = o.optString("type", o.optString("contentType", "movie"));
         String type = "movie".equals(rawType) ? "movie" : "tv";
-        return new CatalogItem(
+        CatalogItem item = new CatalogItem(
                 type,
                 String.valueOf(o.optLong("tmdb_id", o.optLong("id"))),
                 o.optString("title", o.optString("name", "")),
@@ -51,6 +55,16 @@ final class CatalogItem implements Serializable {
                 o.optString("overview", ""),
                 emptyToNull(o.optString("poster", "")),
                 emptyToNull(o.optString("backdrop", "")));
+        JSONArray g = o.optJSONArray("genres");
+        if (g != null) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < g.length() && i < 3; i++) {
+                if (sb.length() > 0) sb.append(" · ");
+                sb.append(g.optString(i));
+            }
+            item.genres = sb.toString();
+        }
+        return item;
     }
 
     static List<CatalogItem> listFromJson(JSONObject root) {
