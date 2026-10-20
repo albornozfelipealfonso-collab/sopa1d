@@ -116,7 +116,15 @@ final class ChannelHealth {
         ExecutorService pool = Executors.newFixedThreadPool(THREADS);
         for (final Channel ch : all) {
             pool.execute(() -> {
-                if (!alive(ch.url)) found.add(ch.url);
+                boolean ok = alive(ch.url);
+                // jmp2.uk (Pluto TV, Samsung TV Plus) rechaza consultas muy
+                // seguidas: un fallo ahí se reintenta con pausa antes de
+                // ocultar el canal.
+                for (int i = 0; i < 2 && !ok && ch.url.contains("jmp2.uk"); i++) {
+                    try { Thread.sleep(2000L * (i + 1)); } catch (InterruptedException e) { return; }
+                    ok = alive(ch.url);
+                }
+                if (!ok) found.add(ch.url);
                 done.incrementAndGet();
             });
         }

@@ -46,6 +46,11 @@ import java.util.concurrent.TimeUnit;
 @OptIn(markerClass = UnstableApi.class)
 public class VodPlayerActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
 
     static final String EXTRA_ITEM = "item";

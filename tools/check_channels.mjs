@@ -72,7 +72,13 @@ let next = 0;
 async function worker() {
     while (next < channels.length) {
         const ch = channels[next++];
-        const reason = ch.url ? await isAlive(ch.url) : 'sin URL';
+        let reason = ch.url ? await isAlive(ch.url) : 'sin URL';
+        // jmp2.uk (Pluto TV, Samsung TV Plus) rechaza consultas muy seguidas:
+        // se reintenta con pausa antes de darlo por caído.
+        for (let i = 0; i < 2 && reason && /jmp2\.uk/.test(ch.url || ''); i++) {
+            await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+            reason = await isAlive(ch.url);
+        }
         const wasDead = !!ch.dead;
         if (reason) {
             ch.dead = true;

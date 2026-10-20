@@ -30,6 +30,11 @@ import java.util.Map;
  */
 public class GuideActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
     private static final List<String> ORDER = Arrays.asList("Deportes", "Cine & Series", "Infantil",
             "Noticias", "Entretenimiento", "Música", "Cultura", "General");

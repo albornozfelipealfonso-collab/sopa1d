@@ -53,6 +53,11 @@ import java.util.regex.Pattern;
  */
 public class TvHomeActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
 
     private static final int NAV_COLLAPSED_DP = 92;

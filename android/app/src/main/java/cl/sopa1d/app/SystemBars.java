@@ -25,6 +25,20 @@ final class SystemBars {
                 || c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK);
     }
 
+    /**
+     * En TV todo se veía demasiado grande (los TV box suelen informar una
+     * densidad alta para 1080p): se dibuja al 80 % con una densidad menor.
+     */
+    static Context tvScale(Context base) {
+        if (!isTv(base)) return base;
+        Configuration c = new Configuration(base.getResources().getConfiguration());
+        c.densityDpi = Math.round(c.densityDpi * 0.8f);
+        c.screenWidthDp = Math.round(c.screenWidthDp / 0.8f);
+        c.screenHeightDp = Math.round(c.screenHeightDp / 0.8f);
+        c.smallestScreenWidthDp = Math.round(c.smallestScreenWidthDp / 0.8f);
+        return base.createConfigurationContext(c);
+    }
+
     /** Aplica como relleno el espacio de las barras del sistema y del notch. */
     static void pad(Activity a) {
         ViewGroup content = a.findViewById(android.R.id.content);

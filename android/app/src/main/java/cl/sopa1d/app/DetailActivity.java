@@ -28,6 +28,11 @@ import java.util.concurrent.Executors;
  */
 public class DetailActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
     static final String EXTRA_ITEM = "item";
     /** Desde "Seguir viendo": reproducir en cuanto se sepan las temporadas. */

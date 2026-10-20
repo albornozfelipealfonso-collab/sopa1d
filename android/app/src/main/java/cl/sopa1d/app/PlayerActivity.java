@@ -60,6 +60,11 @@ import java.util.Set;
 @OptIn(markerClass = UnstableApi.class)
 public class PlayerActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
 
     public static final String EXTRA_INDEX = "index";

@@ -10673,8 +10673,7 @@
     "logo": "",
     "category": "Cine & Series",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-69b3db536c0414a7ecf564fb.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-69b3db536c0414a7ecf564fb.m3u8"
   },
   {
     "id": "ch_hbc0f92",
@@ -10698,8 +10697,7 @@
     "logo": "",
     "category": "Cine & Series",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-69b1489b5828e7c242d83064.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-69b1489b5828e7c242d83064.m3u8"
   },
   {
     "id": "ch_lujk8pf",
@@ -10715,8 +10713,7 @@
     "logo": "",
     "category": "Cine & Series",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-69a554497ed3b3fff0b9ca80.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-69a554497ed3b3fff0b9ca80.m3u8"
   },
   {
     "id": "ch_q4sac98",
@@ -10732,8 +10729,7 @@
     "logo": "",
     "category": "Cine & Series",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-69b16dc543d0f313203b714c.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-69b16dc543d0f313203b714c.m3u8"
   },
   {
     "id": "ch_19rf9ma",
@@ -24182,8 +24178,7 @@
     "logo": "https://i.imgur.com/VBKoLHk.png",
     "category": "Deportes",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-5ebc8688f3697d00072f7cf8.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-5ebc8688f3697d00072f7cf8.m3u8"
   },
   {
     "id": "ch_42696c6c6961",
@@ -24209,8 +24204,7 @@
     "logo": "https://images.pluto.tv/channels/685029cda1e091e16ff57fc8/colorLogoPNG_1750246109707.png",
     "category": "Deportes",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-685029cda1e091e16ff57fc8.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-685029cda1e091e16ff57fc8.m3u8"
   },
   {
     "id": "ch_43616e616c20",
@@ -24325,8 +24319,7 @@
     "logo": "https://i.imgur.com/q8BENJg.png",
     "category": "Deportes",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-5e9f2c05172a0f0007db4786.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-5e9f2c05172a0f0007db4786.m3u8"
   },
   {
     "id": "ch_434354562d35",
@@ -38970,8 +38963,7 @@
     "logo": "https://images.pluto.tv/channels/66a01dcb8561260008b0a41d/colorLogoPNG.png",
     "category": "Música",
     "country": "Internacional",
-    "url": "https://jmp2.uk/plu-66a01dcb8561260008b0a41d.m3u8",
-    "dead": true
+    "url": "https://jmp2.uk/plu-66a01dcb8561260008b0a41d.m3u8"
   },
   {
     "id": "ch_4d545620436c",
@@ -59367,5 +59359,29 @@
     "category": "General",
     "country": "Colombia",
     "url": "http://200.122.223.13:55000/play/zoom-banda-ku/index.m3u8"
+  },
+  {
+    "id": "ch_fast_plutotv_61d4b38226b8a50007fe03a6",
+    "name": "Vevo Rock",
+    "logo": "https://images.pluto.tv/channels/61d4b38226b8a50007fe03a6/colorLogoPNG_1748797615724.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/plu-61d4b38226b8a50007fe03a6.m3u8"
+  },
+  {
+    "id": "ch_fast_samsungtvplus_USBD35000180U",
+    "name": "Stingray Classic Rock",
+    "logo": "https://tvpnlogopus.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/USBD35000180U_20250630T232430SQUARE.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/stvp-USBD35000180U"
+  },
+  {
+    "id": "ch_fast_samsungtvplus_ITBC1100011RK",
+    "name": "Rock TV",
+    "logo": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC1100011RK_20241022T043817SQUARE.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/stvp-ITBC1100011RK"
   }
 ]
