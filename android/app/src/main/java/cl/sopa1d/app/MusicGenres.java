@@ -15,7 +15,7 @@ final class MusicGenres {
 
     private static final String[][] GENRES = {
             {"🎸 Rock & Metal", "\\brock|metal|punk|grunge|alternativ|indie\\b"},
-            {"📼 Clásicos 80s & 90s", "\\b(80|90)s\\b|80's|90's|ochenta|noventa|retro|oldies|remember|vintage|clásicos|classic hits"},
+            {"📼 Clásicos 80s & 90s", "\\b(80|90)s\\b|80's|90's|ochenta|noventa|retro|rewind|oldies|remember|vintage|clásicos|classic hits"},
             {"🔥 Urbano & Reggaetón", "regg?aet|urban|trap\\b|hip ?hop|\\brap\\b|perreo|latin hits"},
             {"💃 Tropical & Cumbia", "tropical|cumbia|salsa|bachata|merengue|vallenato|cuarteto|ranchera|grupera|banda\\b"},
             {"🎤 Pop & Hits", "\\bpop\\b|hits|top ?\\d|mtv|vevo|xite|music ?box|los 40|\\b40\\b|kiss|éxitos|exitos"},

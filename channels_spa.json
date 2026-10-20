@@ -577,8 +577,8 @@
   },
   {
     "id": "ch_zapping_rock_1",
-    "name": "Zapping Music Rock HD",
-    "logo": "/zapping_rock.svg",
+    "name": "Rewind TV",
+    "logo": "https://i.imgur.com/OG0RC2e.png",
     "category": "Música",
     "country": "Chile",
     "url": "https://tls-cl.cdnz.cl/rewindtv/live/playlist.m3u8"
