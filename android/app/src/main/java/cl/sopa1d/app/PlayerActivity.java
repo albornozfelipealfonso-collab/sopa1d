@@ -258,6 +258,7 @@ public class PlayerActivity extends Activity {
         touchControls = findViewById(R.id.liveTouchControls);
         findViewById(R.id.touchUp).setOnClickListener(v -> { switchBy(1); showTouchControls(); });
         findViewById(R.id.touchDown).setOnClickListener(v -> { switchBy(-1); showTouchControls(); });
+        findViewById(R.id.touchBack).setOnClickListener(v -> { switchToPrevious(); showTouchControls(); });
         findViewById(R.id.touchList).setOnClickListener(v -> togglePanel(true));
         findViewById(R.id.touchGuide).setOnClickListener(v -> toggleSchedule(true));
         findViewById(R.id.touchFav).setOnClickListener(v -> { toggleFavorite(ChannelStore.at(index)); showTouchControls(); });
@@ -388,6 +389,7 @@ public class PlayerActivity extends Activity {
             return;
         }
 
+        rememberChannel(ch);
         showOsd(ch);
         showStatus(getString(R.string.connecting));
 
@@ -658,6 +660,34 @@ public class PlayerActivity extends Activity {
         showBanner(RESIZE_NAMES[resizeIndex]);
     }
 
+    /**
+     * Canal anterior (⇄): se guarda por URL para que siga sirviendo aunque la
+     * lista cambie (favoritos, búsqueda, otra sección). Estático: se recuerda
+     * también al salir del reproductor y volver a entrar.
+     */
+    private static String currentUrl, previousUrl;
+
+    private void rememberChannel(Channel ch) {
+        if (ch.url.equals(currentUrl)) return;
+        previousUrl = currentUrl;
+        currentUrl = ch.url;
+    }
+
+    /** Salta al último canal visto; repetirlo vuelve al otro (dos partidos). */
+    private void switchToPrevious() {
+        if (previousUrl != null) {
+            List<Channel> all = ChannelStore.get();
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).url.equals(previousUrl)) {
+                    index = i;
+                    openChannel();
+                    return;
+                }
+            }
+        }
+        showBanner("Aún no hay canal anterior");
+    }
+
     private void switchBy(int delta) {
         if (ChannelStore.size() == 0) return;
         index = index + delta;
@@ -679,7 +709,7 @@ public class PlayerActivity extends Activity {
         if (favBtn != null) ((TextView) favBtn).setText(Favorites.contains(this, ch.url) ? "★  Favorito" : "☆  Favorito");
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
         osdInfo.setText(cat + (isTv
-                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   0-9 ir al número"
+                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   ▶ canal anterior   ·   0-9 ir al número"
                 : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía"));
         fillOsdGuide(ch);
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
@@ -937,8 +967,14 @@ public class PlayerActivity extends Activity {
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
             case KeyEvent.KEYCODE_MENU:
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
                 togglePanel(true);
+                return true;
+
+            // Volver al último canal visto (alternar entre dos partidos)
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            case KeyEvent.KEYCODE_LAST_CHANNEL:
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                switchToPrevious();
                 return true;
 
             // Programación del canal

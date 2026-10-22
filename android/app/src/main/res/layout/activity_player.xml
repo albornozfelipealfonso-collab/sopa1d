@@ -155,6 +155,7 @@
         android:visibility="gone">
 
         <TextView android:id="@+id/touchDown" style="@style/TouchButton" android:text="▼  Anterior" />
+        <TextView android:id="@+id/touchBack" style="@style/TouchButton" android:text="⇄" />
         <TextView android:id="@+id/touchList" style="@style/TouchButton" android:text="☰  Canales" />
         <TextView android:id="@+id/touchGuide" style="@style/TouchButton" android:text="📅  Guía" />
         <TextView android:id="@+id/touchFav" style="@style/TouchButton" android:text="☆  Favorito" />
