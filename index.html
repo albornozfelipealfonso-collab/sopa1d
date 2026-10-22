@@ -2386,21 +2386,8 @@
             </div>
         </div>
 
-        <div class="quick-genres-bar" id="quickGenresBar">
-            <div class="genre-pill active" onclick="selectQuickGenre('', this)">🔥 Todos</div>
-            <div class="genre-pill" onclick="selectQuickGenre('28', this)">💥 Acción</div>
-            <div class="genre-pill" onclick="selectQuickGenre('16', this)">🎨 Animación</div>
-            <div class="genre-pill" onclick="selectQuickGenre('12', this)">🗺️ Aventura</div>
-            <div class="genre-pill" onclick="selectQuickGenre('35', this)">😂 Comedia</div>
-            <div class="genre-pill" onclick="selectQuickGenre('878', this)">🛸 Ciencia Ficción</div>
-            <div class="genre-pill" onclick="selectQuickGenre('80', this)">🕵️ Crimen</div>
-            <div class="genre-pill" onclick="selectQuickGenre('18', this)">🎭 Drama</div>
-            <div class="genre-pill" onclick="selectQuickGenre('10751', this)">👨‍👩‍👧 Familia</div>
-            <div class="genre-pill" onclick="selectQuickGenre('14', this)">✨ Fantasía</div>
-            <div class="genre-pill" onclick="selectQuickGenre('27', this)">👻 Terror</div>
-            <div class="genre-pill" onclick="selectQuickGenre('10749', this)">💖 Romance</div>
-            <div class="genre-pill" onclick="selectQuickGenre('53', this)">⚡ Suspenso</div>
-        </div>
+        <!-- Botones rápidos de género: se arman por pestaña (renderGenreControls) -->
+        <div class="quick-genres-bar" id="quickGenresBar"></div>
 
         <div class="active-chips-bar" id="activeFilters"></div>
     </section>
@@ -3438,6 +3425,7 @@
             return sorted;
         }
         function onSortChange() {
+            if (currentType === 'anime' && String(currentGenre).startsWith('al:')) { loadContent(1); return; }
             if (!window._lastRenderedItems) return;
             renderMovies(applySort(window._lastRenderedItems));
         }
@@ -3560,30 +3548,178 @@
             loadContent(1);
         }
 
+        /*
+         * Géneros por pestaña. TMDB numera distinto los de películas y los de
+         * series (Terror = 27 solo existe en películas; en series Acción es
+         * 10759): antes se mezclaban y en Series los botones daban 0 títulos.
+         * El anime no se puede filtrar por género en la API del catálogo, así
+         * que sus filtros son tipos de anime de AniList (ver loadAniList).
+         */
+        const QUICK_GENRES = {
+            movies: [
+                ['28', '💥 Acción'], ['16', '🎨 Animación'], ['12', '🗺️ Aventura'], ['35', '😂 Comedia'],
+                ['878', '🛸 Ciencia Ficción'], ['80', '🕵️ Crimen'], ['18', '🎭 Drama'], ['10751', '👨‍👩‍👧 Familia'],
+                ['14', '✨ Fantasía'], ['27', '👻 Terror'], ['10749', '💖 Romance'], ['53', '⚡ Suspenso']
+            ],
+            tvshows: [
+                ['10759', '💥 Acción y Aventura'], ['16', '🎨 Animación'], ['35', '😂 Comedia'], ['80', '🕵️ Crimen'],
+                ['18', '🎭 Drama'], ['10765', '🛸 Ciencia Ficción y Fantasía'], ['9648', '🔍 Misterio'],
+                ['10751', '👨‍👩‍👧 Familia'], ['10762', '🧸 Infantil'], ['10764', '📺 Reality'],
+                ['10768', '🎖️ Bélica y Política'], ['99', '📚 Documental']
+            ],
+            anime: [
+                ['al:tag:Shounen', '⚔️ Shōnen'], ['al:tag:Shoujo', '🌸 Shōjo'], ['al:tag:Seinen', '🗡️ Seinen'],
+                ['al:tag:Isekai', '🌀 Isekai'], ['al:genre:Mecha', '🤖 Mecha'], ['al:genre:Action', '💥 Acción'],
+                ['al:genre:Romance', '💕 Romance'], ['al:genre:Comedy', '😂 Comedia'], ['al:genre:Sports', '⚽ Deportes'],
+                ['al:genre:Fantasy', '🔮 Fantasía'], ['al:genre:Slice of Life', '☕ Vida cotidiana'],
+                ['al:genre:Horror', '👻 Terror'], ['al:genre:Mystery', '🕵️ Misterio'],
+                ['al:genre:Supernatural', '👁️ Sobrenatural'], ['al:format:MOVIE', '🎬 Películas']
+            ]
+        };
+        // La API trae algunos géneros de series en inglés
+        const GENRE_ES = {
+            'Action & Adventure': 'Acción y Aventura', 'Sci-Fi & Fantasy': 'Ciencia Ficción y Fantasía',
+            'Kids': 'Infantil', 'News': 'Noticias', 'Soap': 'Telenovela', 'Talk': 'Entrevistas',
+            'War & Politics': 'Bélica y Política'
+        };
+        let genresByType = { movies: [], tvshows: [] };
+
+        function renderGenreControls(type) {
+            const sel = document.getElementById('genreFilter');
+            const bar = document.getElementById('quickGenresBar');
+            let options;
+            if (type === 'anime') {
+                options = QUICK_GENRES.anime;
+            } else {
+                const list = genresByType[type] || [];
+                options = list.length
+                    ? list.map(g => [String(g.id), GENRE_ES[g.name] || g.name]).sort((a, b) => a[1].localeCompare(b[1]))
+                    : (QUICK_GENRES[type] || []);
+            }
+            sel.innerHTML = `<option value="">${type === 'anime' ? '🌸 Tipo de anime' : '🎭 Géneros'}</option>` +
+                options.map(([id, name]) => `<option value="${id}">${name}</option>`).join('');
+            if (bar) {
+                bar.innerHTML = `<div class="genre-pill active" onclick="selectQuickGenre('', this)">🔥 Todos</div>` +
+                    (QUICK_GENRES[type] || []).map(([id, name]) =>
+                        `<div class="genre-pill" onclick="selectQuickGenre('${id}', this)">${name}</div>`).join('');
+            }
+        }
+
         async function loadGenres() {
+            renderGenreControls(currentType);
             try {
                 const res = await fetch(`${getApiBase()}/genres`);
                 if (!res.ok) throw new Error('Error al solicitar géneros');
                 const data = await res.json();
+                const g = data.genres || data;
+                genresByType = { movies: g.movies || [], tvshows: g.tvshows || g.tv || [] };
+                renderGenreControls(currentType);
                 const sel = document.getElementById('genreFilter');
-                sel.innerHTML = '<option value="">🎭 Géneros</option>';
-                const allGenres = [];
-                for (const [, genres] of Object.entries(data)) {
-                    if (Array.isArray(genres)) {
-                        genres.forEach(g => { if (g.id && g.name) allGenres.push({ id: g.id, name: g.name }); });
-                    }
-                }
-                const unique = allGenres.filter((g, i, self) => i === self.findIndex(t => t.id === g.id));
-                unique.sort((a, b) => a.name.localeCompare(b.name));
-                unique.forEach(g => {
-                    const opt = document.createElement('option');
-                    opt.value = g.id;
-                    opt.textContent = g.name;
-                    sel.appendChild(opt);
-                });
+                if (currentGenre) sel.value = currentGenre;
             } catch (err) {
                 console.warn('Error géneros:', err);
             }
+        }
+
+        /*
+         * Tipos de anime (Shōnen, Isekai, Mecha…) desde AniList, que sí los
+         * clasifica. Al abrir uno se busca su ficha en TMDB, que es lo que usan
+         * la ficha y los reproductores.
+         */
+        const ANILIST_SORT = { rating_desc: 'SCORE_DESC', year_desc: 'START_DATE_DESC', year_asc: 'START_DATE', title_asc: 'TITLE_ROMAJI' };
+        // Secuelas sueltas ("Season 2", "Part 2"…): TMDB las agrupa en la serie
+        const ANIME_SEQUEL = /\bseason\b|\bpart\s*\d|\b\d+(st|nd|rd|th)\b|\bcour\b|\bII+\b|final season|shippuu?den: /i;
+
+        async function loadAniList(page, reqId) {
+            const [, kind, value] = currentGenre.split(':');
+            const sortSel = document.getElementById('sortFilter');
+            const vars = {
+                page, perPage: 30,
+                sort: [ANILIST_SORT[sortSel && sortSel.value] || 'POPULARITY_DESC'],
+                year: currentYear ? parseInt(currentYear, 10) : undefined,
+                genre: kind === 'genre' ? value : undefined,
+                tag: kind === 'tag' ? value : undefined,
+                format: kind === 'format' ? [value] : ['TV', 'TV_SHORT', 'ONA', 'MOVIE']
+            };
+            // Solo etiquetas centrales (Bleach tiene "Isekai" con poca relevancia)
+            vars.minTag = kind === 'tag' ? 60 : undefined;
+            const query = `query($page:Int,$perPage:Int,$sort:[MediaSort],$year:Int,$genre:String,$tag:String,$format:[MediaFormat],$minTag:Int){
+                Page(page:$page,perPage:$perPage){ pageInfo{ lastPage }
+                  media(type:ANIME,isAdult:false,sort:$sort,seasonYear:$year,genre:$genre,tag:$tag,minimumTagRank:$minTag,format_in:$format){
+                    id format seasonYear startDate{year} averageScore title{romaji english} coverImage{large} } } }`;
+            const res = await fetch('https://graphql.anilist.co', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ query, variables: vars })
+            });
+            if (!res.ok) throw new Error(`AniList HTTP ${res.status}`);
+            const json = await res.json();
+            if (reqId !== currentRequestId) return null;
+            const pg = json.data && json.data.Page;
+            totalPages = Math.max(1, Math.min(100, (pg && pg.pageInfo && pg.pageInfo.lastPage) || 1));
+            return ((pg && pg.media) || [])
+                .filter(m => m.format === 'MOVIE' || !ANIME_SEQUEL.test((m.title.english || '') + ' ' + m.title.romaji))
+                .map(m => ({
+                    alId: m.id,
+                    format: m.format,
+                    title: m.title.english || m.title.romaji,
+                    romaji: m.title.romaji,
+                    poster: m.coverImage && m.coverImage.large,
+                    year: String(m.seasonYear || (m.startDate && m.startDate.year) || ''),
+                    rating: m.averageScore ? m.averageScore / 10 : 0
+                }));
+        }
+
+        function renderAniListGrid(items) {
+            const area = document.getElementById('contentArea');
+            window._aniItems = items;
+            if (!items.length) {
+                area.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados para este tipo de anime</h3></div>`;
+                return;
+            }
+            const esc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+            area.innerHTML = '<div class="media-grid">' + items.map((it, i) => `
+                <div class="media-card" onclick="abrirAnimeAniList(${i})">
+                    <div class="card-badge-top">${it.format === 'MOVIE' ? 'PELÍCULA' : 'ANIME'}</div>
+                    <div class="media-poster-container">
+                        ${it.poster ? `<img class="media-poster" src="${esc(it.poster)}" alt="${esc(it.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+                        <div class="media-placeholder" style="${it.poster ? 'display:none' : 'display:flex'}">🌸</div>
+                        <div class="media-overlay"><div class="media-play-icon">▶</div></div>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-title" title="${esc(it.title)}">${esc(it.title)}</div>
+                        <div class="media-meta-row">
+                            <span class="media-rating">⭐ ${it.rating ? it.rating.toFixed(1) : '—'}</span>
+                            <span class="media-year">${it.year || '—'}</span>
+                        </div>
+                    </div>
+                </div>`).join('') + '</div>';
+        }
+
+        /** Busca en TMDB (vía la API del catálogo) el anime elegido en AniList y abre su ficha. */
+        async function abrirAnimeAniList(i) {
+            const it = (window._aniItems || [])[i];
+            if (!it) return;
+            const type = it.format === 'MOVIE' ? 'movie' : 'tv';
+            showToast(`🔎 Buscando "${it.title}"…`, 2500);
+            const y = parseInt(it.year, 10) || 0;
+            for (const q of [...new Set([it.title, it.romaji].filter(Boolean))]) {
+                try {
+                    const res = await fetch(`${getApiBase()}/search?q=${encodeURIComponent(q)}&type=${type}&page=1`);
+                    const data = await res.json();
+                    const animados = extractResults(data).filter(r => {
+                        const g = r.genres || r.genre_ids || [];
+                        return g.includes('Animación') || g.includes(16);
+                    });
+                    const anio = (r) => parseInt(String(r.year || r.first_air_date || r.release_date || '').slice(0, 4), 10) || 0;
+                    const hit = animados.find(r => y && Math.abs(anio(r) - y) <= 1) || animados[0];
+                    if (hit && hit.id) {
+                        openDetails(hit.id, type);
+                        return;
+                    }
+                } catch (e) {}
+            }
+            showToast('⚠️ Este anime no está en el catálogo para reproducir', 4000, 'warning');
         }
 
         function extractResults(data) {
@@ -3635,6 +3771,16 @@
             const area = document.getElementById('contentArea');
             area.innerHTML = renderSkeletonGrid();
             try {
+                if (currentType === 'anime' && String(currentGenre).startsWith('al:')) {
+                    const items = await loadAniList(page, reqId);
+                    if (items) {
+                        window._lastRenderedItems = null;
+                        renderAniListGrid(items);
+                        renderPagination(page);
+                    }
+                    isLoading = false;
+                    return;
+                }
                 let url = `${getApiBase()}/list?type=${currentType}&page=${page}`;
                 if (currentGenre) url += `&genre=${currentGenre}`;
                 if (currentYear) url += `&year=${currentYear}`;
@@ -3853,6 +3999,7 @@
             const labels = { movies: 'Películas', tvshows: 'Series', anime: 'Anime', channels: 'TV en Vivo' };
             document.getElementById('catalogTitle').textContent = `Explorar ${labels[type] || 'Catálogo'}`;
 
+            renderGenreControls(type);
             clearGenreFilter();
             clearYearFilter();
             loadContent(1);
