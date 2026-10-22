@@ -68,6 +68,12 @@
     var nativeAttachShadow = Element.prototype.attachShadow;
     if (nativeAttachShadow) {
         Element.prototype.attachShadow = function (init) {
+            // Cloudflare Turnstile revisa que su shadow root siga cerrado: si se
+            // abre, la verificación falla ("We need to verify that you are not
+            // a robot" en las series). Los de Cloudflare quedan como vienen.
+            if (/challenges\.cloudflare\.com/.test(new Error().stack || '')) {
+                return nativeAttachShadow.call(this, init);
+            }
             var opts = {};
             for (var k in init) opts[k] = init[k];
             opts.mode = 'open';

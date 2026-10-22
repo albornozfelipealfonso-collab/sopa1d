@@ -20,6 +20,12 @@ const { isAd } = require('./adblock');
 const ROOT = path.join(__dirname, '..');
 const SHIELD = fs.readFileSync(path.join(ROOT, 'android/app/src/main/res/raw/ad_shield.js'), 'utf8');
 
+// Presentarse como Chrome: con "Electron/…" en el User-Agent, Cloudflare
+// Turnstile de los reproductores de series falla ("La verificación falló").
+app.userAgentFallback = app.userAgentFallback
+    .replace(/\s+Electron\/\S+/i, '')
+    .replace(new RegExp('\\s+' + app.getName() + '\\/\\S+', 'i'), '');
+
 // Una sola ventana: abrir el acceso directo otra vez trae la que ya está
 if (!app.requestSingleInstanceLock()) app.quit();
 
