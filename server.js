@@ -126,6 +126,56 @@ function destroyLiveHlsSession(sessionId) {
     }
 }
 
+// Señales que ya se sabe que vienen entrelazadas: se desentrelazan desde el inicio
+const KNOWN_INTERLACED = ['200.59.191.177', '205.235.6.29', '38.134.250.110'];
+
+/*
+ * El reproductor web (Video.js/VHS, que convierte el TS con mux.js) no sabe
+ * armar vídeo H.264 entrelazado por campos: los segmentos se descargan pero
+ * nunca entran al búfer y la imagen no arranca (TNT Sports Chile 1 y TNT 2
+ * Básico, 1080i). ExoPlayer en la APK sí los reproduce. Por eso cada señal
+ * nueva se revisa con su primer segmento y, si viene entrelazada, ffmpeg se
+ * relanza desentrelazando antes de publicar nada.
+ */
+function probeInterlaced(sess, segPath) {
+    if (sess.probing) return;
+    sess.probing = true;
+    let out = '';
+    let done = false;
+    const finish = (interlaced) => {
+        if (done) return;
+        done = true;
+        sess.probing = false;
+        if (sess.killed) return;
+        sess.interlaced = interlaced;
+        if (!interlaced) return;
+        console.log(`[LIVE-DVR] ${sess.id} viene entrelazada: se desentrelaza para el reproductor web`);
+        // Nada se publicó todavía: se descartan los segmentos en copia y se relanza.
+        // Sin m3u8Path no se vuelve a leer la lista vieja hasta el nuevo ffmpeg.
+        sess.m3u8Path = '';
+        sess.allSegs = [];
+        sess.seen = new Set();
+        sess.ram = new Map();
+        sess.ramFloor = 0;
+        sess.pubEnd = 0;
+        sess.createdAt = Date.now();
+        if (sess.ff) {
+            try { sess.ff.kill('SIGKILL'); } catch (e) {}
+        } else {
+            spawnFfmpegForSession(sess);
+        }
+    };
+    try {
+        const p = spawn(FFMPEG_BIN, ['-hide_banner', '-i', segPath], { stdio: ['ignore', 'ignore', 'pipe'] });
+        p.stderr.on('data', d => { out += d; });
+        p.on('close', () => finish(/Video:.*\b(top|bottom) (coded )?first\b/.test(out)));
+        p.on('error', () => finish(false));
+        setTimeout(() => { try { p.kill('SIGKILL'); } catch (e) {} finish(false); }, 5000);
+    } catch (e) {
+        finish(false);
+    }
+}
+
 function spawnFfmpegForSession(sess) {
     if (sess.killed) return;
     sess.spawnNo++;
@@ -153,8 +203,7 @@ function spawnFfmpegForSession(sess) {
         '-map', '0:v:0',
         '-map', '0:a:0?'];
 
-    const isAstraInterlaced = sess.streamUrl.includes('200.59.191.177') || sess.streamUrl.includes('205.235.6.29') || sess.streamUrl.includes('38.134.250.110');
-    if (isAstraInterlaced) {
+    if (sess.interlaced === true) {
         // Desentrelazar a 60fps progresivo y codificar con perfil estándar para evitar MEDIA_ERR_DECODE en Chrome
         ffArgs.push(
             '-vf', 'yadif=0:-1:1',
@@ -166,7 +215,7 @@ function spawnFfmpegForSession(sess) {
             '-af', 'aresample=async=1000'
         );
     } else {
-        // Señales progresivas nativas (como Bitred Chile 1): copia directa ultrarrápida
+        // Señales progresivas: copia directa ultrarrápida
         ffArgs.push(
             '-c:v', 'copy',
             '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-ac', '2',
@@ -221,6 +270,7 @@ function ingestFfmpegSegments(sess) {
             let buf;
             try { buf = fs.readFileSync(path.join(sess.dir, line)); } catch (e) { return; }
             if (!buf || buf.length < 188) return;
+            if (sess.interlaced === null) probeInterlaced(sess, path.join(sess.dir, line));
             sess.seen.add(line);
             sess.ram.set(line, buf);
             sess.allSegs.push({ name: line, dur, disc: sess.pendingDisc });
@@ -243,6 +293,7 @@ function reserveCount(sess) {
 
 // Publicación a ritmo constante: el reproductor recibe 1 segmento por cada segmento de duración real
 function paceSession(sess) {
+    if (sess.interlaced === null) return; // esperar a saber si hay que desentrelazar
     const now = Date.now();
     const total = sess.allSegs.length;
     const targetReserve = Math.ceil(sess.bufferSec / LIVE_SEG_DUR);
@@ -315,7 +366,9 @@ function getOrCreateLiveHlsSession(rawTargetUrl, bufferSec) {
         nextReleaseAt: 0,
         tuneToken: '',
         killed: false,
-        ff: null
+        ff: null,
+        // null = aún no se sabe si la señal viene entrelazada (ver probeInterlaced)
+        interlaced: KNOWN_INTERLACED.some(h => streamUrl.includes(h)) ? true : null
     };
 
     liveHlsSessions.set(sessionId, sess);
@@ -1162,7 +1215,8 @@ function startServer(port) {
         console.log(`🚀 Sopa1D Pro Activo en http://${HOST}:${port}/`);
         console.log(`==============================================\n`);
         // Pre-calentar TNT Sports Premium HD (Chile 1) al iniciar para sintonización instantánea sin cortes
-        setTimeout(() => {
+        // La app de PC no precarga: esa señal se desentrelaza (CPU) aunque nadie la vea
+        if (process.env.SOPA1D_NO_PREWARM !== '1') setTimeout(() => {
             try {
                 getOrCreateLiveHlsSession('http://190.108.83.69:8000/play/a03i/index.m3u8');
             } catch (e) {}

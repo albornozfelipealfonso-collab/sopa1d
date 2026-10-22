@@ -59,6 +59,7 @@ async function startServer() {
     const port = await freePort();
     process.env.PORT = String(port);
     process.env.HOST = '127.0.0.1';
+    process.env.SOPA1D_NO_PREWARM = '1';
     // Empaquetado, el ejecutable de ffmpeg queda fuera del .asar
     const ff = require('ffmpeg-static');
     if (ff) process.env.FFMPEG_PATH = ff.replace('app.asar', 'app.asar.unpacked');
