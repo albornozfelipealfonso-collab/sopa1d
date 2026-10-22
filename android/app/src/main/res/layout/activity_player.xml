@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
@@ -8,6 +9,46 @@
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <!-- Pantalla dividida: segundo canal, sin sonido, en la esquina -->
+    <FrameLayout
+        android:id="@+id/miniFrame"
+        android:layout_width="320dp"
+        android:layout_height="180dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="32dp"
+        android:background="#E6FFFFFF"
+        android:focusable="false"
+        android:padding="2dp"
+        android:visibility="gone">
+
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/miniView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:focusable="false"
+            app:shutter_background_color="#000000"
+            app:surface_type="texture_view"
+            app:use_controller="false" />
+
+        <TextView
+            android:id="@+id/miniLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#B3000000"
+            android:ellipsize="end"
+            android:paddingLeft="8dp"
+            android:paddingTop="3dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="3dp"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </FrameLayout>
 
     <!-- Rótulo que aparece al cambiar de canal -->
     <TextView

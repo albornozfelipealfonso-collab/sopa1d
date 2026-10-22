@@ -196,6 +196,7 @@ public class PlayerActivity extends Activity {
         index = getIntent().getIntExtra(EXTRA_INDEX, 0);
         hideSystemUi();
         setupPanel();
+        setupMini();
 
         // En móvil no hay mando: doble toque cambia el encuadre y deslizar
         // cambia de canal (↑ ↓), abre la lista (←) o la programación (→).
@@ -258,7 +259,8 @@ public class PlayerActivity extends Activity {
         touchControls = findViewById(R.id.liveTouchControls);
         findViewById(R.id.touchUp).setOnClickListener(v -> { switchBy(1); showTouchControls(); });
         findViewById(R.id.touchDown).setOnClickListener(v -> { switchBy(-1); showTouchControls(); });
-        findViewById(R.id.touchBack).setOnClickListener(v -> { switchToPrevious(); showTouchControls(); });
+        findViewById(R.id.touchBack).setOnClickListener(v -> { previousOrSwap(); showTouchControls(); });
+        findViewById(R.id.touchBack).setOnLongClickListener(v -> { toggleSplit(); showTouchControls(); return true; });
         findViewById(R.id.touchList).setOnClickListener(v -> togglePanel(true));
         findViewById(R.id.touchGuide).setOnClickListener(v -> toggleSchedule(true));
         findViewById(R.id.touchFav).setOnClickListener(v -> { toggleFavorite(ChannelStore.at(index)); showTouchControls(); });
@@ -673,19 +675,163 @@ public class PlayerActivity extends Activity {
         currentUrl = ch.url;
     }
 
+    /** Posición del canal con esa URL en la lista actual, o -1. */
+    private static int indexOfUrl(String url) {
+        List<Channel> all = ChannelStore.get();
+        for (int i = 0; url != null && i < all.size(); i++) {
+            if (all.get(i).url.equals(url)) return i;
+        }
+        return -1;
+    }
+
     /** Salta al último canal visto; repetirlo vuelve al otro (dos partidos). */
     private void switchToPrevious() {
-        if (previousUrl != null) {
-            List<Channel> all = ChannelStore.get();
-            for (int i = 0; i < all.size(); i++) {
-                if (all.get(i).url.equals(previousUrl)) {
-                    index = i;
-                    openChannel();
-                    return;
-                }
-            }
+        int i = indexOfUrl(previousUrl);
+        if (i < 0) {
+            showBanner("Aún no hay canal anterior");
+            return;
         }
-        showBanner("Aún no hay canal anterior");
+        index = i;
+        openChannel();
+    }
+
+    /** ▶ / ⇄: con dos canales en pantalla los intercambia; si no, va al anterior. */
+    private void previousOrSwap() {
+        if (miniUrl != null) swapMini();
+        else switchToPrevious();
+    }
+
+    // ------------------------------------------------------ pantalla dividida
+
+    /**
+     * Segundo canal en un recuadro, sin sonido, para seguir dos partidos a la
+     * vez. Arranca con el canal anterior; ▶ (o tocarlo, en el celular)
+     * intercambia el grande con el chico. Pide la calidad más baja: se ve
+     * chico y así gasta menos datos y decodificador.
+     */
+    private View miniFrame;
+    private PlayerView miniView;
+    private TextView miniLabel;
+    private ExoPlayer miniPlayer;
+    private boolean miniSoftwareVideo;
+    private String miniUrl;                 // null = un solo canal
+
+    private void setupMini() {
+        miniFrame = findViewById(R.id.miniFrame);
+        miniView = findViewById(R.id.miniView);
+        miniLabel = findViewById(R.id.miniLabel);
+        miniFrame.setOnClickListener(v -> swapMini());
+        // Un tercio del ancho de pantalla, también al girar el celular
+        View root = findViewById(android.R.id.content);
+        root.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            if (r - l != or - ol) v.post(() -> sizeMini(r - l));
+        });
+    }
+
+    private void sizeMini(int screenWidth) {
+        android.widget.FrameLayout.LayoutParams lp =
+                (android.widget.FrameLayout.LayoutParams) miniFrame.getLayoutParams();
+        lp.width = Math.round(screenWidth * 0.32f);
+        lp.height = lp.width * 9 / 16;
+        // En el celular arriba están los botones táctiles: el recuadro va debajo
+        float density = getResources().getDisplayMetrics().density;
+        lp.topMargin = Math.round((isTv ? 32 : 96) * density);
+        miniFrame.setLayoutParams(lp);
+    }
+
+    /** Mantener ▶ (o ⇄): abre o cierra el segundo canal. */
+    private void toggleSplit() {
+        if (miniUrl != null) {
+            closeMini();
+            showBanner("Un solo canal");
+            return;
+        }
+        if (indexOfUrl(previousUrl) < 0) {
+            showBanner("Primero mira otro canal: el recuadro muestra el anterior");
+            return;
+        }
+        openMini(previousUrl);
+        showBanner(isTv ? "▶ intercambia   ·   mantén ▶ o Atrás para cerrar"
+                : "Toca el recuadro para intercambiar   ·   mantén ⇄ para cerrar");
+    }
+
+    private void openMini(String url) {
+        int i = indexOfUrl(url);
+        if (i < 0) return;
+        miniUrl = url;
+        boolean software = miniSoftwareVideo || forceSoftwareForTesting() || needsSoftwareVideo.contains(url);
+        if (miniPlayer != null && software != miniSoftwareVideo) releaseMini();
+        if (miniPlayer == null) {
+            miniSoftwareVideo = software;
+            androidx.media3.exoplayer.trackselection.DefaultTrackSelector sel =
+                    new androidx.media3.exoplayer.trackselection.DefaultTrackSelector(this);
+            sel.setParameters(sel.buildUponParameters()
+                    .setMaxVideoSize(854, 480)
+                    .setForceLowestBitrate(true)
+                    .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
+                    .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true));
+            miniPlayer = new ExoPlayer.Builder(this, new MixedRenderersFactory(this, software))
+                    .setTrackSelector(sel)
+                    .build();
+            miniPlayer.setVolume(0f);
+            miniPlayer.addListener(new Player.Listener() {
+                @Override
+                public void onPlayerError(PlaybackException e) {
+                    Log.w(TAG, "Recuadro: " + e.getErrorCodeName());
+                    if (miniUrl == null) return;
+                    if (isDecoderError(e)) {
+                        // Equipos con un solo decodificador por hardware: el
+                        // chico pasa a FFmpeg; si tampoco puede, se cierra.
+                        if (miniSoftwareVideo) {
+                            closeMini();
+                            showBanner("Este equipo no puede mostrar dos canales a la vez");
+                        } else {
+                            miniSoftwareVideo = true;
+                            openMini(miniUrl);
+                        }
+                        return;
+                    }
+                    ui.postDelayed(() -> { if (miniUrl != null) openMini(miniUrl); }, 3000);
+                }
+            });
+            miniView.setPlayer(miniPlayer);
+        }
+        miniPlayer.setMediaSource(buildSource(url, LIVE_TARGET_OFFSET_MS));
+        miniPlayer.prepare();
+        miniPlayer.setPlayWhenReady(true);
+        miniLabel.setText(ChannelStore.at(i).name);
+        if (miniFrame.getLayoutParams().width <= 0 || miniFrame.getWidth() == 0) {
+            sizeMini(findViewById(android.R.id.content).getWidth());
+        }
+        miniFrame.setVisibility(View.VISIBLE);
+    }
+
+    /** El grande pasa al recuadro y el del recuadro a pantalla completa. */
+    private void swapMini() {
+        if (miniUrl == null || currentUrl == null) return;
+        int i = indexOfUrl(miniUrl);
+        if (i < 0) {
+            closeMini();
+            return;
+        }
+        String big = currentUrl;
+        index = i;
+        openChannel();
+        openMini(big);
+    }
+
+    private void closeMini() {
+        miniUrl = null;
+        miniSoftwareVideo = false;
+        releaseMini();
+        if (miniFrame != null) miniFrame.setVisibility(View.GONE);
+    }
+
+    private void releaseMini() {
+        if (miniPlayer == null) return;
+        miniView.setPlayer(null);
+        miniPlayer.release();
+        miniPlayer = null;
     }
 
     private void switchBy(int delta) {
@@ -709,8 +855,8 @@ public class PlayerActivity extends Activity {
         if (favBtn != null) ((TextView) favBtn).setText(Favorites.contains(this, ch.url) ? "★  Favorito" : "☆  Favorito");
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
         osdInfo.setText(cat + (isTv
-                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   ▶ canal anterior   ·   0-9 ir al número"
-                : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía"));
+                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   ▶ anterior (mantén: dos canales)   ·   0-9 ir al número"
+                : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía   ·   mantén ⇄: dos canales"));
         fillOsdGuide(ch);
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
         if (ch.logo != null && !ch.logo.isEmpty()) {
@@ -911,8 +1057,30 @@ public class PlayerActivity extends Activity {
 
     // ---------------------------------------------------------------- mando
 
+    /** ▶ apretado aquí (no en la programación ni la lista) y si ya se trató como "mantener". */
+    private boolean rightDown, rightHeld;
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        // ▶: tocar = canal anterior (o intercambiar); mantener = dos canales.
+        // Se decide al soltar o, si se mantiene, al primer auto-repetir.
+        if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT && !scheduleOpen() && !panelOpen()) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (event.getRepeatCount() == 0) {
+                    rightDown = true;
+                    rightHeld = false;
+                } else if (rightDown && !rightHeld) {
+                    rightHeld = true;
+                    toggleSplit();
+                }
+                return true;
+            }
+            if (event.getAction() == KeyEvent.ACTION_UP && rightDown) {
+                rightDown = false;
+                if (!rightHeld) previousOrSwap();
+                return true;
+            }
+        }
         if (event.getAction() != KeyEvent.ACTION_DOWN) {
             return super.dispatchKeyEvent(event);
         }
@@ -971,10 +1139,9 @@ public class PlayerActivity extends Activity {
                 return true;
 
             // Volver al último canal visto (alternar entre dos partidos)
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_LAST_CHANNEL:
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                switchToPrevious();
+                previousOrSwap();
                 return true;
 
             // Programación del canal
@@ -1005,6 +1172,10 @@ public class PlayerActivity extends Activity {
             togglePanel(false);
             return;
         }
+        if (miniUrl != null) {
+            closeMini();
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -1029,6 +1200,7 @@ public class PlayerActivity extends Activity {
     protected void onStart() {
         super.onStart();
         openChannel();
+        if (miniUrl != null) openMini(miniUrl);
     }
 
     @Override
@@ -1056,6 +1228,12 @@ public class PlayerActivity extends Activity {
             if (touchControls != null) touchControls.setVisibility(View.GONE);
             sendToTv.setVisibility(View.GONE);
             banner.setVisibility(View.GONE);
+            // En el cuadrito flotante no cabe un segundo canal
+            miniFrame.setVisibility(View.GONE);
+            if (miniPlayer != null) miniPlayer.pause();
+        } else if (miniUrl != null) {
+            miniFrame.setVisibility(View.VISIBLE);
+            if (miniPlayer != null) miniPlayer.play();
         }
     }
 
@@ -1067,5 +1245,6 @@ public class PlayerActivity extends Activity {
             player.release();
             player = null;
         }
+        releaseMini(); // miniUrl se conserva: al volver se reabre
     }
 }
