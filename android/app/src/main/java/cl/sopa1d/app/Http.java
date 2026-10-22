@@ -34,6 +34,30 @@ final class Http {
         return r.body;
     }
 
+    /** POST de un cuerpo JSON (AniList); devuelve el cuerpo de la respuesta. */
+    static String postJson(String url, String json) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+        try {
+            c.setConnectTimeout(10000);
+            c.setReadTimeout(15000);
+            c.setDoOutput(true);
+            c.setRequestMethod("POST");
+            c.setRequestProperty("User-Agent", UA);
+            c.setRequestProperty("Content-Type", "application/json");
+            c.setRequestProperty("Accept", "application/json");
+            try (java.io.OutputStream out = c.getOutputStream()) {
+                out.write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            }
+            int code = c.getResponseCode();
+            InputStream in = code >= 400 ? c.getErrorStream() : c.getInputStream();
+            String body = in == null ? "" : readAll(in);
+            if (code < 200 || code >= 300) throw new IOException("HTTP " + code + " en " + url);
+            return body;
+        } finally {
+            c.disconnect();
+        }
+    }
+
     /**
      * GET con redirecciones manuales: HttpURLConnection no sigue las que
      * cambian de http a https, y los reproductores rebotan entre dominios.

@@ -71,10 +71,15 @@ final class Catalog {
     static List<CatalogItem> load(String url) throws Exception {
         List<CatalogItem> hit = cache.get(url);
         if (hit != null) return hit;
-        List<CatalogItem> items = CatalogItem.listFromJson(new JSONObject(Http.getString(url)));
+        List<CatalogItem> items = url.startsWith(ANILIST)
+                ? AniList.load(url.substring(ANILIST.length()))
+                : CatalogItem.listFromJson(new JSONObject(Http.getString(url)));
         cache.put(url, items);
         return items;
     }
+
+    /** Filas de anime por tipo: "anilist:tag:Shounen" (ver AniList). */
+    static final String ANILIST = "anilist:";
 
     static String list(String kind, int genre) {
         return API + "/list?type=" + kind + "&page=1" + (genre > 0 ? "&genre=" + genre : "");
@@ -141,10 +146,15 @@ final class Catalog {
         List<Row> rows = new ArrayList<>();
         rows.add(new Row("🌸 Imperdibles", best("anime", 0)));
         rows.add(new Row("🔥 En emisión", list("anime", 0)));
-        rows.add(new Row("💥 Acción y aventura", best("anime", 10759)));
-        rows.add(new Row("🛸 Ciencia ficción y fantasía", best("anime", 10765)));
-        rows.add(new Row("😂 Comedia", best("anime", 35)));
-        rows.add(new Row("💘 Drama y romance", best("anime", 18)));
+        // Por tipo de anime: la API del catálogo no filtra el anime por género
+        String[][] types = {
+                {"⚔️ Shōnen", "tag:Shounen"}, {"🌀 Isekai", "tag:Isekai"}, {"🗡️ Seinen", "tag:Seinen"},
+                {"🌸 Shōjo", "tag:Shoujo"}, {"💥 Acción", "genre:Action"}, {"🤖 Mecha", "genre:Mecha"},
+                {"⚽ Deportes", "genre:Sports"}, {"💕 Romance", "genre:Romance"}, {"😂 Comedia", "genre:Comedy"},
+                {"🔮 Fantasía", "genre:Fantasy"}, {"☕ Vida cotidiana", "genre:Slice of Life"},
+                {"👁️ Sobrenatural", "genre:Supernatural"}, {"🕵️ Misterio", "genre:Mystery"},
+                {"👻 Terror", "genre:Horror"}, {"🎬 Películas de anime", "format:MOVIE"}};
+        for (String[] t : types) rows.add(new Row(t[0], ANILIST + t[1]));
         return rows;
     }
 

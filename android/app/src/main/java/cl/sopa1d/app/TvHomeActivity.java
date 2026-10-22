@@ -194,9 +194,7 @@ public class TvHomeActivity extends Activity {
         findViewById(R.id.heroInfo).setOnClickListener(v -> {
             CatalogItem it = pendingHero;
             if (it == null || it.isLive()) return;
-            Intent i = new Intent(this, DetailActivity.class);
-            i.putExtra(DetailActivity.EXTRA_ITEM, it);
-            startActivity(i);
+            openDetail(it);
         });
 
         // Revisión diaria de canales caídos (en segundo plano, solo con wifi)
@@ -843,9 +841,7 @@ public class TvHomeActivity extends Activity {
                     // "Seguir viendo" va directo al reproductor, donde quedó
                     resume(item);
                 } else {
-                    Intent i = new Intent(TvHomeActivity.this, DetailActivity.class);
-                    i.putExtra(DetailActivity.EXTRA_ITEM, item);
-                    startActivity(i);
+                    openDetail(item);
                 }
             });
         }
@@ -922,6 +918,29 @@ public class TvHomeActivity extends Activity {
         public int getItemCount() {
             return items.size();
         }
+    }
+
+    /** Abre la ficha; los anime de AniList primero se buscan en el catálogo (TMDB). */
+    private void openDetail(CatalogItem item) {
+        if (!AniList.isAniList(item)) {
+            Intent i = new Intent(this, DetailActivity.class);
+            i.putExtra(DetailActivity.EXTRA_ITEM, item);
+            startActivity(i);
+            return;
+        }
+        Toast.makeText(this, "Buscando " + item.title + "…", Toast.LENGTH_SHORT).show();
+        new Thread(() -> {
+            CatalogItem found = AniList.resolve(item);
+            ui.post(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                if (found == null) {
+                    Toast.makeText(this, "Este anime no está en el catálogo para reproducir",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    openDetail(found);
+                }
+            });
+        }, "sopa1d-anilist").start();
     }
 
     /** Reanuda una película o el último episodio de una serie. */

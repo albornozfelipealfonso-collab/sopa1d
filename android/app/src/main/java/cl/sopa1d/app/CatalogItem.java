@@ -23,6 +23,9 @@ final class CatalogItem implements Serializable {
     /** Géneros legibles ("Acción · Aventura"), o "" si la API no los trae. */
     String genres = "";
 
+    /** Otro título para buscarlo (romaji en los de AniList), o "". */
+    String altTitle = "";
+
     /** "Seguir viendo": fracción vista (0..1) o -1, y "T1 E2" en series. */
     float progress = -1;
     String label = "";
