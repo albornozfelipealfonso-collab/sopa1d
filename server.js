@@ -920,6 +920,184 @@ function serverPriorityScore(srv) {
     return 10;
 }
 
+// ================================================================
+// PROGRAMACIÓN (EPG) DE LOS CANALES EN VIVO
+// Mismo método que la app Android (Epg.java): guías XMLTV públicas de
+// iptv-epg.org por país, emparejadas por nombre normalizado con
+// channels_spa.json ("TNT Sports Premium HD (Chile 1)" ↔ "CL - TNT Sports
+// Premium"). Solo coincidencias exactas. Se guarda lo útil (1 h atrás a 30 h
+// adelante) en una caché en disco y se renueva cada 8 h.
+// ================================================================
+const zlib = require('zlib');
+const EPG_COUNTRIES = ['cl', 'ar', 'mx', 'co', 'pe', 'es'];
+const EPG_MAX_AGE_MS = 8 * 3600 * 1000;
+const EPG_CACHE = path.join(os.tmpdir(), 'sopa1d-epg.json');
+const EPG_COUNTRY_CODE = { 'Chile': 'cl', 'Argentina': 'ar', 'México': 'mx', 'Colombia': 'co', 'Perú': 'pe', 'España': 'es' };
+let epgGuide = new Map();        // "cl:tntsportspremium" → [[start, stop, title, desc], …]
+let epgFetchedAt = 0;
+let epgLoading = false;
+let epgNowCache = { at: 0, body: null };
+
+function epgNorm(s) {
+    if (!s) return '';
+    let t = String(s).toLowerCase().normalize('NFD').replace(/\p{M}+/gu, '');
+    t = t.replace(/^[a-z]{2} - /, '')
+        .replace(/\(.*?\)|\[.*?\]/g, ' ')
+        .replace(/\bsenal\b.*$/, ' ')
+        .replace(/\b(chile|argentina|mexico|espana|peru|colombia|latinoamerica|latam|latin america|america|internacional|usa|ee ?uu)\b/g, ' ')
+        .replace(/\b(hd|fhd|uhd|sd|4k|1080p|720p|tv|canal|en vivo|oficial|backup|directa|60fps)\b/g, ' ');
+    return t.replace(/[^a-z0-9]/g, '');
+}
+
+function epgUnescape(t) {
+    return t.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'").replace(/&#(\d+);/g, (m, n) => String.fromCharCode(+n)).replace(/&amp;/g, '&');
+}
+
+/** "20261021163000 +0000" → milisegundos UTC */
+function epgTime(v) {
+    const m = /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)\s*([+-])(\d\d)(\d\d)/.exec(v || '');
+    if (!m) return 0;
+    const utc = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]);
+    const off = (+m[8] * 60 + +m[9]) * 60000 * (m[7] === '+' ? 1 : -1);
+    return utc - off;
+}
+
+function epgChannels() {
+    try {
+        return JSON.parse(fs.readFileSync(path.join(__dirname, 'channels_spa.json'), 'utf8'));
+    } catch (e) {
+        return [];
+    }
+}
+
+function epgParseCountry(code, xml, wanted, now, out) {
+    const idToKey = new Map();
+    const chRe = /<channel\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/channel>/g;
+    let m;
+    while ((m = chRe.exec(xml))) {
+        const id = epgUnescape(m[1]);
+        const dnRe = /<display-name[^>]*>([\s\S]*?)<\/display-name>/g;
+        let d;
+        while ((d = dnRe.exec(m[2]))) {
+            const n = epgNorm(epgUnescape(d[1]));
+            if (wanted.has(n)) { idToKey.set(id, code + ':' + n); break; }
+        }
+    }
+    const prRe = /<programme\b([^>]*)>([\s\S]*?)<\/programme>/g;
+    const attr = (a, name) => { const r = new RegExp('\\b' + name + '="([^"]*)"').exec(a); return r ? r[1] : ''; };
+    while ((m = prRe.exec(xml))) {
+        const key = idToKey.get(epgUnescape(attr(m[1], 'channel')));
+        if (!key) continue;
+        const start = epgTime(attr(m[1], 'start'));
+        const stop = epgTime(attr(m[1], 'stop'));
+        // Hay entradas de duración cero (01:40 – 01:40): solo ensucian
+        if (!(stop > start) || stop < now - 3600000 || start > now + 30 * 3600000) continue;
+        const t = /<title[^>]*>([\s\S]*?)<\/title>/.exec(m[2]);
+        if (!t) continue;
+        const ds = /<desc[^>]*>([\s\S]*?)<\/desc>/.exec(m[2]);
+        let desc = ds ? epgUnescape(ds[1]).trim() : '';
+        if (desc.length > 220) desc = desc.slice(0, 217) + '…';
+        if (!out.has(key)) out.set(key, []);
+        out.get(key).push([start, stop, epgUnescape(t[1]).trim(), desc]);
+    }
+}
+
+async function epgRefresh() {
+    if (epgLoading) return;
+    epgLoading = true;
+    try {
+        if (!epgGuide.size) {
+            try {
+                const c = JSON.parse(fs.readFileSync(EPG_CACHE, 'utf8'));
+                epgGuide = new Map(Object.entries(c.channels || {}));
+                epgFetchedAt = c.fetched || 0;
+                console.log(`[EPG] Caché con ${epgGuide.size} canales`);
+            } catch (e) {}
+        }
+        if (Date.now() - epgFetchedAt < EPG_MAX_AGE_MS && epgGuide.size) return;
+        const wanted = new Set(epgChannels().map(c => epgNorm(c.name)));
+        const now = Date.now();
+        const map = new Map();
+        for (const code of EPG_COUNTRIES) {
+            try {
+                const r = await fetch(`https://iptv-epg.org/files/epg-${code}.xml.gz`, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                const xml = zlib.gunzipSync(Buffer.from(await r.arrayBuffer())).toString('utf8');
+                const before = map.size;
+                epgParseCountry(code, xml, wanted, now, map);
+                for (const [k, v] of map) if (k.startsWith(code + ':')) v.sort((a, b) => a[0] - b[0]);
+                console.log(`[EPG] ${code} +${map.size - before} canales`);
+                // Por país: Chile aparece sin esperar al resto
+                epgGuide = new Map(map);
+                epgNowCache.at = 0;
+            } catch (e) {
+                console.warn(`[EPG] Falló la guía de ${code}: ${e.message}`);
+            }
+        }
+        if (!map.size) return;
+        epgGuide = map;
+        epgFetchedAt = now;
+        epgNowCache.at = 0;
+        try {
+            fs.writeFileSync(EPG_CACHE, JSON.stringify({ fetched: now, channels: Object.fromEntries(map) }));
+        } catch (e) {}
+    } finally {
+        epgLoading = false;
+    }
+}
+
+/** Programas de un canal. La guía de España solo vale para canales españoles. */
+function epgSchedule(name, country) {
+    const n = epgNorm(name);
+    if (!n) return [];
+    const own = EPG_COUNTRY_CODE[country];
+    if (own && epgGuide.has(own + ':' + n)) return epgGuide.get(own + ':' + n);
+    for (const c of ['cl', 'ar', 'mx', 'co', 'pe']) {
+        if (epgGuide.has(c + ':' + n)) return epgGuide.get(c + ':' + n);
+    }
+    return [];
+}
+
+function handleEpg(req, res) {
+    const send = (obj) => {
+        const buf = Buffer.from(JSON.stringify(obj), 'utf8');
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': buf.length, 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-cache' });
+        res.end(buf);
+    };
+    if (Date.now() - epgFetchedAt > EPG_MAX_AGE_MS || !epgGuide.size) epgRefresh();
+    const ready = epgGuide.size > 0;
+    const u = new URL(req.url, 'http://127.0.0.1');
+    const now = Date.now();
+
+    if (u.pathname === '/api/epg/now') {
+        // {id: [título ahora, inicio, fin, título después, inicio después]}
+        if (epgNowCache.body && now - epgNowCache.at < 60000) return send(epgNowCache.body);
+        const channels = {};
+        for (const ch of epgChannels()) {
+            if (ch.dead) continue;
+            const list = epgSchedule(ch.name, ch.country);
+            if (!list.length) continue;
+            const i = list.findIndex(p => p[1] > now);
+            if (i < 0) continue;
+            const cur = list[i][0] <= now ? list[i] : null;
+            const next = cur ? list[i + 1] : list[i];
+            channels[ch.id] = [cur ? cur[2] : '', cur ? cur[0] : 0, cur ? cur[1] : 0, next ? next[2] : '', next ? next[0] : 0];
+        }
+        const body = { ready, loading: epgLoading, channels };
+        if (ready) epgNowCache = { at: now, body };
+        return send(body);
+    }
+    if (u.pathname === '/api/epg/channel') {
+        const id = u.searchParams.get('id') || '';
+        const ch = epgChannels().find(c => c.id === id);
+        const list = ch ? epgSchedule(ch.name, ch.country).filter(p => p[1] > now).slice(0, 48) : [];
+        return send({ ready, loading: epgLoading, programs: list });
+    }
+    send({ ready, loading: epgLoading });
+}
+
 const server = http.createServer(async (req, res) => {
     console.log(`[REQ] ${req.method} ${req.url.slice(0, 100)}`);
     // Manejo de preflight CORS (OPTIONS)
@@ -981,6 +1159,12 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
             res.end('Error al cargar reproductor limpio: ' + err.message);
         }
+        return;
+    }
+
+    // PROGRAMACIÓN DE CANALES EN VIVO (/api/epg/now, /api/epg/channel?id=...)
+    if (req.url.startsWith('/api/epg')) {
+        handleEpg(req, res);
         return;
     }
 
