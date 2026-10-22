@@ -2,9 +2,11 @@
   "name": "sopa1d",
   "version": "1.0.0",
   "description": "Sopa1D Pro — Hub de Streaming y Canales en Vivo",
-  "main": "server.js",
+  "main": "desktop/main.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "desktop": "electron .",
+    "dist:win": "electron-builder --win nsis"
   },
   "dependencies": {
     "ffmpeg-static": "^5.2.0"
@@ -17,5 +19,38 @@
   ],
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "author": "Sopa1D",
+  "build": {
+    "appId": "cl.sopa1d.desktop",
+    "productName": "Sopa1D",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "server.js",
+      "channels_spa.json",
+      "desktop/**",
+      "android/app/src/main/res/raw/ad_shield.js",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "desktop/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Sopa1D"
+    }
   }
 }

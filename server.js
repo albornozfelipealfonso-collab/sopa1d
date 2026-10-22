@@ -10,7 +10,11 @@ const { URL } = require('url');
 const { spawn } = require('child_process');
 
 let FFMPEG_BIN = 'ffmpeg';
-try {
+// La app de PC (desktop/main.js) pasa la ruta real: dentro del paquete de
+// Electron, ffmpeg-static apunta al .asar y ahí no se puede ejecutar.
+if (process.env.FFMPEG_PATH && fs.existsSync(process.env.FFMPEG_PATH)) {
+    FFMPEG_BIN = process.env.FFMPEG_PATH;
+} else try {
     const staticFf = require('ffmpeg-static');
     if (staticFf && fs.existsSync(staticFf)) {
         FFMPEG_BIN = staticFf;
