@@ -4151,7 +4151,7 @@
         // propia app en todos los iframes, así que TONPlayer (Latino, el que
         // trae menos publicidad de origen) se carga directo y va primero.
         const IS_NATIVE_APP = !!(window.Sopa1D && typeof window.Sopa1D.isNative === 'function');
-        let currentActiveServer = IS_NATIVE_APP ? 'nativo' : 'multiembed';
+        let currentActiveServer = IS_NATIVE_APP ? 'nativo' : 'sinads';
         let adBlockShieldEnabled = true;
 
         function getLocalAdFreeBase() {
@@ -4177,6 +4177,8 @@
             const s = season || 1;
             const e = episode || 1;
             const localBase = getLocalAdFreeBase();
+            // Subtítulos en español por defecto en VidSrc
+            const dsLang = currentStreamLanguage === 'subtitulado' ? '&ds_lang=es' : '';
 
             // En la APK va primero el reproductor nativo: saca el vídeo directo
             // del servidor y nunca carga los reproductores web con publicidad.
@@ -4186,7 +4188,17 @@
                 tag: 'SIN ADS',
                 color: '#10b981',
                 type: 'native'
-            }] : [];
+            }] : [{
+                // En el PC y la web: lo mismo que el reproductor nativo de la
+                // APK. server.js pide a TONPlayer los servidores del idioma
+                // elegido y entrega el vídeo directo, sin reproductores web.
+                // Es el único que respeta los botones Audio Latino / Subtitulado.
+                id: 'sinads',
+                name: currentStreamLanguage === 'subtitulado' ? '🛡️ Sin anuncios · Subtitulado' : '🛡️ Sin anuncios · Latino',
+                tag: 'SIN ADS · IDIOMA',
+                color: '#10b981',
+                type: 'hls'
+            }];
 
             return [
                 ...nativo,
@@ -4210,8 +4222,8 @@
                     type: 'iframe',
                     allowSandbox: false,
                     url: isTv
-                        ? `https://vidsrc.me/embed/tv?tmdb=${id}&sea=${s}&epi=${e}`
-                        : `https://vidsrc.me/embed/movie?tmdb=${id}`
+                        ? `https://vidsrc.me/embed/tv?tmdb=${id}&sea=${s}&epi=${e}${dsLang}`
+                        : `https://vidsrc.me/embed/movie?tmdb=${id}${dsLang}`
                 },
                 {
                     id: 'vidsrc',
@@ -4221,8 +4233,8 @@
                     type: 'iframe',
                     allowSandbox: false,
                     url: isTv
-                        ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}`
-                        : `https://vidsrc.to/embed/movie/${id}`
+                        ? `https://vidsrc.to/embed/tv/${id}/${s}/${e}${dsLang.replace('&', '?')}`
+                        : `https://vidsrc.to/embed/movie/${id}${dsLang.replace('&', '?')}`
                 },
                 {
                     id: 'tonplayer',
@@ -4317,6 +4329,11 @@
                 currentPlayer = null;
             }
 
+            if (selected.type === 'hls') {
+                reproducirSinAnuncios(meta);
+                return;
+            }
+
             if (selected.type === 'native') {
                 window._nativeMeta = meta;
                 container.innerHTML = `
@@ -4373,6 +4390,126 @@
                 poster: meta.poster || (seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w300${seriesDetails.poster_path}` : null),
                 currentTime: 60,
                 duration: 3600
+            });
+            renderContinueWatchingShelf();
+        }
+
+        /**
+         * Servidor "Sin anuncios" del PC/web. Mismo camino que el reproductor
+         * nativo de la APK (StreamResolver.java): lista de servidores de
+         * TONPlayer con su idioma, se prueban en orden de preferencia y el
+         * primero que entrega su .m3u8 se reproduce con Video.js.
+         */
+        let sinAdsTurno = 0;
+
+        function sinAdsPrioridad(host) {
+            const h = (host || '').toLowerCase();
+            if (/voe|dood|mp4upload|primeload/.test(h) || h === 'ok') return -1; // no exponen el .m3u8
+            if (/vimeus|vimeos/.test(h)) return 1;
+            if (/streamwish/.test(h)) return 2;
+            if (/filelions/.test(h)) return 3;
+            if (/vidmoly/.test(h)) return 4;
+            if (/vidhide|luluvdo/.test(h)) return 5;
+            if (/uqload/.test(h)) return 6;
+            return 9;
+        }
+
+        function sinAdsRangoIdioma(idioma, quiere) {
+            const l = (idioma || '').toLowerCase();
+            const pedido = quiere === 'subtitulado' ? /sub/ : /latino/;
+            if (pedido.test(l)) return 0;
+            if (/latino/.test(l)) return 1;
+            if (/castellano/.test(l)) return 2;
+            if (/sub/.test(l)) return 3;
+            return 4;
+        }
+
+        function sinAdsAviso(container, texto, poster) {
+            container.innerHTML = `
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;background:#000 center/cover no-repeat;${poster ? `background-image:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),url('${poster}');` : ''}border-radius:var(--radius-md);color:#e5e7eb;font-size:15px;font-weight:600;">${texto}</div>`;
+        }
+
+        async function reproducirSinAnuncios(meta) {
+            const turno = ++sinAdsTurno;
+            const container = document.getElementById('playerContainer');
+            const base = getLocalAdFreeBase();
+            const isTv = (meta.type === 'tv' || currentType === 'tvshows' || currentType === 'anime');
+            const quiere = currentStreamLanguage;
+            const nombreIdioma = quiere === 'subtitulado' ? 'Subtitulado' : 'Latino';
+            const poster = meta.poster || (seriesDetails?.backdrop_path ? `https://image.tmdb.org/t/p/w780${seriesDetails.backdrop_path}` : '');
+            sinAdsAviso(container, `🔎 Buscando servidor en ${nombreIdioma}…`, poster);
+
+            const conTiempo = (url, ms) => {
+                const ctl = new AbortController();
+                const t = setTimeout(() => ctl.abort(), ms);
+                return fetch(url, { signal: ctl.signal }).finally(() => clearTimeout(t));
+            };
+
+            let lista = [];
+            try {
+                const ruta = isTv ? `/api/tv/${meta.id}/${meta.season || 1}/${meta.episode || 1}` : `/api/movie/${meta.id}`;
+                // TONPlayer arma la lista en el momento: la primera vez tarda
+                const json = await conTiempo(base + ruta, 35000).then(r => r.json());
+                lista = (json.servers || [])
+                    .map(x => ({ host: x.servidor || '', idioma: x.idioma || '?', token: x.token || '' }))
+                    .filter(x => x.token && sinAdsPrioridad(x.host) >= 0)
+                    .sort((a, b) => (sinAdsRangoIdioma(a.idioma, quiere) - sinAdsRangoIdioma(b.idioma, quiere))
+                        || (sinAdsPrioridad(a.host) - sinAdsPrioridad(b.host)));
+            } catch (e) {}
+            if (turno !== sinAdsTurno) return;
+
+            if (!lista.length) {
+                showToast('⚠️ No hay servidor sin anuncios para este título: se abre MultiEmbed', 4500, 'warning');
+                reproducirEnServidor('multiembed', meta);
+                return;
+            }
+            if (sinAdsRangoIdioma(lista[0].idioma, quiere) !== 0) {
+                showToast(`ℹ️ No está en ${nombreIdioma}: se muestra en ${lista[0].idioma}`, 4500);
+            }
+
+            const probar = async (i) => {
+                if (turno !== sinAdsTurno) return;
+                if (i >= lista.length || i >= 10) {
+                    showToast('⚠️ Ningún servidor respondió: se abre MultiEmbed', 4500, 'warning');
+                    reproducirEnServidor('multiembed', meta);
+                    return;
+                }
+                const srv = lista[i];
+                sinAdsAviso(container, `🔎 Probando ${srv.idioma} · ${srv.host}…`, poster);
+                let r = null;
+                try {
+                    r = await conTiempo(`${base}/api/resolve?token=${encodeURIComponent(srv.token)}`, 25000).then(x => x.json());
+                } catch (e) {}
+                if (turno !== sinAdsTurno) return;
+                if (!r || r.mode !== 'sopa1d_adblock_hls' || !r.url) return probar(i + 1);
+
+                container.innerHTML = `
+                    <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" playsinline></video>
+                    <div style="position:absolute;top:10px;left:10px;z-index:5;padding:4px 10px;border-radius:12px;background:rgba(0,0,0,.65);color:#d1fae5;font-size:12px;font-weight:700;pointer-events:none;">🛡️ ${srv.idioma} · ${srv.host}</div>`;
+                if (currentPlayer) { try { currentPlayer.dispose(); } catch (e) {} }
+                const player = videojs('my-video', {
+                    autoplay: true, controls: true, fill: true, preload: 'auto',
+                    html5: { vhs: { overrideNative: true } }
+                });
+                currentPlayer = player;
+                let arranco = false;
+                player.one('playing', () => { arranco = true; });
+                player.on('error', () => {
+                    // Enlace que no responde: siguiente servidor
+                    if (!arranco && turno === sinAdsTurno) probar(i + 1);
+                });
+                player.src({ src: base + r.url, type: 'application/x-mpegURL' });
+                player.play()?.catch?.(() => {});
+                currentCastSource = base + r.url;
+                showToast(`🎬 ${srv.idioma} · ${srv.host} 🛡️ Sin Ads`);
+            };
+            await probar(0);
+
+            upsertContinueWatching({
+                id: meta.id, type: meta.type, season: meta.season, episode: meta.episode,
+                title: meta.title || seriesDetails?.title || seriesDetails?.name || 'Sopa1D',
+                poster: meta.poster || (seriesDetails?.poster_path ? `https://image.tmdb.org/t/p/w300${seriesDetails.poster_path}` : null),
+                currentTime: 60, duration: 3600
             });
             renderContinueWatchingShelf();
         }
@@ -4564,6 +4701,9 @@
 
         function seleccionarModoIdioma(modo) {
             currentStreamLanguage = modo;
+            // MultiEmbed y VidSrc no cambian de idioma: el botón pasa al
+            // servidor "Sin anuncios", que busca la versión pedida.
+            if (!IS_NATIVE_APP) currentActiveServer = 'sinads';
             document.getElementById('langLatinoBtn').classList.toggle('active', modo === 'latino');
             document.getElementById('langSubBtn').classList.toggle('active', modo === 'subtitulado');
             if (currentId) {
