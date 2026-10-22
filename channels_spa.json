@@ -28,10 +28,10 @@
   },
   {
     "id": "ch_tnt_sports_cl4",
-    "name": "TNT Sports Premium HD (Señal 4 Directa)",
+    "name": "TNT Sports HD (Argentina)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
     "category": "Deportes",
-    "country": "Chile",
+    "country": "Argentina",
     "url": "https://streaming.onnethn.com/TNT_SPORTS/playlist.m3u8",
     "fixAudio": true
   },
