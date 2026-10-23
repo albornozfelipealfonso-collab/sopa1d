@@ -154,7 +154,7 @@ async function itunes(term, country) {
     return [];
 }
 
-function pick(results, artist, title) {
+function candidates(results, artist, title) {
     const a = norm(artist.split(' & ')[0]).replace(/^the/, ''), t = norm(title.replace(/\(.*?\)/g, ''));
     const ok = results.filter(r => r.previewUrl && norm(r.artistName).replace(/^the/, '').includes(a.slice(0, 12))
         && (norm(r.trackName).startsWith(t) || norm(r.trackName).includes(t)));
@@ -162,18 +162,39 @@ function pick(results, artist, title) {
     const clean = ok.filter(r => !/live|karaoke|demo|instrumental|acoustic|ac[uú]stic|en vivo|remix/i.test(r.trackName + ' ' + (r.collectionName || '')));
     const list = clean.length ? clean : ok;
     // La más antigua: más probable que sea la grabación original
-    return list.sort((x, y) => String(x.releaseDate).localeCompare(String(y.releaseDate)))[0];
+    return list.sort((x, y) => String(x.releaseDate).localeCompare(String(y.releaseDate)));
 }
 
 const out = [];
 const missing = [], yearWarn = [];
+/*
+ * Volumen medio del fragmento (dB) con ffmpeg. iTunes elige qué 30 s mostrar
+ * y a veces es una intro casi muda ("One" de Metallica daba -33 dB contra
+ * -14 dB de promedio): se prueba la siguiente versión hasta una audible.
+ */
+import { execFile } from 'node:child_process';
+const FFMPEG = path.join(ROOT, 'node_modules', 'ffmpeg-static', process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg');
+const MIN_DB = -24;
+function loudness(url) {
+    return new Promise(res => execFile(FFMPEG, ['-hide_banner', '-nostats', '-i', url, '-af', 'volumedetect', '-f', 'null', '-'],
+        { timeout: 60000 }, (e, o, err) => res(parseFloat(((err || '').match(/mean_volume: (-?[\d.]+)/) || [])[1]))));
+}
+
 for (const [artist, title, year] of SONGS) {
-    let hit = null;
+    let hit = null, list = [];
     for (const country of ['US', 'CL', 'ES']) {
-        hit = pick(await itunes(`${artist} ${title}`, country), artist, title);
+        list = candidates(await itunes(`${artist} ${title}`, country), artist, title);
         await sleep(3200);
-        if (hit) break;
+        if (list.length) break;
     }
+    // La más antigua que se escuche bien; si ninguna, la más fuerte
+    let best = null;
+    for (const c of list.slice(0, 6)) {
+        c.db = await loudness(c.previewUrl);
+        if (c.db >= MIN_DB) { hit = c; break; }
+        if (!best || c.db > best.db) best = c;
+    }
+    if (!hit) hit = best;
     if (!hit) { missing.push(`${artist} – ${title}`); console.log(`  ✘ ${artist} – ${title}`); continue; }
     const itYear = parseInt(String(hit.releaseDate).slice(0, 4), 10);
     if (itYear && Math.abs(itYear - year) > 1 && itYear < year) yearWarn.push(`${artist} – ${title}: lista ${year}, iTunes ${itYear}`);
@@ -181,6 +202,7 @@ for (const [artist, title, year] of SONGS) {
         id: hit.trackId, artist, title, year,
         preview: hit.previewUrl,
         cover: (hit.artworkUrl100 || '').replace('100x100bb', '400x400bb'),
+        db: Math.round(hit.db * 10) / 10, // volumen medio: el juego empareja con esto
     });
     console.log(`  ✔ ${year} ${artist} – ${title}`);
 }

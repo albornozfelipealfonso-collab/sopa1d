@@ -7082,13 +7082,41 @@
             hitsterPlay(true);
         }
 
+        /*
+         * Volumen parejo: hitster.json trae el volumen medio de cada fragmento
+         * (dB, medido con ffmpeg). Los fuertes se bajan hasta -20 dB; así una
+         * canción suave no queda tapada por la anterior. El audio del navegador
+         * no se puede subir por encima de 1, por eso se baja a los fuertes.
+         */
+        const HS_TARGET_DB = -20;
+        function hsGain(song) {
+            if (!song || typeof song.db !== 'number') return 1;
+            return Math.max(0.2, Math.min(1, Math.pow(10, (HS_TARGET_DB - song.db) / 20)));
+        }
+
         function hitsterPlay(restart) {
             const a = hsAudio();
             if (!hs || !hs.current) return;
             if (restart || a.getAttribute('src') !== hs.current.preview) { a.src = hs.current.preview; a.currentTime = 0; }
+            a.volume = hsGain(hs.current);
             a.play().catch(() => {});
             hsUpdatePlayBtn();
         }
+
+        // Un fragmento que no carga (red, enlace vencido): otra canción, sin cobrar ficha
+        document.addEventListener('DOMContentLoaded', () => {
+            const a = hsAudio();
+            if (!a) return;
+            let fails = 0;
+            a.addEventListener('playing', () => { fails = 0; });
+            a.addEventListener('error', () => {
+                if (!hs || hs.phase !== 'listen' || !a.getAttribute('src')) return;
+                // Varias seguidas: seguro no hay internet, no saltar sin fin
+                if (++fails >= 3) { showToast('⚠️ No se pueden cargar las canciones. Revisa la conexión y aprieta 🔁 Repetir.', 5000, 'warning'); fails = 0; return; }
+                showToast('🎵 Esa canción no cargó: va otra', 2500);
+                hitsterNextSong();
+            });
+        });
 
         function hitsterToggle() {
             const a = hsAudio();
