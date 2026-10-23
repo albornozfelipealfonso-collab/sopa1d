@@ -2345,6 +2345,16 @@
         .hs-verdict { font-size: clamp(22px, 3.6vw, 32px); font-weight: 900; }
         .hs-verdict.ok { color: #34d399; } .hs-verdict.bad { color: #f87171; }
         .hs-lives { font-size: 22px; letter-spacing: 2px; }
+        .nt-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .nt-opt { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 16px 18px; border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; min-height: 76px; }
+        .nt-opt b { font-size: clamp(15px, 2.2vw, 19px); line-height: 1.25; }
+        .nt-opt span { font-size: 13px; color: var(--text-secondary); }
+        .nt-opt:hover, .nt-opt:focus { border-color: #f5c518; background: rgba(245,197,24,0.12); outline: none; }
+        .nt-opt.ok { border-color: #34d399; background: rgba(52,211,153,0.2); }
+        .nt-opt.bad { border-color: #f87171; background: rgba(248,113,113,0.2); }
+        .nt-opt:disabled { cursor: default; }
+        @media (max-width: 560px) { .nt-grid { grid-template-columns: 1fr; } }
         @media (max-width: 560px) { .hs-play { width: 70px; height: 70px; font-size: 28px; } .hs-slot { min-width: 54px; } }
 </style>
 </head>
@@ -7109,6 +7119,7 @@
         function renderGamesMenu() {
             hitsterStopAudio();
             hs = null;
+            if (typeof nt !== 'undefined' && nt) { clearInterval(nt.timer); nt = null; }
             hsRoot().innerHTML = `
                 <h2 class="hs-title" style="margin-bottom:16px;">🎮 Juegos</h2>
                 <div class="hs-card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
@@ -7118,6 +7129,14 @@
                         <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores.</div>
                     </div>
                     <button class="btn btn-primary hs-big" id="hsOpenSetup" onclick="renderHitsterSetup()">Jugar ▶</button>
+                </div>
+                <div class="hs-card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:16px;">
+                    <div style="font-size:64px;line-height:1;">🎯</div>
+                    <div style="flex:1;min-width:220px;">
+                        <div style="font-size:22px;font-weight:900;">Adivina la canción</div>
+                        <div class="hs-sub" style="margin:6px 0 0;">Suena un fragmento de rock y hay 4 opciones: elige la canción y el artista. Mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.</div>
+                    </div>
+                    <button class="btn btn-primary hs-big" id="ntOpenSetup" onclick="renderNameTuneSetup()">Jugar ▶</button>
                 </div>`;
             hsFocus(document.getElementById('hsOpenSetup'));
         }
@@ -7208,11 +7227,13 @@
             let fails = 0;
             a.addEventListener('playing', () => { fails = 0; });
             a.addEventListener('error', () => {
-                if (!hs || hs.phase !== 'listen' || !a.getAttribute('src')) return;
+                const enNt = typeof nt !== 'undefined' && nt && nt.phase === 'question';
+                if ((!hs || hs.phase !== 'listen') && !enNt) return;
+                if (!a.getAttribute('src')) return;
                 // Varias seguidas: seguro no hay internet, no saltar sin fin
                 if (++fails >= 3) { showToast('⚠️ No se pueden cargar las canciones. Revisa la conexión y aprieta 🔁 Repetir.', 5000, 'warning'); fails = 0; return; }
                 showToast('🎵 Esa canción no cargó: va otra', 2500);
-                hitsterNextSong();
+                if (enNt) ntNextSong(); else hitsterNextSong();
             });
         });
 
@@ -7462,9 +7483,215 @@
             hsFocus(document.getElementById('hsAgain'));
         }
 
+        /*
+         * ================== JUEGOS: ADIVINA LA CANCIÓN ==================
+         * Suena un fragmento y hay 4 opciones (canción — artista); las otras
+         * tres son de la misma época para que no sea obvio. Hay 15 s: acertar
+         * al tiro vale 1.000 puntos y baja hasta 100; fallar o dejar pasar el
+         * tiempo, 0. El reloj parte cuando la canción empieza a sonar.
+         * Usa las mismas canciones, audio y volumen parejo que Hitster.
+         */
+        let nt = null; // partida en curso
+        const ntCfg = { players: 2, rounds: 10, names: [] };
+        const NT_SECONDS = 15, NT_MAX = 1000, NT_MIN = 100;
+        const NT_RECORD_KEY = 'sopa1d_nametune_record';
+
+        function ntRecord() {
+            try { return parseInt(localStorage.getItem(NT_RECORD_KEY) || '0', 10) || 0; } catch (e) { return 0; }
+        }
+
+        function renderNameTuneSetup() {
+            hitsterStopAudio();
+            hs = null; nt = null;
+            const n = ntCfg.players;
+            const names = Array.from({ length: n }, (_, i) => ntCfg.names[i] || hsCfg.names[i] || '');
+            hsRoot().innerHTML = `
+                <div class="hs-card">
+                    <h2 class="hs-title">🎯 Adivina la canción</h2>
+                    <p class="hs-sub">Suena un fragmento de rock (1960–2010) y hay 4 opciones. Elige la canción y el artista correctos:
+                    mientras más rápido aciertas, más puntos (de ${NT_MAX} a ${NT_MIN}). Tienes ${NT_SECONDS} segundos.
+                    ${n === 1 ? `Tu récord: <b>${ntRecord().toLocaleString()}</b> puntos.` : 'Se juega por turnos: gana quien sume más puntos.'}</p>
+                    <div style="font-weight:800;">Jugadores</div>
+                    <div class="hs-row">${[1, 2, 3, 4, 5, 6].map(k => `<button class="hs-opt ${k === n ? 'active' : ''}" onclick="ntCfgSet('players', ${k})">${k}</button>`).join('')}</div>
+                    <div class="hs-names">${names.map((v, i) => `<input type="text" maxlength="16" placeholder="Jugador ${i + 1}" value="${hsEsc(v)}" oninput="ntCfg.names[${i}]=this.value">`).join('')}</div>
+                    <div style="font-weight:800;">Canciones por jugador</div>
+                    <div class="hs-row">${[5, 10, 15].map(k => `<button class="hs-opt ${k === ntCfg.rounds ? 'active' : ''}" onclick="ntCfgSet('rounds', ${k})">${k}</button>`).join('')}</div>
+                    <div class="hs-row" style="margin-top:22px;">
+                        <button class="btn btn-primary hs-big" id="ntStart" onclick="nameTuneStart()">▶ Empezar</button>
+                        <button class="btn btn-glass" onclick="renderGamesMenu()">← Juegos</button>
+                    </div>
+                </div>`;
+            hsFocus(document.getElementById('ntStart'));
+        }
+
+        function ntCfgSet(key, val) {
+            ntCfg[key] = val;
+            renderNameTuneSetup();
+        }
+
+        async function nameTuneStart() {
+            const songs = await hitsterLoad();
+            if (songs.length < 20) { showToast('⚠️ No se pudieron cargar las canciones', 3500, 'warning'); return; }
+            const players = Array.from({ length: ntCfg.players }, (_, i) => ({
+                name: (ntCfg.names[i] || hsCfg.names[i] || '').trim() || `Jugador ${i + 1}`,
+                score: 0, hits: 0, played: 0,
+            }));
+            nt = { players, deck: hsShuffle(songs), turn: 0, rounds: ntCfg.rounds, solo: players.length === 1,
+                   current: null, options: [], phase: 'question', started: 0, timer: null, answered: false };
+            ntNextSong();
+        }
+
+        // 3 opciones falsas de la misma época (±8 años), de otros artistas si se puede
+        function ntOptions(song) {
+            const pool = hitsterSongs.filter(s => s !== song && s.title !== song.title);
+            const near = hsShuffle(pool.filter(s => Math.abs(s.year - song.year) <= 8 && s.artist !== song.artist));
+            const picks = [];
+            for (const s of near.concat(hsShuffle(pool))) {
+                if (picks.length === 3) break;
+                if (!picks.some(p => p.artist === s.artist && p.title === s.title)) picks.push(s);
+            }
+            return hsShuffle([song, ...picks]);
+        }
+
+        function ntNextSong() {
+            clearInterval(nt.timer);
+            if (!nt.deck.length) nt.deck = hsShuffle(hitsterSongs);
+            nt.current = nt.deck.pop();
+            nt.options = ntOptions(nt.current);
+            nt.phase = 'question';
+            nt.answered = false;
+            nt.started = 0;
+            renderNameTuneQuestion();
+            const a = hsAudio();
+            a.src = nt.current.preview;
+            a.currentTime = 0;
+            a.volume = hsGain(nt.current);
+            a.play().catch(() => {});
+            // El reloj parte cuando suena (si tarda en cargar no se pierde tiempo)
+            const q = nt.current;
+            const start = () => { if (nt && nt.current === q && nt.phase === 'question' && !nt.started) ntStartClock(); };
+            a.addEventListener('playing', start, { once: true });
+            setTimeout(start, 5000);
+        }
+
+        function ntStartClock() {
+            nt.started = Date.now();
+            clearInterval(nt.timer);
+            nt.timer = setInterval(() => {
+                if (!nt || nt.phase !== 'question') return;
+                const left = Math.max(0, NT_SECONDS - (Date.now() - nt.started) / 1000);
+                const bar = document.getElementById('ntBar'), sec = document.getElementById('ntSec');
+                if (bar) bar.style.width = (left / NT_SECONDS * 100) + '%';
+                if (sec) sec.textContent = Math.ceil(left) + ' s';
+                if (left <= 0) nameTuneAnswer(-1);
+            }, 100);
+        }
+
+        function ntScores() {
+            return `<div class="hs-scores">${nt.players.map((p, i) => `<span class="hs-score ${i === nt.turn ? 'me' : ''}">${hsEsc(p.name)}: ${p.score.toLocaleString()} · ${p.played}/${nt.rounds}</span>`).join('')}</div>`;
+        }
+
+        function renderNameTuneQuestion() {
+            const p = nt.players[nt.turn];
+            hsRoot().innerHTML = `
+                <div class="hs-card">
+                    <div class="hs-top"><div class="hs-turn">🎯 Turno de ${hsEsc(p.name)} <span style="font-size:14px;color:var(--text-muted);">· canción ${p.played + 1} de ${nt.rounds}</span></div>${ntScores()}</div>
+                    <div class="hs-player">
+                        <button class="hs-play" id="hsPlay" onclick="hitsterToggle()" aria-label="Reproducir o pausar">⏸</button>
+                        <div style="flex:1;min-width:180px;">
+                            <div style="display:flex;justify-content:space-between;font-weight:800;margin-bottom:8px;"><span>¿Qué canción es?</span><span id="ntSec">${NT_SECONDS} s</span></div>
+                            <div class="hs-progress"><div id="ntBar" style="width:100%;background:#f5c518;transition:width .1s linear;"></div></div>
+                        </div>
+                    </div>
+                    <div class="nt-grid">${nt.options.map((o, i) => `
+                        <button class="nt-opt" data-opt="${i}" onclick="nameTuneAnswer(${i})"><b>${hsEsc(o.title)}</b><span>${hsEsc(o.artist)}</span></button>`).join('')}
+                    </div>
+                    <div class="hs-row" style="margin-top:16px;"><button class="btn btn-glass" onclick="nameTuneQuit()">✕ Terminar partida</button></div>
+                </div>`;
+            hsFocus(hsRoot().querySelector('.nt-opt'));
+        }
+
+        function nameTuneAnswer(i) {
+            if (!nt || nt.phase !== 'question' || nt.answered) return;
+            nt.answered = true;
+            clearInterval(nt.timer);
+            const p = nt.players[nt.turn];
+            const chosen = nt.options[i];
+            const ok = chosen === nt.current;
+            const secs = nt.started ? (Date.now() - nt.started) / 1000 : 0;
+            const pts = ok ? Math.max(NT_MIN, Math.round(NT_MAX - (NT_MAX - NT_MIN) * Math.min(1, secs / NT_SECONDS))) : 0;
+            p.score += pts;
+            p.played++;
+            if (ok) p.hits++;
+            nt.phase = 'reveal';
+            // Marcar en la grilla: verde la correcta, rojo la elegida si falló
+            hsRoot().querySelectorAll('.nt-opt').forEach((b, k) => {
+                b.disabled = true;
+                if (nt.options[k] === nt.current) b.classList.add('ok');
+                else if (k === i) b.classList.add('bad');
+            });
+            const c = nt.current;
+            const last = nt.players.every(x => x.played >= nt.rounds);
+            const box = document.createElement('div');
+            box.className = 'hs-reveal';
+            box.style.marginTop = '18px';
+            box.innerHTML = `
+                <img src="${hsEsc(c.cover)}" alt="" onerror="this.style.visibility='hidden'" style="width:clamp(90px,14vw,130px);">
+                <div style="flex:1;min-width:200px;">
+                    <div class="hs-verdict ${ok ? 'ok' : 'bad'}">${ok ? `✅ +${pts} puntos` : i < 0 ? '⏰ ¡Se acabó el tiempo!' : '❌ No era esa'}</div>
+                    <div style="font-size:18px;font-weight:800;margin-top:4px;">${hsEsc(c.title)}</div>
+                    <div style="color:var(--text-secondary);">${hsEsc(c.artist)} · ${c.year}</div>
+                </div>
+                <button class="btn btn-primary hs-big" id="ntNext" onclick="${last ? 'nameTuneEnd()' : 'nameTuneAdvance()'}">${last ? '🏆 Ver resultados' : 'Siguiente ▶'}</button>`;
+            hsRoot().querySelector('.hs-card').insertBefore(box, hsRoot().querySelector('.hs-card .hs-row:last-child'));
+            const sc = hsRoot().querySelector('.hs-scores');
+            if (sc) sc.outerHTML = ntScores();
+            hsFocus(document.getElementById('ntNext'));
+        }
+
+        function nameTuneAdvance() {
+            // Siguiente jugador que aún tenga canciones por jugar
+            do { nt.turn = (nt.turn + 1) % nt.players.length; } while (nt.players[nt.turn].played >= nt.rounds);
+            ntNextSong();
+        }
+
+        function nameTuneEnd() {
+            clearInterval(nt.timer);
+            hitsterStopAudio();
+            const ranking = nt.players.slice().sort((a, b) => b.score - a.score);
+            const medal = ['🥇', '🥈', '🥉'];
+            let extra = '';
+            if (nt.solo) {
+                const rec = ntRecord(), sc = nt.players[0].score;
+                if (sc > rec) { try { localStorage.setItem(NT_RECORD_KEY, String(sc)); } catch (e) {} extra = '🎉 ¡Nuevo récord!'; }
+                else extra = `Tu récord: ${rec.toLocaleString()} puntos`;
+            }
+            hsRoot().innerHTML = `
+                <div class="hs-card" style="text-align:center;">
+                    <div style="font-size:72px;">🏆</div>
+                    <h2 class="hs-title">${nt.solo ? `${nt.players[0].score.toLocaleString()} puntos` : '¡Ganó ' + hsEsc(ranking[0].name) + '!'}</h2>
+                    <p class="hs-sub">${nt.solo ? `Acertaste ${nt.players[0].hits} de ${nt.rounds}. ${extra}` : ''}</p>
+                    ${nt.solo ? '' : `<div style="display:grid;gap:8px;max-width:420px;margin:0 auto 20px;">${ranking.map((p, i) => `
+                        <div style="display:flex;justify-content:space-between;padding:10px 16px;border-radius:12px;background:rgba(255,255,255,0.05);font-weight:800;">
+                            <span>${medal[i] || (i + 1) + '.'} ${hsEsc(p.name)}</span><span>${p.score.toLocaleString()} · ${p.hits}/${nt.rounds}</span></div>`).join('')}</div>`}
+                    <div class="hs-row" style="justify-content:center;">
+                        <button class="btn btn-primary hs-big" id="ntAgain" onclick="nameTuneStart()">🔁 Jugar de nuevo</button>
+                        <button class="btn btn-glass" onclick="renderNameTuneSetup()">Cambiar jugadores</button>
+                    </div>
+                </div>`;
+            nt.phase = 'end';
+            hsFocus(document.getElementById('ntAgain'));
+        }
+
+        function nameTuneQuit() {
+            if (nt) clearInterval(nt.timer);
+            hitsterStopAudio();
+            renderNameTuneSetup();
+        }
+
         window.hitsterActive = function () {
             const sec = document.getElementById('gamesSection');
-            return !!hs && !!sec && sec.style.display !== 'none';
+            return (!!hs || !!nt) && !!sec && sec.style.display !== 'none';
         };
 
         // Atrás (control de la TV / botón de Android): partida → configuración → menú
@@ -7472,7 +7699,8 @@
             const sec = document.getElementById('gamesSection');
             if (!sec || sec.style.display === 'none') return false;
             if (hs) { hitsterQuit(); return true; }
-            if (document.getElementById('hsStart')) { renderGamesMenu(); return true; }
+            if (nt) { nameTuneQuit(); return true; }
+            if (document.getElementById('hsStart') || document.getElementById('ntStart')) { renderGamesMenu(); return true; }
             return false;
         };
 
@@ -7660,7 +7888,13 @@
         // Foco inicial en cuanto haya contenido
         var tries = 0;
         var boot = setInterval(function () {
-            var first = document.querySelector('.media-card, .shelf-card') || document.querySelector('.nav-link');
+            // En Juegos (index.html#juegos) el juego ya puso el foco en su botón
+            var games = document.getElementById('gamesSection');
+            if (games && games.style.display !== 'none') { clearInterval(boot); return; }
+            // Solo tarjetas visibles: "Seguir viendo" puede estar oculto
+            var cards = document.querySelectorAll('.media-card, .shelf-card'), first = null;
+            for (var i = 0; i < cards.length && !first; i++) if (visible(cards[i])) first = cards[i];
+            first = first || document.querySelector('.nav-link');
             if (first || ++tries > 40) { clearInterval(boot); if (first) focusEl(first); }
         }, 250);
     })();
