@@ -46,7 +46,7 @@ final class StreamResolver {
         }
 
         String label() {
-            return language + " · " + host;
+            return (isJapanese(language) ? "Japonés (sin subtítulos)" : language) + " · " + host;
         }
     }
 
@@ -140,8 +140,18 @@ final class StreamResolver {
         return out;
     }
 
+    /**
+     * "Jap" en TONPlayer = audio en japonés sin subtítulos (anime): va al final
+     * y no se elige solo mientras haya otra opción.
+     */
+    static boolean isJapanese(String lang) {
+        String l = lang == null ? "" : lang.toLowerCase(Locale.ROOT);
+        return (l.contains("jap") || l.contains("raw")) && !l.contains("sub");
+    }
+
     private static int languageRank(String lang) {
         String l = lang.toLowerCase(Locale.ROOT);
+        if (isJapanese(lang)) return 9;
         if (l.contains("latino")) return 1;
         if (l.contains("castellano")) return 2;
         if (l.contains("sub")) return 3;

@@ -4872,8 +4872,19 @@
             return 9;
         }
 
+        // "Jap" en TONPlayer = audio en japonés sin subtítulos: nunca se elige solo
+        function sinAdsEsJapones(idioma) {
+            const l = (idioma || '').toLowerCase();
+            return /jap|raw/.test(l) && !/sub/.test(l);
+        }
+
+        function sinAdsNombreIdioma(idioma) {
+            return sinAdsEsJapones(idioma) ? 'Japonés (sin subtítulos)' : (idioma || '?');
+        }
+
         function sinAdsRangoIdioma(idioma, quiere) {
             const l = (idioma || '').toLowerCase();
+            if (sinAdsEsJapones(idioma)) return 9;
             const pedido = quiere === 'subtitulado' ? /sub/ : /latino/;
             if (pedido.test(l)) return 0;
             if (/latino/.test(l)) return 1;
@@ -4887,27 +4898,35 @@
                 <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;background:#000 center/cover no-repeat;${poster ? `background-image:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),url('${poster}');` : ''}border-radius:var(--radius-md);color:#e5e7eb;font-size:15px;font-weight:600;">${texto}</div>`;
         }
 
+        function sinAdsConTiempo(url, ms) {
+            const ctl = new AbortController();
+            const t = setTimeout(() => ctl.abort(), ms);
+            return fetch(url, { signal: ctl.signal }).finally(() => clearTimeout(t));
+        }
+
+        /*
+         * Estado del servidor "Sin anuncios" del título abierto: la lista de
+         * TONPlayer (todos los idiomas) y cuál se está viendo. El cartel de
+         * arriba a la izquierda del vídeo abre la lista para elegir a mano.
+         */
+        let sinAdsEstado = null;
+
         async function reproducirSinAnuncios(meta) {
             const turno = ++sinAdsTurno;
             const container = document.getElementById('playerContainer');
             const base = getLocalAdFreeBase();
             const isTv = (meta.type === 'tv' || currentType === 'tvshows' || currentType === 'anime');
+            const isAnime = currentType === 'anime';
             const quiere = currentStreamLanguage;
             const nombreIdioma = quiere === 'subtitulado' ? 'Subtitulado' : 'Latino';
             const poster = meta.poster || (seriesDetails?.backdrop_path ? `https://image.tmdb.org/t/p/w780${seriesDetails.backdrop_path}` : '');
             sinAdsAviso(container, `🔎 Buscando servidor en ${nombreIdioma}…`, poster);
 
-            const conTiempo = (url, ms) => {
-                const ctl = new AbortController();
-                const t = setTimeout(() => ctl.abort(), ms);
-                return fetch(url, { signal: ctl.signal }).finally(() => clearTimeout(t));
-            };
-
             let lista = [];
             try {
                 const ruta = isTv ? `/api/tv/${meta.id}/${meta.season || 1}/${meta.episode || 1}` : `/api/movie/${meta.id}`;
                 // TONPlayer arma la lista en el momento: la primera vez tarda
-                const json = await conTiempo(base + ruta, 35000).then(r => r.json());
+                const json = await sinAdsConTiempo(base + ruta, 35000).then(r => r.json());
                 lista = (json.servers || [])
                     .map(x => ({ host: x.servidor || '', idioma: x.idioma || '?', token: x.token || '' }))
                     .filter(x => x.token && sinAdsPrioridad(x.host) >= 0)
@@ -4916,53 +4935,27 @@
             } catch (e) {}
             if (turno !== sinAdsTurno) return;
 
-            if (!lista.length) {
-                showToast('⚠️ No hay servidor sin anuncios para este título: se abre MultiEmbed', 4500, 'warning');
+            // Recorrido automático: sin japonés sin subtítulos
+            const orden = lista.map((x, i) => i).filter(i => !sinAdsEsJapones(lista[i].idioma)).slice(0, 10);
+            sinAdsEstado = { meta, lista, base, poster, turno, actual: -1 };
+
+            if (!orden.length) {
+                if (lista.length) {
+                    // Solo hay japonés sin subtítulos: que lo elija quien quiera
+                    sinAdsAviso(container, `Este capítulo solo está en <b>japonés sin subtítulos</b>.<br><br>
+                        <button class="btn btn-primary" onclick="sinAdsElegir(0)">▶ Verlo igual</button>
+                        <button class="btn btn-glass" onclick="reproducirEnServidor('multiembed', sinAdsEstado.meta)">Probar MultiEmbed${isAnime ? ' (suele estar en inglés)' : ''}</button>`, poster);
+                    return;
+                }
+                showToast(`⚠️ No hay servidor sin anuncios para este título: se abre MultiEmbed${isAnime ? ' (el anime ahí suele estar en inglés)' : ''}`, 5000, 'warning');
                 reproducirEnServidor('multiembed', meta);
                 return;
             }
-            if (sinAdsRangoIdioma(lista[0].idioma, quiere) !== 0) {
-                showToast(`ℹ️ No está en ${nombreIdioma}: se muestra en ${lista[0].idioma}`, 4500);
+            if (sinAdsRangoIdioma(lista[orden[0]].idioma, quiere) !== 0) {
+                showToast(`ℹ️ No está en ${nombreIdioma}: se muestra en ${sinAdsNombreIdioma(lista[orden[0]].idioma)}`, 4500);
             }
 
-            const probar = async (i) => {
-                if (turno !== sinAdsTurno) return;
-                if (i >= lista.length || i >= 10) {
-                    showToast('⚠️ Ningún servidor respondió: se abre MultiEmbed', 4500, 'warning');
-                    reproducirEnServidor('multiembed', meta);
-                    return;
-                }
-                const srv = lista[i];
-                sinAdsAviso(container, `🔎 Probando ${srv.idioma} · ${srv.host}…`, poster);
-                let r = null;
-                try {
-                    r = await conTiempo(`${base}/api/resolve?token=${encodeURIComponent(srv.token)}`, 25000).then(x => x.json());
-                } catch (e) {}
-                if (turno !== sinAdsTurno) return;
-                if (!document.getElementById('modalOverlay')?.classList.contains('active')) return;
-                if (!r || r.mode !== 'sopa1d_adblock_hls' || !r.url) return probar(i + 1);
-
-                container.innerHTML = `
-                    <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" playsinline></video>
-                    <div style="position:absolute;top:10px;left:10px;z-index:5;padding:4px 10px;border-radius:12px;background:rgba(0,0,0,.65);color:#d1fae5;font-size:12px;font-weight:700;pointer-events:none;">🛡️ ${srv.idioma} · ${srv.host}</div>`;
-                if (currentPlayer) { try { currentPlayer.dispose(); } catch (e) {} }
-                const player = videojs('my-video', {
-                    autoplay: true, controls: true, fill: true, preload: 'auto',
-                    html5: { vhs: { overrideNative: true } }
-                });
-                currentPlayer = player;
-                let arranco = false;
-                player.one('playing', () => { arranco = true; });
-                player.on('error', () => {
-                    // Enlace que no responde: siguiente servidor
-                    if (!arranco && turno === sinAdsTurno) probar(i + 1);
-                });
-                player.src({ src: base + r.url, type: 'application/x-mpegURL' });
-                player.play()?.catch?.(() => {});
-                currentCastSource = base + r.url;
-                showToast(`🎬 ${srv.idioma} · ${srv.host} 🛡️ Sin Ads`);
-            };
-            await probar(0);
+            await sinAdsProbar(orden, 0, false);
 
             upsertContinueWatching({
                 id: meta.id, type: meta.type, season: meta.season, episode: meta.episode,
@@ -4971,6 +4964,111 @@
                 currentTime: 60, duration: 3600
             });
             renderContinueWatchingShelf();
+        }
+
+        /**
+         * Prueba los servidores de "orden" desde la posición k. manual = lo
+         * eligió la persona: si falla no se salta a otro, se avisa y se deja
+         * la lista abierta para elegir otro.
+         */
+        async function sinAdsProbar(orden, k, manual) {
+            const est = sinAdsEstado;
+            if (!est || est.turno !== sinAdsTurno) return;
+            const { lista, base, poster, meta } = est;
+            const container = document.getElementById('playerContainer');
+            if (k >= orden.length) {
+                showToast(`⚠️ Ningún servidor respondió: se abre MultiEmbed${currentType === 'anime' ? ' (suele estar en inglés)' : ''}`, 4500, 'warning');
+                reproducirEnServidor('multiembed', meta);
+                return;
+            }
+            const i = orden[k], srv = lista[i];
+            sinAdsAviso(container, `🔎 Probando ${hsEsc(sinAdsNombreIdioma(srv.idioma))} · ${hsEsc(srv.host)}…`, poster);
+            let r = null;
+            try {
+                r = await sinAdsConTiempo(`${base}/api/resolve?token=${encodeURIComponent(srv.token)}`, 25000).then(x => x.json());
+            } catch (e) {}
+            if (est.turno !== sinAdsTurno) return;
+            if (!document.getElementById('modalOverlay')?.classList.contains('active')) return;
+            const fallo = () => {
+                if (!manual) return sinAdsProbar(orden, k + 1, false);
+                sinAdsAviso(container, `⚠️ ${hsEsc(sinAdsNombreIdioma(srv.idioma))} · ${hsEsc(srv.host)} no respondió.<br><br>
+                    <button class="btn btn-primary" onclick="sinAdsToggleMenu(true)">Elegir otro servidor</button>`, poster);
+                sinAdsPintarMenu(container);
+            };
+            if (!r || r.mode !== 'sopa1d_adblock_hls' || !r.url) return fallo();
+
+            est.actual = i;
+            container.innerHTML = `<video id="my-video" class="video-js vjs-default-skin" controls preload="auto" playsinline crossorigin="anonymous"></video>`;
+            sinAdsPintarMenu(container);
+            if (currentPlayer) { try { currentPlayer.dispose(); } catch (e) {} }
+            const player = videojs('my-video', {
+                autoplay: true, controls: true, fill: true, preload: 'auto',
+                html5: { vhs: { overrideNative: true }, nativeTextTracks: false }
+            });
+            currentPlayer = player;
+            let arranco = false;
+            player.one('playing', () => { arranco = true; });
+            player.on('error', () => {
+                // Enlace que no responde: siguiente servidor (o aviso si se eligió a mano)
+                if (!arranco && est.turno === sinAdsTurno) fallo();
+            });
+            player.src({ src: base + r.url, type: 'application/x-mpegURL' });
+            // Subtítulos aparte que traen algunos servidores (pasan por el proxy por CORS)
+            const subs = r.subtitles || [];
+            subs.forEach(t => player.addRemoteTextTrack({
+                kind: 'subtitles', src: base + t.url, label: t.label,
+                srclang: /span|espa|lat|cast/i.test(t.label) ? 'es' : 'und'
+            }, false));
+            if (subs.length) player.one('loadedmetadata', () => {
+                const tracks = player.textTracks();
+                let elegido = null;
+                for (let j = 0; j < tracks.length; j++) if (!elegido && /span|espa|lat|cast/i.test(tracks[j].label)) elegido = tracks[j];
+                // En "Subtitulado" se encienden solos; en Latino quedan disponibles en el botón CC
+                if (elegido && (currentStreamLanguage === 'subtitulado' || /sub/i.test(srv.idioma))) elegido.mode = 'showing';
+            });
+            player.play()?.catch?.(() => {});
+            currentCastSource = base + r.url;
+            showToast(`🎬 ${sinAdsNombreIdioma(srv.idioma)} · ${srv.host} 🛡️ Sin Ads${subs.length ? ' · CC' : ''}`);
+        }
+
+        /** Cartel con el servidor actual + lista desplegable de todos (por idioma). */
+        function sinAdsPintarMenu(container) {
+            const est = sinAdsEstado;
+            if (!est) return;
+            container.querySelector('#sinAdsSrvBox')?.remove();
+            const cur = est.lista[est.actual];
+            const box = document.createElement('div');
+            box.id = 'sinAdsSrvBox';
+            box.style.cssText = 'position:absolute;top:10px;left:10px;z-index:6;max-width:calc(100% - 20px);';
+            let grupos = '', ultimo = '';
+            est.lista.forEach((s, i) => {
+                const g = sinAdsNombreIdioma(s.idioma);
+                if (g !== ultimo) { grupos += `<div style="font-size:11px;font-weight:800;color:#9ca3af;margin:8px 4px 4px;">${hsEsc(g)}</div>`; ultimo = g; }
+                grupos += `<button class="btn btn-glass" style="display:block;width:100%;text-align:left;margin:2px 0;padding:8px 12px;font-size:13px;${i === est.actual ? 'border-color:#10b981;color:#d1fae5;' : ''}" onclick="sinAdsElegir(${i})">${i === est.actual ? '▶ ' : ''}${hsEsc(s.host)}</button>`;
+            });
+            box.innerHTML = `
+                <button class="btn btn-glass" id="sinAdsSrvBtn" onclick="sinAdsToggleMenu()" style="padding:5px 12px;border-radius:12px;background:rgba(0,0,0,.7);color:#d1fae5;font-size:12px;font-weight:700;">
+                    🛡️ ${cur ? `${hsEsc(sinAdsNombreIdioma(cur.idioma))} · ${hsEsc(cur.host)}` : 'Servidores'} ▾</button>
+                <div id="sinAdsMenu" style="display:none;margin-top:6px;max-height:min(60vh,420px);overflow:auto;padding:6px 10px 10px;border-radius:12px;background:rgba(10,12,18,.96);border:1px solid rgba(255,255,255,.12);min-width:230px;">
+                    <div style="font-size:12px;color:#e5e7eb;font-weight:800;margin:4px;">Elegir servidor</div>${grupos}
+                </div>`;
+            container.appendChild(box);
+        }
+
+        function sinAdsToggleMenu(abrir) {
+            const m = document.getElementById('sinAdsMenu');
+            if (!m) return;
+            const show = abrir === true || m.style.display === 'none';
+            m.style.display = show ? 'block' : 'none';
+            // Control remoto: al abrir, foco en el servidor actual (o el primero)
+            if (show && window.sopaTvFocus) window.sopaTvFocus(m.querySelector('button[style*="10b981"]') || m.querySelector('button'));
+        }
+
+        function sinAdsElegir(i) {
+            const est = sinAdsEstado;
+            if (!est || !est.lista[i]) return;
+            est.turno = ++sinAdsTurno; // corta cualquier prueba automática en curso
+            sinAdsProbar([i], 0, true);
         }
 
         // Argumentos comunes de playVod / sendVodToTv (puente de la APK)

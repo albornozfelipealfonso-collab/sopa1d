@@ -447,8 +447,12 @@ public class VodPlayerActivity extends Activity {
             }
 
             // Se resuelven varios a la vez y se queda con el mejor que funcione.
+            // El japonés sin subtítulos (al final de la lista) solo si no hay otra cosa.
+            int limit = 0;
+            while (limit < found.size() && !StreamResolver.isJapanese(found.get(limit).language)) limit++;
+            if (limit == 0) limit = found.size();
             List<Future<StreamResolver.Stream>> futures = new ArrayList<>();
-            int n = Math.min(PARALLEL_RESOLVE, found.size());
+            int n = Math.min(PARALLEL_RESOLVE, limit);
             for (int i = 0; i < n; i++) {
                 final StreamResolver.Server s = found.get(i);
                 futures.add(pool.submit(() -> StreamResolver.resolve(s)));
@@ -462,7 +466,7 @@ public class VodPlayerActivity extends Activity {
                 } catch (Exception ignored) {
                 }
             }
-            for (int i = n; i < found.size() && best == null; i++) {
+            for (int i = n; i < limit && best == null; i++) {
                 best = StreamResolver.resolve(found.get(i));
                 bestIndex = i;
             }

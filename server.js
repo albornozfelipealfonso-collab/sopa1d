@@ -825,6 +825,47 @@ function decodeTonPlayerToken(token) {
     }
 }
 
+/*
+ * Desempaquetador del "packer" de Dean Edwards SIN ejecutar código: antes se
+ * hacía eval() del script que manda el sitio de vídeo, y un sitio malicioso
+ * podía ejecutar lo que quisiera en el servidor (o en el PC con la app).
+ * Igual que StreamResolver.unpack de la APK: cada palabra del texto
+ * empaquetado se reemplaza por su entrada del diccionario.
+ */
+function unpackPacker(html) {
+    const idx = html.indexOf('eval(function(p,a,c,k,e,d)');
+    if (idx === -1) return null;
+    const m = html.slice(idx, idx + 60000).match(/\}\('(.*)',\s*(\d+),\s*(\d+),\s*'(.*?)'\.split\('\|'\)/s);
+    if (!m) return null;
+    const base = parseInt(m[2], 10);
+    const dict = m[4].split('|');
+    const DIGITS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const decode = (w) => {
+        let n = 0;
+        for (const ch of w) {
+            const d = DIGITS.indexOf(ch);
+            if (d < 0 || d >= base) return -1;
+            n = n * base + d;
+        }
+        return n;
+    };
+    return m[1].replace(/\\'/g, "'").replace(/\b\w+\b/g, (w) => {
+        const i = decode(w);
+        return i >= 0 && i < dict.length && dict[i] ? dict[i] : w;
+    });
+}
+
+// Subtítulos aparte del reproductor JW: tracks:[{file:"…_spa.vtt",label:"Spanish"}]
+function findSubtitleTracks(text) {
+    const out = [];
+    const re = /file\s*:\s*["'](https?:\/\/[^"']+\.(?:vtt|srt)[^"']*)["']\s*,\s*label\s*:\s*["']([^"']*)["']/g;
+    let m;
+    while ((m = re.exec(text || ''))) {
+        if (!/thumbnail|sprite/i.test(m[2]) && !out.some(t => t.file === m[1])) out.push({ file: m[1], label: m[2] || 'Subtítulos' });
+    }
+    return out;
+}
+
 async function extractDirectHlsFromEmbed(embedUrl) {
     if (!embedUrl) return null;
     if (hlsExtractCache.has(embedUrl)) {
@@ -865,29 +906,21 @@ async function extractDirectHlsFromEmbed(embedUrl) {
                 continue;
             }
 
-            // 2. Desempaquetar Dean Edwards Packer: eval(function(p,a,c,k,e,d)...) (Vimeus, Streamwish, Filelions, Vidhide, etc.)
-            const evalIdx = html.indexOf('eval(function(p,a,c,k,e,d)');
-            if (evalIdx !== -1) {
-                const sub = html.slice(evalIdx, evalIdx + 30000);
-                const endMatch = sub.match(/\.split\(['"]\|['"]\)\)\)/);
-                if (endMatch) {
-                    const packed = sub.slice(0, endMatch.index + endMatch[0].length);
-                    try {
-                        const unpacked = eval(packed.replace(/^eval\(/, '('));
-                        const m3u8Match = unpacked.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
-                        if (m3u8Match) {
-                            const result = { m3u8: m3u8Match[0], referer: originReferer };
-                            hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
-                            return result;
-                        }
-                    } catch (err) {}
+            // 2. Desempaquetar el "packer" (Vimeus, Streamwish, Filelions, Vidhide…) sin ejecutarlo
+            const unpacked = unpackPacker(html);
+            if (unpacked) {
+                const m3u8Match = unpacked.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
+                if (m3u8Match) {
+                    const result = { m3u8: m3u8Match[0], referer: originReferer, subtitles: findSubtitleTracks(unpacked + html) };
+                    hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
+                    return result;
                 }
             }
 
             // 3. Buscar enlace .m3u8 directo en el HTML (Vidmoly, etc.)
             const directM3u8 = html.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
             if (directM3u8) {
-                const result = { m3u8: directM3u8[0], referer: originReferer };
+                const result = { m3u8: directM3u8[0], referer: originReferer, subtitles: findSubtitleTracks(html) };
                 hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
                 return result;
             }
@@ -1233,7 +1266,11 @@ const server = http.createServer(async (req, res) => {
                     success: true,
                     mode: 'sopa1d_adblock_hls',
                     type: 'hls',
-                    url: cleanHlsUrl
+                    url: cleanHlsUrl,
+                    subtitles: (extracted.subtitles || []).map(t => ({
+                        label: t.label,
+                        url: `/proxy?raw=1&ref=${encodeURIComponent(extracted.referer)}&url=${encodeURIComponent(t.file)}`
+                    }))
                 });
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=utf-8',
