@@ -5423,6 +5423,11 @@
                 return '/proxy?fix_audio=1&buf=' + tvBufferDelaySec + '&t=' + (ch._tuneToken || 0) + '&url=' + encodeURIComponent(ch.url);
             }
 
+            // Pluto TV / Samsung TV Plus con la redirección ya resuelta: directo (sus CDN permiten CORS)
+            if (ch._directUrl && !forceProxy && !ch._useProxy && tvProxyMode !== 'always') {
+                return ch._directUrl;
+            }
+
             // En modo 'auto' o 'always', cuando estamos en el servidor web local, usar siempre el proxy para anular bloqueos CORS
             if (forceProxy || tvProxyMode === 'always' || (tvProxyMode === 'auto' && isLocalServer) || ch._useProxy) {
                 return '/proxy?url=' + encodeURIComponent(ch.url);
@@ -5635,6 +5640,26 @@
                 }));
                 const idx = Math.max(0, allLiveChannels.findIndex(c => c.id === ch.id));
                 window.Sopa1D.playLiveList(JSON.stringify(listaNativa), idx);
+                return;
+            }
+
+            // Pluto TV / Samsung TV Plus (jmp2.uk): server.js solo resuelve la
+            // redirección y el vídeo se pide directo. Antes cada segmento pasaba
+            // por /proxy y los canales 24/7 tardaban en arrancar. La URL de sesión
+            // vence: se renueva si tiene más de 2 h. Si lo directo falla, el
+            // reproductor reintenta solo por el proxy (más abajo).
+            if (/^https?:\/\/jmp2\.uk\//.test(ch.url || '') && window.location.protocol.startsWith('http')
+                    && Date.now() - (ch._directAt || 0) > 2 * 3600000 && !ch._resolvingDirect) {
+                ch._resolvingDirect = true;
+                fetch(`${getLocalAdFreeBase()}/api/redirect?url=${encodeURIComponent(ch.url)}`)
+                    .then(r => r.json())
+                    .then(j => { if (j.url) { ch._directUrl = j.url; ch._directAt = Date.now(); } })
+                    .catch(() => {})
+                    .finally(() => {
+                        ch._resolvingDirect = false;
+                        if (!ch._directUrl) ch._directAt = Date.now(); // sin respuesta: proxy, sin reintentar en bucle
+                        if (currentTvChannel === ch) tuneTvChannel(ch, false);
+                    });
                 return;
             }
 

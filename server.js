@@ -343,7 +343,9 @@ function getOrCreateLiveHlsSession(rawTargetUrl, bufferSec) {
     try { fs.rmSync(sessionDir, { recursive: true, force: true }); } catch (e) {}
     fs.mkdirSync(sessionDir, { recursive: true });
 
-    const pinned = LIVE_PINNED_URLS.has(streamUrl);
+    // En la app de PC no se fija: la señal se desentrelaza (CPU) y seguiría
+    // convirtiéndose 10 min después de cambiar de canal
+    const pinned = LIVE_PINNED_URLS.has(streamUrl) && process.env.SOPA1D_NO_PREWARM !== '1';
     const sess = {
         id: sessionId,
         streamUrl,
@@ -1160,6 +1162,29 @@ const server = http.createServer(async (req, res) => {
             res.end('Error al cargar reproductor limpio: ' + err.message);
         }
         return;
+    }
+
+    // REDIRECCIÓN DE PLUTO TV / SAMSUNG TV PLUS (/api/redirect?url=https://jmp2.uk/...)
+    // jmp2.uk solo redirige a la URL de sesión de la plataforma y no manda
+    // cabeceras CORS; las CDN de destino sí. Con la URL final el reproductor
+    // pide el vídeo directo en vez de pasar cada segmento por /proxy.
+    if (req.url.startsWith('/api/redirect')) {
+        const target = new URL(req.url, 'http://127.0.0.1').searchParams.get('url') || '';
+        const sendJson = (code, obj) => {
+            const buf = Buffer.from(JSON.stringify(obj), 'utf8');
+            res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': buf.length, 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-cache' });
+            res.end(buf);
+        };
+        let host = '';
+        try { host = new URL(target).hostname; } catch (e) {}
+        if (host !== 'jmp2.uk') return sendJson(400, { error: 'solo jmp2.uk' });
+        try {
+            const r = await fetch(target, { redirect: 'manual', headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(10000) });
+            const loc = r.headers.get('location');
+            return sendJson(200, { url: loc ? new URL(loc, target).href : target });
+        } catch (e) {
+            return sendJson(502, { error: e.message });
+        }
     }
 
     // PROGRAMACIÓN DE CANALES EN VIVO (/api/epg/now, /api/epg/channel?id=...)
