@@ -1,6 +1,6 @@
 {
   "name": "sopa1d",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Sopa1D Pro — Hub de Streaming y Canales en Vivo",
   "main": "desktop/main.js",
   "scripts": {

@@ -58306,8 +58306,8 @@
   },
   {
     "id": "ch_iptvorg_nowrock_uk_208",
-    "name": "NOW Rock",
-    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "name": "That's Rock (Señal 2)",
+    "logo": "https://images.pluto.tv/channels/69ef5682980899a9edf1a884/colorLogoPNG_1779094988172.png",
     "category": "Música",
     "country": "Internacional",
     "url": "https://jmp2.uk/plu-6568a78d635c3c0008765f41.m3u8"
@@ -60047,5 +60047,13 @@
     "category": "24/7",
     "country": "España",
     "url": "https://jmp2.uk/stvp-ESBC2700008SK"
+  },
+  {
+    "id": "ch_fast_plutotv_thatsrock_it",
+    "name": "That's Rock",
+    "logo": "https://images.pluto.tv/channels/69ef5682980899a9edf1a884/colorLogoPNG_1779094988172.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://jmp2.uk/plu-69ef5682980899a9edf1a884.m3u8"
   }
 ]
