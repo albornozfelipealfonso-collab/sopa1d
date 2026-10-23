@@ -924,6 +924,12 @@ public class TvHomeActivity extends Activity {
 
     /** Abre la ficha; los anime de AniList primero se buscan en el catálogo (TMDB). */
     private void openDetail(CatalogItem item) {
+        // Juegos: viven en la versión web (index.html#juegos)
+        if (item.id.startsWith("game:")) {
+            startActivity(new Intent(this, MainActivity.class)
+                    .putExtra(MainActivity.EXTRA_SECTION, item.id.substring(5)));
+            return;
+        }
         // Apartado Chile: listas oficiales de YouTube y accesos a sitios
         if (item.id.startsWith("yt:") || item.id.startsWith("web:")) {
             String url;

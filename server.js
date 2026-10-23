@@ -1100,7 +1100,7 @@ function handleEpg(req, res) {
     send({ ready, loading: epgLoading });
 }
 
-const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'favicon.ico']);
+const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'hitster.json', 'favicon.ico']);
 
 /*
  * El proxy no va a la red local ni a este equipo. Responde con CORS abierto,

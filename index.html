@@ -2311,6 +2311,41 @@
         .tv-schedule-row .h { font-variant-numeric:tabular-nums; color:var(--text-muted, #9ca3af); min-width:92px; font-size:13px; }
         .tv-schedule-row .t { font-weight:700; font-size:14px; }
         .tv-schedule-row .d { font-size:12px; color:var(--text-secondary, #9ca3af); margin-top:3px; }
+
+        /* ===== Juegos: Hitster Rock ===== */
+        .games-section { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
+        .hs-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: clamp(16px, 3vw, 28px); }
+        .hs-title { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin: 0 0 6px; }
+        .hs-sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 18px; line-height: 1.5; }
+        .hs-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0 16px; }
+        .hs-opt { min-width: 52px; padding: 12px 16px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
+        .hs-opt.active { border-color: #ff1e42; background: rgba(255,30,66,0.18); }
+        .hs-big { padding: 16px 28px; font-size: 18px; border-radius: 14px; }
+        .hs-names { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .hs-names input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; }
+        .hs-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .hs-turn { font-size: clamp(20px, 3.4vw, 30px); font-weight: 900; }
+        .hs-scores { display: flex; flex-wrap: wrap; gap: 8px; }
+        .hs-score { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.07); font-size: 13px; font-weight: 700; }
+        .hs-score.me { background: rgba(255,30,66,0.25); border: 1px solid #ff1e42; }
+        .hs-player { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+        .hs-play { width: 84px; height: 84px; border-radius: 50%; border: none; background: #ff1e42; color: #fff; font-size: 34px; cursor: pointer; flex-shrink: 0; box-shadow: 0 8px 24px rgba(255,30,66,0.35); }
+        .hs-progress { flex: 1; min-width: 160px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.12); overflow: hidden; }
+        .hs-progress > div { height: 100%; width: 0; background: #ff1e42; transition: width .25s linear; }
+        .hs-timeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+        .hs-slot { min-width: 64px; padding: 10px 8px; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); color: #fff; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; }
+        .hs-slot small { font-size: 10px; font-weight: 600; color: var(--text-muted); }
+        .hs-slot:hover, .hs-slot:focus { border-color: #ff1e42; background: rgba(255,30,66,0.15); outline: none; }
+        .hs-song { width: clamp(84px, 11vw, 120px); border-radius: 12px; overflow: hidden; background: #15171f; border: 1px solid rgba(255,255,255,0.1); }
+        .hs-song img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .hs-song .y { font-size: 20px; font-weight: 900; text-align: center; padding: 4px 0 0; }
+        .hs-song .t { font-size: 10px; color: var(--text-secondary); text-align: center; padding: 0 6px 8px; line-height: 1.25; max-height: 3.8em; overflow: hidden; }
+        .hs-reveal { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+        .hs-reveal img { width: clamp(110px, 18vw, 170px); border-radius: 14px; }
+        .hs-verdict { font-size: clamp(22px, 3.6vw, 32px); font-weight: 900; }
+        .hs-verdict.ok { color: #34d399; } .hs-verdict.bad { color: #f87171; }
+        .hs-lives { font-size: 22px; letter-spacing: 2px; }
+        @media (max-width: 560px) { .hs-play { width: 70px; height: 70px; font-size: 28px; } .hs-slot { min-width: 54px; } }
 </style>
 </head>
 <body>
@@ -2332,6 +2367,7 @@
                 <button class="nav-link" data-type="tvshows" onclick="switchTab('tvshows')">📺 Series</button>
                 <button class="nav-link" data-type="anime" onclick="switchTab('anime')">🌸 Anime</button>
                 <button class="nav-link" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
+                <button class="nav-link" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="nav-link" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
                 <button class="nav-link" onclick="loadTrending()">🔥 Tendencias</button>
             </nav>
@@ -2431,6 +2467,12 @@
     <!-- ============================================================
          APARTADO DEDICADO DE TV EN VIVO (LIVE TV STUDIO & ZAPPING)
          ============================================================ -->
+    <!-- JUEGOS (Hitster Rock) -->
+    <section class="games-section" id="gamesSection" style="display:none;">
+        <div id="gamesRoot"></div>
+        <audio id="hitsterAudio" preload="auto"></audio>
+    </section>
+
     <section class="tv-hub-section" id="tvHubSection" style="display:none;">
         <!-- SUITE TEATRO + GUÍA DE ZAPPING -->
         <div class="tv-theater-suite">
@@ -2780,6 +2822,7 @@
                 <button class="catalog-tab" data-type="tvshows" onclick="switchTab('tvshows')">Series</button>
                 <button class="catalog-tab" data-type="anime" onclick="switchTab('anime')">Anime</button>
                 <button class="catalog-tab" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
+                <button class="catalog-tab" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="catalog-tab" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
             </div>
         </div>
@@ -3096,7 +3139,8 @@
                     updateFavCountBadge();
                 };
 
-                hero.style.display = 'flex';
+                // Solo si se está en el catálogo: si cargó tarde, no tapa Juegos ni TV en vivo
+                if (currentType !== 'juegos' && currentType !== 'channels') hero.style.display = 'flex';
             } catch (err) {
                 console.warn('No se pudo cargar el Hero Billboard:', err);
             }
@@ -4216,6 +4260,23 @@
             const filterSectionEl = document.querySelector('.filter-section');
             const heroBillboardEl = document.getElementById('heroBillboard');
             const continueShelfEl = document.getElementById('continueShelf');
+
+            // Juegos: sección propia; al salir se calla la canción en curso
+            const gamesEl = document.getElementById('gamesSection');
+            if (gamesEl) gamesEl.style.display = type === 'juegos' ? 'block' : 'none';
+            if (type !== 'juegos' && typeof hitsterStopAudio === 'function') hitsterStopAudio();
+            if (type === 'juegos') {
+                if (filterSectionEl) filterSectionEl.style.display = 'none';
+                if (mainContainerEl) mainContainerEl.style.display = 'none';
+                if (heroBillboardEl) heroBillboardEl.style.display = 'none';
+                if (continueShelfEl) continueShelfEl.style.display = 'none';
+                if (tvHubEl) tvHubEl.style.display = 'none';
+                if (tvLivePlayer) { try { tvLivePlayer.pause(); } catch (e) {} }
+                if (typeof disableTvMiniPlayer === 'function') disableTvMiniPlayer();
+                document.title = 'Sopa1D — 🎮 Juegos';
+                renderGamesMenu();
+                return;
+            }
 
             if (type === 'channels') {
                 if (filterSectionEl) filterSectionEl.style.display = 'none';
@@ -6904,6 +6965,276 @@
         }
 
 
+        /*
+         * ===================== JUEGOS: HITSTER ROCK =====================
+         * Suena un fragmento de una canción de rock (1960–2010) y el jugador
+         * la ubica en su línea de tiempo según el año en que salió. Si acierta
+         * se queda con la carta; gana quien llegue primero a la meta. Con un
+         * solo jugador hay 3 vidas.
+         *
+         * Canciones: hitster.json (tools/build_hitster.mjs), con el año
+         * original puesto a mano y el fragmento de 30 s de iTunes.
+         * Funciona con mouse, toque y control remoto (botones normales: la
+         * navegación por flechas de la TV los recorre; sopaTvFocus lleva el
+         * foco al botón principal de cada pantalla).
+         */
+        let hitsterSongs = null;
+        let hs = null; // estado de la partida
+        const hsEsc = t => String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        const hsRoot = () => document.getElementById('gamesRoot');
+        const hsAudio = () => document.getElementById('hitsterAudio');
+        const hsCfg = { players: 2, target: 7, names: [] };
+
+        function hsFocus(el, retry) {
+            if (!el) return;
+            if (window.sopaTvFocus) { window.sopaTvFocus(el); return; }
+            // Al abrir index.html#juegos la navegación de la TV se arma después:
+            // se reintenta para que el foco no quede en otro lado
+            if (!retry) setTimeout(() => { if (document.body.contains(el)) hsFocus(el, true); }, 500);
+            else if (matchMedia('(hover: hover)').matches) { try { el.focus({ preventScroll: true }); } catch (e) {} }
+        }
+
+        function hitsterStopAudio() {
+            const a = hsAudio();
+            if (a) { a.pause(); a.removeAttribute('src'); a.load(); }
+        }
+
+        async function hitsterLoad() {
+            if (!hitsterSongs || !hitsterSongs.length) {
+                const j = await fetch('hitster.json').then(r => r.json()).catch(() => ({ songs: [] }));
+                // Si no cargó, se vuelve a intentar en la próxima partida
+                hitsterSongs = (j.songs || []).filter(x => x.preview && x.year >= 1960 && x.year <= 2010);
+            }
+            return hitsterSongs;
+        }
+
+        function renderGamesMenu() {
+            hitsterStopAudio();
+            hs = null;
+            hsRoot().innerHTML = `
+                <h2 class="hs-title" style="margin-bottom:16px;">🎮 Juegos</h2>
+                <div class="hs-card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+                    <div style="font-size:64px;line-height:1;">🎸</div>
+                    <div style="flex:1;min-width:220px;">
+                        <div style="font-size:22px;font-weight:900;">Hitster Rock</div>
+                        <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores.</div>
+                    </div>
+                    <button class="btn btn-primary hs-big" id="hsOpenSetup" onclick="renderHitsterSetup()">Jugar ▶</button>
+                </div>`;
+            hsFocus(document.getElementById('hsOpenSetup'));
+        }
+
+        function renderHitsterSetup() {
+            hitsterStopAudio();
+            hs = null;
+            const n = hsCfg.players;
+            const names = Array.from({ length: n }, (_, i) => hsCfg.names[i] || '');
+            hsRoot().innerHTML = `
+                <div class="hs-card">
+                    <h2 class="hs-title">🎸 Hitster Rock</h2>
+                    <p class="hs-sub">Cada jugador parte con una canción ya revelada. En tu turno suena otra: elige dónde va en tu línea de tiempo.
+                    Si aciertas el lugar, te quedas con la carta. ${n === 1 ? 'Jugando solo tienes 3 vidas.' : 'Gana el primero en juntar las cartas de la meta.'}</p>
+                    <div style="font-weight:800;">Jugadores</div>
+                    <div class="hs-row">${[1, 2, 3, 4, 5, 6].map(k => `<button class="hs-opt ${k === n ? 'active' : ''}" onclick="hsCfgSet('players', ${k})">${k}</button>`).join('')}</div>
+                    <div class="hs-names">${names.map((v, i) => `<input type="text" maxlength="16" placeholder="Jugador ${i + 1}" value="${hsEsc(v)}" oninput="hsCfg.names[${i}]=this.value">`).join('')}</div>
+                    <div style="font-weight:800;">Cartas para ganar</div>
+                    <div class="hs-row">${[5, 7, 10].map(k => `<button class="hs-opt ${k === hsCfg.target ? 'active' : ''}" onclick="hsCfgSet('target', ${k})">${k}</button>`).join('')}</div>
+                    <div class="hs-row" style="margin-top:22px;">
+                        <button class="btn btn-primary hs-big" id="hsStart" onclick="hitsterStart()">▶ Empezar</button>
+                        <button class="btn btn-glass" onclick="renderGamesMenu()">← Juegos</button>
+                    </div>
+                </div>`;
+            hsFocus(document.getElementById('hsStart'));
+        }
+
+        function hsCfgSet(key, val) {
+            hsCfg[key] = val;
+            renderHitsterSetup();
+        }
+
+        function hsShuffle(list) {
+            const a = list.slice();
+            for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+            return a;
+        }
+
+        async function hitsterStart() {
+            const songs = await hitsterLoad();
+            if (songs.length < 20) { showToast('⚠️ No se pudieron cargar las canciones', 3500, 'warning'); return; }
+            const deck = hsShuffle(songs);
+            const players = Array.from({ length: hsCfg.players }, (_, i) => ({
+                name: (hsCfg.names[i] || '').trim() || `Jugador ${i + 1}`,
+                cards: [deck.pop()],
+            }));
+            hs = { players, deck, turn: 0, target: hsCfg.target, lives: 3, solo: players.length === 1, current: null, phase: 'listen', guess: null };
+            hitsterNextSong();
+        }
+
+        function hitsterNextSong() {
+            if (!hs.deck.length) hs.deck = hsShuffle(hitsterSongs.filter(x => !hs.players.some(p => p.cards.includes(x))));
+            hs.current = hs.deck.pop();
+            hs.phase = 'listen';
+            hs.guess = null;
+            renderHitsterTurn();
+            hitsterPlay(true);
+        }
+
+        function hitsterPlay(restart) {
+            const a = hsAudio();
+            if (!hs || !hs.current) return;
+            if (restart || a.getAttribute('src') !== hs.current.preview) { a.src = hs.current.preview; a.currentTime = 0; }
+            a.play().catch(() => {});
+            hsUpdatePlayBtn();
+        }
+
+        function hitsterToggle() {
+            const a = hsAudio();
+            if (a.paused) hitsterPlay(false); else a.pause();
+            hsUpdatePlayBtn();
+        }
+
+        function hsUpdatePlayBtn() {
+            const b = document.getElementById('hsPlay');
+            if (b) b.textContent = hsAudio().paused ? '▶' : '⏸';
+        }
+
+        // Barra de avance del fragmento (30 s)
+        setInterval(() => {
+            const a = hsAudio(), bar = document.getElementById('hsBar');
+            if (a && bar && a.duration) bar.style.width = Math.min(100, a.currentTime / a.duration * 100) + '%';
+            hsUpdatePlayBtn();
+        }, 300);
+
+        function hsSorted(p) { return p.cards.slice().sort((a, b) => a.year - b.year); }
+
+        function hsScores() {
+            return `<div class="hs-scores">${hs.players.map((p, i) => `<span class="hs-score ${i === hs.turn ? 'me' : ''}">${hsEsc(p.name)}: ${p.cards.length}/${hs.target}</span>`).join('')}</div>`;
+        }
+
+        function hsCardHtml(c) {
+            return `<div class="hs-song"><img src="${hsEsc(c.cover)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="y">${c.year}</div><div class="t">${hsEsc(c.artist)} · ${hsEsc(c.title)}</div></div>`;
+        }
+
+        function renderHitsterTurn() {
+            const p = hs.players[hs.turn];
+            const cards = hsSorted(p);
+            let tl = '';
+            for (let i = 0; i <= cards.length; i++) {
+                const lo = cards[i - 1], hi = cards[i];
+                const label = !lo ? `antes de ${hi.year}` : !hi ? `después de ${lo.year}` : (lo.year === hi.year ? `en ${lo.year}` : `entre ${lo.year} y ${hi.year}`);
+                tl += `<button class="hs-slot" data-slot="${i}" onclick="hitsterGuess(${i})">⬇ Aquí<small>${label}</small></button>`;
+                if (hi) tl += hsCardHtml(hi);
+            }
+            hsRoot().innerHTML = `
+                <div class="hs-card">
+                    <div class="hs-top">
+                        <div class="hs-turn">🎸 Turno de ${hsEsc(p.name)} ${hs.solo ? `<span class="hs-lives">${'❤️'.repeat(hs.lives)}${'🖤'.repeat(3 - hs.lives)}</span>` : ''}</div>
+                        ${hsScores()}
+                    </div>
+                    <div class="hs-player">
+                        <button class="hs-play" id="hsPlay" onclick="hitsterToggle()" aria-label="Reproducir o pausar">⏸</button>
+                        <div style="flex:1;min-width:180px;">
+                            <div style="font-weight:800;margin-bottom:8px;">¿En qué año salió esta canción?</div>
+                            <div class="hs-progress"><div id="hsBar"></div></div>
+                        </div>
+                        <button class="btn btn-glass" onclick="hitsterPlay(true)">🔁 Repetir</button>
+                    </div>
+                    <div style="font-weight:800;margin-bottom:8px;">Tu línea de tiempo — elige dónde va:</div>
+                    <div class="hs-timeline">${tl}</div>
+                    <div class="hs-row" style="margin-top:20px;">
+                        <button class="btn btn-glass" onclick="hitsterSkip()">⏭ Otra canción</button>
+                        <button class="btn btn-glass" onclick="hitsterQuit()">✕ Terminar partida</button>
+                    </div>
+                </div>`;
+            // Foco en el medio de la línea de tiempo: en la TV basta mover a los lados
+            const slots = hsRoot().querySelectorAll('.hs-slot');
+            hsFocus(slots[Math.floor(slots.length / 2)]);
+        }
+
+        function hitsterSkip() {
+            if (!hs || hs.phase !== 'listen') return;
+            hs.deck.unshift(hs.current); // vuelve al fondo del mazo
+            hitsterNextSong();
+        }
+
+        function hitsterQuit() {
+            hitsterStopAudio();
+            renderHitsterSetup();
+        }
+
+        function hitsterGuess(slot) {
+            if (!hs || hs.phase !== 'listen') return;
+            const p = hs.players[hs.turn];
+            const cards = hsSorted(p);
+            const y = hs.current.year;
+            const lo = cards[slot - 1], hi = cards[slot];
+            // Correcto si cabe entre sus vecinos (años iguales valen a cualquier lado)
+            const ok = (!lo || lo.year <= y) && (!hi || y <= hi.year);
+            hs.phase = 'reveal';
+            if (ok) p.cards.push(hs.current);
+            else if (hs.solo) hs.lives--;
+            const won = p.cards.length >= hs.target;
+            const lost = hs.solo && hs.lives <= 0;
+            const c = hs.current;
+            hsRoot().innerHTML = `
+                <div class="hs-card">
+                    <div class="hs-top"><div class="hs-turn">🎸 ${hsEsc(p.name)}</div>${hsScores()}</div>
+                    <div class="hs-reveal">
+                        <img src="${hsEsc(c.cover)}" alt="" onerror="this.style.visibility='hidden'">
+                        <div style="flex:1;min-width:200px;">
+                            <div class="hs-verdict ${ok ? 'ok' : 'bad'}">${ok ? '✅ ¡Correcto!' : '❌ No era ahí'}</div>
+                            <div style="font-size:clamp(40px,7vw,64px);font-weight:900;line-height:1.1;margin:6px 0;">${c.year}</div>
+                            <div style="font-size:18px;font-weight:800;">${hsEsc(c.title)}</div>
+                            <div style="color:var(--text-secondary);font-size:15px;">${hsEsc(c.artist)}</div>
+                            ${hs.solo && !ok ? `<div class="hs-lives" style="margin-top:8px;">${'❤️'.repeat(Math.max(0, hs.lives))}${'🖤'.repeat(3 - Math.max(0, hs.lives))}</div>` : ''}
+                        </div>
+                    </div>
+                    <div style="font-weight:800;margin-bottom:8px;">Línea de tiempo de ${hsEsc(p.name)}:</div>
+                    <div class="hs-timeline">${hsSorted(p).map(hsCardHtml).join('')}</div>
+                    <div class="hs-row" style="margin-top:20px;">
+                        <button class="btn btn-primary hs-big" id="hsNext" onclick="${won || lost ? 'hitsterEnd()' : 'hitsterAdvance()'}">${won ? '🏆 Ver ganador' : lost ? 'Ver resultado' : 'Siguiente ▶'}</button>
+                    </div>
+                </div>`;
+            hsFocus(document.getElementById('hsNext'));
+        }
+
+        function hitsterAdvance() {
+            hs.turn = (hs.turn + 1) % hs.players.length;
+            hitsterNextSong();
+        }
+
+        function hitsterEnd() {
+            hitsterStopAudio();
+            const p = hs.players[hs.turn];
+            const won = p.cards.length >= hs.target;
+            const ranking = hs.players.slice().sort((a, b) => b.cards.length - a.cards.length);
+            hsRoot().innerHTML = `
+                <div class="hs-card" style="text-align:center;">
+                    <div style="font-size:72px;">${won ? '🏆' : '🎸'}</div>
+                    <h2 class="hs-title">${won ? (hs.solo ? '¡Completaste tu línea de tiempo!' : '¡Ganó ' + hsEsc(p.name) + '!') : 'Se acabaron las vidas'}</h2>
+                    <p class="hs-sub">${hs.solo ? `Juntaste ${p.cards.length} de ${hs.target} cartas.` : ranking.map(x => `${hsEsc(x.name)}: ${x.cards.length}`).join(' · ')}</p>
+                    <div class="hs-timeline" style="justify-content:center;margin-bottom:20px;">${hsSorted(p).map(hsCardHtml).join('')}</div>
+                    <div class="hs-row" style="justify-content:center;">
+                        <button class="btn btn-primary hs-big" id="hsAgain" onclick="hitsterStart()">🔁 Jugar de nuevo</button>
+                        <button class="btn btn-glass" onclick="renderHitsterSetup()">Cambiar jugadores</button>
+                    </div>
+                </div>`;
+            hs.phase = 'end';
+            hsFocus(document.getElementById('hsAgain'));
+        }
+
+        // Atrás (control de la TV / botón de Android): partida → configuración → menú
+        window.hitsterBack = function () {
+            const sec = document.getElementById('gamesSection');
+            if (!sec || sec.style.display === 'none') return false;
+            if (hs) { hitsterQuit(); return true; }
+            if (document.getElementById('hsStart')) { renderGamesMenu(); return true; }
+            return false;
+        };
+
+        // La APK abre la sección directo con index.html#juegos
+        if (location.hash === '#juegos') setTimeout(() => switchTab('juegos'), 0);
+
         console.log('🍜 Sopa1D Pro — Hub de Streaming Activo');
     </script>
     <!-- CONTROL REMOTO (Android TV) Y BOTÓN ATRÁS DE LA APK -->
@@ -6927,6 +7258,7 @@
          * Devuelve true si cerró algo (reproductor, ajustes, buscador...).
          */
         window.sopaHandleBack = function () {
+            if (window.hitsterBack && window.hitsterBack()) return true;
             var fs = document.getElementById('playerContainer');
             if (fs && fs.classList.contains('embed-fullscreen')) { toggleEmbedFullscreen(); return true; }
 
@@ -6994,6 +7326,9 @@
             }
             return out;
         }
+
+        // El juego Hitster lleva el foco al botón principal de cada pantalla
+        window.sopaTvFocus = function (el) { focusEl(el); };
 
         function focusEl(el) {
             if (!el) return;

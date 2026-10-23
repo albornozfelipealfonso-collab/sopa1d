@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "Sopa1D";
 
+    /** Sección de index.html que se abre directo ("juegos"). */
+    static final String EXTRA_SECTION = "section";
+
     /** Dominios de publicidad que inyectan los embeds de películas. */
     private static final Set<String> AD_HOSTS = new HashSet<>(Arrays.asList(
             "doubleclick.net", "googlesyndication.com", "googleadservices.com",
@@ -272,7 +275,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
+        // EXTRA_SECTION abre una sección directo (p. ej. "juegos" → index.html#juegos)
+        String section = getIntent().getStringExtra(EXTRA_SECTION);
+        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html"
+                + (section != null && section.matches("[a-z]+") ? "#" + section : ""));
     }
 
     private boolean isTv() {
