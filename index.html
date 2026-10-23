@@ -476,6 +476,17 @@
             color: #fff;
             background-color: rgba(255, 30, 66, 0.08);
         }
+        /* La lista desplegable de Windows hereda el fondo del select: con el
+           rosado translúcido de .has-value quedaba texto blanco sobre rosa claro. */
+        .custom-select { color-scheme: dark; }
+        .custom-select option {
+            background-color: #16181f;
+            color: #f3f4f6;
+        }
+        .custom-select option:checked {
+            background-color: #ff1e42;
+            color: #fff;
+        }
 
         .quick-genres-bar {
             display: flex;
