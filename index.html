@@ -3474,9 +3474,44 @@
             return sorted;
         }
         function onSortChange() {
-            if (currentType === 'anime' && String(currentGenre).startsWith('al:')) { loadContent(1); return; }
-            if (!window._lastRenderedItems) return;
-            renderMovies(applySort(window._lastRenderedItems));
+            // Se ordena todo el catálogo (loadSortedPool), no solo la página visible
+            loadContent(1);
+        }
+
+        /*
+         * Orden sobre todo el catálogo. La API solo ordena bien por popularidad
+         * o por cantidad de votos ("vote_average.desc" trae títulos con 1 voto
+         * y nota 10), así que se juntan las 10 primeras páginas con el género y
+         * el año elegidos (200 títulos), se ordenan juntas y se paginan aquí.
+         * Para las notas se parte de los más votados: nota confiable.
+         */
+        const SORT_POOL_PAGES = 10;
+        let sortPoolCache = { key: '', items: [] };
+        async function loadSortedPool(page) {
+            const sortBy = document.getElementById('sortFilter').value;
+            const byVotes = /^rating|^title/.test(sortBy);
+            const key = [currentType, currentGenre, currentYear, sortBy].join('|');
+            if (sortPoolCache.key !== key) {
+                const base = `${getApiBase()}/list?type=${currentType}${currentGenre ? `&genre=${currentGenre}` : ''}${currentYear ? `&year=${currentYear}` : ''}${byVotes ? '&sort=vote_count.desc' : ''}`;
+                const pages = await Promise.all(Array.from({ length: SORT_POOL_PAGES }, (_, i) =>
+                    fetch(`${base}&page=${i + 1}`).then(r => r.ok ? r.json() : null).catch(() => null)));
+                const seen = new Set();
+                let pool = [];
+                for (const data of pages) {
+                    if (!data) continue;
+                    for (const it of extractResults(data)) {
+                        if (it && it.id != null && !seen.has(it.id)) { seen.add(it.id); pool.push(it); }
+                    }
+                }
+                // Sin votos no hay nota que comparar (estrenos futuros, títulos sin calificar)
+                if (/^rating/.test(sortBy)) pool = pool.filter(it => (it.vote_count || 0) >= 20 && (parseFloat(it.vote_average || it.rating) || 0) > 0);
+                // "Clásicos/recientes" sin fecha no tienen dónde ir
+                if (/^year/.test(sortBy)) pool = pool.filter(it => parseInt(String(it.year || it.release_date || it.first_air_date || '').slice(0, 4), 10) > 0);
+                sortPoolCache = { key, items: applySort(pool) };
+            }
+            const all = sortPoolCache.items;
+            totalPages = Math.max(1, Math.ceil(all.length / 20));
+            return all.slice((page - 1) * 20, page * 20);
         }
 
         // AÑOS
@@ -3735,6 +3770,7 @@
             }
             let list = seriesGenresData[key] || [];
             if (currentYear) list = list.filter(x => String(x.year) === String(currentYear));
+            list = applySort(list); // toda la lista, no solo la página
             totalPages = Math.max(1, Math.ceil(list.length / 20));
             return list.slice((page - 1) * 20, page * 20);
         }
@@ -3844,7 +3880,7 @@
                     const items = await loadLocalSeriesGenre(currentGenre.slice(6), page);
                     if (reqId === currentRequestId) {
                         window._lastRenderedItems = items;
-                        if (items.length) renderMovies(applySort(items));
+                        if (items.length) renderMovies(items);
                         else document.getElementById('contentArea').innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados</h3></div>`;
                         renderPagination(page);
                     }
@@ -3858,6 +3894,17 @@
                         renderAniListGrid(items);
                         renderPagination(page);
                     }
+                    isLoading = false;
+                    return;
+                }
+                const sortSel = document.getElementById('sortFilter');
+                if (sortSel && sortSel.value) {
+                    const items = await loadSortedPool(page);
+                    if (reqId !== currentRequestId) { isLoading = false; return; }
+                    window._lastRenderedItems = items;
+                    if (items.length) renderMovies(items);
+                    else document.getElementById('contentArea').innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados</h3></div>`;
+                    renderPagination(page);
                     isLoading = false;
                     return;
                 }
@@ -4542,6 +4589,10 @@
         }
 
         function reproducirEnServidor(serverId, meta) {
+            // La ficha ya se cerró (o se abrió otra) mientras cargaba: no reproducir
+            // nada escondido, que se seguía oyendo con la ficha cerrada.
+            const overlayAbierto = document.getElementById('modalOverlay')?.classList.contains('active');
+            if (!overlayAbierto || (meta && currentId != null && String(meta.id) !== String(currentId))) return;
             currentActiveServer = serverId;
             const servers = getAvailableServers(meta);
             const selected = servers.find(s => s.id === serverId) || servers[0];
@@ -4708,6 +4759,7 @@
                     r = await conTiempo(`${base}/api/resolve?token=${encodeURIComponent(srv.token)}`, 25000).then(x => x.json());
                 } catch (e) {}
                 if (turno !== sinAdsTurno) return;
+                if (!document.getElementById('modalOverlay')?.classList.contains('active')) return;
                 if (!r || r.mode !== 'sopa1d_adblock_hls' || !r.url) return probar(i + 1);
 
                 container.innerHTML = `
@@ -4999,6 +5051,8 @@
         }
 
         function closeModal() {
+            // Corta la búsqueda de servidor "Sin anuncios" que siguiera en curso
+            if (typeof sinAdsTurno === 'number') sinAdsTurno++;
             // Salir de la pantalla completa propia antes de cerrar, o la
             // orientación y las barras del sistema se quedan bloqueadas.
             const fsCont = document.getElementById('playerContainer');
