@@ -454,7 +454,7 @@ public class TvHomeActivity extends Activity {
             while ((n = in.read(b)) != -1) buf.write(b, 0, n);
             JSONArray arr = new JSONArray(buf.toString("UTF-8"));
 
-            List<String> order = Arrays.asList("Deportes", "Cine & Series", "Infantil", "Noticias",
+            List<String> order = Arrays.asList("Deportes", "Cine & Series", "24/7", "Infantil", "Noticias",
                     "Entretenimiento", "Música", "Cultura", "General");
             Map<String, List<CatalogItem>> byCat = new HashMap<>();
             List<CatalogItem> featured = new ArrayList<>();
@@ -490,6 +490,7 @@ public class TvHomeActivity extends Activity {
         switch (cat) {
             case "Deportes": return "⚽";
             case "Cine & Series": return "🎬";
+            case "24/7": return "🔁"; // una serie o tema todo el día (tools/add_247.mjs)
             case "Infantil": return "🧸";
             case "Noticias": return "📰";
             case "Entretenimiento": return "🎉";
