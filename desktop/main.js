@@ -84,6 +84,17 @@ async function startServer() {
 }
 
 function blockAds() {
+    // YouTube no reproduce vídeos incrustados si la página que los contiene es
+    // una dirección IP ("Este video no está disponible"). Las series chilenas
+    // del apartado Chile son listas de YouTube: para sus peticiones se usa
+    // otro Referer.
+    session.defaultSession.webRequest.onBeforeSendHeaders(
+        { urls: ['*://*.youtube.com/*', '*://*.youtube-nocookie.com/*'] },
+        (details, cb) => {
+            const h = details.requestHeaders;
+            if (h.Referer && /^http:\/\/127\.0\.0\.1[:/]/.test(h.Referer)) h.Referer = 'https://sopa1d.app/';
+            cb({ requestHeaders: h });
+        });
     session.defaultSession.webRequest.onBeforeRequest({ urls: ['http://*/*', 'https://*/*'] }, (details, cb) => {
         cb({ cancel: isAd(details.url) });
     });
@@ -92,10 +103,10 @@ function blockAds() {
 let win;
 
 function createWindow(port) {
-    // "localhost" y no "127.0.0.1": YouTube no deja reproducir sus vídeos
-    // incrustados en una página con dirección IP ("Este video no está
-    // disponible"), y el apartado Chile los usa.
-    const home = `http://localhost:${port}/`;
+    // 127.0.0.1 y no "localhost": Pluto TV solo da CORS a orígenes con
+    // dirección IP (los canales 24/7 van directo). YouTube, al revés, rechaza
+    // esos orígenes: se arregla con el Referer en blockAds().
+    const home = `http://127.0.0.1:${port}/`;
     win = new BrowserWindow({
         width: 1400,
         height: 860,

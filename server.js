@@ -1100,6 +1100,23 @@ function handleEpg(req, res) {
     send({ ready, loading: epgLoading });
 }
 
+const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'favicon.ico']);
+
+/*
+ * El proxy no va a la red local ni a este equipo. Responde con CORS abierto,
+ * así que con la app de PC abierta cualquier página web podía usarlo para leer
+ * el router u otros equipos de la casa. Ningún canal usa direcciones privadas.
+ */
+function isPrivateTarget(rawUrl) {
+    let host;
+    try { host = new URL(rawUrl).hostname.toLowerCase().replace(/^\[|\]$/g, ''); } catch (e) { return true; }
+    if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host === '0.0.0.0') return true;
+    if (/^(127|10)\./.test(host) || /^192\.168\./.test(host) || /^169\.254\./.test(host) || /^0\./.test(host)) return true;
+    if (/^172\.(1[6-9]|2\d|3[01])\./.test(host) || /^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(host)) return true;
+    if (host === '::1' || host === '::' || /^f[cd][0-9a-f]{2}:/.test(host) || /^fe[89ab][0-9a-f]:/.test(host)) return true;
+    return false;
+}
+
 const server = http.createServer(async (req, res) => {
     console.log(`[REQ] ${req.method} ${req.url.slice(0, 100)}`);
     // Manejo de preflight CORS (OPTIONS)
@@ -1357,6 +1374,11 @@ const server = http.createServer(async (req, res) => {
         }
 
         const targetUrl = parsedUrl.searchParams.get('url');
+        if (targetUrl && isPrivateTarget(targetUrl)) {
+            res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+            res.end('Destino no permitido');
+            return;
+        }
         const fixAudio = parsedUrl.searchParams.get('fix_audio') === '1';
         const customRef = parsedUrl.searchParams.get('ref') || '';
         const isRaw = parsedUrl.searchParams.get('raw') === '1';
@@ -1382,11 +1404,15 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // SERVIR ARCHIVOS ESTÁTICOS
+    // SERVIR ARCHIVOS ESTÁTICOS: solo los que usa la página. Antes se servía
+    // cualquier archivo de la carpeta (.git/, server.js, tools/…): publicado en
+    // la web dejaba descargar el repositorio entero.
     let reqUrl = req.url.split('?')[0];
-    let filePath = path.join(__dirname, reqUrl === '/' ? 'index.html' : reqUrl);
+    let publicName = '';
+    try { publicName = decodeURIComponent(reqUrl === '/' ? 'index.html' : reqUrl.replace(/^\/+/, '')); } catch (e) {}
+    let filePath = path.join(__dirname, publicName);
 
-    if (!fs.existsSync(filePath)) {
+    if (!PUBLIC_FILES.has(publicName) || !fs.existsSync(filePath)) {
         res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
         res.end('404 No encontrado');
         return;

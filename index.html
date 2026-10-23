@@ -6813,6 +6813,85 @@
             return channels;
         }
 
+        /*
+         * Canales propios ("➕ Añadir Canal" e "📂 Importar M3U"). Los botones
+         * llamaban a estas funciones, pero no existían: no pasaba nada.
+         * Se guardan en localStorage y van primero en la lista de canales.
+         */
+        const CUSTOM_CATEGORY = { Sports: 'Deportes', General: 'Entretenimiento', Movies: 'Cine & Series', News: 'Noticias', Kids: 'Infantil', Music: 'Música' };
+
+        function agregarCanalesPropios(nuevos) {
+            const custom = getSavedCustomChannels();
+            const urls = new Set([...custom, ...allLiveChannels].map(c => c.url));
+            const unicos = nuevos.filter(c => c.url && /^https?:\/\//i.test(c.url) && !urls.has(c.url) && urls.add(c.url));
+            if (!unicos.length) return 0;
+            unicos.forEach(c => { c.custom = true; c.id = 'custom_' + Math.random().toString(36).slice(2, 10); });
+            saveCustomChannels([...unicos, ...custom]);
+            allLiveChannels = [...unicos, ...allLiveChannels];
+            const badge = document.getElementById('tvGuideCountBadge');
+            if (badge) badge.textContent = allLiveChannels.length.toLocaleString();
+            if (typeof renderTvGuideList === 'function') renderTvGuideList();
+            return unicos.length;
+        }
+
+        function guardarCanalPersonalizado() {
+            const name = document.getElementById('newChannelName').value.trim();
+            const url = document.getElementById('newChannelUrl').value.trim();
+            const logo = document.getElementById('newChannelLogo').value.trim();
+            const cat = document.getElementById('newChannelCategory').value;
+            if (!name || !/^https?:\/\//i.test(url)) {
+                showToast('⚠️ Escribe un nombre y una URL que empiece con http:// o https://', 3500, 'warning');
+                return;
+            }
+            const n = agregarCanalesPropios([{ name, url, logo, category: CUSTOM_CATEGORY[cat] || 'General', country: 'Internacional' }]);
+            if (!n) { showToast('ℹ️ Ese canal ya está en la lista'); return; }
+            ['newChannelName', 'newChannelUrl', 'newChannelLogo'].forEach(id => { document.getElementById(id).value = ''; });
+            closeAddChannelModal();
+            showToast(`✅ "${name}" guardado en tus canales`);
+            tuneTvChannel(allLiveChannels[0], true);
+        }
+
+        function mostrarEstadoImport(texto, ok) {
+            const st = document.getElementById('importM3uStatus');
+            if (!st) return;
+            st.style.display = 'block';
+            st.style.color = ok ? 'var(--accent-emerald)' : '#fca5a5';
+            st.textContent = texto;
+        }
+
+        function importarTextoM3u(text) {
+            const lista = parseM3uText(text || '');
+            if (!lista.length) { mostrarEstadoImport('⚠️ No se encontraron canales en esa lista M3U.', false); return; }
+            const n = agregarCanalesPropios(lista);
+            mostrarEstadoImport(n ? `✅ ${n} canales importados (${lista.length - n} ya estaban).` : 'ℹ️ Todos esos canales ya estaban en la lista.', true);
+            if (n) showToast(`✅ ${n} canales importados`);
+        }
+
+        async function procesarUrlM3u() {
+            const url = document.getElementById('importM3uUrl').value.trim();
+            if (!/^https?:\/\//i.test(url)) { mostrarEstadoImport('⚠️ Pega un enlace que empiece con http:// o https://', false); return; }
+            mostrarEstadoImport('⏳ Descargando lista…', true);
+            try {
+                // Por el servidor local cuando lo hay: muchas listas no permiten CORS
+                const base = window.location.protocol.startsWith('http') ? getLocalAdFreeBase() + '/proxy?raw=1&url=' : '';
+                const r = await fetch(base ? base + encodeURIComponent(url) : url);
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                importarTextoM3u(await r.text());
+            } catch (e) {
+                mostrarEstadoImport('⚠️ No se pudo descargar la lista: ' + e.message, false);
+            }
+        }
+
+        function procesarArchivoM3u(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => importarTextoM3u(String(reader.result || ''));
+            reader.onerror = () => mostrarEstadoImport('⚠️ No se pudo leer el archivo.', false);
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
         // Compatibilidad para reproducir canales desde otros modales
         function reproducirCanalEnVivo(encodedData) {
             try {

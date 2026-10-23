@@ -181,10 +181,17 @@ console.log(`\n${ok.length} señales nuevas funcionando:`);
 for (const c of ok) console.log(`  [${c.category}] ${c.name} (${c.country})`);
 
 if (!DRY && ok.length) {
+    // El PC identifica cada canal por id: uno repetido sintonizaba otro canal
+    const usedIds = new Set(channels.map(c => c.id));
     let n = 0;
     for (const c of ok) {
+        let id;
+        do {
+            id = 'ch_iptvorg_' + (c.tvgId || c.name).toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + (++n);
+        } while (usedIds.has(id));
+        usedIds.add(id);
         channels.push({
-            id: 'ch_iptvorg_' + (c.tvgId || c.name).toLowerCase().replace(/[^a-z0-9]+/g, '_') + '_' + (++n),
+            id,
             name: c.name, logo: c.logo, category: c.category, country: c.country, url: c.url,
         });
     }
