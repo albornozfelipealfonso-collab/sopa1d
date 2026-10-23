@@ -8,6 +8,9 @@
  * cercano (±1), para no confundir "Infieles" (Chile, 2005) con otra
  * "Infieles". Los que no aparecen en TMDB se informan y se omiten.
  *
+ * Solo quedan los que se pueden ver: con servidores en TONPlayer o con listas
+ * de capítulos en canales oficiales de YouTube (ver más abajo).
+ *
  * Para agregar un título: sumarlo a SERIES o MOVIES y correr
  *   node tools/build_chile.mjs
  */
@@ -102,8 +105,86 @@ async function resolve([title, year, alts = [], imdb], type) {
     return null;
 }
 
-const out = { generated: new Date().toISOString().slice(0, 10), series: [], peliculas: [] };
-const missing = [];
+// ------------------------------------------------------------ disponibilidad
+// Los servidores de vídeo de la app (TONPlayer, MultiEmbed) casi no tienen
+// contenido chileno: de 109 títulos solo 31 Minutos. Muchas series sí están
+// completas en los canales oficiales de YouTube. Un título queda en el
+// apartado solo si tiene listas oficiales de YouTube o servidores en TONPlayer.
+
+// Canales oficiales (se descartan las subidas de particulares)
+const OFFICIAL = ['teleseriesyseriestvn', 'tvn', 'el13', 'canal13', 'mega', 'megateleseries', 'chilevision',
+    'chv', 'bknlaserie', '31minutos', 'casadoconhijoschile', 'cntv', 'canal13teleseries'];
+// Listas que no son capítulos
+const NOT_EPISODES = /mejores momentos|avance|resumen|promo|trailer|clip|detr[aá]s|making|karaoke|canciones|m[uú]sica/i;
+const YT_HEADERS = { 'User-Agent': 'Mozilla/5.0', 'Accept-Language': 'es-CL,es;q=0.9', 'Cookie': 'CONSENT=YES+cb.20240101-00-p0.es+FX+000; SOCS=CAI' };
+
+async function ytData(url) {
+    for (let i = 0; i < 3; i++) {
+        try {
+            const r = await fetch(url, { headers: YT_HEADERS, signal: AbortSignal.timeout(20000) });
+            const m = (await r.text()).match(/var ytInitialData = (\{.*?\});<\/script>/s);
+            if (m) return JSON.parse(m[1]);
+        } catch (e) {}
+        await sleep(2000 * (i + 1));
+    }
+    return null;
+}
+
+async function ytPlaylists(title) {
+    const data = await ytData('https://www.youtube.com/results?search_query=' + encodeURIComponent(title + ' capitulos completos') + '&sp=EgIQAw%253D%253D');
+    if (!data) return [];
+    const found = [];
+    JSON.stringify(data, (k, v) => {
+        if (v && v.lockupViewModel && v.lockupViewModel.contentId) {
+            const md = v.lockupViewModel.metadata?.lockupMetadataViewModel;
+            const channel = (JSON.stringify(md?.metadata || '').match(/"content":"([^"]{2,60})"/) || [])[1] || '';
+            found.push({ list: v.lockupViewModel.contentId, title: md?.title?.content || '', channel });
+        }
+        return v;
+    });
+    const want = norm(title);
+    const lists = found.filter(p => OFFICIAL.includes(norm(p.channel)) && norm(p.title).includes(want) && !NOT_EPISODES.test(p.title));
+    // Temporadas en orden ("1º Temporada", "Temporada 2"…)
+    const season = t => parseInt((t.match(/(\d+)\s*[ºª°]?\s*temporada|temporada\s*(\d+)/i) || []).slice(1).find(Boolean) || '0', 10);
+    lists.sort((a, b) => season(a.title) - season(b.title));
+    const out = [];
+    for (const p of lists.slice(0, 8)) {
+        // Primer vídeo: la app de YouTube del TV box abre "watch?v=…&list=…"
+        const pl = await ytData('https://www.youtube.com/playlist?list=' + p.list);
+        const first = pl && (JSON.stringify(pl).match(/"videoId":"([\w-]{11})"/) || [])[1];
+        await sleep(400);
+        if (first) out.push({ list: p.list, title: p.title, channel: p.channel, first });
+    }
+    return out;
+}
+
+async function tonServers(item) {
+    const p = item.type === 'tv' ? `tv/${item.id}/1/1` : `movie/${item.id}`;
+    for (let i = 0; i < 2; i++) {
+        try {
+            const r = await fetch('https://player.tonplayer.space/api/' + p, {
+                headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://player.tonplayer.space/play/' + p },
+                signal: AbortSignal.timeout(40000),
+            });
+            const j = await r.json();
+            // finder_error: TONPlayer arma la lista al vuelo y la primera vez puede fallar
+            if (j.success !== false || i === 1) return (j.servers || []).length;
+        } catch (e) {}
+        await sleep(8000);
+    }
+    return 0;
+}
+
+const out = {
+    generated: new Date().toISOString().slice(0, 10),
+    series: [], peliculas: [],
+    // Plataformas oficiales y gratuitas de cine y series chilenas (se abren aparte)
+    accesos: [
+        { name: 'Ondamedia', url: 'https://ondamedia.cl', desc: 'Cine y documentales chilenos gratis (Ministerio de las Culturas). Pide crear una cuenta.' },
+        { name: 'CNTV Play', url: 'https://cntvplay.cl', desc: 'Series y programas chilenos gratis del Consejo Nacional de Televisión.' },
+    ],
+};
+const missing = [], unavailable = [];
 for (const [list, type, key] of [[SERIES, 'tv', 'series'], [MOVIES, 'movie', 'peliculas']]) {
     const seen = new Set();
     for (const entry of list) {
@@ -111,11 +192,17 @@ for (const [list, type, key] of [[SERIES, 'tv', 'series'], [MOVIES, 'movie', 'pe
         if (!item) { missing.push(`${entry[0]} (${entry[1]})`); continue; }
         if (seen.has(item.id)) continue;
         seen.add(item.id);
+        const servers = await tonServers(item);
+        const yt = type === 'tv' ? await ytPlaylists(entry[0]) : [];
+        if (!servers && !yt.length) { unavailable.push(item.title); continue; }
+        if (servers) item.servers = servers;
+        if (yt.length) item.yt = yt;
         out[key].push(item);
-        console.log(`  ✔ ${item.title} (${item.year})`);
+        console.log(`  ✔ ${item.title} (${item.year})${servers ? ` · ${servers} servidores` : ''}${yt.length ? ` · YouTube: ${yt.map(p => p.channel + ' «' + p.title + '»').join(', ')}` : ''}`);
     }
 }
-console.log(`\n${out.series.length} series y ${out.peliculas.length} películas`);
+console.log(`\n${out.series.length} series y ${out.peliculas.length} películas disponibles`);
+if (unavailable.length) console.log('Sin dónde verlas (fuera): ' + unavailable.join(', '));
 if (missing.length) console.log('No están en TMDB: ' + missing.join(', '));
 fs.writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
 console.log(`Guardado en ${OUT}`);

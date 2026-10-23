@@ -99,6 +99,34 @@ final class Catalog {
         for (int i = 0; arr != null && i < arr.length(); i++) {
             JSONObject o = arr.getJSONObject(i);
             String backdrop = o.optString("backdrop", "");
+            // Accesos a sitios (Ondamedia, CNTV Play): se abren en el navegador
+            if (o.has("url") && !o.has("id")) {
+                CatalogItem web = new CatalogItem("tv", "web:" + o.optString("url"), o.optString("name"),
+                        "", 0, o.optString("desc"), null, null);
+                web.genres = "Abrir " + o.optString("url").replace("https://", "");
+                out.add(web);
+                continue;
+            }
+            // Series chilenas que solo están en YouTube oficial: una tarjeta por
+            // lista (temporada); se abren en la app de YouTube ("yt:lista:primerVídeo")
+            JSONArray yt = o.optJSONArray("yt");
+            if (yt != null && yt.length() > 0 && o.optInt("servers", 0) == 0) {
+                for (int j = 0; j < yt.length(); j++) {
+                    JSONObject p = yt.getJSONObject(j);
+                    String name = o.optString("title");
+                    String label = p.optString("title");
+                    if (label.toLowerCase(java.util.Locale.ROOT).startsWith(name.toLowerCase(java.util.Locale.ROOT))) {
+                        label = label.substring(name.length()).replaceFirst("^[\\s|·:-]+", "");
+                    }
+                    CatalogItem it = new CatalogItem("tv", "yt:" + p.optString("list") + ":" + p.optString("first"),
+                            yt.length() > 1 && !label.isEmpty() ? name + " · " + label : name,
+                            o.optString("year"), o.optDouble("rating", 0), o.optString("overview"),
+                            o.optString("poster"), backdrop.isEmpty() ? null : backdrop);
+                    it.genres = "YouTube · " + p.optString("channel");
+                    out.add(it);
+                }
+                continue;
+            }
             out.add(new CatalogItem("movie".equals(o.optString("type")) ? "movie" : "tv",
                     String.valueOf(o.optLong("id")), o.optString("title"),
                     o.optString("year"), o.optDouble("rating", 0), o.optString("overview"),
@@ -156,6 +184,7 @@ final class Catalog {
         rows.add(new Row("🌸 Anime imperdible", best("anime", 0)));
         rows.add(new Row("🇨🇱 Series chilenas", LOCAL + "chile.json#series"));
         rows.add(new Row("🇨🇱 Películas chilenas", LOCAL + "chile.json#peliculas"));
+        rows.add(new Row("🇨🇱 Más cine y series chilenas (gratis)", LOCAL + "chile.json#accesos"));
         rows.add(new Row("💥 Acción", best("movies", 28)));
         rows.add(new Row("😂 Comedia", best("movies", 35)));
         rows.add(new Row("👻 Terror", best("movies", 27)));

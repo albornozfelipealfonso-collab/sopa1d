@@ -3805,6 +3805,72 @@
             return list.slice((page - 1) * 20, page * 20);
         }
 
+        /** Ondamedia y CNTV Play: plataformas oficiales gratis, se abren aparte. */
+        function renderChileAccesos() {
+            const acc = (chileData && chileData.accesos) || [];
+            if (!acc.length || currentGenre === 'chile:series') return;
+            const esc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+            const box = document.createElement('div');
+            box.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:18px;';
+            box.innerHTML = acc.map(a => `
+                <div style="padding:16px 18px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:8px;">
+                    <div style="font-weight:800;font-size:16px;">🇨🇱 ${esc(a.name)}</div>
+                    <div style="font-size:13px;color:var(--text-secondary);">${esc(a.desc)}</div>
+                    <button class="btn btn-glass" style="align-self:flex-start;" onclick="abrirAcceso('${esc(a.url)}')">Abrir ${esc(a.name)} ↗</button>
+                </div>`).join('');
+            document.getElementById('contentArea').prepend(box);
+        }
+
+        /** En la app de PC se abre en el navegador del sistema; en la web, en otra pestaña. */
+        function abrirAcceso(url) {
+            if (window.sopaDesktop && window.sopaDesktop.openExternal) window.sopaDesktop.openExternal(url);
+            else window.open(url, '_blank', 'noopener');
+        }
+
+        /*
+         * Series chilenas que solo están en los canales oficiales de YouTube
+         * (tools/build_chile.mjs): reproductor de YouTube con un botón por
+         * temporada. Al cerrar se quita el iframe para que deje de sonar.
+         */
+        function openChileYouTube(key) {
+            const it = (window._chileYT || {})[key];
+            if (!it) return;
+            document.getElementById('chileYtOverlay')?.remove();
+            const esc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+            const ov = document.createElement('div');
+            ov.id = 'chileYtOverlay';
+            ov.className = 'tv-schedule-overlay';
+            ov.onclick = (e) => { if (e.target === ov) ov.remove(); };
+            ov.innerHTML = `<div class="tv-schedule-card" style="width:min(1100px,100%);max-height:94vh;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;">
+                    <h3 style="margin:0;">${esc(it.title)} <span style="font-size:12px;color:var(--text-muted);font-weight:600;">· YouTube · ${esc(it.yt[0].channel)}</span></h3>
+                    <button class="btn btn-glass" onclick="document.getElementById('chileYtOverlay').remove()">✕</button>
+                </div>
+                <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;">
+                    <iframe id="chileYtFrame" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+                    ${it.yt.map((p, i) => `<button class="genre-pill ${i === 0 ? 'active' : ''}" data-list="${esc(p.list)}" onclick="chileYtSeason(this)">${esc(it.yt.length > 1 ? chileSeasonLabel(p.title, it.title) : 'Capítulos')}</button>`).join('')}
+                </div>
+            </div>`;
+            document.body.appendChild(ov);
+            chileYtSeason(ov.querySelector('[data-list]'));
+        }
+
+        /** "BKN | 1º Temporada" → "1º Temporada" */
+        function chileSeasonLabel(t, name) {
+            let x = String(t || '');
+            if (x.toLowerCase().startsWith(String(name).toLowerCase())) x = x.slice(String(name).length).replace(/^[\s|·:-]+/, '');
+            return x || t;
+        }
+
+        function chileYtSeason(btn) {
+            if (!btn) return;
+            document.querySelectorAll('#chileYtOverlay [data-list]').forEach(b => b.classList.toggle('active', b === btn));
+            document.getElementById('chileYtFrame').src =
+                `https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(btn.dataset.list)}&autoplay=1&rel=0&hl=es`;
+        }
+
         function renderAniListGrid(items) {
             const area = document.getElementById('contentArea');
             window._aniItems = items;
@@ -3914,6 +3980,7 @@
                         window._lastRenderedItems = items;
                         if (items.length) renderMovies(items);
                         else document.getElementById('contentArea').innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados</h3></div>`;
+                        if (page === 1) renderChileAccesos();
                         renderPagination(page);
                     }
                     isLoading = false;
@@ -4017,8 +4084,14 @@
                 window._cardData[cacheKey] = { id, type: mapType, title, poster, year, rating };
                 const favActive = isFavorite(id, mapType);
 
+                // Chile: las que solo están en YouTube oficial abren su reproductor
+                let cardClick = `openDetails(${id}, '${mapType}')`;
+                if (currentType === 'chile' && item.yt && item.yt.length && !item.servers) {
+                    (window._chileYT = window._chileYT || {})[cacheKey] = item;
+                    cardClick = `openChileYouTube('${cacheKey}')`;
+                }
                 html += `
-                    <div class="media-card" onclick="openDetails(${id}, '${mapType}')">
+                    <div class="media-card" onclick="${cardClick}">
                         <div class="card-badge-top">${badge}</div>
                         <button class="fav-heart-btn ${favActive ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavoriteCard('${cacheKey}', this)" title="Mi Lista" aria-label="Favorito">
                             ${favActive ? '❤️' : '🤍'}

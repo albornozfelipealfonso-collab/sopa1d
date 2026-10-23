@@ -924,6 +924,25 @@ public class TvHomeActivity extends Activity {
 
     /** Abre la ficha; los anime de AniList primero se buscan en el catálogo (TMDB). */
     private void openDetail(CatalogItem item) {
+        // Apartado Chile: listas oficiales de YouTube y accesos a sitios
+        if (item.id.startsWith("yt:") || item.id.startsWith("web:")) {
+            String url;
+            if (item.id.startsWith("yt:")) {
+                String[] p = item.id.split(":");
+                url = "https://www.youtube.com/watch?v=" + p[2] + "&list=" + p[1];
+            } else {
+                url = item.id.substring(4);
+            }
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url)));
+            } catch (android.content.ActivityNotFoundException e) {
+                Toast.makeText(this, item.id.startsWith("yt:")
+                        ? "Instala YouTube para ver esta serie"
+                        : "Este equipo no tiene navegador: ábrelo en el celular o PC (" + url.replace("https://", "") + ")",
+                        Toast.LENGTH_LONG).show();
+            }
+            return;
+        }
         if (!AniList.isAniList(item)) {
             Intent i = new Intent(this, DetailActivity.class);
             i.putExtra(DetailActivity.EXTRA_ITEM, item);

@@ -9,17 +9,57 @@
       "rating": 6.7,
       "poster": "https://image.tmdb.org/t/p/w500/gUK8YxL0W25sdwB99vXw76Owf0m.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/pV3oQkffLBLxqCKEGdtxbJ6fJs8.jpg",
-      "overview": "Los vecinos nuevos son muy interesantes, es que Sebastián toca la batería y Nacho es muy travieso. Así que llamarán la atención de todos los chicos del barrio. ¡Pero eso no será todo! Es que el amor que nacerá entre los jóvenes y los problemas entre Gaby y Claudia se notarán en todo momento."
-    },
-    {
-      "id": 98430,
-      "type": "tv",
-      "title": "Infieles",
-      "year": "2005",
-      "rating": 3.8,
-      "poster": "https://image.tmdb.org/t/p/w500/z8SXWRQQoRGd7deGGKd3icrpDB8.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/qLel5eu7jsdQOTLY73kUvnoo2HZ.jpg",
-      "overview": "Comedia erótica en torno a la infidelidad y a las distintas situaciones que llevan al ser humano a cometerla."
+      "overview": "Los vecinos nuevos son muy interesantes, es que Sebastián toca la batería y Nacho es muy travieso. Así que llamarán la atención de todos los chicos del barrio. ¡Pero eso no será todo! Es que el amor que nacerá entre los jóvenes y los problemas entre Gaby y Claudia se notarán en todo momento.",
+      "yt": [
+        {
+          "list": "PLbp4Mjmb_OGxnm3MmpSyprK_530s2E7fg",
+          "title": "BKN | 1º Temporada",
+          "channel": "BKN La Serie",
+          "first": "rRW8G8-95EE"
+        },
+        {
+          "list": "PLbp4Mjmb_OGxfAvGkFzwn_wjqhRuDPZGM",
+          "title": "BKN | 2º Temporada",
+          "channel": "BKN La Serie",
+          "first": "LTzvTc4qR3U"
+        },
+        {
+          "list": "PLbp4Mjmb_OGx51xqe81mC9aM0THTPq7Xh",
+          "title": "BKN | 3º Temporada",
+          "channel": "BKN La Serie",
+          "first": "92vxDDGJqtI"
+        },
+        {
+          "list": "PLbp4Mjmb_OGzVA6lAzMCDB-TIKA60vfXo",
+          "title": "BKN | 4º Temporada",
+          "channel": "BKN La Serie",
+          "first": "9HDo0RWO7Y0"
+        },
+        {
+          "list": "PLbp4Mjmb_OGx411dULcSS7Q_7m4dJuhoI",
+          "title": "BKN | 5º Temporada",
+          "channel": "BKN La Serie",
+          "first": "eCG1utOy8aM"
+        },
+        {
+          "list": "PLbp4Mjmb_OGweSyRs_2KJkZgd8xCSpsig",
+          "title": "BKN | 6º Temporada",
+          "channel": "BKN La Serie",
+          "first": "zrZGxgooDu8"
+        },
+        {
+          "list": "PLbp4Mjmb_OGwVCbp-Pdkoxu6Y3Q7zQnLS",
+          "title": "BKN | 7º Temporada",
+          "channel": "BKN La Serie",
+          "first": "cYeTitIvZCg"
+        },
+        {
+          "list": "PLbp4Mjmb_OGzEcOjXyVq7VHTklNpK-sjf",
+          "title": "BKN | 8º Temporada",
+          "channel": "BKN La Serie",
+          "first": "SnW53pCN5n8"
+        }
+      ]
     },
     {
       "id": 99308,
@@ -29,7 +69,57 @@
       "rating": 6.9,
       "poster": "https://image.tmdb.org/t/p/w500/gf8B5fXiqoeOOh0TOYYsDJMbv8w.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/ieEw8huVpSZmbHhihscc3VabEB9.jpg",
-      "overview": "Recreaciones de historias relacionadas con el mundo del crimen. Acompañadas por testimonios de las personas más cercanas involucradas en los hechos. El desenlace de cada episodio finaliza con el \"protagonista\" entregando su testimonio del delito."
+      "overview": "Recreaciones de historias relacionadas con el mundo del crimen. Acompañadas por testimonios de las personas más cercanas involucradas en los hechos. El desenlace de cada episodio finaliza con el \"protagonista\" entregando su testimonio del delito.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8O8xq95ZkbUvkD_1hYKxXM",
+          "title": "Mea culpa - T13 (2008)",
+          "channel": "Teleseries y series TVN",
+          "first": "a-fNmMW3fsc"
+        },
+        {
+          "list": "PLd5MCGg25bV8N9dZzXOYr4BVSi_K38K_V",
+          "title": "Mea culpa - T14 (2021)",
+          "channel": "Teleseries y series TVN",
+          "first": "SUA1Gk338tI"
+        },
+        {
+          "list": "PLd5MCGg25bV9LAvhXX8tal5xnAQdghrlj",
+          "title": "Mea culpa - T5 (1997)",
+          "channel": "Teleseries y series TVN",
+          "first": "C9ArG0Djolw"
+        },
+        {
+          "list": "PLd5MCGg25bV8Q-goS3LloJhFjf0dQ8HSy",
+          "title": "Mea culpa - T9 (2004)",
+          "channel": "Teleseries y series TVN",
+          "first": "-omrT799x1o"
+        },
+        {
+          "list": "PLd5MCGg25bV_rPzvnhhnXI5_Sb9UA3wt8",
+          "title": "Mea culpa - T12 (2007)",
+          "channel": "Teleseries y series TVN",
+          "first": "11k7TiSwnbY"
+        },
+        {
+          "list": "PLd5MCGg25bV-zXQzrq9n__ZMrYvhI2oiY",
+          "title": "Mea culpa - T6 (1998)",
+          "channel": "Teleseries y series TVN",
+          "first": "ALq55QTZQOg"
+        },
+        {
+          "list": "PLd5MCGg25bV9N0KiJ44cvtH6X4Gk8Jlqj",
+          "title": "Mea culpa - T11 (2006)",
+          "channel": "Teleseries y series TVN",
+          "first": "eTln7vq3gTU"
+        },
+        {
+          "list": "PLd5MCGg25bV9hoRzSTkQW9mR-5GSD4vNa",
+          "title": "Mea culpa - T10 (2005)",
+          "channel": "Teleseries y series TVN",
+          "first": "ID64easYdlE"
+        }
+      ]
     },
     {
       "id": 99312,
@@ -39,7 +129,27 @@
       "rating": 8.4,
       "poster": "https://image.tmdb.org/t/p/w500/yVBckwbbL9K5DtiiozsZA1XSwRY.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/9H07Viv0LZDDtpKpG3fHx8oMeWH.jpg",
-      "overview": "Recrea con actores, historias basadas en la vida real, que no tienen una explicación científica y son atribuidas a sucesos paranormales, encuentros de dos dimensiones y vida después de la muerte."
+      "overview": "Recrea con actores, historias basadas en la vida real, que no tienen una explicación científica y son atribuidas a sucesos paranormales, encuentros de dos dimensiones y vida después de la muerte.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV9m3RveYSUUGoHyJMpXsDQi",
+          "title": "El día menos pensado (2024) | Capítulos completos",
+          "channel": "Teleseries y series TVN",
+          "first": "npkY06xvUCU"
+        },
+        {
+          "list": "PLd5MCGg25bV_odPs5mXAz-5rEkioPW9Gw",
+          "title": "El día menos pensado - Capítulos estreno 2022",
+          "channel": "Teleseries y series TVN",
+          "first": "wIacUX8HaLg"
+        },
+        {
+          "list": "PLd5MCGg25bV9JY3DpV_bPugQehfiunDIG",
+          "title": "El día menos pensado - (2022)",
+          "channel": "Teleseries y series TVN",
+          "first": "AB8xOkEqZrA"
+        }
+      ]
     },
     {
       "id": 43,
@@ -49,7 +159,16 @@
       "rating": 8.6,
       "poster": "https://image.tmdb.org/t/p/w500/rI0hXEJFcgRaigCWGEuqEXQvOjY.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/ooFdkopLCwPp42zymuM9syg8M22.jpg",
-      "overview": "El programa se centra en las aventuras del equipo de un noticiero de poco prestigio, donde siempre ocurre algo inesperado. Sus notas, mientras algunas son bastante ridículas, otras son educativas y dejan un mensaje tanto explícita como implícitamente. El noticiario es conducido por Tulio Triviño."
+      "overview": "El programa se centra en las aventuras del equipo de un noticiero de poco prestigio, donde siempre ocurre algo inesperado. Sus notas, mientras algunas son bastante ridículas, otras son educativas y dejan un mensaje tanto explícita como implícitamente. El noticiario es conducido por Tulio Triviño.",
+      "servers": 3,
+      "yt": [
+        {
+          "list": "PLVI9tQggdGtFXgCwpjTM_d2pdH6ABeRFL",
+          "title": "31 minutos - Todos los episodios",
+          "channel": "31 minutos",
+          "first": "sM-RwR_cZOc"
+        }
+      ]
     },
     {
       "id": 34001,
@@ -59,7 +178,15 @@
       "rating": 8,
       "poster": "https://image.tmdb.org/t/p/w500/doNiDjHtFX1nQ3iIqLmY3x3wIkb.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/oozRKkD7DZya8Iv4slJqSCnZOhM.jpg",
-      "overview": "Entre los años 1982 y 1990, en plena dictadura de Pinochet, los Herrera experimentan el período de grandes cambios políticos y sociales de Chile."
+      "overview": "Entre los años 1982 y 1990, en plena dictadura de Pinochet, los Herrera experimentan el período de grandes cambios políticos y sociales de Chile.",
+      "yt": [
+        {
+          "list": "PLnDONcPxnlq1G9DJrQyB4CwYV3PWS2ZtO",
+          "title": "Los 80",
+          "channel": "El 13",
+          "first": "OKQFFWGutuo"
+        }
+      ]
     },
     {
       "id": 15394,
@@ -69,7 +196,27 @@
       "rating": 6.5,
       "poster": "https://image.tmdb.org/t/p/w500/304bJ0JYswa7iDTuIUajFAjWV6Y.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/lkorYj7VWSY34IVeyLE3cb81DVA.jpg",
-      "overview": "Las desventuras económicas y laborales de una particular familia chilena un tanto floja, buena para ver televisión, desordenada y sin esperanza de surgir en la vida. Basada en la serie estadounidense \"Married with Children\" (1987)."
+      "overview": "Las desventuras económicas y laborales de una particular familia chilena un tanto floja, buena para ver televisión, desordenada y sin esperanza de surgir en la vida. Basada en la serie estadounidense \"Married with Children\" (1987).",
+      "yt": [
+        {
+          "list": "PLLMS5TDhVjpn_eFNpFisCdQ2czVI4Nhhc",
+          "title": "Casado con Hijos | Temporada 1",
+          "channel": "Casado con Hijos Chile",
+          "first": "TkD0yCJvhs4"
+        },
+        {
+          "list": "PLLMS5TDhVjpnGNpp2brPKefp31J5QazmG",
+          "title": "Casado con Hijos | Temporada 2",
+          "channel": "Casado con Hijos Chile",
+          "first": "mOR5CBHpBRc"
+        },
+        {
+          "list": "PLLMS5TDhVjplfIugFg3bculsXgoSPJkn0",
+          "title": "Casado con Hijos | Temporada 4",
+          "channel": "Casado con Hijos Chile",
+          "first": "nHzgL11D3K4"
+        }
+      ]
     },
     {
       "id": 76594,
@@ -79,27 +226,15 @@
       "rating": 4,
       "poster": "https://image.tmdb.org/t/p/w500/cfUkNFMDtbDZU3XzLfthjVBrWWP.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/bv9bTmkhLaTWIJmNBv2FvDbKYB5.jpg",
-      "overview": "La relación entre un padre y su hija se verá afectada cuando la madre de la niña regrese y quiera recuperarla."
-    },
-    {
-      "id": 76649,
-      "type": "tv",
-      "title": "Machos",
-      "year": "2003",
-      "rating": 4.3,
-      "poster": "https://image.tmdb.org/t/p/w500/iqmU0rkyR2Z3MKmZgbEVR5zdIgq.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/26B7vYXiGLmoHVU9MXv7r9jNWVU.jpg",
-      "overview": "Un padre severo y autoritario esta al borde de una crisis existencial cuando sus hijos no son capaces de llenar sus expectativas e imagen de \"hombres fuertes y duros\" que desea para ellos. ¿Podrá enderezar la vida de sus hijos? ¿O tendrá que aprender que cada uno de ellos ya se ha cortado las alas?"
-    },
-    {
-      "id": 45156,
-      "type": "tv",
-      "title": "Amores de mercado",
-      "year": "2001",
-      "rating": 6,
-      "poster": "https://image.tmdb.org/t/p/w500/ituWEMVsGPpvZzFLrxSIcj4udB9.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/2chrlx03pgAM2XuGx2dE63FOmnT.jpg",
-      "overview": "\"Pelluco\" Solis cruza camino con Rodolfo Ruttenmeyer -un hombre que luce exactamente igual a él- en un evento desafortunado que cambiará la vida de ambos para siempre. Teleserie centrada  entre el Mercado Central de Santiago y el barrio alto de la misma región."
+      "overview": "La relación entre un padre y su hija se verá afectada cuando la madre de la niña regrese y quiera recuperarla.",
+      "yt": [
+        {
+          "list": "PLnDONcPxnlq24kQ1j9OcE7p5-8P5ZMfQo",
+          "title": "Papi Ricky | Capítulos",
+          "channel": "El 13",
+          "first": "TCCYCkL6324"
+        }
+      ]
     },
     {
       "id": 20506,
@@ -109,47 +244,15 @@
       "rating": 2,
       "poster": "https://image.tmdb.org/t/p/w500/kFP2chprYyJ1RMCPmQZrImbvJuQ.jpg",
       "backdrop": "",
-      "overview": "En la Rinconada Del Monte los días pasan calmos. Los hermanos Del Monte se ocupan, como siempre, de mantener el fundo que durante décadas sus padres transformaron en el más importante y próspero de la zona. Quieren mantener su legado y hacerlo crecer aún más. Cuando el abogado está a punto de leer e"
-    },
-    {
-      "id": 298329,
-      "type": "tv",
-      "title": "Los Venegas",
-      "year": "1989",
-      "rating": 8.5,
-      "poster": "https://image.tmdb.org/t/p/w500/k8cGo0pCwWEX3ucwHig4lHquHmj.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7G2qvkmKMyXCO9wSuwFcys06kVA.jpg",
-      "overview": "Sitcom chilena que recrea situaciones vividas por la familia Venegas, de estrato socio-económico medio, y de sus vecinos y amigos."
-    },
-    {
-      "id": 97403,
-      "type": "tv",
-      "title": "Perdona nuestros pecados",
-      "year": "2017",
-      "rating": 2.8,
-      "poster": "https://image.tmdb.org/t/p/w500/urhzrTrZhVqu5fk1PCuYFVZ0px.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/AqL1l2OWupNcTiIpix6MPVsRk4d.jpg",
-      "overview": "La llegada de Reynaldo Suárez, el nuevo párroco de Villa Ruiseñor, generará más de algún dolor de cabeza a Armando Quiroga, el hombre más rico y poderoso del pueblo."
-    },
-    {
-      "id": 79250,
-      "type": "tv",
-      "title": "Verdades ocultas",
-      "year": "2017",
-      "rating": 5,
-      "poster": "https://image.tmdb.org/t/p/w500/bp7tyY5mAKJ9VSmLv3tX0RaYeig.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/9b6oND8sUhJT9WESAHg4kufvUry.jpg",
-      "overview": "Una mujer se enfrenta a la encrucijada de vender a su hija de cuatro años y quedarse solo con su hermana. 20 años después, el destino las volverá a reunir, lo que desatará consecuencias impensadas."
-    },
-    {
-      "id": 105452,
-      "type": "tv",
-      "title": "Pituca sin lucas",
-      "year": "2014",
-      "rating": 4,
-      "poster": "https://image.tmdb.org/t/p/w500/pY0nVA9ZsYKXZKzxoj1XE3GjZia.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/6er0YHE18zg92ZZhg9DZq8BvDOz.jpg",
-      "overview": "Tichi, una mujer de clase social alta, pierde todo lo material debido a una estafa de su marido prófugo y tiene que mudarse con su familia a una casa pareada en La Florida, donde ella tendrá que adaptarse a su nuevo status, aprender a trabajar y evitar enamorarse de este Manuel, su vecino “roto” que"
+      "overview": "En la Rinconada Del Monte los días pasan calmos. Los hermanos Del Monte se ocupan, como siempre, de mantener el fundo que durante décadas sus padres transformaron en el más importante y próspero de la zona. Quieren mantener su legado y hacerlo crecer aún más. Cuando el abogado está a punto de leer e",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV9jYfknFXtzzsuzSPPJycG3",
+          "title": "Hijos del monte (2008)",
+          "channel": "Teleseries y series TVN",
+          "first": "07bDAaPPqRQ"
+        }
+      ]
     },
     {
       "id": 97937,
@@ -159,47 +262,15 @@
       "rating": 1.3,
       "poster": "https://image.tmdb.org/t/p/w500/cdoNBtLn0vWzhg1wzKUItqAP4Ha.jpg",
       "backdrop": "",
-      "overview": "Cristina, una corredora de propiedades descubre que su novio de hace 8 años, le es infiel con una mujer much más joven, por lo cual quedará soltera otra vez y comenzará una búsqueda desesperada por dejar su estado de soltería, aunque no todas las citas serán las ideales y en el camino se encontrará "
-    },
-    {
-      "id": 55597,
-      "type": "tv",
-      "title": "El reemplazante",
-      "year": "2012",
-      "rating": 8,
-      "poster": "https://image.tmdb.org/t/p/w500/bUhyvlAXGnpbL07AsXjxiZkOObT.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/hFeuAVq7OyM10HK8KPGBPVLRESg.jpg",
-      "overview": "Trás una mala jugada financiera que destruye su promisoria carrera. Charlie toma el trabajo de profesor reemplazante en un colegio público se transformará en el mayor desafío de su vida."
-    },
-    {
-      "id": 290059,
-      "type": "tv",
-      "title": "Sres Papis",
-      "year": "2014",
-      "rating": 0,
-      "poster": "https://image.tmdb.org/t/p/w500/bCyt8243Qbsu9fWZ8YU9JnofKGC.jpg",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 46734,
-      "type": "tv",
-      "title": "Separados",
-      "year": "2012",
-      "rating": 0,
-      "poster": "https://image.tmdb.org/t/p/w500/lgJqnY05wvFSkqPE8f6tGy9xp2d.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/jLNnhudL86WLh3RE2Xs8alrGUxS.jpg",
-      "overview": ""
-    },
-    {
-      "id": 99139,
-      "type": "tv",
-      "title": "Juana Brava",
-      "year": "2015",
-      "rating": 1,
-      "poster": "https://image.tmdb.org/t/p/w500/j23tR1JNu5PIEXuCkhzEDjjo7E2.jpg",
-      "backdrop": "",
-      "overview": ""
+      "overview": "Cristina, una corredora de propiedades descubre que su novio de hace 8 años, le es infiel con una mujer much más joven, por lo cual quedará soltera otra vez y comenzará una búsqueda desesperada por dejar su estado de soltería, aunque no todas las citas serán las ideales y en el camino se encontrará ",
+      "yt": [
+        {
+          "list": "PLnDONcPxnlq1XE6XZm_oLXD_6w8XnV-bt",
+          "title": "Soltera Otra Vez 3 | Capítulos",
+          "channel": "El 13",
+          "first": "EivsNsCywBg"
+        }
+      ]
     },
     {
       "id": 104819,
@@ -209,7 +280,8 @@
       "rating": 7.3,
       "poster": "https://image.tmdb.org/t/p/w500/iRZX9p0miSsBVV7eBgH0HSjnmE2.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/jEsk7GaguUVoxO8nTBFa1QsS8ja.jpg",
-      "overview": "Blanca, alumna líder del movimiento feminista en un colegio en toma, desaparece: horas después se viraliza la violación grupal de la joven. Un escuadrón policial de tres mujeres se une y ponen en peligro su vida y la de sus familias, con tal de encontrarla . Mientras buscan a Blanca y avanzan en la "
+      "overview": "Blanca, alumna líder del movimiento feminista en un colegio en toma, desaparece: horas después se viraliza la violación grupal de la joven. Un escuadrón policial de tres mujeres se une y ponen en peligro su vida y la de sus familias, con tal de encontrarla . Mientras buscan a Blanca y avanzan en la ",
+      "servers": 2
     },
     {
       "id": 152344,
@@ -219,7 +291,8 @@
       "rating": 7.1,
       "poster": "https://image.tmdb.org/t/p/w500/8v6pVofHLPD1YC3k2hzpZ6sq6sn.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/gAy9sOxrYs5sXSwogv9TdyQXNzW.jpg",
-      "overview": "Años 80. Los Prisioneros es una banda de rock liderada por el carismático Jorge. Perseguidos por los militares en plena dictadura, censurados por la radio y la televisión sobreviven a un intenso periodo que los lleva por los escenarios de Chile, Perú y Colombia."
+      "overview": "Años 80. Los Prisioneros es una banda de rock liderada por el carismático Jorge. Perseguidos por los militares en plena dictadura, censurados por la radio y la televisión sobreviven a un intenso periodo que los lleva por los escenarios de Chile, Perú y Colombia.",
+      "servers": 4
     },
     {
       "id": 88881,
@@ -229,17 +302,15 @@
       "rating": 2,
       "poster": "https://image.tmdb.org/t/p/w500/ehKPTZpTIa9Dk3wZMI5Vs837lwx.jpg",
       "backdrop": "",
-      "overview": "Caco Vidal es viudo y padre de tres hijos que se enfocó en su negocio de comunicaciones hasta que descubre que tiene una enfermedad terminal. Esta situación cambia su vida y prepara a sus hijos para que sean huérfanos."
-    },
-    {
-      "id": 18854,
-      "type": "tv",
-      "title": "El señor de la Querencia",
-      "year": "2008",
-      "rating": 3.2,
-      "poster": "https://image.tmdb.org/t/p/w500/w6s3Q36UzeTbPwzcqBiHltiCatz.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/98m7PWfLh9tuGLI85NO5129hbkn.jpg",
-      "overview": "La llegada de Manuel Pradenas, un hombre sensible y revolucionario, traera cambios a la Querencia en el Chile de 1920. Cuestionando el status quo generado por Jose Luis Echeñique, el patron del lugar, quien justifica sus actos como un designio divino. Un vínculo de sangre marcará el camino de ambos "
+      "overview": "Caco Vidal es viudo y padre de tres hijos que se enfocó en su negocio de comunicaciones hasta que descubre que tiene una enfermedad terminal. Esta situación cambia su vida y prepara a sus hijos para que sean huérfanos.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV9OzuGOMqovVBq0KaS9Xr31",
+          "title": "Amar a morir (2019)",
+          "channel": "Teleseries y series TVN",
+          "first": "XmdZpz4hk8o"
+        }
+      ]
     },
     {
       "id": 34301,
@@ -249,47 +320,15 @@
       "rating": 0,
       "poster": "https://image.tmdb.org/t/p/w500/ksAtsUnsSiIftgcTzGWuTWaM2Yi.jpg",
       "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 63594,
-      "type": "tv",
-      "title": "Sitiados",
-      "year": "2015",
-      "rating": 4.3,
-      "poster": "https://image.tmdb.org/t/p/w500/jB8z0K31jhW9PhOCpT8u7RhgtPQ.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/kWBJVCUSXF9gVcEIV5mxYkJyA1T.jpg",
-      "overview": "Serie basada en los acontecimientos acaecidos durante el gran alzamiento indígena de 1598 en el entonces Reino de Chile, liderado por el caudillo militar mapuche Pelantaro, que comienza el sitio y destrucción de los poblados españoles al sur del Río Biobío. Específicamente, narra los sucesos ocurrid"
-    },
-    {
-      "id": 56733,
-      "type": "tv",
-      "title": "Prófugos",
-      "year": "2011",
-      "rating": 5.7,
-      "poster": "https://image.tmdb.org/t/p/w500/qS5LiIab40soDhO2s8IrklVaiuP.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/4BEYI40wkE1VNh512l9ytoIaO2S.jpg",
-      "overview": "Vicente Ferragut, Tegui González, Oscar Salamanca y Mario Moreno son contratados para transportar un cargamento de droga, que deberán llevar por tierra desde la frontera de Bolivia hasta el puerto de Valparaíso. El viaje se desarrolla entre rencores y profunda desconfianza entre los maleantes. Cuand"
-    },
-    {
-      "id": 67718,
-      "type": "tv",
-      "title": "Bala Loca",
-      "year": "2016",
-      "rating": 6,
-      "poster": "https://image.tmdb.org/t/p/w500/jQ80dubBfe9B13VAba6yQJAxJf5.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/vkxCkmz7cdayDFKkFUwkx1xKmlZ.jpg",
-      "overview": "Mauro Murillo es un periodista de investigaciones con un sitio web sobre corrupción en Chile se topa con una primicia cuando investiga la muerte sospechosa de una colega."
-    },
-    {
-      "id": 98522,
-      "type": "tv",
-      "title": "Inés del alma mía",
-      "year": "2020",
-      "rating": 6.2,
-      "poster": "https://image.tmdb.org/t/p/w500/q3lUWZSxNo7TWNxHwqHs0PQTkGA.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/AS5jwH6GUr5kAERstYcJU9gXqz.jpg",
-      "overview": "Inés Suárez, una joven y humilde extremeña se embarca hacia el Nuevo Mundo para buscar a su marido, extraviado con sus sueños de gloria al otro lado del Atlántico. Allí, Inés no encuentra a su esposo, pero sí un amor apasionado: el de Pedro de Valdivia, maese de campo de Francisco Pizarro."
+      "overview": "",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV-nLLifBsXzUf2lQvTVHul0",
+          "title": "Martín Rivas (2010)",
+          "channel": "Teleseries y series TVN",
+          "first": "HwcMp8F_e0o"
+        }
+      ]
     },
     {
       "id": 197190,
@@ -299,7 +338,8 @@
       "rating": 6.4,
       "poster": "https://image.tmdb.org/t/p/w500/cLEF0d66x6UC9tJ5KYI8OlEU4DR.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/e47hkgnEGOGA0n4TRSf67T2QaTH.jpg",
-      "overview": "En medio de una tormenta mediática, una mujer lidera la búsqueda de su hermana desaparecida en una exclusiva comunidad de Chile. Inspirada en un caso real."
+      "overview": "En medio de una tormenta mediática, una mujer lidera la búsqueda de su hermana desaparecida en una exclusiva comunidad de Chile. Inspirada en un caso real.",
+      "servers": 2
     },
     {
       "id": 241480,
@@ -309,17 +349,8 @@
       "rating": 7.8,
       "poster": "https://image.tmdb.org/t/p/w500/dKFSCimy2Lfqmh9bqXskzzLZrSC.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/eBbBKFHSE5pmLZTEDLaH6aFkglr.jpg",
-      "overview": "El skater Kevin y su banda logran el mayor robo en la historia de Chile, pero el amor y las redes sociales podrían arruinarlo todo. Inspirada en hechos reales."
-    },
-    {
-      "id": 98815,
-      "type": "tv",
-      "title": "La vida es una lotería",
-      "year": "2002",
-      "rating": 5,
-      "poster": "https://image.tmdb.org/t/p/w500/9H9ToKFGPlG97pW3t0kNFNZ31vc.jpg",
-      "backdrop": "",
-      "overview": "La suerte de algunos y la maldición de otros. Conoce el azar de tu destino en el juego de la vida."
+      "overview": "El skater Kevin y su banda logran el mayor robo en la historia de Chile, pero el amor y las redes sociales podrían arruinarlo todo. Inspirada en hechos reales.",
+      "servers": 5
     },
     {
       "id": 69921,
@@ -329,17 +360,8 @@
       "rating": 7.5,
       "poster": "https://image.tmdb.org/t/p/w500/qeUEJkvPis5FHWsZaVb7DrMfyYs.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/cMnIJZ0thf6IPAWYffbnjD07tsE.jpg",
-      "overview": ""
-    },
-    {
-      "id": 97741,
-      "type": "tv",
-      "title": "Corazón rebelde",
-      "year": "2009",
-      "rating": 4.3,
-      "poster": "https://image.tmdb.org/t/p/w500/6nFxh3TAKDhXHrHd5bXKLZnL0kc.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/f0HiFSiDNCK4ESL7SwERBUBCfQa.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 1
     },
     {
       "id": 41843,
@@ -349,37 +371,15 @@
       "rating": 2,
       "poster": "https://image.tmdb.org/t/p/w500/547Q0Y8nYvIR7WkM0vXcrvQ5SPz.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/46qiZFUzPB3eZA6OXjLK6Tq0RJi.jpg",
-      "overview": ""
-    },
-    {
-      "id": 70861,
-      "type": "tv",
-      "title": "Brujas",
-      "year": "2005",
-      "rating": 4.7,
-      "poster": "https://image.tmdb.org/t/p/w500/p8ZY4zxgqMm1EIekApyc1VdTdVo.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/pn36rbnaArX7y0O9Zac8gfQz0aJ.jpg",
-      "overview": "Una mujer investigará quién entre un grupo de 5 mujeres fue la responsable de la muerte de su esposo trás una 'noche de pasión'. Para ello contrará a Dante, un seductor jugador de poker, quién seducira a las sospechas y llegará al fondo del misterio."
-    },
-    {
-      "id": 290590,
-      "type": "tv",
-      "title": "Fortunato",
-      "year": "2007",
-      "rating": 0,
-      "poster": "https://placehold.co/500x750/1e293b/64748b?text=Sin+Imagen",
-      "backdrop": "",
-      "overview": "Fortunato \"Nato\" Cuevas es un hombre humilde y esforzado que trabaja por un lado como pescador, y por el otro como dueño de una \"picada\" que, un día vive el golpe de suerte de su vida al salvar la vida a doña Aurora Valdivieso, una mujer multimillonaria que estuvo a punto de morir ahogada en el fond"
-    },
-    {
-      "id": 84217,
-      "type": "tv",
-      "title": "Mujeres de lujo",
-      "year": "2010",
-      "rating": 1.3,
-      "poster": "https://image.tmdb.org/t/p/w500/z7onz8ccOhVsuC4bsW79zqq4x0D.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/u0BIvyq8PCR2zsrsPga1STbQBcg.jpg",
-      "overview": "La trama cuenta las vivencias de un grupo de acompañantes de alto nivel que están en el mundo de la prostitución; Es una historia que narra como se vive el amor desde el mundo de la prostitución."
+      "overview": "",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8vajSNTc4b5JYmaD49dRdE",
+          "title": "Aquí mando yo (2011)",
+          "channel": "Teleseries y series TVN",
+          "first": "VvnIpN556Yw"
+        }
+      ]
     },
     {
       "id": 97742,
@@ -389,57 +389,15 @@
       "rating": 2,
       "poster": "https://image.tmdb.org/t/p/w500/pi1bcvgAL2Z42PAyf2i7ZhRnXYl.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/5usqQkDJfzY79QcXO3y9tAIK15p.jpg",
-      "overview": ""
-    },
-    {
-      "id": 107215,
-      "type": "tv",
-      "title": "Pobre Gallo",
-      "year": "2016",
-      "rating": 2,
-      "poster": "https://image.tmdb.org/t/p/w500/36RpDB50lwznAMf7Ac8hLMipCrt.jpg",
-      "backdrop": "",
-      "overview": "Nicolás es un exitoso empresario quien de un día para otro sufre un fulminante ataque de vértigo por el estrés de la trabajólica vida que lleva. Por esta razón se traslada a pasar una temporada con sus hijos al fundo de su padre en Yerbas Buenas."
-    },
-    {
-      "id": 93077,
-      "type": "tv",
-      "title": "Yo soy Lorenzo",
-      "year": "2019",
-      "rating": 2,
-      "poster": "https://image.tmdb.org/t/p/w500/xgpaRZiN4BxffW7j64eYmhzAbT4.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/zudLmOI206sMw5w8S6AUycYhDxG.jpg",
-      "overview": "Lorenzo le pide Carlos, su chofer, intercambiar identidades antes de llegar al pueblo de Vista Hermosa, pero todo se complica cuando este úlimo se enamora de Laura."
-    },
-    {
-      "id": 92554,
-      "type": "tv",
-      "title": "Volver a Amar",
-      "year": "2014",
-      "rating": 5,
-      "poster": "https://image.tmdb.org/t/p/w500/yZ1d7M2RSU8l49JiOeSPqK1slhb.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/rYgYZwiEl7YWLWccNrkbfhGqKft.jpg",
-      "overview": "Volver Amar  es la historia de 3 mujeres que a pesar de estar bordeando los 40 y diciendo adiós a sus 30, quieren volver a amar, muy a pesar de haber tenido muchas desilusiones y tropiezos en cuanto a relaciones amorosas se refiere."
-    },
-    {
-      "id": 51788,
-      "type": "tv",
-      "title": "Amanda",
-      "year": "2016",
-      "rating": 0,
-      "poster": "https://placehold.co/500x750/1e293b/64748b?text=Sin+Imagen",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 83577,
-      "type": "tv",
-      "title": "Isla Paraíso",
-      "year": "2018",
-      "rating": 4.2,
-      "poster": "https://image.tmdb.org/t/p/w500/n1EXjvuYwOIYCYvllZhX4Uk4xPm.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/ylaL4BnrYpxBjw5TU9jEVs05QXA.jpg",
-      "overview": "Un desembarco femenino a Isla Paraíso, una isla donde se viven hombres,  generará la oposición del poderoso hombre y dueño de gran parte de las tierras, Óscar León, quien no verá con buenos ojos que su pueblo se llene de 'féminas'."
+      "overview": "",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV9SCVZiUCcNnDB2hYgHO58o",
+          "title": "Dama y obrero (2012)",
+          "channel": "Teleseries y series TVN",
+          "first": "4oHhcj61IBQ"
+        }
+      ]
     },
     {
       "id": 82567,
@@ -449,7 +407,15 @@
       "rating": 7,
       "poster": "https://image.tmdb.org/t/p/w500/zuBNi7p2oQvENhZEAfc4Efkm7eH.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/gHK01JsuugehFccHr3nLEzFv1Ki.jpg",
-      "overview": "La vida de cuatro amigos de toda la vida cambia drásticamente tras una despedida de soltero."
+      "overview": "La vida de cuatro amigos de toda la vida cambia drásticamente tras una despedida de soltero.",
+      "yt": [
+        {
+          "list": "PLnDONcPxnlq07yIy7mOQY4AL7t95ZmeYR",
+          "title": "Pacto de Sangre | Momentos",
+          "channel": "El 13",
+          "first": "G_vs1ollk_8"
+        }
+      ]
     },
     {
       "id": 106123,
@@ -459,7 +425,15 @@
       "rating": 6,
       "poster": "https://image.tmdb.org/t/p/w500/uuMF6Toj9DWOoCBHjQbSbH3HUCQ.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/oLOWGMwc4yJGqCoKQiQJOSQp23u.jpg",
-      "overview": "Tras perder todo, los hermanos Molina cambian sus vidas y forman la banda de cuatreros que los oligarcas llaman Los Pincheira."
+      "overview": "Tras perder todo, los hermanos Molina cambian sus vidas y forman la banda de cuatreros que los oligarcas llaman Los Pincheira.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8hIDQ9qV-gqWq2mMGRCToE",
+          "title": "Los Pincheira (2004) | Capítulos Completos",
+          "channel": "Teleseries y series TVN",
+          "first": "qGIB3km3YLI"
+        }
+      ]
     },
     {
       "id": 101325,
@@ -469,7 +443,21 @@
       "rating": 6,
       "poster": "https://image.tmdb.org/t/p/w500/xwKqXLDWtuZ40fqsIEI5BMUxFhR.jpg",
       "backdrop": "",
-      "overview": "En un pequeño pueblo costero llamado Sucupira, cuya principal actividad es la pesca. Su gente aún cree en una antigua leyenda que narra la historia de una mujer que emerge de las profundidades del mar a conquistar hombres y a arrastrarlos hacia su mundo. Los que han sobrevivido para contar la histor"
+      "overview": "En un pequeño pueblo costero llamado Sucupira, cuya principal actividad es la pesca. Su gente aún cree en una antigua leyenda que narra la historia de una mujer que emerge de las profundidades del mar a conquistar hombres y a arrastrarlos hacia su mundo. Los que han sobrevivido para contar la histor",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8rLgbclm9z5k9euQ2J16kV",
+          "title": "Sucupira (1996) | Capítulos Completos",
+          "channel": "Teleseries y series TVN",
+          "first": "9ASdGG52-aI"
+        },
+        {
+          "list": "PLd5MCGg25bV_K2DIC7KtIYAC8sToeJ4OJ",
+          "title": "Sucupira \"La comedia\" (1998) | Capítulos completos",
+          "channel": "Teleseries y series TVN",
+          "first": "neZWnSTugHE"
+        }
+      ]
     },
     {
       "id": 98191,
@@ -479,17 +467,15 @@
       "rating": 4.5,
       "poster": "https://image.tmdb.org/t/p/w500/bykDunjyvm59H6GlZpQtfZjtUPJ.jpg",
       "backdrop": "",
-      "overview": "Cristián está enamorado de la bella pascuense Vaitea. Han decidido contraer matrimonio, pero entre ellos se interponen diversos y ajenos intereses."
-    },
-    {
-      "id": 106972,
-      "type": "tv",
-      "title": "Romané",
-      "year": "2000",
-      "rating": 6.7,
-      "poster": "https://image.tmdb.org/t/p/w500/hX8l4RBqTp97mOSUQe0dkWVIUSM.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7Iu69THqdJ4CKJo9JpZsCbtvIq9.jpg",
-      "overview": "Una caravana de gitanos llega a Mejillones, Chile a festejar el matrimonio de su rey, sin imaginar que la repentina llegada de la hija de éste después de dos décadas, revivirá un tormentoso pasado."
+      "overview": "Cristián está enamorado de la bella pascuense Vaitea. Han decidido contraer matrimonio, pero entre ellos se interponen diversos y ajenos intereses.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8P-BrFhofv0kmsT2kueiRY",
+          "title": "Iorana (1998) | Capítulos completos",
+          "channel": "Teleseries y series TVN",
+          "first": "NvUXXy0FfmU"
+        }
+      ]
     },
     {
       "id": 104734,
@@ -499,7 +485,15 @@
       "rating": 2,
       "poster": "https://image.tmdb.org/t/p/w500/k213NozbH4Yb4tJIRZNnlRcUqFo.jpg",
       "backdrop": "",
-      "overview": "Una apasionada historia donde el amor no respeta tradiciones y suele quebrar con los esquemas de la época, todo ello enmarcado en la salitrera chilena Pampa Ilusión."
+      "overview": "Una apasionada historia donde el amor no respeta tradiciones y suele quebrar con los esquemas de la época, todo ello enmarcado en la salitrera chilena Pampa Ilusión.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV_j160D45WcqZJEGu7CmoHu",
+          "title": "Pampa ilusión (2001) | Capítulos Completos",
+          "channel": "Teleseries y series TVN",
+          "first": "ejXZIJ7S4nI"
+        }
+      ]
     },
     {
       "id": 99471,
@@ -509,7 +503,15 @@
       "rating": 6,
       "poster": "https://image.tmdb.org/t/p/w500/mvrbAnuGubSsv6UGENJyO5ZEpPy.jpg",
       "backdrop": "",
-      "overview": "Una familia circense debe afrontar una nueva temporada de funciones en San Antonio bajo el riesgo de que esta sea su última gira."
+      "overview": "Una familia circense debe afrontar una nueva temporada de funciones en San Antonio bajo el riesgo de que esta sea su última gira.",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV-DqV2_-EHyV7NjoF0MHZPX",
+          "title": "El circo de las Montini (2002) | Capítulos Completos",
+          "channel": "Teleseries y series TVN",
+          "first": "v06t3sGzjeA"
+        }
+      ]
     },
     {
       "id": 33149,
@@ -519,17 +521,15 @@
       "rating": 5,
       "poster": "https://image.tmdb.org/t/p/w500/oniMFsdhrg7549SKjW1doPE4JNR.jpg",
       "backdrop": "",
-      "overview": "Producto de un vil atropello sufrido en el pasado, Violeta Salazar se ha jurado a si misma vengarse de la familia Callassis y de toda su descendencia"
-    },
-    {
-      "id": 332822,
-      "type": "tv",
-      "title": "Destinos cruzados",
-      "year": "2004",
-      "rating": 0,
-      "poster": "https://image.tmdb.org/t/p/w500/tRtxpJc2RvXLGc5EXIIGnlF42Ws.jpg",
-      "backdrop": "",
-      "overview": ""
+      "overview": "Producto de un vil atropello sufrido en el pasado, Violeta Salazar se ha jurado a si misma vengarse de la familia Callassis y de toda su descendencia",
+      "yt": [
+        {
+          "list": "PLd5MCGg25bV8nKg1V5DmY2klPEsTHfcLI",
+          "title": "Purasangre (2002) | Capítulos Completos",
+          "channel": "Teleseries y series TVN",
+          "first": "SFGyc9wsTkk"
+        }
+      ]
     },
     {
       "id": 210411,
@@ -539,30 +539,11 @@
       "rating": 7.8,
       "poster": "https://image.tmdb.org/t/p/w500/mVmSSrW4djhwf5Eo3qS6xSJNog3.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/mREWbBb4kr63wD7LJsYqSepgGb4.jpg",
-      "overview": "Tomás Ruíz, un joven de 26 años con síndrome de Down fue encontrado junto al cadáver de Orlando Mandujano. Mariana, comisaria de la policía de investigaciones, pondrá en peligro su propia vida en búsqueda de la verdad."
+      "overview": "Tomás Ruíz, un joven de 26 años con síndrome de Down fue encontrado junto al cadáver de Orlando Mandujano. Mariana, comisaria de la policía de investigaciones, pondrá en peligro su propia vida en búsqueda de la verdad.",
+      "servers": 3
     }
   ],
   "peliculas": [
-    {
-      "id": 12086,
-      "type": "movie",
-      "title": "Machuca",
-      "year": "2004",
-      "rating": 7.7,
-      "poster": "https://image.tmdb.org/t/p/w500/oBDAEhTLWwflrqRZMsrOisqkVSb.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/xPt9uunKOZ8EC2xukQbkSDh45oq.jpg",
-      "overview": "Santiago de Chile, 1973. Gonzalo Infante y Pedro Machuca, dos niños de once años, viven en dos mundos diametralmente opuestos: el primero en un barrio residencial, y el segundo en un poblado ilegal a pocas manzanas de distancia. El director de un colegio religioso privado, el padre McEnroe, es un id"
-    },
-    {
-      "id": 110398,
-      "type": "movie",
-      "title": "No",
-      "year": "2012",
-      "rating": 7.2,
-      "poster": "https://image.tmdb.org/t/p/w500/Aqp4PH27zI4Uqqag41y2gXwmXma.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/92MsvjpGoaiujgg6prkwmFvggoP.jpg",
-      "overview": "En 1988, la presión aumenta en contra del dictador chileno Augusto Pinochet, obligándolo a realizar un referéndum por su presidencia. El país votará si Pinochet continua durante ocho años más en el poder. Los líderes del movimiento del \"NO\" reclutan a René Saavedra, un joven publicista, para difundi"
-    },
     {
       "id": 429191,
       "type": "movie",
@@ -571,7 +552,8 @@
       "rating": 7,
       "poster": "https://image.tmdb.org/t/p/w500/uIlx33SKoJh3Ne0QmQDi9mlcjGx.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/hnDmX7PwpnrNrAQvYQgYemkS9Fx.jpg",
-      "overview": "Marina (Daniela Vega) una joven camarera aspirante a cantante y Orlando (Francisco Reyes), veinte años mayor, planean un futuro juntos. Tras una noche de fiesta, Marina lo lleva a urgencias, pero él muere al llegar al hospital. Ella debe entonces enfrentar las sospechas por su muerte. Su condición d"
+      "overview": "Marina (Daniela Vega) una joven camarera aspirante a cantante y Orlando (Francisco Reyes), veinte años mayor, planean un futuro juntos. Tras una noche de fiesta, Marina lo lleva a urgencias, pero él muere al llegar al hospital. Ella debe entonces enfrentar las sospechas por su muerte. Su condición d",
+      "servers": 11
     },
     {
       "id": 319995,
@@ -581,7 +563,8 @@
       "rating": 6.9,
       "poster": "https://image.tmdb.org/t/p/w500/2I3Jorx96I4dRevKlKDMkCFhQ1R.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/xfLMCz9I9HMFMUwKwPYKipv33in.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 9
     },
     {
       "id": 160068,
@@ -591,27 +574,8 @@
       "rating": 6.6,
       "poster": "https://image.tmdb.org/t/p/w500/mCEhoJkqLPKueGPqNLTYEG1pWHY.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/xqc5l6CCOBqni0gT9J2nvodhCD.jpg",
-      "overview": "Gloria tiene 58 años y está sola en la vida. Para compensar el vacío, llena sus días de actividades y por las noches busca el amor en el mundo de las fiestas para solteros adultos, donde solo consigue perderse en una serie de aventuras sin sentido. Esta frágil felicidad en la que vive se altera cuan"
-    },
-    {
-      "id": 33774,
-      "type": "movie",
-      "title": "Tony Manero",
-      "year": "2008",
-      "rating": 6.3,
-      "poster": "https://image.tmdb.org/t/p/w500/toZ8YwAmd1x0iyh1KJb3uvzRwPG.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/zS4As7ntcbxb4Dy5ay3Mz4GgoIG.jpg",
-      "overview": ""
-    },
-    {
-      "id": 56815,
-      "type": "movie",
-      "title": "Post Mortem",
-      "year": "2010",
-      "rating": 6,
-      "poster": "https://image.tmdb.org/t/p/w500/c1itbBnAbtRS1zzN2OHfVKejz0E.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/qjKHmLokI14sLVMJaTtqZ4TtYSI.jpg",
-      "overview": ""
+      "overview": "Gloria tiene 58 años y está sola en la vida. Para compensar el vacío, llena sus días de actividades y por las noches busca el amor en el mundo de las fiestas para solteros adultos, donde solo consigue perderse en una serie de aventuras sin sentido. Esta frágil felicidad en la que vive se altera cuan",
+      "servers": 12
     },
     {
       "id": 351454,
@@ -621,7 +585,8 @@
       "rating": 6.3,
       "poster": "https://image.tmdb.org/t/p/w500/d9TxIn86o1ABEw9cSrxxObVHUum.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/xZmLlXi7WYE42He0TWsK0891ACM.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 8
     },
     {
       "id": 991708,
@@ -631,7 +596,8 @@
       "rating": 6.1,
       "poster": "https://image.tmdb.org/t/p/w500/piG2K4yaa1CO6flhWQPSVkgPvhH.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/f0oDdvbzZ1qjfggotV1aniJmd6b.jpg",
-      "overview": "Augusto Pinochet es un vampiro que desea la muerte, pero los buitres que lo rodean no lo dejarán ir sin un último bocado."
+      "overview": "Augusto Pinochet es un vampiro que desea la muerte, pero los buitres que lo rodean no lo dejarán ir sin un último bocado.",
+      "servers": 12
     },
     {
       "id": 1032760,
@@ -641,7 +607,8 @@
       "rating": 8,
       "poster": "https://image.tmdb.org/t/p/w500/vEptDugaobbwXmAWhv766bI6YTO.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/d0WXOA6pQanoDBc60WtEaF5oM5R.jpg",
-      "overview": "Augusto y Paulina llevan juntos 25 años. A él le diagnosticaron Alzheimer hace ocho años. Ambos temen el día en que deje de reconocerla."
+      "overview": "Augusto y Paulina llevan juntos 25 años. A él le diagnosticaron Alzheimer hace ocho años. Ambos temen el día en que deje de reconocerla.",
+      "servers": 7
     },
     {
       "id": 989589,
@@ -651,17 +618,8 @@
       "rating": 6.7,
       "poster": "https://image.tmdb.org/t/p/w500/qT4pDQnsPRxt5P4DZkIkjSYVZrs.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/kPFmVuiLK2Nkalhohsj3t7ph4aI.jpg",
-      "overview": "Chile, principios del siglo XX. José Menéndez, un rico terrateniente, contrata a tres jinetes para que delimiten el perímetro de su extensa propiedad y abran una ruta hacia el océano Atlántico a través de la vasta Patagonia."
-    },
-    {
-      "id": 653756,
-      "type": "movie",
-      "title": "El agente topo",
-      "year": "2020",
-      "rating": 7.8,
-      "poster": "https://image.tmdb.org/t/p/w500/eMqU1NkCKTceTwN6t7bQy75D7zb.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/bah2TMqbDs5DAvJclOd8DqhkuYO.jpg",
-      "overview": "Rómulo, un investigador privado, recibe de parte de una clienta el encargo de investigar sobre el estado de salud de su madre, quien vive en un asilo. Para llevar a cabo la misión contrata a Sergio, un hombre viudo de 83 años quien debe internarse en el asilo como un agente topo. Allí, Sergio lucha "
+      "overview": "Chile, principios del siglo XX. José Menéndez, un rico terrateniente, contrata a tres jinetes para que delimiten el perímetro de su extensa propiedad y abran una ruta hacia el océano Atlántico a través de la vasta Patagonia.",
+      "servers": 8
     },
     {
       "id": 540709,
@@ -671,67 +629,8 @@
       "rating": 6.7,
       "poster": "https://image.tmdb.org/t/p/w500/z7Yte6x8yeEYHtC3Y4vP2gm8wBb.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/ks7PNbmkcxBoSLxF4bBbqiEofHP.jpg",
-      "overview": "Ema, una joven bailarina, decide separarse de Gastón luego de entregar a Polo en adopción, el hijo que ambos habían adoptado y que fueron incapaces de criar. Desesperada por las calles del puerto de Valparaíso, Ema busca nuevos amores para aplacar la culpa. Sin embargo, ese no es su único objetivo, "
-    },
-    {
-      "id": 84354,
-      "type": "movie",
-      "title": "Joven y alocada",
-      "year": "2012",
-      "rating": 6.2,
-      "poster": "https://image.tmdb.org/t/p/w500/gv51QIOoTftngJK9MUaP6pEHIyO.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7kJ92zLRs7ZJDQU1tVdvQGMfksb.jpg",
-      "overview": "Daniela, criada en el pecho de una familia Evangélica estricta y recientemente desenmascarada como un fornicator por sus padres impresionados, se esfuerza por encontrar su propio camino a la armonía espiritual."
-    },
-    {
-      "id": 80717,
-      "type": "movie",
-      "title": "Violeta se fue a los cielos",
-      "year": "2011",
-      "rating": 6.8,
-      "poster": "https://image.tmdb.org/t/p/w500/70kOOabkwkAV0rn2syi7hPUTstZ.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/5nE5XAkyH7bLQzgC4rcilQVOHvP.jpg",
-      "overview": "Violeta Parra es visitada por los recuerdos de los hombres que dieron forma a su vida. Poco a poco descubrirá sus secretos, miedos, frustraciones y alegrías."
-    },
-    {
-      "id": 20222,
-      "type": "movie",
-      "title": "Sexo con amor",
-      "year": "2003",
-      "rating": 6.5,
-      "poster": "https://image.tmdb.org/t/p/w500/s0pmacLZ9GOdHJqBv5sCltqwmqL.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/bYkgJUGlkDrKzCrN6Jrd1qVx9aB.jpg",
-      "overview": ""
-    },
-    {
-      "id": 86126,
-      "type": "movie",
-      "title": "Taxi para 3",
-      "year": "2001",
-      "rating": 6.5,
-      "poster": "https://image.tmdb.org/t/p/w500/1mIk07uUalwivNQ6FOvmaMmHQhg.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/nhd9X3yNBL0PDfRC5nKSFhrY1Pm.jpg",
-      "overview": "Ulises es un taxista que es secuestrado por Chavelo y Coto, quienes lo obligan a elegir entre ir al volante del taxi mientras ellos cometen sus asaltos o ir en el portamaletas, usando la frase \"Volante o maleta\". De este modo Ulises se vuelve un miembro mas de la banda. Con asaltos fallidos y otros "
-    },
-    {
-      "id": 220672,
-      "type": "movie",
-      "title": "Sub terra",
-      "year": "2003",
-      "rating": 6.3,
-      "poster": "https://image.tmdb.org/t/p/w500/huU8ssHZ0csFiEtRuk4Ky7vdmE6.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7PEgfDe5bKz61PG4WVj0t3dkZaS.jpg",
-      "overview": ""
-    },
-    {
-      "id": 37010,
-      "type": "movie",
-      "title": "Promedio rojo",
-      "year": "2004",
-      "rating": 4.8,
-      "poster": "https://image.tmdb.org/t/p/w500/5fyRPs70hZfDImj4tYjhGawQt0C.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/afyBqqCv4mQzxm9Za0imuPuiy4V.jpg",
-      "overview": ""
+      "overview": "Ema, una joven bailarina, decide separarse de Gastón luego de entregar a Polo en adopción, el hijo que ambos habían adoptado y que fueron incapaces de criar. Desesperada por las calles del puerto de Valparaíso, Ema busca nuevos amores para aplacar la culpa. Sin embargo, ese no es su único objetivo, ",
+      "servers": 9
     },
     {
       "id": 26481,
@@ -741,7 +640,8 @@
       "rating": 5.4,
       "poster": "https://image.tmdb.org/t/p/w500/55dSTVl28buCnjaSorzDoJbkZf1.jpg",
       "backdrop": "",
-      "overview": ""
+      "overview": "",
+      "servers": 3
     },
     {
       "id": 37709,
@@ -751,7 +651,8 @@
       "rating": 5.3,
       "poster": "https://image.tmdb.org/t/p/w500/f7UWxImO5LDBDWy0lOC2gAl5RFa.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/1ZZj5v1yUaEmvAUSCsbds17f7rM.jpg",
-      "overview": "Maco Gutierrez, un obsesivo artista marcial, trabaja como guardia de seguridad en un topless para financiar el tratamiento de su hermano menor que se encuentra postrado en un hospital psiquiátrico. Por azar, Maco se topa una noche con un robo a mano armada el cual detiene con éxito. Al día siguiente"
+      "overview": "Maco Gutierrez, un obsesivo artista marcial, trabaja como guardia de seguridad en un topless para financiar el tratamiento de su hermano menor que se encuentra postrado en un hospital psiquiátrico. Por azar, Maco se topa una noche con un robo a mano armada el cual detiene con éxito. Al día siguiente",
+      "servers": 3
     },
     {
       "id": 82393,
@@ -761,27 +662,8 @@
       "rating": 5.5,
       "poster": "https://image.tmdb.org/t/p/w500/7WeUeJeFmdXvQEjN8OS3g2GQJWi.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/4fwMNevzpQ8b5zJU8TSGcD94T5b.jpg",
-      "overview": ""
-    },
-    {
-      "id": 309268,
-      "type": "movie",
-      "title": "Fuerzas Especiales",
-      "year": "2014",
-      "rating": 4.8,
-      "poster": "https://image.tmdb.org/t/p/w500/rBngIuVAgP0MOzSLlBvf6OWOrkZ.jpg",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 132706,
-      "type": "movie",
-      "title": "Stefan v/s Kramer",
-      "year": "2012",
-      "rating": 6,
-      "poster": "https://image.tmdb.org/t/p/w500/lAtssrQbtPVT0yjAK93RKf3vxoL.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/lpi56D8fYBmtpAdxm9m5WJQFkkF.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 3
     },
     {
       "id": 62910,
@@ -791,67 +673,8 @@
       "rating": 5.4,
       "poster": "https://image.tmdb.org/t/p/w500/8O2wDQD43vKldhYIuMXjMQcVQYR.jpg",
       "backdrop": "",
-      "overview": "Cuenta los problemas de un joven de 29 años que ve cómo se queda sin trabajo y sin novia. Meses después vuelve para reconciliarse con ella, pero se encuentra con que la chica ya tiene nueva pareja."
-    },
-    {
-      "id": 83371,
-      "type": "movie",
-      "title": "Que pena tu boda",
-      "year": "2011",
-      "rating": 4.4,
-      "poster": "https://image.tmdb.org/t/p/w500/aVotZIKlxW0ur03QTscg2RhFfTU.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/scDMAWujZ1iJT7sp5BWqoz5GL3e.jpg",
-      "overview": "Retoma la relación de Javier y Ángela, ella acaba de descubrir que está embarazada. La noticia los lleva a concretar sus planes de matrimonio, pero las cosas se complican cuando aparece Lucía, una joven que llega a alterar la estabilidad de la pareja."
-    },
-    {
-      "id": 209941,
-      "type": "movie",
-      "title": "Qué pena tu familia",
-      "year": "2012",
-      "rating": 4.4,
-      "poster": "https://image.tmdb.org/t/p/w500/vnY9AozliB5dwdSntO7UTpgrokx.jpg",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 37014,
-      "type": "movie",
-      "title": "El chacotero sentimental",
-      "year": "1999",
-      "rating": 6.6,
-      "poster": "https://image.tmdb.org/t/p/w500/616hprFUDgeSEl4YaCm9SCAzOQX.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/bTByGkEkrfDUTY9cwEcEC7R6jLB.jpg",
-      "overview": ""
-    },
-    {
-      "id": 49688,
-      "type": "movie",
-      "title": "Johnny cien pesos",
-      "year": "1993",
-      "rating": 6,
-      "poster": "https://image.tmdb.org/t/p/w500/nLvLJ0HmRvhQtJ2MD7Edjew2Pcf.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/1o44Xe6aFfajXVt3Wv0w5Q6K31c.jpg",
-      "overview": "Johnny Cien Pesos es la crónica de una violenta transición desde el exceso adolescente hacia el misterio de la vida adulta. Y ese filón es para Graef-Marino -coautor del guión junto a Gerardo Cáceres- la mejor metáfora para hablarnos del Chile post Pinochet. El incidente nos lleva a las redes del im"
-    },
-    {
-      "id": 114092,
-      "type": "movie",
-      "title": "La Frontera",
-      "year": "1991",
-      "rating": 6.1,
-      "poster": "https://image.tmdb.org/t/p/w500/7Wh2MhzjswMzliPq7lWkOG8JZ65.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/pcdWTaPV3Uhm8mrGweJXYDSjWeK.jpg",
-      "overview": ""
-    },
-    {
-      "id": 101604,
-      "type": "movie",
-      "title": "Sangre eterna",
-      "year": "2002",
-      "rating": 5.2,
-      "poster": "https://image.tmdb.org/t/p/w500/oX5pBME2LlpU6zlHnU9qcj0FFkb.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/8ICeVZZIRJBqhjJtp5tX5hIrKLG.jpg",
-      "overview": "Carmilla es una estudiante de periodismo que conoce a 'M' en la clase de filosofía. Este la introduce a Dahmer, un misterioso personaje que realiza rituales vampíricos. Pero su proyecto es macabro y 'M' intentará detenerlo."
+      "overview": "Cuenta los problemas de un joven de 29 años que ve cómo se queda sin trabajo y sin novia. Meses después vuelve para reconciliarse con ella, pero se encuentra con que la chica ya tiene nueva pareja.",
+      "servers": 1
     },
     {
       "id": 596247,
@@ -861,7 +684,8 @@
       "rating": 7.5,
       "poster": "https://image.tmdb.org/t/p/w500/ziao1KWNkw4X5qL7rWCSJ6lyjX9.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/gGwA6YErMjiROavfGyxdciQnlTA.jpg",
-      "overview": "La noche  del 29 de enero de 1990,  poco antes de  iniciarse la reconstrucción democrática  en  Chile,  medio  centenar  de  presos  políticos  se  fugaron  de  la  cárcel pública  de  Santiago  por  un  túnel  que  24  militantes  del  Frente  Patriótico Manuel Rodríguez  (FPMR)  habían  excavado  "
+      "overview": "La noche  del 29 de enero de 1990,  poco antes de  iniciarse la reconstrucción democrática  en  Chile,  medio  centenar  de  presos  políticos  se  fugaron  de  la  cárcel pública  de  Santiago  por  un  túnel  que  24  militantes  del  Frente  Patriótico Manuel Rodríguez  (FPMR)  habían  excavado  ",
+      "servers": 8
     },
     {
       "id": 698432,
@@ -871,7 +695,8 @@
       "rating": 6.6,
       "poster": "https://image.tmdb.org/t/p/w500/f1yrsJXyMZ306XggQZKMvZCZhYF.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/cUPrCDQt23ZdJ6Mk8kO8cBcPcxw.jpg",
-      "overview": "Memo (Jorge García) fue una estrella de pop adolescente en los años 90. Más de 15 años de reclusión en una isla del sur de Chile lo han transformado en un curioso ejemplar humano y en un momento determinado su vida se verá sacudida por la llegada de inesperados visitantes."
+      "overview": "Memo (Jorge García) fue una estrella de pop adolescente en los años 90. Más de 15 años de reclusión en una isla del sur de Chile lo han transformado en un curioso ejemplar humano y en un momento determinado su vida se verá sacudida por la llegada de inesperados visitantes.",
+      "servers": 8
     },
     {
       "id": 574954,
@@ -881,7 +706,8 @@
       "rating": 7.3,
       "poster": "https://image.tmdb.org/t/p/w500/7y024dVkSZyK0n53sAb5fVy5Cnn.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/ru8Wo0Hu0WRV6UJxrMXvqj3Pnbd.jpg",
-      "overview": "Chile, inmediatamente antes que Allende acepte la presidencia. Jaime es un joven solitario y narcisista que acuchilla a su mejor amigo en un aparente rapto pasional. Condenado a cárcel conoce a El Potro, un hombre mayor y respetado, con el que establece una angosta relación de ‘amor negro’, como le "
+      "overview": "Chile, inmediatamente antes que Allende acepte la presidencia. Jaime es un joven solitario y narcisista que acuchilla a su mejor amigo en un aparente rapto pasional. Condenado a cárcel conoce a El Potro, un hombre mayor y respetado, con el que establece una angosta relación de ‘amor negro’, como le ",
+      "servers": 10
     },
     {
       "id": 651170,
@@ -891,7 +717,8 @@
       "rating": 7.4,
       "poster": "https://image.tmdb.org/t/p/w500/rr79BAaLLt6ElEGQx3IHkEhKiYR.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/pLB0WpANERn96iR1iGgyH9HEkf5.jpg",
-      "overview": "Entre disparos y boleros, florece una apasionada relación entre un travesti solitario y un joven guerrillero durante la dictadura de Pinochet."
+      "overview": "Entre disparos y boleros, florece una apasionada relación entre un travesti solitario y un joven guerrillero durante la dictadura de Pinochet.",
+      "servers": 9
     },
     {
       "id": 27567,
@@ -901,7 +728,8 @@
       "rating": 6.7,
       "poster": "https://image.tmdb.org/t/p/w500/oKPQXzczoFwCIyxMbO5aTU5lGVe.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/aqt3fUGbTlxvHAnsZeWXCwq32Dq.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 4
     },
     {
       "id": 379220,
@@ -911,7 +739,8 @@
       "rating": 5.8,
       "poster": "https://image.tmdb.org/t/p/w500/cISuCIaPdwjJ8YJhBipdslltKl9.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/a88IphyJeF1gnmwAmiDZHHpkS1F.jpg",
-      "overview": "Pía (Paz Bascuñán), es una agobiada mujer moderna de 37 años que vive en el estresado Santiago del 2015. Día a día su jefe, su novio, su hijastro y su mejor amiga la tratan con a alguien irrelevante, siendo incapaz de hacer algo al respecto. Pía tiene un dolor en el pecho que no la deja vivir y un d"
+      "overview": "Pía (Paz Bascuñán), es una agobiada mujer moderna de 37 años que vive en el estresado Santiago del 2015. Día a día su jefe, su novio, su hijastro y su mejor amiga la tratan con a alguien irrelevante, siendo incapaz de hacer algo al respecto. Pía tiene un dolor en el pecho que no la deja vivir y un d",
+      "servers": 6
     },
     {
       "id": 421883,
@@ -921,7 +750,8 @@
       "rating": 6.4,
       "poster": "https://image.tmdb.org/t/p/w500/jvqR71EvySFXJ3gcZakJEjLz3wv.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/pPoQjKw0aGPZBIbeHXgYz0tGPUn.jpg",
-      "overview": "Después de que Tano es arrestado por su participación en un robo en una estación de servicio, es enviado a vivir con su padre en una remota comunidad en Wallmapu, el territorio históricamente habitado por los mapuches. Allí conoce a Cheo, un tímido joven mapuche, que es sujeto de bullying en la escu"
+      "overview": "Después de que Tano es arrestado por su participación en un robo en una estación de servicio, es enviado a vivir con su padre en una remota comunidad en Wallmapu, el territorio históricamente habitado por los mapuches. Allí conoce a Cheo, un tímido joven mapuche, que es sujeto de bullying en la escu",
+      "servers": 1
     },
     {
       "id": 382906,
@@ -931,7 +761,8 @@
       "rating": 5.5,
       "poster": "https://image.tmdb.org/t/p/w500/zsgx02RjFAxGuG9X9KvzxkzFwbk.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/hfFOgjiKPCLD1tAykD5YrBDzcPl.jpg",
-      "overview": ""
+      "overview": "",
+      "servers": 2
     },
     {
       "id": 36999,
@@ -941,17 +772,8 @@
       "rating": 7.7,
       "poster": "https://image.tmdb.org/t/p/w500/8OPMXLAIQGxagKOPkjMz12NK9o7.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/jlUgPbxvLlYZvzerC5zq0VTRL1u.jpg",
-      "overview": "El equipo del mundialmente famoso programa de noticias de televisión 31 Minutos se adentra en el mar hacia una isla misteriosa para rescatar a su amado productor Juanin Juan Harry, quien ha sido adquirido por la coleccionista, Cachirula."
-    },
-    {
-      "id": 38518,
-      "type": "movie",
-      "title": "Ogú y Mampato en Rapa Nui",
-      "year": "2002",
-      "rating": 7.2,
-      "poster": "https://image.tmdb.org/t/p/w500/mWil8aIYlDu1VUtdHFqJhM6IqCP.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/9uLKSwim3c1jt7hutVuzLlAhf5b.jpg",
-      "overview": ""
+      "overview": "El equipo del mundialmente famoso programa de noticias de televisión 31 Minutos se adentra en el mar hacia una isla misteriosa para rescatar a su amado productor Juanin Juan Harry, quien ha sido adquirido por la coleccionista, Cachirula.",
+      "servers": 4
     },
     {
       "id": 586599,
@@ -961,37 +783,8 @@
       "rating": 6,
       "poster": "https://image.tmdb.org/t/p/w500/iSo0NoWvTtZf9S9PrfUo3kWI0Xa.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/w6CL3IAiFPMnSAolfZxmqUdUwqO.jpg",
-      "overview": "Tito tiene trece años y desde que nació respira fútbol. Su padre lo ha entrenado toda su vida para alcanzar el éxito que él nunca pudo obtener. Luego de un entrenamiento de la selección chilena, Tito entablará una relación con Alexis Sánchez, quien lo ayudará a descubrir su verdadero sueño."
-    },
-    {
-      "id": 337101,
-      "type": "movie",
-      "title": "El bosque de Karadima",
-      "year": "2015",
-      "rating": 7.1,
-      "poster": "https://image.tmdb.org/t/p/w500/xjmipY93H5HRk4BS79cDSYpGTRu.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7EFyrjLwAJUFZHuGiviiWdk8lO9.jpg",
-      "overview": "Basado en hechos reales, involucra al poderoso sacerdote católico Fernando Karadima, quien cometió delitos de abuso infantil entre los años 80 y 2000. La lucha de sus víctimas, para poder revelar la verdad y buscar justicia."
-    },
-    {
-      "id": 122097,
-      "type": "movie",
-      "title": "Tres tristes tigres",
-      "year": "1968",
-      "rating": 6.2,
-      "poster": "https://image.tmdb.org/t/p/w500/voEWtCNbm3xD7x4xgYzcV2hX3q7.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/iz2Y2tI2ftFbwHm5Fd0ehDc4YyM.jpg",
-      "overview": ""
-    },
-    {
-      "id": 371465,
-      "type": "movie",
-      "title": "Aquí no ha pasado nada",
-      "year": "2016",
-      "rating": 5.9,
-      "poster": "https://image.tmdb.org/t/p/w500/1c46n3RMoNYMWT7sgF8NHNZljL.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/pANBcXkLZIxA2yc55FeIwgdwqky.jpg",
-      "overview": "Vicente, que vive en Los Angeles, regresa a Chile a pasar el verano en la casa de playa de sus padres. Es un joven imprudente y algo solitario. Pero una de esas noches rutinarias de perseguir chicas y tomar copas su vida cambia para siempre; se convierte en el principal sospechoso de un atropello co"
+      "overview": "Tito tiene trece años y desde que nació respira fútbol. Su padre lo ha entrenado toda su vida para alcanzar el éxito que él nunca pudo obtener. Luego de un entrenamiento de la selección chilena, Tito entablará una relación con Alexis Sánchez, quien lo ayudará a descubrir su verdadero sueño.",
+      "servers": 8
     },
     {
       "id": 453362,
@@ -1001,7 +794,8 @@
       "rating": 5.7,
       "poster": "https://image.tmdb.org/t/p/w500/hOZo98VT6D0RZUMtSDfLJSiygeM.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/9Y0d2D4wzR5F9nnJVqRQG0lqNTh.jpg",
-      "overview": "Mariana, una chilena de clase alta, siente una extraña atracción por su profesor de equitación, Juan, un ex coronel con un pasado turbio."
+      "overview": "Mariana, una chilena de clase alta, siente una extraña atracción por su profesor de equitación, Juan, un ex coronel con un pasado turbio.",
+      "servers": 7
     },
     {
       "id": 589540,
@@ -1011,77 +805,8 @@
       "rating": 6.8,
       "poster": "https://image.tmdb.org/t/p/w500/2HhUCxEj07NUP2VagllIbvW5sf2.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/mifpg8yTiHR0ThWzHWy7VcVQF57.jpg",
-      "overview": "Chile, a inicios de los años 70. Inés, Justo y Gerardo son tres veinteañeros que forman parte de un violento grupo de extrema derecha, y nacionalista, que quiere derrocar al gobierno de Salvador Allende. En el fragor de esta lucha se ven envueltos en un arriesgado y apasionado triángulo amoroso y co"
-    },
-    {
-      "id": 41864,
-      "type": "movie",
-      "title": "Grado 3",
-      "year": "2009",
-      "rating": 3.8,
-      "poster": "https://image.tmdb.org/t/p/w500/zzuNLgHs6fWG3v5jcuq3fsIkCTU.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/x3HQZhswZg1rnNN3HCOBoyt9ay9.jpg",
-      "overview": ""
-    },
-    {
-      "id": 582944,
-      "type": "movie",
-      "title": "La cordillera de los sueños",
-      "year": "2019",
-      "rating": 7.2,
-      "poster": "https://image.tmdb.org/t/p/w500/u70b1bC4jVxBznd5nh509vz3rlv.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/qooKxeRESRN7jsRGI2gEc9GPtUa.jpg",
-      "overview": ""
-    },
-    {
-      "id": 958496,
-      "type": "movie",
-      "title": "Mi país imaginario",
-      "year": "2022",
-      "rating": 6.7,
-      "poster": "https://image.tmdb.org/t/p/w500/lMduFPHGOMORvrM0DTPCPfRhhRd.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/wddJINf6EPIp7dnngDWETV3jiBx.jpg",
-      "overview": "Documental que aborda el estallido social y las transformaciones de Chile en 2019, haciendo un seguimiento al proceso de escritura de la propuesta constitucional."
-    },
-    {
-      "id": 37004,
-      "type": "movie",
-      "title": "Fuga",
-      "year": "2006",
-      "rating": 6.2,
-      "poster": "https://image.tmdb.org/t/p/w500/8oZ0me8AFv3181yiIsVjXkH11Db.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/7d1NO9R1Py41N5LTefhlmOSas3L.jpg",
-      "overview": ""
-    },
-    {
-      "id": 45175,
-      "type": "movie",
-      "title": "Radio Corazón",
-      "year": "2007",
-      "rating": 6.2,
-      "poster": "https://image.tmdb.org/t/p/w500/jZnae7aKjGghKIkGWsbvShQCKN8.jpg",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 337845,
-      "type": "movie",
-      "title": "El tío",
-      "year": "2013",
-      "rating": 3.3,
-      "poster": "https://image.tmdb.org/t/p/w500/97IIwjVL86u8tRCgCU3B7j79Nx8.jpg",
-      "backdrop": "",
-      "overview": ""
-    },
-    {
-      "id": 502071,
-      "type": "movie",
-      "title": "Sapo",
-      "year": "2018",
-      "rating": 3,
-      "poster": "https://image.tmdb.org/t/p/w500/eYilGjbaa9dkcLgKeghwE3bmbev.jpg",
-      "backdrop": "https://image.tmdb.org/t/p/w1280/t5OZGqcLWXYXEU2CZMsG307Bxv4.jpg",
-      "overview": ""
+      "overview": "Chile, a inicios de los años 70. Inés, Justo y Gerardo son tres veinteañeros que forman parte de un violento grupo de extrema derecha, y nacionalista, que quiere derrocar al gobierno de Salvador Allende. En el fragor de esta lucha se ven envueltos en un arriesgado y apasionado triángulo amoroso y co",
+      "servers": 8
     },
     {
       "id": 602562,
@@ -1091,7 +816,20 @@
       "rating": 7.5,
       "poster": "https://image.tmdb.org/t/p/w500/xwtwh7ywPfg8Pia0pGyQ5BK56bp.jpg",
       "backdrop": "https://image.tmdb.org/t/p/w1280/tFdf5xMjtADu9rSJX2YdAEQtKx8.jpg",
-      "overview": "Narra el viaje de tres amigas que buscan una sexualidad más entretenida y fogosa con sus respectivas parejas. Una soltera liberada, una mamá salvaje y una novia perfeccionista aprenden a pedir lo que quieren en la intimidad y descubren que revivir la pasión fortalece el amor."
+      "overview": "Narra el viaje de tres amigas que buscan una sexualidad más entretenida y fogosa con sus respectivas parejas. Una soltera liberada, una mamá salvaje y una novia perfeccionista aprenden a pedir lo que quieren en la intimidad y descubren que revivir la pasión fortalece el amor.",
+      "servers": 8
+    }
+  ],
+  "accesos": [
+    {
+      "name": "Ondamedia",
+      "url": "https://ondamedia.cl",
+      "desc": "Cine y documentales chilenos gratis (Ministerio de las Culturas). Pide crear una cuenta."
+    },
+    {
+      "name": "CNTV Play",
+      "url": "https://cntvplay.cl",
+      "desc": "Series y programas chilenos gratis del Consejo Nacional de Televisión."
     }
   ]
 }

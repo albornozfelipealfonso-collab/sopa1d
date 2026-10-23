@@ -10,7 +10,7 @@
  *
  * F11 pantalla completa · Ctrl+R recargar · Esc sale de pantalla completa.
  */
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, shell } = require('electron');
 const fs = require('fs');
 const net = require('net');
 const path = require('path');
@@ -29,15 +29,30 @@ app.userAgentFallback = app.userAgentFallback
 // Una sola ventana: abrir el acceso directo otra vez trae la que ya está
 if (!app.requestSingleInstanceLock()) app.quit();
 
-function freePort() {
+/*
+ * Puerto fijo: el navegador guarda Mi lista, favoritos y "Seguir viendo" por
+ * dirección + puerto. Con un puerto al azar cada arranque empezaba vacío.
+ * Solo si está ocupado se usa otro.
+ */
+const PREFERRED_PORT = 47610;
+
+function tryPort(port) {
     return new Promise((resolve, reject) => {
         const s = net.createServer();
         s.once('error', reject);
-        s.listen(0, '127.0.0.1', () => {
-            const { port } = s.address();
-            s.close(() => resolve(port));
+        s.listen(port, '127.0.0.1', () => {
+            const { port: got } = s.address();
+            s.close(() => resolve(got));
         });
     });
+}
+
+async function freePort() {
+    try {
+        return await tryPort(PREFERRED_PORT);
+    } catch (e) {
+        return tryPort(0);
+    }
 }
 
 function waitForServer(port, tries = 100) {
@@ -77,7 +92,10 @@ function blockAds() {
 let win;
 
 function createWindow(port) {
-    const home = `http://127.0.0.1:${port}/`;
+    // "localhost" y no "127.0.0.1": YouTube no deja reproducir sus vídeos
+    // incrustados en una página con dirección IP ("Este video no está
+    // disponible"), y el apartado Chile los usa.
+    const home = `http://localhost:${port}/`;
     win = new BrowserWindow({
         width: 1400,
         height: 860,
@@ -129,6 +147,17 @@ function createWindow(port) {
 }
 
 ipcMain.on('sopa1d:shield', (e) => { e.returnValue = SHIELD; });
+
+// Accesos del apartado Chile (Ondamedia, CNTV Play): al navegador del sistema.
+// Solo estos sitios y solo desde la página de la app, no desde los iframes.
+const EXTERNAL_OK = ['ondamedia.cl', 'cntvplay.cl'];
+ipcMain.on('sopa1d:open-external', (e, url) => {
+    if (e.senderFrame && e.senderFrame.parent) return;
+    try {
+        const u = new URL(url);
+        if (u.protocol === 'https:' && EXTERNAL_OK.some(h => u.hostname === h || u.hostname.endsWith('.' + h))) shell.openExternal(u.href);
+    } catch (err) {}
+});
 
 app.on('second-instance', () => {
     if (!win) return;
