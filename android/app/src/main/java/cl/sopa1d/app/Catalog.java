@@ -75,14 +75,20 @@ final class Catalog {
         app = ctx.getApplicationContext();
     }
 
-    /** Filas que vienen de un archivo de la app: "local:terror" (ver tools/build_series_genres.mjs). */
+    /**
+     * Filas que vienen de un archivo de la app: "local:terror" (series_genres.json,
+     * tools/build_series_genres.mjs) o "local:chile.json#series" (tools/build_chile.mjs).
+     */
     static final String LOCAL = "local:";
 
-    private static List<CatalogItem> loadLocal(String key) throws Exception {
+    private static List<CatalogItem> loadLocal(String spec) throws Exception {
         List<CatalogItem> out = new ArrayList<>();
         if (app == null) return out;
+        String file = "series_genres.json", key = spec;
+        int hash = spec.indexOf('#');
+        if (hash > 0) { file = spec.substring(0, hash); key = spec.substring(hash + 1); }
         String json;
-        try (java.io.InputStream in = app.getAssets().open("series_genres.json")) {
+        try (java.io.InputStream in = app.getAssets().open(file)) {
             java.io.ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
             byte[] b = new byte[16384];
             int n;
@@ -93,7 +99,8 @@ final class Catalog {
         for (int i = 0; arr != null && i < arr.length(); i++) {
             JSONObject o = arr.getJSONObject(i);
             String backdrop = o.optString("backdrop", "");
-            out.add(new CatalogItem("tv", String.valueOf(o.optLong("id")), o.optString("title"),
+            out.add(new CatalogItem("movie".equals(o.optString("type")) ? "movie" : "tv",
+                    String.valueOf(o.optLong("id")), o.optString("title"),
                     o.optString("year"), o.optDouble("rating", 0), o.optString("overview"),
                     o.optString("poster"), backdrop.isEmpty() ? null : backdrop));
         }
@@ -147,6 +154,8 @@ final class Catalog {
         rows.add(new Row("🎬 Películas populares", list("movies", 0)));
         rows.add(new Row("⭐ Series imperdibles", best("tvshows", 0)));
         rows.add(new Row("🌸 Anime imperdible", best("anime", 0)));
+        rows.add(new Row("🇨🇱 Series chilenas", LOCAL + "chile.json#series"));
+        rows.add(new Row("🇨🇱 Películas chilenas", LOCAL + "chile.json#peliculas"));
         rows.add(new Row("💥 Acción", best("movies", 28)));
         rows.add(new Row("😂 Comedia", best("movies", 35)));
         rows.add(new Row("👻 Terror", best("movies", 27)));
@@ -156,6 +165,7 @@ final class Catalog {
     static List<Row> movieRows() {
         List<Row> rows = new ArrayList<>();
         rows.add(new Row("Populares", list("movies", 0)));
+        rows.add(new Row("🇨🇱 Chilenas", LOCAL + "chile.json#peliculas"));
         int[] ids = {28, 12, 16, 35, 80, 18, 10751, 14, 27, 878, 53, 9648, 10749, 99};
         String[] names = {"💥 Acción", "🗺️ Aventura", "🎨 Animación", "😂 Comedia", "🕵️ Crimen",
                 "🎭 Drama", "👨‍👩‍👧 Familia", "✨ Fantasía", "👻 Terror", "🛸 Ciencia ficción",
@@ -168,6 +178,7 @@ final class Catalog {
         List<Row> rows = new ArrayList<>();
         rows.add(new Row("📺 Del momento", trending("tv")));
         rows.add(new Row("⭐ Imperdibles", best("tvshows", 0)));
+        rows.add(new Row("🇨🇱 Chilenas", LOCAL + "chile.json#series"));
         int[] ids = {10759, 18, 35, 80, 10765, 9648, 16, 10751, 10762, 99, 10764};
         String[] names = {"💥 Acción y aventura", "🎭 Drama", "😂 Comedia", "🕵️ Crimen",
                 "🛸 Ciencia ficción y fantasía", "🔎 Misterio", "🎨 Animación", "👨‍👩‍👧 Familia",

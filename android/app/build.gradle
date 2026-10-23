@@ -10,8 +10,8 @@ android {
         applicationId "cl.sopa1d.app"
         minSdk 24
         targetSdk 35
-        versionCode 25
-        versionName "1.9.15"
+        versionCode 26
+        versionName "1.9.16"
     }
 
     buildTypes {
@@ -35,6 +35,7 @@ tasks.register('copyWebAssets', Copy) {
         include 'index.html'
         include 'channels_spa.json'
         include 'series_genres.json'
+        include 'chile.json'
     }
     into layout.projectDirectory.dir('src/main/assets')
 }
