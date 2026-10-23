@@ -3613,14 +3613,16 @@
                 ['10759', '💥 Acción y Aventura'], ['16', '🎨 Animación'], ['35', '😂 Comedia'], ['80', '🕵️ Crimen'],
                 ['18', '🎭 Drama'], ['10765', '🛸 Ciencia Ficción y Fantasía'], ['9648', '🔍 Misterio'],
                 ['10751', '👨‍👩‍👧 Familia'], ['10762', '🧸 Infantil'], ['10764', '📺 Reality'],
-                ['10768', '🎖️ Bélica y Política'], ['99', '📚 Documental']
+                ['10768', '🎖️ Bélica y Política'], ['99', '📚 Documental'],
+                // TMDB no tiene terror ni suspenso en series: listas de series_genres.json
+                ['local:terror', '👻 Terror'], ['local:suspenso', '⚡ Suspenso']
             ],
             anime: [
                 ['al:tag:Shounen', '⚔️ Shōnen'], ['al:tag:Shoujo', '🌸 Shōjo'], ['al:tag:Seinen', '🗡️ Seinen'],
                 ['al:tag:Isekai', '🌀 Isekai'], ['al:genre:Mecha', '🤖 Mecha'], ['al:genre:Action', '💥 Acción'],
                 ['al:genre:Romance', '💕 Romance'], ['al:genre:Comedy', '😂 Comedia'], ['al:genre:Sports', '⚽ Deportes'],
                 ['al:genre:Fantasy', '🔮 Fantasía'], ['al:genre:Slice of Life', '☕ Vida cotidiana'],
-                ['al:genre:Horror', '👻 Terror'], ['al:genre:Mystery', '🕵️ Misterio'],
+                ['al:genre:Horror', '👻 Terror'], ['al:genre:Thriller', '⚡ Suspenso'], ['al:genre:Mystery', '🕵️ Misterio'],
                 ['al:genre:Supernatural', '👁️ Sobrenatural'], ['al:format:MOVIE', '🎬 Películas']
             ]
         };
@@ -3642,7 +3644,9 @@
                 const list = genresByType[type] || [];
                 options = list.length
                     ? list.map(g => [String(g.id), GENRE_ES[g.name] || g.name]).sort((a, b) => a[1].localeCompare(b[1]))
-                    : (QUICK_GENRES[type] || []);
+                    : (QUICK_GENRES[type] || []).filter(([id]) => !id.startsWith('local:'));
+                // Terror y Suspenso de series no vienen de la API (ver loadLocalSeriesGenre)
+                if (type === 'tvshows') options = options.concat(QUICK_GENRES.tvshows.filter(([id]) => id.startsWith('local:')));
             }
             sel.innerHTML = `<option value="">${type === 'anime' ? '🌸 Tipo de anime' : '🎭 Géneros'}</option>` +
                 options.map(([id, name]) => `<option value="${id}">${name}</option>`).join('');
@@ -3716,6 +3720,22 @@
                     year: String(m.seasonYear || (m.startDate && m.startDate.year) || ''),
                     rating: m.averageScore ? m.averageScore / 10 : 0
                 }));
+        }
+
+        /*
+         * Series de Terror y Suspenso. TMDB solo tiene esos géneros para
+         * películas; las listas las arma tools/build_series_genres.mjs desde
+         * TVmaze (géneros Horror y Thriller) y quedan en series_genres.json.
+         */
+        let seriesGenresData = null;
+        async function loadLocalSeriesGenre(key, page) {
+            if (!seriesGenresData) {
+                seriesGenresData = await fetch('series_genres.json').then(r => r.json()).catch(() => ({}));
+            }
+            let list = seriesGenresData[key] || [];
+            if (currentYear) list = list.filter(x => String(x.year) === String(currentYear));
+            totalPages = Math.max(1, Math.ceil(list.length / 20));
+            return list.slice((page - 1) * 20, page * 20);
         }
 
         function renderAniListGrid(items) {
@@ -3819,6 +3839,17 @@
             const area = document.getElementById('contentArea');
             area.innerHTML = renderSkeletonGrid();
             try {
+                if (currentType === 'tvshows' && String(currentGenre).startsWith('local:')) {
+                    const items = await loadLocalSeriesGenre(currentGenre.slice(6), page);
+                    if (reqId === currentRequestId) {
+                        window._lastRenderedItems = items;
+                        if (items.length) renderMovies(applySort(items));
+                        else document.getElementById('contentArea').innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados</h3></div>`;
+                        renderPagination(page);
+                    }
+                    isLoading = false;
+                    return;
+                }
                 if (currentType === 'anime' && String(currentGenre).startsWith('al:')) {
                     const items = await loadAniList(page, reqId);
                     if (items) {

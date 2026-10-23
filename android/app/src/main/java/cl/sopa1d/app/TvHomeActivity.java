@@ -98,6 +98,7 @@ public class TvHomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Catalog.init(this);
         // Diseño según el aparato, no según cómo se sostiene: el de TV en el
         // celular horizontal dejaba fuera la mitad del menú y no se podía tocar.
         portrait = !SystemBars.isTv(this);

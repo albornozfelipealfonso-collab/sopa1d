@@ -68,11 +68,45 @@ final class Catalog {
 
     private Catalog() {}
 
+    /** Para leer assets/series_genres.json (filas "local:"). */
+    private static android.content.Context app;
+
+    static void init(android.content.Context ctx) {
+        app = ctx.getApplicationContext();
+    }
+
+    /** Filas que vienen de un archivo de la app: "local:terror" (ver tools/build_series_genres.mjs). */
+    static final String LOCAL = "local:";
+
+    private static List<CatalogItem> loadLocal(String key) throws Exception {
+        List<CatalogItem> out = new ArrayList<>();
+        if (app == null) return out;
+        String json;
+        try (java.io.InputStream in = app.getAssets().open("series_genres.json")) {
+            java.io.ByteArrayOutputStream buf = new java.io.ByteArrayOutputStream();
+            byte[] b = new byte[16384];
+            int n;
+            while ((n = in.read(b)) != -1) buf.write(b, 0, n);
+            json = buf.toString("UTF-8");
+        }
+        JSONArray arr = new JSONObject(json).optJSONArray(key);
+        for (int i = 0; arr != null && i < arr.length(); i++) {
+            JSONObject o = arr.getJSONObject(i);
+            String backdrop = o.optString("backdrop", "");
+            out.add(new CatalogItem("tv", String.valueOf(o.optLong("id")), o.optString("title"),
+                    o.optString("year"), o.optDouble("rating", 0), o.optString("overview"),
+                    o.optString("poster"), backdrop.isEmpty() ? null : backdrop));
+        }
+        return out;
+    }
+
     static List<CatalogItem> load(String url) throws Exception {
         List<CatalogItem> hit = cache.get(url);
         if (hit != null) return hit;
         List<CatalogItem> items = url.startsWith(ANILIST)
                 ? AniList.load(url.substring(ANILIST.length()))
+                : url.startsWith(LOCAL)
+                ? loadLocal(url.substring(LOCAL.length()))
                 : CatalogItem.listFromJson(new JSONObject(Http.getString(url)));
         cache.put(url, items);
         return items;
@@ -139,6 +173,9 @@ final class Catalog {
                 "🛸 Ciencia ficción y fantasía", "🔎 Misterio", "🎨 Animación", "👨‍👩‍👧 Familia",
                 "🧸 Infantil", "🌍 Documental", "📸 Reality"};
         for (int i = 0; i < ids.length; i++) rows.add(new Row(names[i], best("tvshows", ids[i])));
+        // TMDB no tiene terror ni suspenso para series: listas armadas desde TVmaze
+        rows.add(2, new Row("👻 Terror", LOCAL + "terror"));
+        rows.add(3, new Row("⚡ Suspenso", LOCAL + "suspenso"));
         return rows;
     }
 
@@ -153,7 +190,7 @@ final class Catalog {
                 {"⚽ Deportes", "genre:Sports"}, {"💕 Romance", "genre:Romance"}, {"😂 Comedia", "genre:Comedy"},
                 {"🔮 Fantasía", "genre:Fantasy"}, {"☕ Vida cotidiana", "genre:Slice of Life"},
                 {"👁️ Sobrenatural", "genre:Supernatural"}, {"🕵️ Misterio", "genre:Mystery"},
-                {"👻 Terror", "genre:Horror"}, {"🎬 Películas de anime", "format:MOVIE"}};
+                {"👻 Terror", "genre:Horror"}, {"⚡ Suspenso", "genre:Thriller"}, {"🎬 Películas de anime", "format:MOVIE"}};
         for (String[] t : types) rows.add(new Row(t[0], ANILIST + t[1]));
         return rows;
     }

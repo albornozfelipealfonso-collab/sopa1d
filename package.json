@@ -1,6 +1,6 @@
 {
   "name": "sopa1d",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Sopa1D Pro — Hub de Streaming y Canales en Vivo",
   "main": "desktop/main.js",
   "scripts": {
@@ -35,6 +35,7 @@
       "index.html",
       "server.js",
       "channels_spa.json",
+      "series_genres.json",
       "desktop/**",
       "android/app/src/main/res/raw/ad_shield.js",
       "package.json"

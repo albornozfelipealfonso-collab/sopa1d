@@ -5,3 +5,4 @@ app/build/
 # Generados en cada build desde la raíz del repo
 app/src/main/assets/index.html
 app/src/main/assets/channels_spa.json
+app/src/main/assets/series_genres.json
