@@ -36,7 +36,9 @@ const MIME_TYPES = {
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
     '.m3u8': 'application/vnd.apple.mpegurl',
-    '.ts': 'video/MP2T'
+    '.ts': 'video/MP2T',
+    // Con este tipo, Android ofrece instalarla al terminar la descarga
+    '.apk': 'application/vnd.android.package-archive'
 };
 
 const httpAgent = new http.Agent({
@@ -562,6 +564,15 @@ function handleProxyStream(targetUrl, req, res, redirectCount = 0, fixAudio = fa
     } catch(e) {
         res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
         res.end('URL de canal inválida');
+        return;
+    }
+    // Solo http/https. Con otro protocolo (file:, ftp:, data:…) http.get lanza
+    // ERR_INVALID_PROTOCOL de forma síncrona y, sin esto, se caía el servidor
+    // entero con una sola petición (/proxy?url=file:///…). Cubre también las
+    // redirecciones, que vuelven a entrar por aquí.
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' });
+        res.end('Solo se admiten señales http o https');
         return;
     }
 
@@ -1252,7 +1263,9 @@ function handleEpg(req, res) {
     send({ ready, loading: epgLoading });
 }
 
-const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'hitster.json', 'favicon.ico']);
+// sopa1d.apk: copia local de la APK para instalarla en las TV con Downloader
+// (no está en el repo; donde no exista, sigue respondiendo 404).
+const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'hitster.json', 'favicon.ico', 'sopa1d.apk']);
 
 /*
  * El proxy no va a la red local ni a este equipo. Responde con CORS abierto,
