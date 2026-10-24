@@ -139,6 +139,7 @@
                 <TextView android:id="@+id/navAnime" style="@style/PhoneNavItem" android:tag="🌸|Anime" android:text="🌸\nAnime" />
                 <TextView android:id="@+id/navLive" style="@style/PhoneNavItem" android:tag="📡|En vivo" android:text="📡\nEn vivo" />
                 <TextView android:id="@+id/navMusic" style="@style/PhoneNavItem" android:tag="🎸|Música" android:text="🎸\nMúsica" />
+                <TextView android:id="@+id/navGames" style="@style/PhoneNavItem" android:tag="🎮|Juegos" android:text="🎮\nJuegos" />
                 <TextView android:id="@+id/navGuide" style="@style/PhoneNavItem" android:tag="🗓️|Guía" android:text="🗓️\nGuía" />
                 <TextView android:id="@+id/navMyList" style="@style/PhoneNavItem" android:tag="❤️|Mi lista" android:text="❤️\nMi lista" />
                 <TextView android:id="@+id/navWeb" style="@style/PhoneNavItem" android:tag="🌐|Web" android:text="🌐\nWeb" />

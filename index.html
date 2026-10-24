@@ -7731,8 +7731,13 @@
             return false;
         };
 
-        // La APK abre la sección directo con index.html#juegos
-        if (location.hash === '#juegos') setTimeout(() => switchTab('juegos'), 0);
+        // La APK abre la sección directo: index.html#juegos (menú), #adivina o #hitster (ese juego)
+        const ntHashJuego = { '#juegos': null, '#adivina': renderNameTuneSetup, '#hitster': renderHitsterSetup };
+        const ntHashInicial = location.hash; // switchTab → closeModal borra el hash de la URL
+        if (ntHashInicial in ntHashJuego) setTimeout(() => {
+            switchTab('juegos');
+            if (ntHashJuego[ntHashInicial]) ntHashJuego[ntHashInicial]();
+        }, 0);
 
         console.log('🍜 Sopa1D Pro — Hub de Streaming Activo');
     </script>

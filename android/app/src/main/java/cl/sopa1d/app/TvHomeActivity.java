@@ -139,7 +139,7 @@ public class TvHomeActivity extends Activity {
                 findViewById(R.id.navHome), findViewById(R.id.navSearch), findViewById(R.id.navMovies),
                 findViewById(R.id.navSeries), findViewById(R.id.navAnime), findViewById(R.id.navLive),
                 findViewById(R.id.navMyList), findViewById(R.id.navGuide), findViewById(R.id.navMusic),
-                findViewById(R.id.navWeb)};
+                findViewById(R.id.navGames), findViewById(R.id.navWeb)};
         for (View v : navItems) {
             v.setOnClickListener(this::onNavClick);
             // ▶ desde el menú entra al contenido: la búsqueda de foco por
@@ -280,6 +280,11 @@ public class TvHomeActivity extends Activity {
     private void onNavClick(View v) {
         if (v.getId() == R.id.navWeb) {
             startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+        // Juegos: viven en la versión web (index.html#juegos)
+        if (v.getId() == R.id.navGames) {
+            startActivity(new Intent(this, MainActivity.class).putExtra(MainActivity.EXTRA_SECTION, "juegos"));
             return;
         }
         if (v.getId() == R.id.navGuide) {
@@ -546,8 +551,12 @@ public class TvHomeActivity extends Activity {
         } else {
             if (item.rating > 0) addChip(String.format(Locale.ROOT, "⭐ %.1f", item.rating), 0xFFF5C518, true);
             if (!item.year.isEmpty()) addChip(item.year, 0, false);
-            addChip("HD", 0, false);
-            addChip("movie".equals(item.type) ? "Película" : "Serie", 0, false);
+            if (item.id.startsWith("game:")) {
+                addChip("🎮 Juego", 0xFFE11D48, true);
+            } else {
+                addChip("HD", 0, false);
+                addChip("movie".equals(item.type) ? "Película" : "Serie", 0, false);
+            }
             if (!item.label.isEmpty()) addChip("Vas en " + item.label, 0xFFE50914, true);
             if (!item.genres.isEmpty()) addText(item.genres);
             heroOverview.setText(item.overview);

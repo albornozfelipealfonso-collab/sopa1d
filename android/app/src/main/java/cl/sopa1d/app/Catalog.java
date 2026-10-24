@@ -185,13 +185,18 @@ final class Catalog {
         rows.add(new Row("🇨🇱 Series chilenas", LOCAL + "chile.json#series"));
         rows.add(new Row("🇨🇱 Películas chilenas", LOCAL + "chile.json#peliculas"));
         rows.add(new Row("🇨🇱 Más cine y series chilenas (gratis)", LOCAL + "chile.json#accesos"));
-        // Juegos (en la versión web de la app): Hitster Rock
+        // Juegos (en la versión web de la app): cada tarjeta abre su juego
         List<CatalogItem> games = new ArrayList<>();
-        CatalogItem hitster = new CatalogItem("tv", "game:juegos", "🎸 Hitster Rock", "", 0,
+        CatalogItem nameTune = new CatalogItem("tv", "game:adivina", "🎯 Adivina la canción", "", 0,
+                "Suena un fragmento y hay 4 opciones: mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.", null, null);
+        nameTune.genres = "Juego musical";
+        games.add(nameTune);
+        CatalogItem hitster = new CatalogItem("tv", "game:hitster", "🎸 Hitster Rock", "", 0,
                 "Adivina en qué año salió cada canción de rock (1960–2010). Para 1 a 6 jugadores.", null, null);
         hitster.genres = "Juego musical";
         games.add(hitster);
-        rows.add(2, new Row("🎮 Juegos", games));
+        // Arriba, justo después del Top 10 de películas, para verla sin bajar tanto
+        rows.add(1, new Row("🎮 Juegos", games));
         rows.add(new Row("💥 Acción", best("movies", 28)));
         rows.add(new Row("😂 Comedia", best("movies", 35)));
         rows.add(new Row("👻 Terror", best("movies", 27)));
