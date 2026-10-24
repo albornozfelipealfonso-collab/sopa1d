@@ -4952,7 +4952,7 @@
             if (!orden.length) {
                 if (lista.length) {
                     // Solo hay japonés sin subtítulos: que lo elija quien quiera
-                    sinAdsAviso(container, `Este capítulo solo está en <b>japonés sin subtítulos</b>.<br><br>
+                    sinAdsAviso(container, `Este capítulo solo está en <b>japonés</b>.<br>Se le agregan subtítulos en español si hay en OpenSubtitles.<br><br>
                         <button class="btn btn-primary" onclick="sinAdsElegir(0)">▶ Verlo igual</button>
                         <button class="btn btn-glass" onclick="reproducirEnServidor('multiembed', sinAdsEstado.meta)">Probar MultiEmbed${isAnime ? ' (suele estar en inglés)' : ''}</button>`, poster);
                     return;
@@ -5036,6 +5036,33 @@
                 // En "Subtitulado" se encienden solos; en Latino quedan disponibles en el botón CC
                 if (elegido && (currentStreamLanguage === 'subtitulado' || /sub/i.test(srv.idioma))) elegido.mode = 'showing';
             });
+            // Sin pista en español del servidor: se buscan en OpenSubtitles.
+            // Con audio japonés (u otro sin español) se encienden solos; con
+            // Latino/Castellano o "Subtitulado" (suele traerlos grabados) quedan en CC.
+            const audioEs = /latino|castellano/i.test(srv.idioma);
+            const encender = !/latino|castellano|sub/i.test(srv.idioma) || sinAdsEsJapones(srv.idioma);
+            const imdb = seriesDetails?.imdb_id;
+            if (!subs.some(t => /span|espa|lat|cast/i.test(t.label)) && imdb && (!audioEs || currentStreamLanguage === 'subtitulado' || currentType === 'anime')) {
+                const isTvSub = (meta.type === 'tv' || currentType === 'tvshows' || currentType === 'anime');
+                const subUrl = `${base}/api/subs?imdb=${encodeURIComponent(imdb)}` + (isTvSub ? `&s=${meta.season || 1}&e=${meta.episode || 1}` : '');
+                fetch(subUrl).then(x => x.ok ? x.headers.get('X-Sub-Lang') || 'spa' : null).then(lang => {
+                    if (!lang || currentPlayer !== player || player.isDisposed()) return;
+                    const t = player.addRemoteTextTrack({
+                        kind: 'subtitles', src: subUrl, srclang: lang === 'eng' ? 'en' : 'es',
+                        label: lang === 'eng' ? 'Inglés (OpenSubtitles)' : 'Español (OpenSubtitles)'
+                    }, false);
+                    if (encender) {
+                        const show = () => { if (t.track) t.track.mode = 'showing'; };
+                        show(); player.one('loadedmetadata', show);
+                    }
+                    const btn = document.getElementById('sinAdsSrvBtn');
+                    if (btn) btn.innerHTML = btn.innerHTML.replace('(sin subtítulos)', lang === 'eng' ? '+ subtítulos en inglés' : '+ subtítulos');
+                    // Algunos videos ya traen los subtítulos grabados en la imagen: se avisa cómo apagar los nuestros
+                    if (encender) showToast(lang === 'eng'
+                        ? '💬 Este capítulo no tiene subtítulos en español: se muestran en inglés (se apagan con CC)'
+                        : '💬 Subtítulos en español activados · si el video ya los trae, apágalos con el botón CC', 5000);
+                }).catch(() => {});
+            }
             player.play()?.catch?.(() => {});
             currentCastSource = base + r.url;
             showToast(`🎬 ${sinAdsNombreIdioma(srv.idioma)} · ${srv.host} 🛡️ Sin Ads${subs.length ? ' · CC' : ''}`);

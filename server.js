@@ -866,6 +866,125 @@ function findSubtitleTracks(text) {
     return out;
 }
 
+/*
+ * Subtítulos en español de OpenSubtitles para el anime que llega en japonés
+ * sin subtítulos (o de un servidor que no los trae). TMDB suele juntar todo
+ * un anime en la temporada 1 (Re:Zero: 85 capítulos) y OpenSubtitles sigue
+ * las temporadas de IMDb (25 + 25 + 16…): si el capítulo no está tal cual,
+ * se cuenta en orden por las temporadas de IMDb.
+ */
+const OS_UA = 'TemporaryUserAgent';
+const osSearchCache = new Map();
+const osVttCache = new Map();
+
+async function osSearch(query) {
+    if (osSearchCache.has(query)) return osSearchCache.get(query);
+    let list = [];
+    try {
+        const r = await fetch('https://rest.opensubtitles.org/search/' + query, {
+            headers: { 'User-Agent': OS_UA }, signal: AbortSignal.timeout(15000)
+        });
+        const j = r.ok ? await r.json() : [];
+        if (Array.isArray(j)) list = j;
+    } catch (e) { return []; }
+    if (osSearchCache.size > 300) osSearchCache.clear();
+    osSearchCache.set(query, list);
+    return list;
+}
+
+async function osFind(imdb, season, episode, lang) {
+    const id = imdb.replace(/^tt0*/, '');
+    if (!season) return osSearch(`imdbid-${id}/sublanguageid-${lang}`);
+    const ep = (s, e) => osSearch(`episode-${e}/imdbid-${id}/season-${s}/sublanguageid-${lang}`);
+    const exact = await ep(season, episode);
+    if (exact.length) return exact;
+    let e = episode;
+    for (let s = season; s < season + 8; s++) {
+        const all = await osSearch(`imdbid-${id}/season-${s}/sublanguageid-${lang}`);
+        const count = all.reduce((m, x) => Math.max(m, +x.SeriesEpisode || 0), 0);
+        if (!count) break;
+        if (e <= count) return s === season ? [] : ep(s, e);
+        e -= count;
+    }
+    return [];
+}
+
+// Los oficiales de Crunchyroll / subidos por usuarios de confianza primero
+// (latino antes que castellano), luego los más bajados; nunca los traducidos a máquina
+function osPick(list) {
+    const score = x => (x.SubAutoTranslation === '1' ? -1e9 : 0)
+        + (x.SubFromTrusted === '1' || /crunchyroll/i.test(x.SubTranslator || '') || /\[cr\]|\.CR\./i.test(x.SubFileName || '') ? 1e8 : 0)
+        + (/\[lat\]|latino|\bes-?419\b/i.test(x.SubFileName || '') ? 1e7 : 0)
+        + (+x.SubDownloadsCnt || 0) - (x.SubHearingImpaired === '1' ? 5e6 : 0);
+    return list.filter(x => /^(srt|ssa|ass|vtt)$/i.test(x.SubFormat || '') && x.SubDownloadLink)
+        .sort((a, b) => score(b) - score(a))[0] || null;
+}
+
+function assTime(t) {
+    const m = /(\d+):(\d+):(\d+)\.(\d+)/.exec(t || '');
+    if (!m) return '00:00:00.000';
+    return `${m[1].padStart(2, '0')}:${m[2]}:${m[3]}.${(m[4] + '00').slice(0, 3)}`;
+}
+
+// SRT / ASS → WebVTT (lo que entienden video.js y ExoPlayer sin más)
+function subsToVtt(text) {
+    text = text.replace(/^\uFEFF/, '').replace(/\r/g, '');
+    if (/^WEBVTT/.test(text)) return text;
+    if (/^\[Script Info\]/im.test(text)) {
+        const cues = [];
+        let inEvents = false, fields = null;
+        for (const line of text.split('\n')) {
+            if (/^\[/.test(line)) { inEvents = /^\[Events\]/i.test(line); continue; }
+            if (!inEvents) continue;
+            if (/^Format:/i.test(line)) { fields = line.slice(7).split(',').map(s => s.trim().toLowerCase()); continue; }
+            if (!fields || !/^Dialogue:/i.test(line)) continue;
+            const parts = line.slice(9).split(',');
+            const body = parts.slice(fields.indexOf('text')).join(',')
+                .replace(/\{[^}]*\}/g, '').replace(/\\N/gi, '\n').replace(/\\h/g, ' ')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').trim();
+            if (body) cues.push([assTime(parts[fields.indexOf('start')]), assTime(parts[fields.indexOf('end')]), body]);
+        }
+        cues.sort((a, b) => a[0].localeCompare(b[0]));
+        // La misma línea repetida en otra capa (sombra, borde) se vería encimada
+        const seen = new Map();
+        const unique = cues.filter(c => {
+            const end = seen.get(c[2]);
+            if (end && c[0] <= end) return false;
+            seen.set(c[2], c[1]);
+            return true;
+        });
+        return 'WEBVTT\n\n' + unique.map(c => `${c[0]} --> ${c[1]}\n${c[2]}`).join('\n\n') + '\n';
+    }
+    return 'WEBVTT\n\n' + text.replace(/(\d\d:\d\d:\d\d),(\d\d\d)/g, '$1.$2').replace(/^\d+\n(?=\d\d:\d\d)/gm, '');
+}
+
+// Español; si ese capítulo no tiene, inglés (mejor que japonés sin nada)
+async function osSpanishVtt(imdb, season, episode) {
+    const key = `${imdb}/${season}/${episode}`;
+    if (osVttCache.has(key)) return osVttCache.get(key);
+    let vtt = null, lang = 'spa';
+    let pick = osPick(await osFind(imdb, season, episode, 'spa'));
+    if (!pick) { lang = 'eng'; pick = osPick(await osFind(imdb, season, episode, 'eng')); }
+    if (pick) {
+        try {
+            const r = await fetch(pick.SubDownloadLink, { headers: { 'User-Agent': OS_UA }, signal: AbortSignal.timeout(20000) });
+            if (r.ok) {
+                let buf = Buffer.from(await r.arrayBuffer());
+                try { buf = zlib.gunzipSync(buf); } catch (e) {}
+                let text;
+                try { text = new TextDecoder('utf-8', { fatal: true }).decode(buf); }
+                catch (e) { text = new TextDecoder('windows-1252').decode(buf); }
+                vtt = subsToVtt(text);
+                if (!/-->/.test(vtt)) vtt = null;
+            }
+        } catch (e) { vtt = null; }
+    }
+    const out = vtt ? { vtt, lang } : null;
+    if (osVttCache.size > 100) osVttCache.clear();
+    osVttCache.set(key, out);
+    return out;
+}
+
 async function extractDirectHlsFromEmbed(embedUrl) {
     if (!embedUrl) return null;
     if (hlsExtractCache.has(embedUrl)) {
@@ -1240,6 +1359,24 @@ const server = http.createServer(async (req, res) => {
     // PROGRAMACIÓN DE CANALES EN VIVO (/api/epg/now, /api/epg/channel?id=...)
     if (req.url.startsWith('/api/epg')) {
         handleEpg(req, res);
+        return;
+    }
+
+    // SUBTÍTULOS EN ESPAÑOL (/api/subs?imdb=tt…&s=1&e=1) → WebVTT; X-Sub-Lang: spa | eng
+    if (req.url.startsWith('/api/subs')) {
+        const p = new URL(req.url, 'http://127.0.0.1').searchParams;
+        const imdb = p.get('imdb') || '';
+        const s = parseInt(p.get('s'), 10) || 0, e = parseInt(p.get('e'), 10) || 0;
+        const sub = /^tt\d{5,10}$/.test(imdb) ? await osSpanishVtt(imdb, s, s ? Math.max(1, e) : 0) : null;
+        const vtt = sub && sub.vtt;
+        res.writeHead(vtt ? 200 : 404, {
+            'Content-Type': vtt ? 'text/vtt; charset=utf-8' : 'text/plain',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Expose-Headers': 'X-Sub-Lang',
+            'X-Sub-Lang': sub ? sub.lang : '',
+            'Cache-Control': 'max-age=3600'
+        });
+        res.end(vtt || 'sin subtítulos');
         return;
     }
 

@@ -87,6 +87,9 @@ public class VodPlayerActivity extends Activity {
     private PlayerView playerView;
     private ExoPlayer player;
     private TextView title, subtitle, status;
+    /** Subtítulos de OpenSubtitles del capítulo openSubsKey (null = no hay). */
+    private OpenSubs.Result openSubs;
+    private String openSubsKey;
     private View statusBox, topBar, panel;
     private ListView serverList;
 
@@ -180,6 +183,12 @@ public class VodPlayerActivity extends Activity {
                 if (row instanceof Integer) {             // calidad
                     togglePanel(false);
                     chooseQuality((Integer) row);
+                } else if (row instanceof Boolean) {      // subtítulos sí / no
+                    togglePanel(false);
+                    player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
+                            .setTrackTypeDisabled(androidx.media3.common.C.TRACK_TYPE_TEXT, !(Boolean) row)
+                            .build());
+                    refreshServerList();
                 } else if (row instanceof StreamResolver.Server) {
                     togglePanel(false);
                     int s = servers.indexOf(row);
@@ -517,6 +526,32 @@ public class VodPlayerActivity extends Activity {
     }
 
     private void startStream(int index, StreamResolver.Stream stream, long positionMs) {
+        // Audio japonés (u otro que no es español) sin pista en español del
+        // servidor: antes de reproducir se buscan subtítulos en OpenSubtitles
+        String srvLang = stream.server.language.toLowerCase(java.util.Locale.ROOT);
+        boolean audioNoEs = StreamResolver.isJapanese(stream.server.language)
+                || !srvLang.matches(".*(latino|castellano|sub).*");
+        boolean serverHasEs = false;
+        for (String[] s : stream.subtitles) {
+            if (s[1].toLowerCase(java.util.Locale.ROOT).matches(".*(span|espa|lat|cast).*")) serverHasEs = true;
+        }
+        final String subsKey = item.type + ":" + item.id + ":" + season + ":" + episode;
+        final boolean wantOpenSubs = audioNoEs && !serverHasEs;
+        if (wantOpenSubs && !subsKey.equals(openSubsKey)) {
+            final int gen = loadGeneration;
+            final int s = season, e = episode;
+            showStatus("Buscando subtítulos en español…");
+            pool.execute(() -> {
+                final OpenSubs.Result r = OpenSubs.find(this, item.type, item.id, s, e);
+                ui.post(() -> {
+                    if (gen != loadGeneration || destroyed) return;
+                    openSubs = r;
+                    openSubsKey = subsKey;
+                    startStream(index, stream, positionMs);
+                });
+            });
+            return;
+        }
         current = index;
         everReady = false;
         rebuffers.clear();
@@ -537,8 +572,21 @@ public class VodPlayerActivity extends Activity {
 
         // Subtítulos aparte del servidor: se cargan con las mismas cabeceras.
         // Con el idioma "Subtitulado" se activan solos; si no, quedan en CC.
-        boolean wantSubs = stream.server.language.toLowerCase(java.util.Locale.ROOT).contains("sub");
+        boolean wantSubs = srvLang.contains("sub");
+        String textLang = "es";
         List<MediaItem.SubtitleConfiguration> subs = new ArrayList<>();
+        if (wantOpenSubs && openSubs != null) {
+            // Los de OpenSubtitles se encienden solos (se apagan con ▲ → CC)
+            boolean eng = "eng".equals(openSubs.lang);
+            textLang = eng ? "en" : "es";
+            wantSubs = true;
+            subs.add(new MediaItem.SubtitleConfiguration.Builder(android.net.Uri.fromFile(openSubs.file))
+                    .setMimeType(androidx.media3.common.MimeTypes.TEXT_VTT)
+                    .setLanguage(textLang)
+                    .setLabel(eng ? "Inglés (OpenSubtitles)" : "Español (OpenSubtitles)")
+                    .setSelectionFlags(androidx.media3.common.C.SELECTION_FLAG_DEFAULT)
+                    .build());
+        }
         for (String[] s : stream.subtitles) {
             subs.add(new MediaItem.SubtitleConfiguration.Builder(android.net.Uri.parse(s[0]))
                     .setMimeType(s[0].contains(".srt") ? androidx.media3.common.MimeTypes.APPLICATION_SUBRIP
@@ -552,11 +600,13 @@ public class VodPlayerActivity extends Activity {
                 .setMimeType(androidx.media3.common.MimeTypes.APPLICATION_M3U8)
                 .setSubtitleConfigurations(subs).build();
         player.setTrackSelectionParameters(player.getTrackSelectionParameters().buildUpon()
-                .setPreferredTextLanguage("es")
+                .setPreferredTextLanguage(textLang)
                 .setSelectUndeterminedTextLanguage(wantSubs)
                 .build());
         // DefaultMediaSourceFactory: además del HLS, monta los subtítulos aparte
-        player.setMediaSource(new androidx.media3.exoplayer.source.DefaultMediaSourceFactory(http)
+        // DefaultDataSource: el HLS por http y los subtítulos de OpenSubtitles desde el caché
+        player.setMediaSource(new androidx.media3.exoplayer.source.DefaultMediaSourceFactory(
+                new androidx.media3.datasource.DefaultDataSource.Factory(this, http))
                 .createMediaSource(media));
         subtitle.setText(subtitle.getText().toString().replace("   ·   💬 subtítulos (CC)", "")
                 + (subs.isEmpty() ? "" : "   ·   💬 subtítulos (CC)"));
@@ -640,6 +690,13 @@ public class VodPlayerActivity extends Activity {
         return new ArrayList<>(hs);
     }
 
+    private boolean hasTextTracks() {
+        for (androidx.media3.common.Tracks.Group g : player.getCurrentTracks().getGroups()) {
+            if (g.getType() == androidx.media3.common.C.TRACK_TYPE_TEXT) return true;
+        }
+        return false;
+    }
+
     private void refreshServerList() {
         panelRows.clear();
         List<String> labels = new ArrayList<>();
@@ -660,6 +717,17 @@ public class VodPlayerActivity extends Activity {
         for (int i = 0; i < servers.size(); i++) {
             panelRows.add(servers.get(i));
             labels.add((i == current ? "▶ " : "    ") + servers.get(i).label());
+        }
+        // Subtítulos sí / no (algunos videos ya los traen grabados en la imagen)
+        if (player != null && hasTextTracks()) {
+            boolean off = player.getTrackSelectionParameters().disabledTrackTypes
+                    .contains(androidx.media3.common.C.TRACK_TYPE_TEXT);
+            panelRows.add("💬 SUBTÍTULOS");
+            labels.add("💬  SUBTÍTULOS");
+            panelRows.add(Boolean.TRUE);
+            labels.add((off ? "    " : "▶ ") + "Activados");
+            panelRows.add(Boolean.FALSE);
+            labels.add((off ? "▶ " : "    ") + "Desactivados");
         }
         serverList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_channel, R.id.channelName, labels) {
             @Override
