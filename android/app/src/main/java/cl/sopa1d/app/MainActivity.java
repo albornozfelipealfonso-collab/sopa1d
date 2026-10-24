@@ -333,6 +333,13 @@ public class MainActivity extends Activity {
 
     /** En TV es fácil salir sin querer apretando Atrás de más: se pide doble pulsación. */
     private void confirmExit() {
+        // Abierta desde la pantalla de TV (Juegos, Web...): Atrás no sale de la
+        // app sino que vuelve a esa pantalla, así que no hay nada que confirmar.
+        // Antes pedía "Pulsa Atrás otra vez para salir" y parecía que iba a cerrarla.
+        if (!isTaskRoot()) {
+            finish();
+            return;
+        }
         long now = System.currentTimeMillis();
         if (now - lastBackPress < 2000) {
             finish();

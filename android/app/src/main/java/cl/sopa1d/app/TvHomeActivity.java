@@ -320,7 +320,7 @@ public class TvHomeActivity extends Activity {
         else if (id == R.id.navSearch) {
             lastQuery = "";
             rowsAdapter.setRows(new ArrayList<>());
-            showMessage("Escribe arriba lo que quieres ver");
+            showMessage("Escribe lo que quieres ver: película, serie o anime");
         }
         rows.scrollToPosition(0);
     }
@@ -364,6 +364,19 @@ public class TvHomeActivity extends Activity {
     }
 
     private void showMessage(String text) {
+        // En Buscar el aviso va en la portada, sobre el buscador. El mensaje
+        // normal está centrado en la pantalla y caía encima del cuadro de texto;
+        // además la portada seguía mostrando el último título visto en otra
+        // sección (p. ej. "Adivina la canción").
+        if (searchBox.getVisibility() == View.VISIBLE) {
+            message.setVisibility(View.GONE);
+            heroTitle.setText("🔍 Buscar");
+            heroChips.removeAllViews();
+            heroOverview.setText(text);
+            heroImage = null;
+            heroBackdrop.setImageDrawable(null);
+            return;
+        }
         message.setText(text);
         message.setVisibility(View.VISIBLE);
     }
