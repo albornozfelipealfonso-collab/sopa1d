@@ -288,13 +288,25 @@
         android:background="#EE07080C"
         android:visibility="gone">
 
+        <!-- Categoría de la lista: OK (o ◀ ▶) pasa a la siguiente; ▼ entra a los canales -->
         <TextView
+            android:id="@+id/channelCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="18dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="14dp"
+            android:paddingTop="12dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="12dp"
             android:text="@string/channels_title"
-            android:textColor="#E11D48"
-            android:textSize="18sp"
+            android:textColor="@color/button_text"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <!-- Celular: filtrar entre miles de canales escribiendo el nombre -->

@@ -33,6 +33,17 @@ final class Favorites {
         }
     }
 
+    /** Todas las URLs favoritas de una vez: para filtrar miles de canales sin releer la lista por cada uno. */
+    static java.util.Set<String> urls(Context c) {
+        JSONArray arr = load(c);
+        java.util.Set<String> out = new java.util.HashSet<>();
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject o = arr.optJSONObject(i);
+            if (o != null) out.add(o.optString("url"));
+        }
+        return out;
+    }
+
     static boolean contains(Context c, String url) {
         JSONArray arr = load(c);
         for (int i = 0; i < arr.length(); i++) {

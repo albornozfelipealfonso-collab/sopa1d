@@ -304,8 +304,78 @@ public class PlayerActivity extends Activity {
             if (shown.size() >= 400 && !q.isEmpty()) break;
         }
         channelAdapter.clear();
-        channelAdapter.addAll(q.isEmpty() ? all : shown);
+        // Sin texto, se vuelve a la categoría elegida (no a los miles de canales)
+        channelAdapter.addAll(q.isEmpty() ? categoryChannels() : shown);
         list.setSelection(0);
+    }
+
+    // ------------------------------------------------------- categorías
+
+    private static final String CAT_ALL = "Todos";
+    private static final String CAT_FAVS = "★ Mis canales";
+    private TextView categoryView;
+    private final List<String> categories = new ArrayList<>();
+    private int categoryIndex;
+
+    /** Todos, Mis canales (si hay) y las categorías de la lista, de más a menos canales. */
+    private void buildCategories() {
+        java.util.Map<String, Integer> count = new java.util.HashMap<>();
+        for (Channel ch : ChannelStore.get()) {
+            if (ch.category == null || ch.category.isEmpty()) continue;
+            Integer n = count.get(ch.category);
+            count.put(ch.category, n == null ? 1 : n + 1);
+        }
+        List<String> sorted = new ArrayList<>(count.keySet());
+        sorted.sort((a, b) -> count.get(b) - count.get(a));
+
+        String previous = categories.isEmpty()
+                ? getSharedPreferences("player", MODE_PRIVATE).getString("category", CAT_ALL)
+                : categories.get(categoryIndex);
+        categories.clear();
+        categories.add(CAT_ALL);
+        categories.add(CAT_FAVS);
+        categories.addAll(sorted);
+        categoryIndex = Math.max(0, categories.indexOf(previous));
+    }
+
+    private String currentCategory() {
+        return categories.isEmpty() ? CAT_ALL : categories.get(categoryIndex);
+    }
+
+    /** Canales de la categoría elegida, en el orden de la lista completa. */
+    private List<Channel> categoryChannels() {
+        String cat = currentCategory();
+        List<Channel> all = ChannelStore.get();
+        if (CAT_ALL.equals(cat)) return new ArrayList<>(all);
+        List<Channel> out = new ArrayList<>();
+        java.util.Set<String> favs = CAT_FAVS.equals(cat) ? Favorites.urls(this) : null;
+        for (Channel ch : all) {
+            boolean in = favs != null ? favs.contains(ch.url) : cat.equals(ch.category);
+            if (in) out.add(ch);
+        }
+        return out;
+    }
+
+    /** OK o ◀ ▶ sobre la categoría: pasar a la siguiente/anterior y filtrar la lista. */
+    private void cycleCategory(int delta) {
+        if (categories.isEmpty()) return;
+        int n = categories.size();
+        // "Mis canales" vacío se salta: mostraría una lista sin nada
+        for (int i = 0; i < n; i++) {
+            categoryIndex = ((categoryIndex + delta) % n + n) % n;
+            if (!CAT_FAVS.equals(currentCategory()) || !categoryChannels().isEmpty()) break;
+        }
+        getSharedPreferences("player", MODE_PRIVATE).edit().putString("category", currentCategory()).apply();
+        applyCategory();
+    }
+
+    private void applyCategory() {
+        List<Channel> shown = categoryChannels();
+        channelAdapter.clear();
+        channelAdapter.addAll(shown);
+        list.setSelection(0);
+        categoryView.setText("📂  " + currentCategory() + "  ·  " + shown.size()
+                + (isTv ? "   ◀ OK ▶" : "   (toca para cambiar)"));
     }
 
     private void setupPanel() {
@@ -340,6 +410,19 @@ public class PlayerActivity extends Activity {
         };
         channelAdapter = adapter;
         list.setAdapter(adapter);
+
+        // Selector de categoría arriba de la lista: OK y ◀ ▶ la cambian,
+        // ▼ baja a los canales (búsqueda de foco normal).
+        categoryView = findViewById(R.id.channelCategory);
+        categoryView.setOnClickListener(v -> cycleCategory(1));
+        categoryView.setOnKeyListener((v, keyCode, e) -> {
+            if (e.getAction() != KeyEvent.ACTION_DOWN) return false;
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) { cycleCategory(1); return true; }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) { cycleCategory(-1); return true; }
+            return false;
+        });
+        buildCategories();
+        applyCategory();
         // Mantener OK (TV) o presionado (celular) sobre un canal: favorito
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             toggleFavorite(channelAdapter.getItem(position));
@@ -367,7 +450,9 @@ public class PlayerActivity extends Activity {
                 if (channelAdapter.getItem(i) == cur) { pos = i; break; }
             }
             list.setSelection(pos != null ? pos : 0);
-            list.requestFocus();
+            // En la TV el foco empieza en la categoría: OK la cambia y ▼ baja
+            // a los canales (ya posicionados en el actual, si está en ella).
+            if (isTv) categoryView.requestFocus(); else list.requestFocus();
         } else {
             // Al cerrar: búsqueda limpia y teclado fuera, para la próxima vez
             EditText search = findViewById(R.id.channelSearch);
@@ -836,6 +921,23 @@ public class PlayerActivity extends Activity {
 
     private void switchBy(int delta) {
         if (ChannelStore.size() == 0) return;
+        // Con una categoría elegida, ▲ ▼ zapean solo dentro de ella
+        if (!CAT_ALL.equals(currentCategory())) {
+            List<Channel> cat = categoryChannels();
+            Channel cur = ChannelStore.at(index);
+            int pos = cat.indexOf(cur);
+            if (!cat.isEmpty()) {
+                // Si el canal actual no es de la categoría (se eligió otra
+                // mientras se veía este), ▲ entra por el primero y ▼ por el último.
+                Channel next = pos < 0
+                        ? cat.get(delta > 0 ? 0 : cat.size() - 1)
+                        : cat.get(((pos + delta) % cat.size() + cat.size()) % cat.size());
+                List<Channel> all = ChannelStore.get();
+                for (int i = 0; i < all.size(); i++) {
+                    if (all.get(i) == next) { index = i; openChannel(); return; }
+                }
+            }
+        }
         index = index + delta;
         int n = ChannelStore.size();
         index = ((index % n) + n) % n;
