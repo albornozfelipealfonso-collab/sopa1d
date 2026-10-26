@@ -2765,6 +2765,15 @@
                 </div>
                 <div class="tv-shelf-scroll" id="tvNewsShelfScroll"></div>
             </div>
+
+            <!-- CARRUSEL CANALES NO ESTABLES -->
+            <div class="tv-shelf" style="margin-bottom:28px;">
+                <div class="tv-shelf-header">
+                    <h3><span style="color:#f59e0b;">⚠️</span> Canales No Estables (Reemisión / Servidores Alternativos)</h3>
+                    <span class="tv-shelf-link" onclick="quickFilterTvBy('CANALES NO ESTABLES')">Ver todos los canales no estables →</span>
+                </div>
+                <div class="tv-shelf-scroll" id="tvUnstableShelfScroll"></div>
+            </div>
         </div>
 
         <!-- SECCIÓN EXPLORADOR COMPLETO DE CANALES -->
@@ -2826,6 +2835,7 @@
                 <button class="channel-pill" onclick="setTvExplorerCategory('Infantil', this)">👶 Infantiles</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Música', this)">🎶 Música</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Cultura', this)">🔬 Cultura</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('CANALES NO ESTABLES', this)" style="border-color:rgba(245,158,11,0.5);color:#fbbf24;">⚠️ Canales No Estables</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('favs', this)">⭐ Favoritos</button>
             </div>
 
@@ -6771,6 +6781,13 @@
             const newsScroll = document.getElementById('tvNewsShelfScroll');
             if (newsScroll) {
                 newsScroll.innerHTML = newsList.map(ch => renderShelfCard(ch)).join('');
+            }
+
+            // Canales No Estables (Reemisión)
+            const unstableList = allLiveChannels.filter(c => c.category === 'CANALES NO ESTABLES').slice(0, 32);
+            const unstableScroll = document.getElementById('tvUnstableShelfScroll');
+            if (unstableScroll) {
+                unstableScroll.innerHTML = unstableList.map(ch => renderShelfCard(ch)).join('');
             }
         }
 
