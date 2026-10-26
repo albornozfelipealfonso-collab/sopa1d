@@ -45,6 +45,22 @@
     "fixAudio": true
   },
   {
+    "id": "ch_dsports_hd",
+    "name": "DSports HD (DirecTV Sports)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DSports_logo.svg/512px-DSports_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0lx/index.m3u8"
+  },
+  {
+    "id": "ch_bein_xtra_es_1080",
+    "name": "beIN SPORTS XTRA en Español HD (1080p)",
+    "logo": "https://i.imgur.com/V562tpO.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-esp-xumo.amagi.tv/playlistR1080p.m3u8"
+  },
+  {
     "id": "ch_bein_xtra_es",
     "name": "beIN SPORTS XTRA en Español",
     "logo": "https://i.imgur.com/V562tpO.png",
@@ -69,6 +85,14 @@
     "url": "https://aegis-cloudfront-1.tubi.video/01f6c149-449b-4248-8bda-2278799205ec/playlist.m3u8"
   },
   {
+    "id": "ch_bein_xtra_en_1080",
+    "name": "beIN SPORTS XTRA HD (1080p)",
+    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-xtra-bein.amagi.tv/playlistR1080p.m3u8"
+  },
+  {
     "id": "ch_bein_xtra_en",
     "name": "beIN SPORTS XTRA",
     "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
@@ -83,6 +107,38 @@
     "category": "Deportes",
     "country": "Internacional",
     "url": "https://bein-xtra-xumo.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_bein_sports_cf",
+    "name": "beIN SPORTS HD (English CloudFront)",
+    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://d9ssxzmclhfo4.cloudfront.net/bein_sports.m3u8"
+  },
+  {
+    "id": "ch_bein_sports_firetv",
+    "name": "beIN SPORTS (FireTV)",
+    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-beinxtrasports-firetv.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_movistar_deportes_hd",
+    "name": "Movistar Deportes HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Movistar_Deportes_logo.svg/512px-Movistar_Deportes_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07o/index.m3u8"
+  },
+  {
+    "id": "ch_espn_premium_hd2",
+    "name": "ESPN Premium HD (Señal Alternativa)",
+    "logo": "https://i.imgur.com/Vtk2cGI.png",
+    "category": "Deportes",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a03w/index.m3u8"
   },
   {
     "id": "ch_espn1_latam",
@@ -183,16 +239,6 @@
     "country": "Chile",
     "url": "https://streaming.onnethn.com/FOX_SPORTS3_HD/playlist.m3u8",
     "fixAudio": true
-  },
-  {
-    "id": "ch_dsports_hd",
-    "name": "DSports HD (DirecTV Sports)",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DSports_logo.svg/512px-DSports_logo.svg.png",
-    "category": "Deportes",
-    "country": "Chile",
-    "url": "http://38.187.7.252:8000/play/a03d/index.m3u8",
-    "fixAudio": true,
-    "dead": true
   },
   {
     "id": "ch_claro_sports",
