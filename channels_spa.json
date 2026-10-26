@@ -1,5 +1,32 @@
 [
   {
+    "id": "ch_tnt_sports_cl1",
+    "name": "TNT Sports Premium HD (Chile 1)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a03i/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl2",
+    "name": "TNT Sports Premium HD (Señal 2 60fps)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0o9/index.m3u8?hls",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl3",
+    "name": "TNT Sports Premium HD (Señal 3 Backup)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://205.235.6.29:8000/play/a104/index.m3u8?hls",
+    "fixAudio": true
+  },
+  {
     "id": "ch_tnt_sports_cl4",
     "name": "TNT Sports HD (Argentina)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
@@ -90,11 +117,98 @@
     "url": "https://bein-beinxtrasports-firetv.amagi.tv/playlist.m3u8"
   },
   {
-    "id": "ch_dazn_combat",
     "name": "DAZN Combat HD",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/DAZN_Logo.svg/512px-DAZN_Logo.svg.png",
     "url": "https://jmp2.uk/plu-64d626ac9b414d000820e2fc.m3u8",
     "category": "Deportes"
+  },
+  {
+    "id": "ch_ast_6488113cfe",
+    "name": "13C (Chile)",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a02o/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fe4887b0c6",
+    "name": "A G WEST",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0c9/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5dd79c062c",
+    "name": "A H L1MAX",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a0bl/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d26dfeed7a",
+    "name": "A&E HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6e4f8da45a",
+    "name": "AMC HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Amc_logo.svg/512px-Amc_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a033/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e9ed66301a",
+    "name": "AMC SERIES",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Amc_logo.svg/512px-Amc_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00p/index.m3u8"
+  },
+  {
+    "id": "ch_ast_75fb39de31",
+    "name": "ATV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a019/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4df0d821be",
+    "name": "AXN HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/AXN_logo_2015.svg/512px-AXN_logo_2015.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2d3a2f75a2",
+    "name": "Adult Swim",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3d43edcdfd",
+    "name": "America TV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a00f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f9ec05b9f2",
+    "name": "Animal Planet HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Animal_Planet_logo_2018.svg/512px-Animal_Planet_logo_2018.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a043/index.m3u8"
   },
   {
     "id": "ch_rock_01cdc1ae74",
@@ -279,6 +393,2734 @@
     "category": "Música",
     "country": "Internacional",
     "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/6465fef47cb4b100086ee7bd/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_ast_a96ea06f1c",
+    "name": "Antena 3",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Antena_3_logo_2017.svg/512px-Antena_3_logo_2017.svg.png",
+    "category": "General",
+    "country": "España",
+    "url": "http://190.108.83.69:8000/play/a01e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_7937de59e4",
+    "name": "Atres Series HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0al/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2de6e5c6d2",
+    "name": "BBC World",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f03caf3326",
+    "name": "BETHEL TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a040/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e7b00fd527",
+    "name": "Baby TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a022/index.m3u8"
+  },
+  {
+    "id": "ch_ast_14d365905a",
+    "name": "CCTV-CGTN",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a07h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_09b4244b0d",
+    "name": "Chilevisión HD (CHV)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Chilevisi%C3%B3n_logo_%282018%29.svg/512px-Chilevisi%C3%B3n_logo_%282018%29.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a03g/index.m3u8"
+  },
+  {
+    "id": "ch_ast_83dbcdaaca",
+    "name": "CNN Chile HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/CNN_Chile_logo_2018.svg/512px-CNN_Chile_logo_2018.svg.png",
+    "category": "Noticias",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a0cs/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ba446cd72d",
+    "name": "CNN Espanol",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a023/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9084f02003",
+    "name": "Canal 13 HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Canal_13_logo_2018.svg/512px-Canal_13_logo_2018.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a02v/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e8772a4ce6",
+    "name": "Canal N",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07r/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ccce79d9c7",
+    "name": "Cartoon Network HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cartoon_Network_2010_logo.svg/512px-Cartoon_Network_2010_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a08g/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5a60eb2437",
+    "name": "Cartoonito",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Cartoonito_logo_2021.svg/512px-Cartoonito_logo_2021.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0aa/index.m3u8"
+  },
+  {
+    "id": "ch_ast_50ac5601ca",
+    "name": "Cinecanal HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Cinecanal_2016.svg/512px-Cinecanal_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a048/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2fac07d6a0",
+    "name": "Cinemax",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Cinemax_logo_2011.svg/512px-Cinemax_logo_2011.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a06s/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ca8d69da79",
+    "name": "Comedy Central HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a528acfb3f",
+    "name": "DHE HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03v/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3acdff1a21",
+    "name": "DW Espanol",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01l/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e4b297d237",
+    "name": "De PelŦcula",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a06o/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0f85f0ef9d",
+    "name": "Discovery Channel HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a044/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ee74110929",
+    "name": "Discovery Kids HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Discovery_Kids_logo_%282021%29.svg/512px-Discovery_Kids_logo_%282021%29.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0bn/index.m3u8"
+  },
+  {
+    "id": "ch_ast_71f7703f32",
+    "name": "Discovery Science",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02b/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1e477d368a",
+    "name": "Discovery Theater HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ffec063ea1",
+    "name": "Discovery Turbo",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a026/index.m3u8"
+  },
+  {
+    "id": "ch_ast_effe972307",
+    "name": "Discovery World HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a036/index.m3u8"
+  },
+  {
+    "id": "ch_ast_016e15cd6d",
+    "name": "Disney HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e17a747712",
+    "name": "Disney Junior",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a025/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0c8cff822f",
+    "name": "E! Entertainment TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_54b7a58397",
+    "name": "ESPN 2 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0an/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5490108edd",
+    "name": "ESPN 3 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a039/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5154ac0e57",
+    "name": "ESPN 4HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8425e5ffaa",
+    "name": "ESPN 5HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a032/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d5cdf470c7",
+    "name": "ESPN 6HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_85f32f3f32",
+    "name": "ESPN 7HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a049/index.m3u8"
+  },
+  {
+    "id": "ch_ast_25a4a75c50",
+    "name": "ESPN HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03s/index.m3u8"
+  },
+  {
+    "id": "ch_ast_10b5efeeed",
+    "name": "ESPN Premium HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b5739161ff",
+    "name": "ETC TV (Anime y Gaming)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a08c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3cc61eb315",
+    "name": "EWTN",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a02h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_bb56976e12",
+    "name": "El Trece",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Eltrece_logo_2021.svg/512px-Eltrece_logo_2021.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a01d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_675c385822",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3cd0426559",
+    "name": "Europa Europa",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_13da25449a",
+    "name": "Exitosa TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07s/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cbcb46457b",
+    "name": "FX HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/FX_International_logo.svg/512px-FX_International_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04i/index.m3u8"
+  },
+  {
+    "id": "ch_ast_266efe9e25",
+    "name": "Film&Arts",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00n/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1d28fa6264",
+    "name": "Food Network",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a08e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_74781d9688",
+    "name": "France 24",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d4aee5cc4c",
+    "name": "G DS",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cb/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3d2bb8e03c",
+    "name": "G LA KARIBEÑA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c658f834f1",
+    "name": "GLOBAL",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01b/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9b63d85464",
+    "name": "Golden Edge",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Canal_Golden_2019.png/512px-Canal_Golden_2019.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8d141e12a3",
+    "name": "Golden HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Canal_Golden_2019.png/512px-Canal_Golden_2019.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00i/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e4124a3902",
+    "name": "H AMERICA TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a097/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3075ebc8cc",
+    "name": "H ATV SUR HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a0cq/index.m3u8"
+  },
+  {
+    "id": "ch_ast_95890e2cb9",
+    "name": "H ATV+ HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a0cp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_03e10f9bd6",
+    "name": "H LATELE HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cr/index.m3u8"
+  },
+  {
+    "id": "ch_ast_270274f0e5",
+    "name": "H LATINA HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a09a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_67f3aa5938",
+    "name": "H TV PERU",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a092/index.m3u8"
+  },
+  {
+    "id": "ch_ast_46e83f2c74",
+    "name": "H- GOURMET HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0d2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1726c95b78",
+    "name": "HBO 2",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cx/index.m3u8"
+  },
+  {
+    "id": "ch_ast_32dfb30b0d",
+    "name": "HBO Family HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03x/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8621d71405",
+    "name": "HBO HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a035/index.m3u8"
+  },
+  {
+    "id": "ch_ast_289411d9ce",
+    "name": "HBO MUNDI",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_44a686157d",
+    "name": "HBO POP HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_134174d377",
+    "name": "HBO Plus",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a06b/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4a43cc0f88",
+    "name": "HBO Signature",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a01g/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8700eec26d",
+    "name": "HBO XTREME HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_74482a18cd",
+    "name": "HEI HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a072/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b0b3fcca69",
+    "name": "HGTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8e1d1c2ac2",
+    "name": "HOLA TV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a073/index.m3u8"
+  },
+  {
+    "id": "ch_ast_db7e208e35",
+    "name": "HTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00q/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cf2fa8f0e7",
+    "name": "History 2",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/History_2021.svg/512px-History_2021.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_83b09feeca",
+    "name": "History Channel HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/History_2021.svg/512px-History_2021.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a045/index.m3u8"
+  },
+  {
+    "id": "ch_ast_814a60c9d4",
+    "name": "Home & Health HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a08k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8d67d37784",
+    "name": "ID HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3d883a77a4",
+    "name": "Kanal D Drama",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a084/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3a8c485a6f",
+    "name": "L1",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a08s/index.m3u8"
+  },
+  {
+    "id": "ch_ast_df701bcfd7",
+    "name": "L1 MAX",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Liga_1_Max_logo.png/512px-Liga_1_Max_logo.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a083/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cdfb6d5059",
+    "name": "Las Estrellas HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Las_Estrellas_logo.svg/512px-Las_Estrellas_logo.svg.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://190.108.83.69:8000/play/a09l/index.m3u8"
+  },
+  {
+    "id": "ch_ast_456472b9ce",
+    "name": "Latina HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a00g/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e19cc4cd4c",
+    "name": "Lifetime",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02i/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cc13d06185",
+    "name": "Love Nature",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a085/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0b2709acf7",
+    "name": "Mega HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mega_logo_2020.svg/512px-Mega_logo_2020.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a03m/index.m3u8"
+  },
+  {
+    "id": "ch_ast_15821e03f9",
+    "name": "MTV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e535f29510",
+    "name": "Movistar Deportes",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Movistar_Deportes_logo.svg/512px-Movistar_Deportes_logo.svg.png",
+    "category": "Deportes",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a07o/index.m3u8"
+  },
+  {
+    "id": "ch_ast_456e1ca894",
+    "name": "NTN 24 Horas",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/24_Horas_Chile_logo_2020.svg/512px-24_Horas_Chile_logo_2020.svg.png",
+    "category": "Noticias",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a00r/index.m3u8"
+  },
+  {
+    "id": "ch_ast_732290b845",
+    "name": "Nat Geo HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Channel_logo.svg/512px-National_Geographic_Channel_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a046/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f42974d510",
+    "name": "Nick HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Nickelodeon_2009_logo.svg/512px-Nickelodeon_2009_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03l/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fd95d51dcf",
+    "name": "Nuestra Tele",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_aa5ca4de6b",
+    "name": "OROMAR TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a017/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f3be3a706d",
+    "name": "Panamericana",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a018/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1ca9842c07",
+    "name": "Pasiones HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_28688ca01c",
+    "name": "Playboy HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02p/index.m3u8"
+  },
+  {
+    "id": "ch_ast_04b35a07de",
+    "name": "Plim Plim TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07n/index.m3u8"
+  },
+  {
+    "id": "ch_ast_16f61b1aa2",
+    "name": "Plus TV Life",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a086/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a44e947f59",
+    "name": "R ALPHA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a09c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_98d09c317a",
+    "name": "R CHARAPA TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a067/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0a7c9fb713",
+    "name": "R Estacion Tv",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_83003c5950",
+    "name": "R Nex Tv",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a06r/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c7a7615995",
+    "name": "R ORIENTAL",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a05y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e077313fdd",
+    "name": "R PREMIUM GO",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a082/index.m3u8"
+  },
+  {
+    "id": "ch_ast_56b3372cfb",
+    "name": "R PUCALLPA TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a05z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8428d20679",
+    "name": "R UCAYALINA TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a060/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fc8a1e1152",
+    "name": "RADIO BETHEL",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a041/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4ff9745466",
+    "name": "RPP",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a01a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5e7548f84f",
+    "name": "SONY CHANNEL HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Sony_Channel_logo.svg/512px-Sony_Channel_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b9d87ad368",
+    "name": "STAR CHANNEL HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Star_Channel_2021.svg/512px-Star_Channel_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6b8743a7e9",
+    "name": "Sextreme",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3b43134b2e",
+    "name": "Sony Movies",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Sony_Channel_logo.svg/512px-Sony_Channel_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a08j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f36434e3ca",
+    "name": "Space HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Space_logo_2023.svg/512px-Space_logo_2023.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_26070f4aa1",
+    "name": "Stingray Concerts HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ba1a8a530c",
+    "name": "Studio Universal HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a074/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3f61773745",
+    "name": "Sun Channel HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a03z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3fb82c1106",
+    "name": "T NOVA TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a07y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_969decbc58",
+    "name": "T PBO HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a05r/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a34c40d4e3",
+    "name": "TCM",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/TCM_logo_2021.svg/512px-TCM_logo_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_995cf95bfe",
+    "name": "TLC",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_92398ba669",
+    "name": "TNT HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a047/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c52da90c5a",
+    "name": "TNT Novelas HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a038/index.m3u8"
+  },
+  {
+    "id": "ch_ast_12f478d51b",
+    "name": "TNT Series HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://190.108.83.69:8000/play/a034/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9ed55d70ab",
+    "name": "TVE",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "España",
+    "url": "http://190.108.83.69:8000/play/a08m/index.m3u8"
+  },
+  {
+    "id": "ch_ast_68c63f5e57",
+    "name": "TVN HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Televisi%C3%B3n_Nacional_de_Chile_logo_2020.svg/512px-Televisi%C3%B3n_Nacional_de_Chile_logo_2020.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://190.108.83.69:8000/play/a03f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ac760156cc",
+    "name": "TelefØ",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a08l/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e242f8f3bf",
+    "name": "Telemundo",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Telemundo_logo_2018.svg/512px-Telemundo_logo_2018.svg.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ea9ca6dfea",
+    "name": "Tlnovelas",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a06n/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0fa7dd7966",
+    "name": "Tooncast",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Tooncast_logo.svg/512px-Tooncast_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a02e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_bf4de88306",
+    "name": "UNIVERSAL CHANNEL HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a031/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f5d8291cde",
+    "name": "USA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00v/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cb8295aefc",
+    "name": "Universal Cinema SD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cz/index.m3u8"
+  },
+  {
+    "id": "ch_ast_47a74c4bd8",
+    "name": "Universal Comedy SD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0d0/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b4f0e23662",
+    "name": "Universal Premiere SD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a0cy/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0a92770b3c",
+    "name": "Venus",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a013/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c6765d5539",
+    "name": "Vía X Esports",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a00u/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e90405cb8c",
+    "name": "Warner Channel HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Warner_Channel_logo_2023.svg/512px-Warner_Channel_logo_2023.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://190.108.83.69:8000/play/a04b/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3202c722b7",
+    "name": "Willax",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://190.108.83.69:8000/play/a07t/index.m3u8"
+  },
+  {
+    "id": "ch_ast_590ce3310f",
+    "name": "TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lb/index.m3u8"
+  },
+  {
+    "id": "ch_ast_739ef95185",
+    "name": "A&E",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00l/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ae0781d3c8",
+    "name": "AMC HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Amc_logo.svg/512px-Amc_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ji/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4aa43b8e15",
+    "name": "AMC Series",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Amc_logo.svg/512px-Amc_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ql/index.m3u8"
+  },
+  {
+    "id": "ch_ast_be49f2b4f6",
+    "name": "ANTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0l9/index.m3u8"
+  },
+  {
+    "id": "ch_ast_71a18ced99",
+    "name": "AXN HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/AXN_logo_2015.svg/512px-AXN_logo_2015.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0nz/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5334798ba8",
+    "name": "Adult Swim",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6d28b9c975",
+    "name": "Alba TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3191180f49",
+    "name": "America TV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0q0/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ec88c53261",
+    "name": "Animal Planet HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Animal_Planet_logo_2018.svg/512px-Animal_Planet_logo_2018.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0js/index.m3u8"
+  },
+  {
+    "id": "ch_ast_92ecca128a",
+    "name": "Avila TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lg/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c4e668137c",
+    "name": "Baby TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_955e69e40a",
+    "name": "Bolivia TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0m4/index.m3u8"
+  },
+  {
+    "id": "ch_ast_938d85c896",
+    "name": "CANAL I",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lo/index.m3u8"
+  },
+  {
+    "id": "ch_ast_61825bee7a",
+    "name": "CCS Movies",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a005/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fffc26c195",
+    "name": "CGTN",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0lq/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ef9dde2e25",
+    "name": "CGTN Documentary",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0lr/index.m3u8"
+  },
+  {
+    "id": "ch_ast_269929d9ca",
+    "name": "Chilevisión HD (CHV)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Chilevisi%C3%B3n_logo_%282018%29.svg/512px-Chilevisi%C3%B3n_logo_%282018%29.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0od/index.m3u8"
+  },
+  {
+    "id": "ch_ast_735eecadcb",
+    "name": "CNN Chile HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/CNN_Chile_logo_2018.svg/512px-CNN_Chile_logo_2018.svg.png",
+    "category": "Noticias",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0qi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2281dfaf90",
+    "name": "CNN Español",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a009/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2318393d03",
+    "name": "Canal 13 HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Canal_13_logo_2018.svg/512px-Canal_13_logo_2018.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0qc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_af641c0f98",
+    "name": "24 Horas Noticias (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/24_Horas_Chile_logo_2020.svg/512px-24_Horas_Chile_logo_2020.svg.png",
+    "category": "Noticias",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0ki/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1ecdc37371",
+    "name": "Canal Publico de Argentina",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a00e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6cd5a02912",
+    "name": "Canal de las Estrellas",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Las_Estrellas_logo.svg/512px-Las_Estrellas_logo.svg.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://200.59.191.177:8000/play/a0pc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_50232419fd",
+    "name": "Caracol",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Caracol_Televisi%C3%B3n_logo_2019.svg/512px-Caracol_Televisi%C3%B3n_logo_2019.svg.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.59.191.177:8000/play/a001/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d3a69f6702",
+    "name": "Cartoon Network HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cartoon_Network_2010_logo.svg/512px-Cartoon_Network_2010_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0jm/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b2e5b920e2",
+    "name": "Cartoonito",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Cartoonito_logo_2021.svg/512px-Cartoonito_logo_2021.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_79823242f3",
+    "name": "Cinecanal HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Cinecanal_2016.svg/512px-Cinecanal_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0px/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0710afc494",
+    "name": "Cinemax HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Cinemax_logo_2011.svg/512px-Cinemax_logo_2011.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pk/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f825dcfd53",
+    "name": "City Tv",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.59.191.177:8000/play/a00u/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d3008e4887",
+    "name": "Clave",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0m7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6dbe950795",
+    "name": "Colombeia",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0la/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8a8cc6d435",
+    "name": "Comedy Central HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pn/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3019e420ef",
+    "name": "ConCiencia",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ld/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2addb057ff",
+    "name": "DE PELICULAS",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qa/index.m3u8"
+  },
+  {
+    "id": "ch_ast_19c461d258",
+    "name": "DHE HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0km/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fc1aeef8ec",
+    "name": "DISNEY CH",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qu/index.m3u8"
+  },
+  {
+    "id": "ch_ast_dcdd41ec00",
+    "name": "Daystar",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cfc4a7814e",
+    "name": "Discovery H&H",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a04w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_64166bd5d0",
+    "name": "Discovery HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pb/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f517c59e08",
+    "name": "Discovery Kids",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Discovery_Kids_logo_%282021%29.svg/512px-Discovery_Kids_logo_%282021%29.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ox/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d803b5d60b",
+    "name": "Discovery Science",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qk/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cd9a8c660c",
+    "name": "Discovery Theater",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b535ff0985",
+    "name": "Discovery Turbo",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qs/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6ba223b5a0",
+    "name": "Discovery World HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pw/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8596b32f52",
+    "name": "Disney Junior",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00c/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6d0e4e1d96",
+    "name": "Distrito Comedia",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00b/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3031957bc3",
+    "name": "E! HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0k1/index.m3u8"
+  },
+  {
+    "id": "ch_ast_382583019f",
+    "name": "ESPN 2 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0o1/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f026229413",
+    "name": "ESPN 3",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0oh/index.m3u8"
+  },
+  {
+    "id": "ch_ast_46b65c38b3",
+    "name": "ESPN 4 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pz/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6d2b505e16",
+    "name": "ESPN 5",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p1/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ae82d00b9c",
+    "name": "ESPN 6",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0oi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0f2f6f9cc5",
+    "name": "ESPN 7",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_35391d8364",
+    "name": "ESPN HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0o2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2e61fc1e1a",
+    "name": "ESPN Premium HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ko/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ade6ad2848",
+    "name": "ETC TV (Anime y Gaming)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a00w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_469658bebe",
+    "name": "EWTN",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0m5/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c8a5ce91ed",
+    "name": "El Gourmet HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pa/index.m3u8"
+  },
+  {
+    "id": "ch_ast_75cc01e4ac",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0l3/index.m3u8"
+  },
+  {
+    "id": "ch_ast_85d3abefbe",
+    "name": "FX",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/FX_International_logo.svg/512px-FX_International_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p5/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d370c2fff7",
+    "name": "Film&Arts",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qr/index.m3u8"
+  },
+  {
+    "id": "ch_ast_490901dddb",
+    "name": "Food Network HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0k4/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ed5e03f550",
+    "name": "GLOBOVISION",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lh/index.m3u8"
+  },
+  {
+    "id": "ch_ast_bfc8ae101a",
+    "name": "GOLDEN EDGE",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Canal_Golden_2019.png/512px-Canal_Golden_2019.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0q8/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6486dbba0c",
+    "name": "Gamavision",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0mk/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e55392bcd9",
+    "name": "HBO Family HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pq/index.m3u8"
+  },
+  {
+    "id": "ch_ast_542db409cd",
+    "name": "HBO HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0py/index.m3u8"
+  },
+  {
+    "id": "ch_ast_43f9c840b1",
+    "name": "HBO PLUS",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00m/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c530bc1892",
+    "name": "HBO POP",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qv/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6127c0f853",
+    "name": "HBO XTREME HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/HBO_logo.svg/512px-HBO_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pr/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fd85dcf5ba",
+    "name": "HCH",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0m6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_547c264f98",
+    "name": "HGTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00x/index.m3u8"
+  },
+  {
+    "id": "ch_ast_805e2268e9",
+    "name": "HTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00n/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ba2c78a11c",
+    "name": "Hei",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00v/index.m3u8"
+  },
+  {
+    "id": "ch_ast_57390f6a87",
+    "name": "History 2 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/History_2021.svg/512px-History_2021.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0kp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4ee3546ed4",
+    "name": "Hola Tv",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a007/index.m3u8"
+  },
+  {
+    "id": "ch_ast_7767e8b0cb",
+    "name": "ID HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0po/index.m3u8"
+  },
+  {
+    "id": "ch_ast_80d240723d",
+    "name": "IVC",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5031a92504",
+    "name": "La Red HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/La_Red_logo_2019.svg/512px-La_Red_logo_2019.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0o4/index.m3u8"
+  },
+  {
+    "id": "ch_ast_245348467b",
+    "name": "Latina HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://200.59.191.177:8000/play/a0q2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_19c17c0d81",
+    "name": "Lifetime",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qe/index.m3u8"
+  },
+  {
+    "id": "ch_ast_267addcb4f",
+    "name": "Mega HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mega_logo_2020.svg/512px-Mega_logo_2020.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0pv/index.m3u8"
+  },
+  {
+    "id": "ch_ast_508278134b",
+    "name": "MTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a7b870691e",
+    "name": "Mega 2 (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mega_logo_2020.svg/512px-Mega_logo_2020.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a00t/index.m3u8"
+  },
+  {
+    "id": "ch_ast_45171549e7",
+    "name": "Meridiano",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_df73fda4d7",
+    "name": "NTN24",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a008/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a5a048c10f",
+    "name": "Nat Geo HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/National_Geographic_Channel_logo.svg/512px-National_Geographic_Channel_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0jf/index.m3u8"
+  },
+  {
+    "id": "ch_ast_dd268d9c60",
+    "name": "Nick HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Nickelodeon_2009_logo.svg/512px-Nickelodeon_2009_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0o5/index.m3u8"
+  },
+  {
+    "id": "ch_ast_654eb35f45",
+    "name": "Oromar",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ls/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e3fd9e5f12",
+    "name": "Pasiones HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pl/index.m3u8"
+  },
+  {
+    "id": "ch_ast_35de520d57",
+    "name": "Playboy",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p3/index.m3u8"
+  },
+  {
+    "id": "ch_ast_90aa401437",
+    "name": "RCN",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Canal_RCN_logo_2019.svg/512px-Canal_RCN_logo_2019.svg.png",
+    "category": "General",
+    "country": "Colombia",
+    "url": "http://200.59.191.177:8000/play/a004/index.m3u8"
+  },
+  {
+    "id": "ch_ast_18702c6879",
+    "name": "Radio YVKE Mundial",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a05x/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ad9217379c",
+    "name": "Radio Salsa Caribe",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a064/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5558afffe0",
+    "name": "Radio Sur",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a066/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b9d6560f54",
+    "name": "Red Advenir",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0me/index.m3u8"
+  },
+  {
+    "id": "ch_ast_485b25a4ca",
+    "name": "STAR CHANNEL HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Star_Channel_2021.svg/512px-Star_Channel_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a51392ff28",
+    "name": "Show Ven",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lf/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ebfea599de",
+    "name": "Sony Movies",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Sony_Channel_logo.svg/512px-Sony_Channel_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a61d64582b",
+    "name": "Space HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Space_logo_2023.svg/512px-Space_logo_2023.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0o7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4148aa6b81",
+    "name": "Stingray Concerts HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0k3/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c2fd2bd38d",
+    "name": "Studio Universal HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0jo/index.m3u8"
+  },
+  {
+    "id": "ch_ast_946e72b77c",
+    "name": "Sun Channel",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ow/index.m3u8"
+  },
+  {
+    "id": "ch_ast_30b48d4fec",
+    "name": "TCM",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/TCM_logo_2021.svg/512px-TCM_logo_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qh/index.m3u8"
+  },
+  {
+    "id": "ch_ast_bcd8ca0c10",
+    "name": "TELEANTILLAS",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0mi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_4efe5877cc",
+    "name": "TLC",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a06j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fa28a8dff3",
+    "name": "TLT",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0ll/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f37b81068d",
+    "name": "TNT",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0og/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e555e4a3a7",
+    "name": "TNT Novelas",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a0pf/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a74e4f2cb7",
+    "name": "TNT Series",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://200.59.191.177:8000/play/a06z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e1ffdaf1fa",
+    "name": "TV Culturas",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0mx/index.m3u8"
+  },
+  {
+    "id": "ch_ast_996e8baec8",
+    "name": "TV FANB",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0le/index.m3u8"
+  },
+  {
+    "id": "ch_ast_45381568e2",
+    "name": "TV Galicia",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0p7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6d063a60c4",
+    "name": "TV+ HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0jd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2610e8428d",
+    "name": "TVES",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "España",
+    "url": "http://200.59.191.177:8000/play/a0l7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_78cadbfbcf",
+    "name": "TVN HD (Chile)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Televisi%C3%B3n_Nacional_de_Chile_logo_2020.svg/512px-Televisi%C3%B3n_Nacional_de_Chile_logo_2020.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://200.59.191.177:8000/play/a0oc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_42099934ad",
+    "name": "Telearagua",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a003/index.m3u8"
+  },
+  {
+    "id": "ch_ast_932a27299b",
+    "name": "Telemundo",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Telemundo_logo_2018.svg/512px-Telemundo_logo_2018.svg.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0kz/index.m3u8"
+  },
+  {
+    "id": "ch_ast_be5d8b4de4",
+    "name": "Telenovelas",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qo/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0fdcb4cd39",
+    "name": "Telesur",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0l8/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3bb7e57501",
+    "name": "Tooncast",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Tooncast_logo.svg/512px-Tooncast_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ea7fe2d4f9",
+    "name": "UN24",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00g/index.m3u8"
+  },
+  {
+    "id": "ch_ast_dae30d0548",
+    "name": "UNITEL",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0md/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d2989faf4a",
+    "name": "UNIVERSAL CHANNEL HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Universal_TV_logo_2018.svg/512px-Universal_TV_logo_2018.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0pg/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c91d99143a",
+    "name": "USA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0qd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_16e3a7f682",
+    "name": "VPACO",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0lm/index.m3u8"
+  },
+  {
+    "id": "ch_ast_666e610c2c",
+    "name": "VTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0l5/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c8effd1fa5",
+    "name": "Venevision",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0li/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9d8961a32a",
+    "name": "Venus",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0kw/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d3fd9292bf",
+    "name": "ViVe",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0l6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3c2e3fdbba",
+    "name": "Warner Channel HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Warner_Channel_logo_2023.svg/512px-Warner_Channel_logo_2023.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0oa/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f93ee8d636",
+    "name": "Zoom",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a0mb/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8826bdce80",
+    "name": "televen",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://200.59.191.177:8000/play/a00k/index.m3u8"
+  },
+  {
+    "id": "ch_ast_63c709fe70",
+    "name": "PANAMERICANA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://205.235.6.29:8000/play/a10u/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0907b335ad",
+    "name": "20.5 ESTRELLAS HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://205.235.6.29:8000/play/13/index.m3u8"
+  },
+  {
+    "id": "ch_ast_2409e161c7",
+    "name": "31.1 DEPORTES 1",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0mh/index.m3u8"
+  },
+  {
+    "id": "ch_ast_84389990e7",
+    "name": "30.1 TNT SPORTS",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/TNT_Sports_Chile_logo.svg/512px-TNT_Sports_Chile_logo.svg.png",
+    "category": "Deportes",
+    "country": "Argentina",
+    "url": "http://205.235.6.29:8000/play/a0xa/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b6f3d99689",
+    "name": "30.1 CHV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Chilevisi%C3%B3n_logo_%282018%29.svg/512px-Chilevisi%C3%B3n_logo_%282018%29.svg.png",
+    "category": "General",
+    "country": "Chile",
+    "url": "http://205.235.6.29:8000/play/a10w/index.m3u8"
+  },
+  {
+    "id": "ch_ast_eafd49be7e",
+    "name": "Telerama",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0va/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d3be8c8f32",
+    "name": "31.1 WIN SPORT",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a10e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_50e4e6b5ef",
+    "name": "France 24",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0vd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fe87b03b65",
+    "name": "UNSION TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0vi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b8994ea06c",
+    "name": "LIGA PRO LIKETV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0wc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_71455c1402",
+    "name": "36 - ECU RTU",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0ma/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a286488d6d",
+    "name": "",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0wp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_fd4865b775",
+    "name": "hogar tv",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0wu/index.m3u8"
+  },
+  {
+    "id": "ch_ast_be76d7d453",
+    "name": "Eventos",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0y3/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5a1edec89b",
+    "name": "27.4 LA VOZ DE MARIA",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0md/index.m3u8"
+  },
+  {
+    "id": "ch_ast_340e6e872a",
+    "name": "Telemundo",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Telemundo_logo_2018.svg/512px-Telemundo_logo_2018.svg.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a106/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1c973a0c96",
+    "name": "AMANTE TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a102/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a060be55d2",
+    "name": "America TV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://205.235.6.29:8000/play/a0ut/index.m3u8"
+  },
+  {
+    "id": "ch_ast_abf6356642",
+    "name": "Animal Planet",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Animal_Planet_logo_2018.svg/512px-Animal_Planet_logo_2018.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9ddff0ce0e",
+    "name": "Baby TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5b5c56d34b",
+    "name": "CANAL 31.1 DEPORTES",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11j/index.m3u8"
+  },
+  {
+    "id": "ch_ast_a225e409b5",
+    "name": "CANAL UNO",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11d/index.m3u8"
+  },
+  {
+    "id": "ch_ast_831b724e53",
+    "name": "CNN Espaæol",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yl/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e8e7e0a4db",
+    "name": "Comedy Central HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0y7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d06395deb2",
+    "name": "DHE HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a10y/index.m3u8"
+  },
+  {
+    "id": "ch_ast_469d60680a",
+    "name": "DIBLU",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0x6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5e2c175db7",
+    "name": "DW Espaæol",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0s2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_364b91fbc2",
+    "name": "De Pelicula",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0z7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_1cbe3164f2",
+    "name": "Discovery Channel HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yq/index.m3u8"
+  },
+  {
+    "id": "ch_ast_05073fedcd",
+    "name": "Discovery H&H",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0y6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_46529dc098",
+    "name": "Discovery Theater HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Discovery_Channel_logo_2019.svg/512px-Discovery_Channel_logo_2019.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a10z/index.m3u8"
+  },
+  {
+    "id": "ch_ast_28316fdebe",
+    "name": "Disney Channel",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0zp/index.m3u8"
+  },
+  {
+    "id": "ch_ast_32dee160ea",
+    "name": "Disney Jr.",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/2019_Disney_Channel_logo.svg/512px-2019_Disney_Channel_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0zj/index.m3u8"
+  },
+  {
+    "id": "ch_ast_cc8fb9f656",
+    "name": "Distrito Comedia",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0z5/index.m3u8"
+  },
+  {
+    "id": "ch_ast_9cc6509a4a",
+    "name": "ESPN 2 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11i/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b7eb600eee",
+    "name": "ESPN 4 HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_3a1f8d4ae2",
+    "name": "ESPN 7",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0zv/index.m3u8"
+  },
+  {
+    "id": "ch_ast_dde5d1556a",
+    "name": "ESPN HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0zf/index.m3u8"
+  },
+  {
+    "id": "ch_ast_38f8d1a003",
+    "name": "ESPN Premium HD 1",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ESPN_logo.svg/512px-ESPN_logo.svg.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0wl/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ba4fb2e512",
+    "name": "EWTN",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Argentina",
+    "url": "http://205.235.6.29:8000/play/a11a/index.m3u8"
+  },
+  {
+    "id": "ch_ast_74240e3e16",
+    "name": "Ecuador TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0ye/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e396bd27b5",
+    "name": "Ecuavisa",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yc/index.m3u8"
+  },
+  {
+    "id": "ch_ast_92ab1d2615",
+    "name": "Enlace",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yk/index.m3u8"
+  },
+  {
+    "id": "ch_ast_bfdafc77ad",
+    "name": "Gamavisiðn",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yf/index.m3u8"
+  },
+  {
+    "id": "ch_ast_888f75ff03",
+    "name": "HGTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Cultura",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0ym/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e43af8f803",
+    "name": "HTV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a10p/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e9a26dcade",
+    "name": "ID HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yt/index.m3u8"
+  },
+  {
+    "id": "ch_ast_894107a2e2",
+    "name": "KCH",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yz/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b339bd6f60",
+    "name": "Las Estrellas HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Las_Estrellas_logo.svg/512px-Las_Estrellas_logo.svg.png",
+    "category": "General",
+    "country": "México",
+    "url": "http://205.235.6.29:8000/play/a0z0/index.m3u8"
+  },
+  {
+    "id": "ch_ast_b76d3462d8",
+    "name": "Latina HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://205.235.6.29:8000/play/a0uw/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5e8a7ba892",
+    "name": "Movistar Deportes",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Movistar_Deportes_logo.svg/512px-Movistar_Deportes_logo.svg.png",
+    "category": "Deportes",
+    "country": "Perú",
+    "url": "http://205.235.6.29:8000/play/a0zd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c32ebf6bd5",
+    "name": "ORO MAR WEB",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0nw/index.m3u8"
+  },
+  {
+    "id": "ch_ast_07fe59addc",
+    "name": "OROMAR TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0z6/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8b8cfd88d8",
+    "name": "Panamericana",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Perú",
+    "url": "http://205.235.6.29:8000/play/a10h/index.m3u8"
+  },
+  {
+    "id": "ch_ast_8cf0e1ea64",
+    "name": "Pasiones HD",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a10x/index.m3u8"
+  },
+  {
+    "id": "ch_ast_ea21473ab8",
+    "name": "Plim Plim TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Infantil",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0xo/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d50bf58bbd",
+    "name": "RTS",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Noticias",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0187374518",
+    "name": "STAR CHANNEL",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Star_Channel_2021.svg/512px-Star_Channel_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a108/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c5af3c883c",
+    "name": "STAR CHANNEL",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Star_Channel_2021.svg/512px-Star_Channel_2021.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0x7/index.m3u8"
+  },
+  {
+    "id": "ch_ast_64dd6cef99",
+    "name": "SUCRE TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11f/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c292ad4b55",
+    "name": "Space HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Space_logo_2023.svg/512px-Space_logo_2023.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yu/index.m3u8"
+  },
+  {
+    "id": "ch_ast_6e3c8e1603",
+    "name": "TC Televisiðn.",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yg/index.m3u8"
+  },
+  {
+    "id": "ch_ast_dcc02c8611",
+    "name": "TELEPREMIER",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0z1/index.m3u8"
+  },
+  {
+    "id": "ch_ast_aba79c9cb4",
+    "name": "TNT HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/TNT_Logo_2016.svg/512px-TNT_Logo_2016.svg.png",
+    "category": "Cine & Series",
+    "country": "Argentina",
+    "url": "http://205.235.6.29:8000/play/a0yr/index.m3u8"
+  },
+  {
+    "id": "ch_ast_7426dfb919",
+    "name": "TV AGRO NUEVO",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11n/index.m3u8"
+  },
+  {
+    "id": "ch_ast_0351864639",
+    "name": "Teleamazonas",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yd/index.m3u8"
+  },
+  {
+    "id": "ch_ast_95ae4f8657",
+    "name": "Televicentro",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yh/index.m3u8"
+  },
+  {
+    "id": "ch_ast_837a17a906",
+    "name": "Tlnovelas",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Entretenimiento",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0wi/index.m3u8"
+  },
+  {
+    "id": "ch_ast_f377a3d30d",
+    "name": "UBE",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a11e/index.m3u8"
+  },
+  {
+    "id": "ch_ast_c0b2ec3cd2",
+    "name": "UNSION NUEVO",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0yx/index.m3u8"
+  },
+  {
+    "id": "ch_ast_5439c134e5",
+    "name": "VITO TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0z2/index.m3u8"
+  },
+  {
+    "id": "ch_ast_e24082d336",
+    "name": "Warner TV HD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/TV%2B_Chile_logo.svg/512px-TV%2B_Chile_logo.svg.png",
+    "category": "Cine & Series",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0ys/index.m3u8"
+  },
+  {
+    "id": "ch_ast_d16dce41cc",
+    "name": "canal nitro udp 500",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "General",
+    "country": "Internacional",
+    "url": "http://205.235.6.29:8000/play/a0xw/index.m3u8"
   },
   {
     "id": "ch_espn1_latam",
@@ -7128,6 +9970,14 @@
     "category": "General",
     "country": "Argentina",
     "url": "http://200.115.120.1:8000/play/ca091/index.m3u8"
+  },
+  {
+    "id": "ch_tlhh2of",
+    "name": "Popu TV",
+    "logo": "https://i.imgur.com/UqCogyZ.png",
+    "category": "Entretenimiento",
+    "country": "Paraguay",
+    "url": "http://190.108.83.69:8000/play/a070/index.m3u8"
   },
   {
     "id": "ch_2e16qah",
