@@ -1102,6 +1102,7 @@ let epgGuide = new Map();        // "cl:tntsportspremium" → [[start, stop, tit
 let epgFetchedAt = 0;
 let epgLoading = false;
 let epgNowCache = { at: 0, body: null };
+const songPreviewCache = new Map();
 
 function epgNorm(s) {
     if (!s) return '';
@@ -1367,6 +1368,43 @@ const server = http.createServer(async (req, res) => {
         } catch (e) {
             return sendJson(502, { error: e.message });
         }
+    }
+
+    // PREVIEWS DE AUDIO PARA JUEGOS MUSICALES (/api/song-preview?artist=...&title=...)
+    if (req.url.startsWith('/api/song-preview')) {
+        const u = new URL(req.url, 'http://127.0.0.1');
+        const artist = u.searchParams.get('artist') || '';
+        const title = u.searchParams.get('title') || '';
+        if (!artist && !title) {
+            res.writeHead(400, { 'Access-Control-Allow-Origin': '*' });
+            return res.end('Falta artista o título');
+        }
+
+        const cacheKey = `${artist.toLowerCase()}:::${title.toLowerCase()}`;
+        if (songPreviewCache.has(cacheKey)) {
+            const cached = songPreviewCache.get(cacheKey);
+            if (Date.now() - cached.at < 1200000) {
+                res.writeHead(302, { 'Location': cached.url, 'Access-Control-Allow-Origin': '*' });
+                return res.end();
+            }
+        }
+
+        try {
+            const deezerUrl = `https://api.deezer.com/search?q=${encodeURIComponent(`${artist} ${title}`)}`;
+            const dRes = await fetch(deezerUrl, { signal: AbortSignal.timeout(6000) });
+            if (dRes.ok) {
+                const data = await dRes.json();
+                if (data.data && data.data[0] && data.data[0].preview) {
+                    const previewUrl = data.data[0].preview;
+                    songPreviewCache.set(cacheKey, { at: Date.now(), url: previewUrl });
+                    res.writeHead(302, { 'Location': previewUrl, 'Access-Control-Allow-Origin': '*' });
+                    return res.end();
+                }
+            }
+        } catch (e) {}
+
+        res.writeHead(404, { 'Access-Control-Allow-Origin': '*' });
+        return res.end('Preview no encontrado');
     }
 
     // PROGRAMACIÓN DE CANALES EN VIVO (/api/epg/now, /api/epg/channel?id=...)

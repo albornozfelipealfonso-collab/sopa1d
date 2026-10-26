@@ -7242,7 +7242,7 @@
                     <div style="font-size:64px;line-height:1;">🎸</div>
                     <div style="flex:1;min-width:220px;">
                         <div style="font-size:22px;font-weight:900;">Hitster Rock</div>
-                        <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores.</div>
+                        <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores. Repertorio de más de 1.000 clásicos del rock (1960–2010).</div>
                     </div>
                     <button class="btn btn-primary hs-big" id="hsOpenSetup" onclick="renderHitsterSetup()">Jugar ▶</button>
                 </div>
@@ -7327,10 +7327,18 @@
             return Math.max(0.2, Math.min(1, Math.pow(10, (HS_TARGET_DB - song.db) / 20)));
         }
 
-        function hitsterPlay(restart) {
+        async function hitsterPlay(restart) {
             const a = hsAudio();
             if (!hs || !hs.current) return;
-            if (restart || a.getAttribute('src') !== hs.current.preview) { a.src = hs.current.preview; a.currentTime = 0; }
+            let src = hs.current.preview;
+            if (src && src.startsWith('/api/') && window.location.protocol === 'file:') {
+                try {
+                    const r = await fetch(`https://api.deezer.com/search?q=${encodeURIComponent(hs.current.artist + ' ' + hs.current.title)}`);
+                    const d = await r.json();
+                    if (d.data && d.data[0] && d.data[0].preview) src = d.data[0].preview;
+                } catch(e) {}
+            }
+            if (restart || a.getAttribute('src') !== src) { a.src = src; a.currentTime = 0; }
             a.volume = hsGain(hs.current);
             a.play().catch(() => {});
             hsUpdatePlayBtn();
