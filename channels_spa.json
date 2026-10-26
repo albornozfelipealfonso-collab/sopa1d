@@ -45,6 +45,46 @@
     "fixAudio": true
   },
   {
+    "id": "ch_bein_xtra_es",
+    "name": "beIN SPORTS XTRA en Español",
+    "logo": "https://i.imgur.com/V562tpO.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-esp-xumo.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_bein_xtra_es_2",
+    "name": "beIN SPORTS XTRA en Español (Señal 2)",
+    "logo": "https://i.imgur.com/V562tpO.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://dc1644a9jazgj.cloudfront.net/beIN_Sports_Xtra_Espanol.m3u8"
+  },
+  {
+    "id": "ch_bein_xtra_es_3",
+    "name": "beIN SPORTS XTRA en Español (Señal 3)",
+    "logo": "https://i.imgur.com/V562tpO.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://aegis-cloudfront-1.tubi.video/01f6c149-449b-4248-8bda-2278799205ec/playlist.m3u8"
+  },
+  {
+    "id": "ch_bein_xtra_en",
+    "name": "beIN SPORTS XTRA",
+    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_bein_xtra_en_2",
+    "name": "beIN SPORTS XTRA (Señal 2)",
+    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+    "category": "Deportes",
+    "country": "Internacional",
+    "url": "https://bein-xtra-xumo.amagi.tv/playlist.m3u8"
+  },
+  {
     "id": "ch_espn1_latam",
     "name": "ESPN HD (Latinoamérica)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/ESPN_wordmark.svg/512px-ESPN_wordmark.svg.png",
@@ -11952,15 +11992,6 @@
     "category": "Música",
     "country": "Internacional",
     "url": "https://videostream.shockmedia.com.ar:19360/beatsradio/beatsradio.m3u8"
-  },
-  {
-    "id": "ch_6265494e2053",
-    "name": "beIN SPORTS XTRA en Espanol (1080p)",
-    "logo": "https://i.imgur.com/V562tpO.png",
-    "category": "Deportes",
-    "country": "Internacional",
-    "url": "http://201.190.41.246:9060/play/a03y/index.m3u8",
-    "dead": true
   },
   {
     "id": "ch_42656c6c6120",
@@ -24130,14 +24161,6 @@
     "country": "Internacional",
     "url": "https://cdn-5.nxplay.com.br/BAND_SPORTS/index.m3u8",
     "dead": true
-  },
-  {
-    "id": "ch_6265494e2053_2",
-    "name": "beIN SPORTS XTRA (1080p)",
-    "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
-    "category": "Deportes",
-    "country": "Internacional",
-    "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8"
   },
   {
     "id": "ch_42454b205370",
