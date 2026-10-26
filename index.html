@@ -2379,6 +2379,7 @@
                 <button class="nav-link" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
                 <button class="nav-link" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="nav-link" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
+                <button class="nav-link" data-type="all_channels" onclick="switchTab('all_channels')">📋 Todos los Canales</button>
                 <button class="nav-link" onclick="loadTrending()">🔥 Tendencias</button>
             </nav>
 
@@ -2484,6 +2485,15 @@
     </section>
 
     <section class="tv-hub-section" id="tvHubSection" style="display:none;">
+        <!-- BARRA SELECTORA DE MODO: REPRODUCTOR VS TODOS LOS CANALES -->
+        <div class="tv-view-mode-bar" id="tvViewModeBar" style="display:flex;gap:12px;justify-content:center;margin:12px auto 20px;padding:0 16px;max-width:1400px;flex-wrap:wrap;">
+            <button class="btn btn-glass tv-mode-pill active" id="tvModePlayerBtn" onclick="switchTvMode('player')" style="padding:10px 24px;border-radius:24px;font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s;">
+                📺 Modo Reproductor & Zapping
+            </button>
+            <button class="btn btn-glass tv-mode-pill" id="tvModeAllBtn" onclick="switchTvMode('all')" style="padding:10px 24px;border-radius:24px;font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px;background:rgba(56,189,248,0.12);border-color:rgba(56,189,248,0.4);color:#38bdf8;cursor:pointer;transition:all 0.2s;">
+                📋 Catálogo Completo de Canales (<span id="tvModeTotalBadge">0</span>)
+            </button>
+        </div>
         <!-- SUITE TEATRO + GUÍA DE ZAPPING -->
         <div class="tv-theater-suite">
             <!-- REPRODUCTOR PRINCIPAL -->
@@ -2651,6 +2661,7 @@
                         </select>
                         <select id="tvGuideCategoryFilter" onchange="onTvGuideFilterChange()" class="custom-select" style="font-size:11px;padding:4px 6px;">
                             <option value="all">🔥 Categorías</option>
+                            <option value="rock">🎸 Rock & Metal</option>
                             <option value="Deportes">⚽ Deportes</option>
                             <option value="Cine & Series">🎬 Cine & Series</option>
                             <option value="24/7">🔁 24/7 (una serie todo el día)</option>
@@ -2710,7 +2721,16 @@
                 <div class="tv-shelf-scroll" id="tvMoviesShelfScroll"></div>
             </div>
 
-            <!-- CARRUSEL MÚSICA & ROCK -->
+            <!-- CARRUSEL ROCK & METAL 24 HORAS -->
+            <div class="tv-shelf" style="margin-bottom:28px;">
+                <div class="tv-shelf-header">
+                    <h3>🎸 Rock & Metal 24 Horas (VH1 Rock, XITE, Stingray, Eska, Qello...)</h3>
+                    <span class="tv-shelf-link" onclick="quickFilterTvBy('rock')">Ver todos los canales de Rock →</span>
+                </div>
+                <div class="tv-shelf-scroll" id="tvRockShelfScroll"></div>
+            </div>
+
+            <!-- CARRUSEL MÚSICA & POP -->
             <div class="tv-shelf" style="margin-bottom:28px;">
                 <div class="tv-shelf-header">
                     <h3>🎶 Música & Rock 24 Horas</h3>
@@ -2796,6 +2816,8 @@
             <!-- CATEGORÍAS PILLS DEL EXPLORADOR -->
             <div class="channel-categories-bar" id="tvExplorerCategoriesBar" style="margin-bottom:16px;">
                 <button class="channel-pill active" onclick="setTvExplorerCategory('all', this)">🔥 Todos</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('rock', this)">🎸 Rock & Metal</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('Chile', this)">🇨🇱 Chile</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Deportes', this)">⚽ Deportes</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Cine & Series', this)">🎬 Cine & Series</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Noticias', this)">🌍 Noticias</button>
@@ -2812,9 +2834,7 @@
 
             <!-- BOTÓN CARGAR MÁS -->
             <div id="tvExplorerLoadMoreBox" style="text-align:center;padding:24px 0 60px;">
-                <button class="btn btn-primary" onclick="loadMoreTvExplorerChannels()" style="padding:10px 28px;font-size:13px;border-radius:10px;">
-                    ⬇️ Cargar más canales
-                </button>
+                <button class="btn btn-primary" onclick="loadMoreTvExplorerChannels()" style="padding:10px 20px;font-size:13px;border-radius:10px;margin-right:8px;">⬇️ Cargar más (+120)</button><button class="btn btn-glass" onclick="loadAllTvExplorerChannels()" style="padding:10px 20px;font-size:13px;border-radius:10px;border-color:rgba(56,189,248,0.4);color:#38bdf8;">⚡ Mostrar todos</button>
             </div>
         </div>
     </section>
@@ -2834,6 +2854,7 @@
                 <button class="catalog-tab" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
                 <button class="catalog-tab" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="catalog-tab" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
+                <button class="catalog-tab" data-type="all_channels" onclick="switchTab('all_channels')">📋 Todos los Canales</button>
             </div>
         </div>
 
@@ -4288,15 +4309,20 @@
                 return;
             }
 
-            if (type === 'channels') {
+                        if (type === 'channels' || type === 'all_channels') {
                 if (filterSectionEl) filterSectionEl.style.display = 'none';
                 if (mainContainerEl) mainContainerEl.style.display = 'none';
                 if (heroBillboardEl) heroBillboardEl.style.display = 'none';
                 if (continueShelfEl) continueShelfEl.style.display = 'none';
                 if (tvHubEl) tvHubEl.style.display = 'block';
 
-                document.title = 'Sopa1D — 📡 Canales de Televisión en Directo';
+                document.title = type === 'all_channels' ? 'Sopa1D — 📋 Catálogo Completo de Canales' : 'Sopa1D — 📡 Canales de Televisión en Directo';
                 initLiveTvHub();
+                if (type === 'all_channels') {
+                    setTimeout(() => switchTvMode('all'), 50);
+                } else {
+                    switchTvMode('player');
+                }
                 return;
             }
 
@@ -5721,6 +5747,8 @@
 
             const guideBadge = document.getElementById('tvGuideCountBadge');
             if (guideBadge) guideBadge.textContent = allLiveChannels.length.toLocaleString();
+            const totalBadge = document.getElementById('tvModeTotalBadge');
+            if (totalBadge) totalBadge.textContent = allLiveChannels.length.toLocaleString();
 
             renderTvGuideList();
             renderTvCuratedShelves();
@@ -6529,6 +6557,8 @@
                 if (tvGuideCategory === 'favs') {
                     const favs = getChannelFavorites();
                     filtered = filtered.filter(ch => favs.includes(ch.id));
+                } else if (tvGuideCategory === 'rock') {
+                    filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
                 } else if (tvGuideCategory !== 'all') {
                     filtered = filtered.filter(ch => ch.category && ch.category.toLowerCase() === tvGuideCategory.toLowerCase());
                 }
@@ -6694,6 +6724,13 @@
                 chileScroll.innerHTML = chileList.map(ch => renderShelfCard(ch)).join('');
             }
 
+            // Rock & Metal Destacados
+            const rockList = allLiveChannels.filter(c => /rock|metal|punk|grunge|vh1|qello/i.test(c.name)).slice(0, 32);
+            const rockScroll = document.getElementById('tvRockShelfScroll');
+            if (rockScroll) {
+                rockScroll.innerHTML = rockList.map(ch => renderShelfCard(ch)).join('');
+            }
+
             // Deportes
             const sportsList = allLiveChannels.filter(c => c.category === 'Deportes').slice(0, 26);
             const sportsScroll = document.getElementById('tvSportsShelfScroll');
@@ -6817,6 +6854,37 @@
             renderTvExplorerGrid();
         }
 
+        
+        function switchTvMode(mode) {
+            const playerBtn = document.getElementById('tvModePlayerBtn');
+            const allBtn = document.getElementById('tvModeAllBtn');
+            const curatedShelves = document.querySelector('.tv-curated-section');
+            const fullExplorer = document.querySelector('.tv-full-explorer');
+            const theaterSuite = document.querySelector('.tv-theater-suite');
+
+            if (mode === 'all') {
+                if (playerBtn) { playerBtn.classList.remove('active'); playerBtn.style.background = ''; }
+                if (allBtn) { allBtn.classList.add('active'); allBtn.style.background = 'rgba(56,189,248,0.28)'; }
+                if (curatedShelves) curatedShelves.style.display = 'none';
+                if (fullExplorer) {
+                    fullExplorer.style.display = 'block';
+                    fullExplorer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            } else {
+                if (playerBtn) { playerBtn.classList.add('active'); playerBtn.style.background = 'rgba(255,255,255,0.12)'; }
+                if (allBtn) { allBtn.classList.remove('active'); allBtn.style.background = 'rgba(56,189,248,0.12)'; }
+                if (curatedShelves) curatedShelves.style.display = '';
+                if (fullExplorer) fullExplorer.style.display = '';
+                if (theaterSuite) theaterSuite.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function loadAllTvExplorerChannels() {
+            tvExplorerLimit = 99999;
+            renderTvExplorerGrid();
+            showToast('⚡ Mostrando todos los canales disponibles');
+        }
+
         function loadMoreTvExplorerChannels() {
             tvExplorerLimit += 60;
             renderTvExplorerGrid();
@@ -6839,6 +6907,10 @@
                 if (tvExplorerCategory === 'favs') {
                     const favs = getChannelFavorites();
                     filtered = filtered.filter(ch => favs.includes(ch.id));
+                } else if (tvExplorerCategory === 'rock') {
+                    filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
+                } else if (tvExplorerCategory === 'Chile') {
+                    filtered = filtered.filter(ch => ch.country === 'Chile');
                 } else if (tvExplorerCategory !== 'all') {
                     filtered = filtered.filter(ch => ch.category && ch.category.toLowerCase() === tvExplorerCategory.toLowerCase());
                 }

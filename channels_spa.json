@@ -205,6 +205,190 @@
     "url": "http://190.108.83.69:8000/play/a043/index.m3u8"
   },
   {
+    "id": "ch_rock_01cdc1ae74",
+    "name": "VH1+ Rock! (HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/VH1_logo_2013.svg/512px-VH1_logo_2013.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/636a4173e34fd50007534542/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_rock_31c5a9e412",
+    "name": "VH1+ Music Legends (HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/VH1_logo_2013.svg/512px-VH1_logo_2013.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/62e8cc10ca869f00078efca8/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_rock_074d3e228e",
+    "name": "VH1+ Back to 90s Rock & Hits (HD)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/VH1_logo_2013.svg/512px-VH1_logo_2013.svg.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/6552085aab05240008b05f6c/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_rock_fbe508773e",
+    "name": "XITE Rock x Metal (1080p)",
+    "logo": "https://i.imgur.com/uIIUIuN.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://d198ro05q94rc4.cloudfront.net/XITE_Rock_On.m3u8"
+  },
+  {
+    "id": "ch_rock_9fb8b735cc",
+    "name": "Stingray Classic Rock HD (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-101ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_754e32216e",
+    "name": "Stingray Rock Alternative HD (1080p)",
+    "logo": "https://i.imgur.com/mt8ulVX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-102ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_2cb58f5814",
+    "name": "Qello Concerts Live (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/qello-qello001-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_cb7f9eba90",
+    "name": "Rock & Pop Radio TV (1080p)",
+    "logo": "https://fmrockandpop.com/images/ryp/R&P_Logo_web_207x112px.png",
+    "category": "Música",
+    "country": "Argentina",
+    "url": "http://190.128.214.97:64333/play/a032/index.m3u8"
+  },
+  {
+    "id": "ch_rock_9e5015d26e",
+    "name": "Metaleitor TV (Heavy Metal 24/7)",
+    "logo": "https://new.opencaster.com/uploads/logos/logo_14_1752798826.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://vs20.live.opencaster.com/metaleitortv_423d3342/index.m3u8"
+  },
+  {
+    "id": "ch_rock_6d3b954bf3",
+    "name": "Eska Rock TV (1080p)",
+    "logo": "https://i.imgur.com/o0Fg19Q.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://92.114.85.87:8016/play/a005/index.m3u8"
+  },
+  {
+    "id": "ch_rock_3ed6cf65cf",
+    "name": "NOW Rock (1080p)",
+    "logo": "https://i.imgur.com/GuM4GnX.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lightning-now90s-samsungnz.amagi.tv/playlist.m3u8"
+  },
+  {
+    "id": "ch_rock_0ae316691a",
+    "name": "Rock TV (720p)",
+    "logo": "https://i.imgur.com/VB88A5V.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8"
+  },
+  {
+    "id": "ch_rock_36700413c5",
+    "name": "BRIDGE Rock TV",
+    "logo": "https://i.imgur.com/MHuwct2.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "http://178.134.1.158:8081/BRIDGEROCK/index.m3u8"
+  },
+  {
+    "id": "ch_rock_bb4fd083f3",
+    "name": "Stingray Everything 80s HD (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-128ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_387ec157ec",
+    "name": "Stingray Nothin But 90s HD (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-142ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_071b1bb97d",
+    "name": "Stingray Flashback 70s HD (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-115ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_7835ce6169",
+    "name": "Stingray Jukebox Oldies (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-021ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_f3b2e1300f",
+    "name": "Stingray Soul Storm (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/ose-134ads-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_9d37787832",
+    "name": "Stingray Karaoke Live (1080p)",
+    "logo": "https://i.imgur.com/FBgu8yB.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://lotus.stingray.com/manifest/karaoke-kar000-montreal/samsungtvplus/master.m3u8"
+  },
+  {
+    "id": "ch_rock_e3ddcf4fc9",
+    "name": "Дніпро TV",
+    "logo": "https://i.imgur.com/mbPTVh1.png",
+    "category": "Música",
+    "country": "UA",
+    "url": "http://vcdn1.produck.company:1935/out/dtv/playlist.m3u8"
+  },
+  {
+    "id": "ch_rock_56bd56b95a",
+    "name": "VH1+ Girl Power! – Pluto TV",
+    "logo": "https://i.imgur.com/Z4t6fdU.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/655208ff53fc9700084a834e/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_rock_c63e1d78c1",
+    "name": "VH1+ Canzoni Italiane – Pluto TV",
+    "logo": "https://i.imgur.com/fpQBKP2.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/63724270c7c2360007b170e8/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
+    "id": "ch_rock_a48b934059",
+    "name": "VH1+ Hip Hop & Rap – Pluto TV",
+    "logo": "https://i.imgur.com/k1zQpiO.png",
+    "category": "Música",
+    "country": "Internacional",
+    "url": "https://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/6465fef47cb4b100086ee7bd/master.m3u8?deviceId=channel&deviceModel=web&deviceVersion=1.0&appVersion=1.0&deviceType=rokuChannel&deviceMake=rokuChannel&deviceDNT=1&advertisingId=channel&embedPartner=rokuChannel&appName=rokuchannel&is_lat=1&bmodel=bm1&content=channel&platform=web&tags=ROKU_CONTENT_TAGS&coppa=false&content_type=livefeed&rdid=channel&genre=ROKU_ADS_CONTENT_GENRE&content_rating=ROKU_ADS_CONTENT_RATING&studio_id=viacom&channel_id=channel"
+  },
+  {
     "id": "ch_ast_a96ea06f1c",
     "name": "Antena 3",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Antena_3_logo_2017.svg/512px-Antena_3_logo_2017.svg.png",
