@@ -300,8 +300,7 @@ public class PlayerActivity extends Activity {
         List<Channel> all = ChannelStore.get();
         List<Channel> shown = new ArrayList<>();
         for (Channel ch : all) {
-            if (q.isEmpty() || Epg.norm(ch.name).contains(q)) shown.add(ch);
-            if (shown.size() >= 400 && !q.isEmpty()) break;
+            if (q.isEmpty() || Epg.norm(ch.name + " " + ch.category + " " + ch.country).contains(q)) shown.add(ch);
         }
         channelAdapter.clear();
         // Sin texto, se vuelve a la categoría elegida (no a los miles de canales)
@@ -311,8 +310,10 @@ public class PlayerActivity extends Activity {
 
     // ------------------------------------------------------- categorías
 
-    private static final String CAT_ALL = "Todos";
+    private static final String CAT_ALL = "📺 Todos los canales";
     private static final String CAT_FAVS = "★ Mis canales";
+    private static final String CAT_CHILE = "🇨🇱 Canales de Chile";
+    private static final String CAT_ROCK = "🎸 Rock & Metal";
     private TextView categoryView;
     private final List<String> categories = new ArrayList<>();
     private int categoryIndex;
@@ -334,6 +335,8 @@ public class PlayerActivity extends Activity {
         categories.clear();
         categories.add(CAT_ALL);
         categories.add(CAT_FAVS);
+        categories.add(CAT_CHILE);
+        categories.add(CAT_ROCK);
         categories.addAll(sorted);
         categoryIndex = Math.max(0, categories.indexOf(previous));
     }
@@ -350,7 +353,17 @@ public class PlayerActivity extends Activity {
         List<Channel> out = new ArrayList<>();
         java.util.Set<String> favs = CAT_FAVS.equals(cat) ? Favorites.urls(this) : null;
         for (Channel ch : all) {
-            boolean in = favs != null ? favs.contains(ch.url) : cat.equals(ch.category);
+            boolean in;
+            if (favs != null) {
+                in = favs.contains(ch.url);
+            } else if (CAT_CHILE.equals(cat)) {
+                in = "Chile".equalsIgnoreCase(ch.country);
+            } else if (CAT_ROCK.equals(cat)) {
+                String n = (ch.name == null ? "" : ch.name).toLowerCase(Locale.ROOT);
+                in = n.contains("rock") || n.contains("metal") || n.contains("punk") || n.contains("grunge") || n.contains("vh1") || n.contains("qello");
+            } else {
+                in = cat.equals(ch.category);
+            }
             if (in) out.add(ch);
         }
         return out;
@@ -413,9 +426,25 @@ public class PlayerActivity extends Activity {
 
         // Selector de categoría arriba de la lista: OK y ◀ ▶ la cambian,
         // ▼ baja a los canales (búsqueda de foco normal).
+        EditText search = findViewById(R.id.channelSearch);
+        if (search != null) {
+            search.setVisibility(View.VISIBLE);
+            search.addTextChangedListener(new android.text.TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+                @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+                @Override public void afterTextChanged(android.text.Editable s) { filterChannels(s.toString()); }
+            });
+        }
+
         categoryView = findViewById(R.id.channelCategory);
         categoryView.setOnClickListener(v -> cycleCategory(1));
         categoryView.setOnKeyListener((v, keyCode, e) -> {
+            if (e.getAction() != KeyEvent.ACTION_DOWN) return false;
+            if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) { cycleCategory(1); return true; }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) { cycleCategory(-1); return true; }
+            return false;
+        });
+        list.setOnKeyListener((v, keyCode, e) -> {
             if (e.getAction() != KeyEvent.ACTION_DOWN) return false;
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) { cycleCategory(1); return true; }
             if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) { cycleCategory(-1); return true; }

@@ -94,6 +94,8 @@ public class TvHomeActivity extends Activity {
 
     /** Canales agrupados por categoría (se cargan una vez desde los assets). */
     private static Map<String, List<CatalogItem>> liveByCategory;
+    private static List<CatalogItem> allLiveChannels;
+    private static String allLiveJson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -476,6 +478,10 @@ public class TvHomeActivity extends Activity {
                     "Entretenimiento", "Música", "Cultura", "General");
             Map<String, List<CatalogItem>> byCat = new HashMap<>();
             List<CatalogItem> featured = new ArrayList<>();
+            List<CatalogItem> allItems = new ArrayList<>();
+            List<CatalogItem> chileItems = new ArrayList<>();
+            List<CatalogItem> rockItems = new ArrayList<>();
+            JSONArray fullJson = new JSONArray();
             Map<String, String> nameToUrl = new HashMap<>();
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
@@ -486,16 +492,32 @@ public class TvHomeActivity extends Activity {
                 if (url.isEmpty() || ChannelHealth.isHidden(url, o.optBoolean("dead"))) continue;
                 String name = o.optString("name");
                 String cat = o.optString("category", "General");
+                String country = o.optString("country", "");
+                String logo = o.optString("logo", "");
                 CatalogItem ch = new CatalogItem("live", url, name, "", 0,
-                        o.optString("country", ""), emptyToNull(o.optString("logo")), null);
+                        country, emptyToNull(logo), null);
                 ch.genres = cat;
+                allItems.add(ch);
+                fullJson.put(new JSONObject().put("id", url).put("name", name).put("url", url)
+                        .put("logo", logo).put("category", cat).put("country", country));
                 if (!byCat.containsKey(cat)) byCat.put(cat, new ArrayList<CatalogItem>());
                 byCat.get(cat).add(ch);
                 if (FEATURED.matcher(name).find() && featured.size() < 60) featured.add(ch);
+                if ("Chile".equalsIgnoreCase(country)) chileItems.add(ch);
+                String lowerName = name.toLowerCase(Locale.ROOT);
+                if (lowerName.contains("rock") || lowerName.contains("metal") || lowerName.contains("punk")
+                        || lowerName.contains("grunge") || lowerName.contains("vh1") || lowerName.contains("qello")) {
+                    rockItems.add(ch);
+                }
             }
+            allLiveChannels = allItems;
+            allLiveJson = fullJson.toString();
             // Favoritos guardados con una señal que la lista ya corrigió
             Favorites.reconcile(this, nameToUrl);
             out.put("⭐ Destacados", featured);
+            out.put("📺 Todos los canales (" + allItems.size() + ")", allItems);
+            if (!chileItems.isEmpty()) out.put("🇨🇱 Canales de Chile", chileItems);
+            if (!rockItems.isEmpty()) out.put("🎸 Rock & Metal", rockItems);
             for (String cat : order) if (byCat.containsKey(cat)) out.put(iconFor(cat) + " " + cat, byCat.remove(cat));
             for (Map.Entry<String, List<CatalogItem>> e : byCat.entrySet()) out.put(e.getKey(), e.getValue());
         } catch (Exception e) {
@@ -522,18 +544,32 @@ public class TvHomeActivity extends Activity {
         return s == null || s.isEmpty() ? null : s;
     }
 
-    /** Abre un canal en el reproductor en vivo, con su fila para zapear. */
+    /** Abre un canal en el reproductor en vivo, cargando TODOS los canales para explorar sin salir de pantalla completa. */
     private void playLive(List<CatalogItem> row, int index) {
         try {
-            JSONArray arr = new JSONArray();
-            for (CatalogItem c : row) {
-                arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id)
-                        .put("logo", c.poster == null ? "" : c.poster).put("category", c.genres)
-                        .put("country", c.overview));
+            CatalogItem selected = (row != null && index >= 0 && index < row.size()) ? row.get(index) : null;
+            int targetIndex = index;
+            if (allLiveJson != null && allLiveChannels != null && !allLiveChannels.isEmpty()) {
+                ChannelStore.set(allLiveJson);
+                if (selected != null) {
+                    for (int i = 0; i < allLiveChannels.size(); i++) {
+                        if (selected.id.equals(allLiveChannels.get(i).id)) {
+                            targetIndex = i;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                JSONArray arr = new JSONArray();
+                for (CatalogItem c : row) {
+                    arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id)
+                            .put("logo", c.poster == null ? "" : c.poster).put("category", c.genres)
+                            .put("country", c.overview));
+                }
+                ChannelStore.set(arr.toString());
             }
-            ChannelStore.set(arr.toString());
             Intent i = new Intent(this, PlayerActivity.class);
-            i.putExtra(PlayerActivity.EXTRA_INDEX, index);
+            i.putExtra(PlayerActivity.EXTRA_INDEX, targetIndex);
             startActivity(i);
         } catch (Exception e) {
             Toast.makeText(this, "No se pudo abrir el canal", Toast.LENGTH_SHORT).show();

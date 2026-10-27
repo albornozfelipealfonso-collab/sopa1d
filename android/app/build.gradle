@@ -10,8 +10,8 @@ android {
         applicationId "cl.sopa1d.app"
         minSdk 24
         targetSdk 35
-        versionCode 40
-        versionName "1.9.30"
+        versionCode 41
+        versionName "1.9.31"
     }
 
     buildTypes {

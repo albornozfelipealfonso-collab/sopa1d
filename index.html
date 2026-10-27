@@ -2538,7 +2538,10 @@
                         <button class="btn btn-glass tv-action-btn" id="tvPipBtn" onclick="toggleTvPip()" title="Modo Mini-Reproductor Flotante">
                             🖼️ Mini-Player
                         </button>
-                        <button class="btn btn-glass tv-action-btn" onclick="toggleTvFullscreen()" title="Pantalla completa">
+                        <button class="btn btn-glass tv-action-btn" onclick="openTvFsChannelsDrawer(null, true)" title="Ver todos los canales dentro de pantalla completa (Tecla G)" style="border-color:rgba(229,9,20,0.55);background:rgba(229,9,20,0.18);color:#fff;font-weight:700;">
+                            📺 Todos los Canales
+                        </button>
+                        <button class="btn btn-glass tv-action-btn" onclick="toggleTvFullscreen()" title="Pantalla completa (Tecla F)">
                             ⛶ Pantalla Completa
                         </button>
                     </div>
@@ -2615,6 +2618,7 @@
                     </div>
                     <div class="tv-remote-shortcuts">
                         <span class="tv-kbd-tag"><kbd>↑</kbd> <kbd>↓</kbd> Zapping</span>
+                        <span class="tv-kbd-tag"><kbd>G</kbd> Todos los canales</span>
                         <span class="tv-kbd-tag"><kbd>F</kbd> Pantalla completa</span>
                         <span class="tv-kbd-tag"><kbd>M</kbd> Silenciar</span>
                     </div>
@@ -6260,6 +6264,9 @@
                 }
             }
 
+            injectTvFullscreenOverlay();
+            updateTvFsHud();
+
             // 3. Resaltar en la guía lateral
             document.querySelectorAll('.tv-guide-item').forEach(item => {
                 if (item.dataset.id === ch.id) {
@@ -6532,8 +6539,684 @@
             }
         }, true);
 
+        // =========================================================================
+        // MODO TV & SECCIÓN "TODOS LOS CANALES" SIN SALIR DE PANTALLA COMPLETA
+        // =========================================================================
+        var tvGuideRenderLimit = 150;
+        var tvFsCategory = 'all';
+        var tvFsCountry = 'all';
+        var tvFsLayout = 'grid'; // 'grid' (cuadrícula completa) o 'side' (panel lateral)
+        var tvFsRenderLimit = 120;
+        var tvFsAutoCloseOnTune = false;
+        var tvFsHudTimer = null;
+
+        function injectTvFullscreenOverlay() {
+            if (!tvLivePlayer || !tvLivePlayer.el()) return;
+            const playerEl = tvLivePlayer.el();
+            if (playerEl.querySelector('#tvFsOverlayRoot')) return;
+
+            if (!document.getElementById('tvFsOverlayStyles')) {
+                const st = document.createElement('style');
+                st.id = 'tvFsOverlayStyles';
+                st.textContent = `
+                    #tvFsOverlayRoot {
+                        position: absolute;
+                        inset: 0;
+                        pointer-events: none;
+                        z-index: 2147483640;
+                        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                        overflow: hidden;
+                    }
+                    /* Barra superior flotante en el reproductor / pantalla completa */
+                    #tvFsTopHud {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        padding: 16px 24px;
+                        background: linear-gradient(180deg, rgba(6,8,15,0.92) 0%, rgba(6,8,15,0.55) 70%, transparent 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 14px;
+                        opacity: 0;
+                        transform: translateY(-8px);
+                        transition: opacity 0.25s ease, transform 0.25s ease;
+                        pointer-events: none;
+                    }
+                    .video-js:hover #tvFsTopHud,
+                    .video-js.vjs-user-active #tvFsTopHud,
+                    #tvFsOverlayRoot.hud-visible #tvFsTopHud,
+                    #tvFsOverlayRoot.drawer-open #tvFsTopHud {
+                        opacity: 1;
+                        transform: translateY(0);
+                        pointer-events: auto;
+                    }
+                    .tv-fs-hud-left {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        min-width: 0;
+                    }
+                    .tv-fs-hud-num {
+                        font-size: 22px;
+                        font-weight: 900;
+                        color: #e50914;
+                        text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+                    }
+                    .tv-fs-hud-logo {
+                        width: 44px;
+                        height: 32px;
+                        object-fit: contain;
+                        background: rgba(255,255,255,0.08);
+                        border-radius: 6px;
+                        padding: 3px;
+                    }
+                    .tv-fs-hud-title-wrap {
+                        min-width: 0;
+                    }
+                    .tv-fs-hud-title {
+                        font-size: 16px;
+                        font-weight: 800;
+                        color: #fff;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+                    }
+                    .tv-fs-hud-sub {
+                        font-size: 12px;
+                        color: #cbd5e1;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .tv-fs-hud-actions {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        flex-wrap: wrap;
+                    }
+                    .tv-fs-btn {
+                        pointer-events: auto;
+                        background: rgba(15, 23, 42, 0.85);
+                        border: 1px solid rgba(255, 255, 255, 0.22);
+                        color: #f8fafc;
+                        padding: 8px 14px;
+                        border-radius: 999px;
+                        font-size: 13px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                        transition: all 0.18s ease;
+                        backdrop-filter: blur(8px);
+                    }
+                    .tv-fs-btn:hover, .tv-fs-btn:focus-visible {
+                        background: rgba(56, 189, 248, 0.28);
+                        border-color: #38bdf8;
+                        transform: scale(1.04);
+                        outline: none;
+                    }
+                    .tv-fs-btn.primary {
+                        background: linear-gradient(135deg, #e50914 0%, #b91c1c 100%);
+                        border-color: rgba(255,255,255,0.35);
+                        box-shadow: 0 4px 16px rgba(229, 9, 20, 0.45);
+                    }
+                    .tv-fs-btn.primary:hover {
+                        background: linear-gradient(135deg, #ff1e27 0%, #dc2626 100%);
+                        border-color: #fff;
+                    }
+                    /* Panel / Sección de Todos los Canales dentro de Pantalla Completa */
+                    #tvFsDrawer {
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        right: 0;
+                        left: 0;
+                        background: rgba(6, 9, 17, 0.86);
+                        backdrop-filter: blur(16px);
+                        -webkit-backdrop-filter: blur(16px);
+                        display: none;
+                        flex-direction: column;
+                        pointer-events: auto;
+                        z-index: 2147483645;
+                        animation: tvFsFadeIn 0.2s ease;
+                    }
+                    #tvFsDrawer.layout-side {
+                        left: auto;
+                        width: min(480px, 92vw);
+                        border-left: 1px solid rgba(255,255,255,0.14);
+                        box-shadow: -16px 0 50px rgba(0,0,0,0.85);
+                    }
+                    @keyframes tvFsFadeIn {
+                        from { opacity: 0; transform: translateY(8px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    .tv-fs-drawer-header {
+                        padding: 18px 24px 12px;
+                        border-bottom: 1px solid rgba(255,255,255,0.1);
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                        background: rgba(10, 14, 26, 0.75);
+                    }
+                    .tv-fs-drawer-toprow {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 12px;
+                        flex-wrap: wrap;
+                    }
+                    .tv-fs-drawer-title {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        font-size: 20px;
+                        font-weight: 800;
+                        color: #fff;
+                    }
+                    .tv-fs-count-pill {
+                        background: rgba(56, 189, 248, 0.2);
+                        border: 1px solid rgba(56, 189, 248, 0.45);
+                        color: #38bdf8;
+                        font-size: 12px;
+                        font-weight: 700;
+                        padding: 3px 10px;
+                        border-radius: 999px;
+                    }
+                    .tv-fs-controls-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+                    .tv-fs-search-wrap {
+                        flex: 1;
+                        min-width: 200px;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .tv-fs-search-wrap input {
+                        width: 100%;
+                        background: rgba(15, 23, 42, 0.9);
+                        border: 1px solid rgba(255,255,255,0.18);
+                        border-radius: 12px;
+                        padding: 10px 14px 10px 36px;
+                        color: #fff;
+                        font-size: 14px;
+                        outline: none;
+                    }
+                    .tv-fs-search-wrap input:focus {
+                        border-color: #38bdf8;
+                        box-shadow: 0 0 0 2px rgba(56,189,248,0.25);
+                    }
+                    .tv-fs-search-icon {
+                        position: absolute;
+                        left: 12px;
+                        font-size: 14px;
+                        pointer-events: none;
+                    }
+                    .tv-fs-select {
+                        background: rgba(15, 23, 42, 0.9);
+                        border: 1px solid rgba(255,255,255,0.18);
+                        border-radius: 12px;
+                        padding: 9px 12px;
+                        color: #fff;
+                        font-size: 13px;
+                        font-weight: 600;
+                        cursor: pointer;
+                    }
+                    .tv-fs-cats-bar {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        overflow-x: auto;
+                        padding-bottom: 4px;
+                        scrollbar-width: thin;
+                    }
+                    .tv-fs-cat-pill {
+                        background: rgba(255,255,255,0.07);
+                        border: 1px solid rgba(255,255,255,0.14);
+                        color: #cbd5e1;
+                        padding: 7px 14px;
+                        border-radius: 999px;
+                        font-size: 12px;
+                        font-weight: 700;
+                        white-space: nowrap;
+                        cursor: pointer;
+                        transition: all 0.15s ease;
+                    }
+                    .tv-fs-cat-pill:hover, .tv-fs-cat-pill:focus-visible {
+                        background: rgba(255,255,255,0.16);
+                        color: #fff;
+                        outline: none;
+                    }
+                    .tv-fs-cat-pill.active {
+                        background: #e50914;
+                        border-color: #ff4d4d;
+                        color: #fff;
+                        box-shadow: 0 2px 10px rgba(229, 9, 20, 0.45);
+                    }
+                    .tv-fs-body {
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 18px 24px 40px;
+                    }
+                    .tv-fs-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+                        gap: 12px;
+                    }
+                    #tvFsDrawer.layout-side .tv-fs-grid {
+                        grid-template-columns: 1fr;
+                        gap: 8px;
+                    }
+                    .tv-fs-card {
+                        background: rgba(15, 23, 42, 0.78);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        border-radius: 12px;
+                        padding: 10px 12px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        cursor: pointer;
+                        transition: all 0.16s ease;
+                        position: relative;
+                        text-align: left;
+                    }
+                    .tv-fs-card:hover, .tv-fs-card:focus-visible {
+                        background: rgba(30, 41, 59, 0.95);
+                        border-color: #38bdf8;
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+                        outline: none;
+                    }
+                    .tv-fs-card.active {
+                        background: linear-gradient(135deg, rgba(229,9,20,0.28) 0%, rgba(15,23,42,0.92) 100%);
+                        border-color: #e50914;
+                        box-shadow: 0 0 0 1px #e50914;
+                    }
+                    .tv-fs-card-num {
+                        font-size: 12px;
+                        font-weight: 800;
+                        color: #94a3b8;
+                        min-width: 28px;
+                    }
+                    .tv-fs-card-logo {
+                        width: 44px;
+                        height: 36px;
+                        border-radius: 8px;
+                        background: rgba(255,255,255,0.06);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        overflow: hidden;
+                    }
+                    .tv-fs-card-logo img {
+                        max-width: 90%;
+                        max-height: 90%;
+                        object-fit: contain;
+                    }
+                    .tv-fs-card-info {
+                        flex: 1;
+                        min-width: 0;
+                    }
+                    .tv-fs-card-name {
+                        font-size: 13px;
+                        font-weight: 700;
+                        color: #f8fafc;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .tv-fs-card-meta {
+                        font-size: 11px;
+                        color: #94a3b8;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        margin-top: 2px;
+                    }
+                    .tv-fs-card-epg {
+                        font-size: 11px;
+                        color: #38bdf8;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        margin-top: 2px;
+                        font-weight: 600;
+                    }
+                `;
+                document.head.appendChild(st);
+            }
+
+            const root = document.createElement('div');
+            root.id = 'tvFsOverlayRoot';
+            root.innerHTML = `
+                <div id="tvFsTopHud">
+                    <div class="tv-fs-hud-left">
+                        <span class="tv-fs-hud-num" id="tvFsHudNum">#1</span>
+                        <img class="tv-fs-hud-logo" id="tvFsHudLogo" src="" alt="" style="display:none;" onerror="this.style.display='none'">
+                        <div class="tv-fs-hud-title-wrap">
+                            <div class="tv-fs-hud-title" id="tvFsHudName">Canal en Vivo</div>
+                            <div class="tv-fs-hud-sub" id="tvFsHudSub">EN DIRECTO</div>
+                        </div>
+                    </div>
+                    <div class="tv-fs-hud-actions">
+                        <button type="button" class="tv-fs-btn primary" onclick="toggleTvFsChannelsDrawer(event)" title="Ver todos los canales sin salir de pantalla completa (Tecla G)">
+                            📺 Todos los Canales (<span id="tvFsHudTotalCount">5,640</span>)
+                        </button>
+                        <button type="button" class="tv-fs-btn" onclick="zappingPrevChannel(); event.stopPropagation();" title="Canal anterior (Flecha Arriba)">
+                            ⏮️ Anterior
+                        </button>
+                        <button type="button" class="tv-fs-btn" onclick="zappingNextChannel(); event.stopPropagation();" title="Canal siguiente (Flecha Abajo)">
+                            Siguiente ⏭️
+                        </button>
+                        <button type="button" class="tv-fs-btn" onclick="toggleActiveTvFav(); updateTvFsHud(); event.stopPropagation();" id="tvFsHudFavBtn" title="Guardar en favoritos">
+                            ☆ Favorito
+                        </button>
+                        <button type="button" class="tv-fs-btn" onclick="toggleTvFullscreen(); event.stopPropagation();" title="Pantalla completa (Tecla F)">
+                            ⛶ Pantalla
+                        </button>
+                    </div>
+                </div>
+
+                <div id="tvFsDrawer" onclick="event.stopPropagation()">
+                    <div class="tv-fs-drawer-header">
+                        <div class="tv-fs-drawer-toprow">
+                            <div class="tv-fs-drawer-title">
+                                <span>📺 Todos los Canales</span>
+                                <span class="tv-fs-count-pill" id="tvFsDrawerCount">5,640 canales</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <button type="button" class="tv-fs-btn" id="tvFsLayoutBtn" onclick="toggleTvFsDrawerLayout()">
+                                    ☰ Vista Lateral
+                                </button>
+                                <label style="display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#cbd5e1;cursor:pointer;padding:4px 8px;">
+                                    <input type="checkbox" id="tvFsAutoCloseChk" onchange="tvFsAutoCloseOnTune = this.checked">
+                                    Cerrar al elegir
+                                </label>
+                                <button type="button" class="tv-fs-btn" onclick="closeTvFsChannelsDrawer()" style="background:rgba(229,9,20,0.25);border-color:rgba(229,9,20,0.5);">
+                                    ✕ Volver al Video (Esc)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tv-fs-controls-row">
+                            <div class="tv-fs-search-wrap">
+                                <span class="tv-fs-search-icon">🔍</span>
+                                <input type="text" id="tvFsSearchInput" placeholder="Buscar entre todos los canales (ej: TNT, ESPN, Mega, HBO, Rock, Noticias...)" oninput="onTvFsFilterChange()">
+                            </div>
+                            <select id="tvFsCountrySelect" class="tv-fs-select" onchange="onTvFsCountryChange(this.value)">
+                                <option value="all">🌎 Todos los Países</option>
+                                <option value="Chile">🇨🇱 Chile</option>
+                                <option value="Argentina">🇦🇷 Argentina</option>
+                                <option value="España">🇪🇸 España</option>
+                                <option value="México">🇲🇽 México</option>
+                                <option value="Colombia">🇨🇴 Colombia</option>
+                                <option value="Perú">🇵🇪 Perú</option>
+                                <option value="EE.UU.">🇺🇸 EE.UU. Latino</option>
+                                <option value="Rep. Dominicana">🇩🇴 Rep. Dominicana</option>
+                                <option value="Ecuador">🇪🇨 Ecuador</option>
+                                <option value="Uruguay">🇺🇾 Uruguay</option>
+                                <option value="Venezuela">🇻🇪 Venezuela</option>
+                                <option value="Paraguay">🇵🇾 Paraguay</option>
+                                <option value="Bolivia">🇧🇴 Bolivia</option>
+                                <option value="Costa Rica">🇨🇷 Costa Rica</option>
+                                <option value="Panamá">🇵🇦 Panamá</option>
+                                <option value="Guatemala">🇬🇹 Guatemala</option>
+                                <option value="Honduras">🇭🇳 Honduras</option>
+                                <option value="El Salvador">🇸🇻 El Salvador</option>
+                                <option value="Puerto Rico">🇵🇷 Puerto Rico</option>
+                                <option value="Internacional">🌐 Internacional</option>
+                            </select>
+                        </div>
+
+                        <div class="tv-fs-cats-bar" id="tvFsCatsBar">
+                            <button type="button" class="tv-fs-cat-pill active" data-cat="all" onclick="setTvFsCategory('all', this)">🔥 Todos</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="favs" onclick="setTvFsCategory('favs', this)">⭐ Favoritos</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Chile" onclick="setTvFsCategory('Chile', this)">🇨🇱 Chile</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="rock" onclick="setTvFsCategory('rock', this)">🎸 Rock & Metal</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Deportes" onclick="setTvFsCategory('Deportes', this)">⚽ Deportes</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Cine & Series" onclick="setTvFsCategory('Cine & Series', this)">🎬 Cine & Series</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="24/7" onclick="setTvFsCategory('24/7', this)">🔁 24/7</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Noticias" onclick="setTvFsCategory('Noticias', this)">🌍 Noticias</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Entretenimiento" onclick="setTvFsCategory('Entretenimiento', this)">🍿 Entretenimiento</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="General" onclick="setTvFsCategory('General', this)">📺 General</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Infantil" onclick="setTvFsCategory('Infantil', this)">👶 Infantiles</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Música" onclick="setTvFsCategory('Música', this)">🎶 Música</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Cultura" onclick="setTvFsCategory('Cultura', this)">🔬 Cultura</button>
+                        </div>
+                    </div>
+
+                    <div class="tv-fs-body" id="tvFsBody">
+                        <div class="tv-fs-grid" id="tvFsGrid"></div>
+                    </div>
+                </div>
+            `;
+
+            playerEl.appendChild(root);
+
+            const bodyEl = root.querySelector('#tvFsBody');
+            if (bodyEl) {
+                bodyEl.addEventListener('scroll', () => {
+                    if (bodyEl.scrollTop + bodyEl.clientHeight >= bodyEl.scrollHeight - 320) {
+                        if (tvFsRenderLimit < allLiveChannels.length) {
+                            tvFsRenderLimit += 120;
+                            renderTvFsChannelsGrid(true);
+                        }
+                    }
+                });
+            }
+
+            const wakeHud = () => {
+                root.classList.add('hud-visible');
+                clearTimeout(tvFsHudTimer);
+                tvFsHudTimer = setTimeout(() => {
+                    root.classList.remove('hud-visible');
+                }, 4000);
+            };
+            playerEl.addEventListener('mousemove', wakeHud);
+            playerEl.addEventListener('touchstart', wakeHud, { passive: true });
+            tvLivePlayer.on('fullscreenchange', () => {
+                wakeHud();
+                updateTvFsHud();
+            });
+
+            updateTvFsHud();
+        }
+
+        function updateTvFsHud() {
+            const root = document.getElementById('tvFsOverlayRoot');
+            if (!root) return;
+            const totalEl = document.getElementById('tvFsHudTotalCount');
+            if (totalEl && allLiveChannels.length) totalEl.textContent = allLiveChannels.length.toLocaleString();
+            if (!currentTvChannel) return;
+
+            const idx = allLiveChannels.findIndex(c => c.id === currentTvChannel.id);
+            const numEl = document.getElementById('tvFsHudNum');
+            if (numEl) numEl.textContent = '#' + (idx >= 0 ? idx + 1 : 1);
+
+            const logoEl = document.getElementById('tvFsHudLogo');
+            if (logoEl) {
+                if (currentTvChannel.logo) {
+                    logoEl.src = currentTvChannel.logo;
+                    logoEl.style.display = 'block';
+                } else {
+                    logoEl.style.display = 'none';
+                }
+            }
+
+            const nameEl = document.getElementById('tvFsHudName');
+            if (nameEl) nameEl.textContent = currentTvChannel.name || 'Canal en Vivo';
+
+            const subEl = document.getElementById('tvFsHudSub');
+            if (subEl) {
+                const epg = tvEpgNow && tvEpgNow[currentTvChannel.id] && tvEpgNow[currentTvChannel.id][0];
+                const meta = [currentTvChannel.country, currentTvChannel.category].filter(Boolean).join(' · ');
+                subEl.textContent = epg ? `▶ AHORA: ${epg}  (${meta})` : meta || 'EN DIRECTO';
+            }
+
+            const favBtn = document.getElementById('tvFsHudFavBtn');
+            if (favBtn) {
+                const fav = isChannelFav(currentTvChannel.id);
+                favBtn.textContent = fav ? '⭐ Favorito' : '☆ Favorito';
+            }
+        }
+
+        function openTvFsChannelsDrawer(ev, enterFullscreenIfNot) {
+            if (ev && ev.stopPropagation) ev.stopPropagation();
+            injectTvFullscreenOverlay();
+            if (enterFullscreenIfNot && tvLivePlayer && !tvLivePlayer.isFullscreen()) {
+                try { tvLivePlayer.requestFullscreen(); } catch (e) {}
+            }
+            const root = document.getElementById('tvFsOverlayRoot');
+            const drawer = document.getElementById('tvFsDrawer');
+            if (!root || !drawer) return;
+            root.classList.add('drawer-open');
+            drawer.style.display = 'flex';
+            tvFsRenderLimit = 120;
+            renderTvFsChannelsGrid(false);
+            setTimeout(() => {
+                const activeCard = drawer.querySelector('.tv-fs-card.active');
+                if (activeCard) activeCard.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            }, 80);
+        }
+
+        function closeTvFsChannelsDrawer(ev) {
+            if (ev && ev.stopPropagation) ev.stopPropagation();
+            const root = document.getElementById('tvFsOverlayRoot');
+            const drawer = document.getElementById('tvFsDrawer');
+            if (root) root.classList.remove('drawer-open');
+            if (drawer) drawer.style.display = 'none';
+        }
+
+        function toggleTvFsChannelsDrawer(ev) {
+            const drawer = document.getElementById('tvFsDrawer');
+            if (drawer && drawer.style.display === 'flex') {
+                closeTvFsChannelsDrawer(ev);
+            } else {
+                openTvFsChannelsDrawer(ev, false);
+            }
+        }
+
+        function toggleTvFsDrawerLayout() {
+            const drawer = document.getElementById('tvFsDrawer');
+            const btn = document.getElementById('tvFsLayoutBtn');
+            if (!drawer) return;
+            tvFsLayout = tvFsLayout === 'grid' ? 'side' : 'grid';
+            drawer.classList.toggle('layout-side', tvFsLayout === 'side');
+            if (btn) btn.textContent = tvFsLayout === 'side' ? '☷ Vista Cuadrícula' : '☰ Vista Lateral';
+        }
+
+        function setTvFsCategory(cat, btnEl) {
+            tvFsCategory = cat;
+            tvFsRenderLimit = 120;
+            document.querySelectorAll('#tvFsCatsBar .tv-fs-cat-pill').forEach(p => p.classList.toggle('active', p === btnEl || p.dataset.cat === cat));
+            const bodyEl = document.getElementById('tvFsBody');
+            if (bodyEl) bodyEl.scrollTop = 0;
+            renderTvFsChannelsGrid(false);
+        }
+
+        function onTvFsCountryChange(val) {
+            tvFsCountry = val;
+            tvFsRenderLimit = 120;
+            const bodyEl = document.getElementById('tvFsBody');
+            if (bodyEl) bodyEl.scrollTop = 0;
+            renderTvFsChannelsGrid(false);
+        }
+
+        function onTvFsFilterChange() {
+            tvFsRenderLimit = 120;
+            const bodyEl = document.getElementById('tvFsBody');
+            if (bodyEl) bodyEl.scrollTop = 0;
+            renderTvFsChannelsGrid(false);
+        }
+
+        function selectChannelFromFsDrawer(id) {
+            tuneTvChannelById(id);
+            updateTvFsHud();
+            document.querySelectorAll('#tvFsGrid .tv-fs-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.id === id);
+            });
+            if (tvFsAutoCloseOnTune) {
+                closeTvFsChannelsDrawer();
+            }
+        }
+
+        function renderTvFsChannelsGrid(preserveScroll) {
+            const grid = document.getElementById('tvFsGrid');
+            const countEl = document.getElementById('tvFsDrawerCount');
+            if (!grid) return;
+
+            const q = (document.getElementById('tvFsSearchInput')?.value || '').trim().toLowerCase();
+            let filtered = allLiveChannels;
+
+            if (q) {
+                filtered = filtered.filter(ch =>
+                    ch.name.toLowerCase().includes(q) ||
+                    (ch.category && ch.category.toLowerCase().includes(q)) ||
+                    (ch.country && ch.country.toLowerCase().includes(q))
+                );
+            } else {
+                if (tvFsCountry !== 'all') {
+                    filtered = filtered.filter(ch => ch.country && ch.country.toLowerCase() === tvFsCountry.toLowerCase());
+                }
+                if (tvFsCategory === 'favs') {
+                    const favs = getChannelFavorites();
+                    filtered = filtered.filter(ch => favs.includes(ch.id));
+                } else if (tvFsCategory === 'Chile') {
+                    filtered = filtered.filter(ch => ch.country === 'Chile');
+                } else if (tvFsCategory === 'rock') {
+                    filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
+                } else if (tvFsCategory !== 'all') {
+                    filtered = filtered.filter(ch => ch.category && ch.category.toLowerCase() === tvFsCategory.toLowerCase());
+                }
+            }
+
+            if (countEl) countEl.textContent = `${filtered.length.toLocaleString()} canales`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#94a3b8;">
+                        <div style="font-size:38px;margin-bottom:10px;">📡</div>
+                        <div style="font-size:16px;font-weight:700;color:#fff;">No se encontraron canales con ese filtro</div>
+                        <button type="button" class="tv-fs-btn primary" style="margin-top:14px;" onclick="document.getElementById('tvFsSearchInput').value=''; tvFsCountry='all'; document.getElementById('tvFsCountrySelect').value='all'; setTvFsCategory('all', document.querySelector('#tvFsCatsBar .tv-fs-cat-pill'));">
+                            Ver los ${allLiveChannels.length.toLocaleString()} canales
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const slice = filtered.slice(0, tvFsRenderLimit);
+            grid.innerHTML = slice.map((ch, idx) => {
+                const isActive = currentTvChannel && currentTvChannel.id === ch.id;
+                const epg = tvEpgNow && tvEpgNow[ch.id] && tvEpgNow[ch.id][0];
+                const isFav = isChannelFav(ch.id);
+                return `
+                    <div class="tv-fs-card ${isActive ? 'active' : ''}" tabindex="0" data-id="${ch.id}" onclick="selectChannelFromFsDrawer('${ch.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectChannelFromFsDrawer('${ch.id}');}">
+                        <div class="tv-fs-card-num">#${idx + 1}</div>
+                        <div class="tv-fs-card-logo">
+                            ${ch.logo ? `<img src="${ch.logo}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><span style="display:none;font-size:18px;">📺</span>` : '<span style="font-size:18px;">📺</span>'}
+                        </div>
+                        <div class="tv-fs-card-info">
+                            <div class="tv-fs-card-name">${isFav ? '⭐ ' : ''}${escapeEpg(ch.name)}</div>
+                            <div class="tv-fs-card-meta">${escapeEpg(ch.country || 'Internacional')} · ${escapeEpg(ch.category || 'En Vivo')}</div>
+                            ${epg ? `<div class="tv-fs-card-epg">▶ ${escapeEpg(epg)}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         function toggleTvFullscreen() {
             if (tvLivePlayer) {
+                injectTvFullscreenOverlay();
                 if (tvLivePlayer.isFullscreen()) {
                     tvLivePlayer.exitFullscreen();
                 } else {
@@ -6543,7 +7226,7 @@
         }
 
         // GUÍA DE CANALES INTERACTIVA (ZAPPING LIST)
-        function renderTvGuideList() {
+        function renderTvGuideList(appendOnly) {
             const listEl = document.getElementById('tvGuideList');
             if (!listEl) return;
 
@@ -6579,8 +7262,19 @@
                 return;
             }
 
-            // Renderizar máximo 120 elementos en la guía a la vez para máxima velocidad
-            const slice = filtered.slice(0, 120);
+            if (!appendOnly) tvGuideRenderLimit = 150;
+            if (!listEl._infiniteScrollBound) {
+                listEl._infiniteScrollBound = true;
+                listEl.addEventListener('scroll', () => {
+                    if (listEl.scrollTop + listEl.clientHeight >= listEl.scrollHeight - 250) {
+                        if (tvGuideRenderLimit < allLiveChannels.length) {
+                            tvGuideRenderLimit += 150;
+                            renderTvGuideList(true);
+                        }
+                    }
+                });
+            }
+            const slice = filtered.slice(0, tvGuideRenderLimit);
 
             listEl.innerHTML = slice.map(ch => {
                 const isActive = currentTvChannel && currentTvChannel.id === ch.id;
@@ -6974,6 +7668,9 @@
                 } else if (e.key === 'ArrowDown' || e.key === 'PageDown') {
                     e.preventDefault();
                     zappingNextChannel();
+                } else if (e.key === 'g' || e.key === 'G' || e.key === 'c' || e.key === 'C') {
+                    e.preventDefault();
+                    toggleTvFsChannelsDrawer();
                 } else if (e.key === 'f' || e.key === 'F') {
                     e.preventDefault();
                     toggleTvFullscreen();

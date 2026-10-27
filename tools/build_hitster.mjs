@@ -8,6 +8,8 @@
  * y la carátula. Si iTunes no tiene la canción, queda fuera.
  *
  * Uso: node tools/build_hitster.mjs   (tarda: iTunes limita ~20 consultas/min)
+ * Solo busca las canciones que aún no están en hitster.json; con --todo
+ * vuelve a buscarlas todas.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -136,6 +138,81 @@ const SONGS = [
     ['Babasónicos', 'Irresponsables', 2003], ['Café Tacvba', 'Eres', 2003], ['Zoé', 'Soñé', 2003],
     ['Linkin Park', 'What I\'ve Done', 2007], ['Paramore', 'Misery Business', 2007], ['3 Doors Down', 'Kryptonite', 2000],
     ['Thirty Seconds to Mars', 'The Kill (Bury Me)', 2005], ['Incubus', 'Drive', 2000], ['Gorillaz', 'Feel Good Inc.', 2005],
+
+    // Segunda tanda
+    // 1960s
+    ['The Beatles', 'Twist and Shout', 1963], ['The Beatles', 'Day Tripper', 1965], ['The Beatles', 'Revolution', 1968],
+    ['The Rolling Stones', "Jumpin' Jack Flash", 1968], ['The Kinks', 'All Day and All of the Night', 1964],
+    ['The Who', 'I Can See for Miles', 1967], ['Jimi Hendrix', 'Foxy Lady', 1967], ['Creedence Clearwater Revival', 'Green River', 1969],
+    ['The Animals', "Don't Let Me Be Misunderstood", 1965], ['The Spencer Davis Group', "Gimme Some Lovin'", 1966],
+    ['The Yardbirds', 'For Your Love', 1965], ['Big Brother & The Holding Company', 'Piece of My Heart', 1968],
+    ['Almendra', 'Muchacha (ojos de papel)', 1969],
+    // 1970s
+    ['The Kinks', 'Lola', 1970], ['The Velvet Underground', 'Sweet Jane', 1970], ['Santana', 'Black Magic Woman', 1970],
+    ['Santana', 'Oye como va', 1970], ['Led Zeppelin', 'Rock and Roll', 1971], ['Black Sabbath', 'Children of the Grave', 1971],
+    ['Deep Purple', 'Burn', 1974], ['Queen', 'Somebody to Love', 1976], ['Queen', 'We Are the Champions', 1977],
+    ['Pink Floyd', 'Comfortably Numb', 1979], ['AC/DC', 'Whole Lotta Rosie', 1977], ['AC/DC', 'Let There Be Rock', 1977],
+    ['Rainbow', 'Since You Been Gone', 1979], ['Rainbow', "Long Live Rock 'n' Roll", 1978], ['Heart', 'Barracuda', 1977],
+    ['Bachman-Turner Overdrive', "You Ain't Seen Nothing Yet", 1974], ['Steely Dan', "Reelin' in the Years", 1972],
+    ['The Doobie Brothers', "Long Train Runnin'", 1973], ['Eagles', 'Life in the Fast Lane', 1976], ['Rush', 'Fly by Night', 1975],
+    ['Ted Nugent', 'Cat Scratch Fever', 1977], ['Cheap Trick', 'Surrender', 1978], ['The Knack', 'My Sharona', 1979],
+    ['Ramones', 'Sheena Is a Punk Rocker', 1977], ['Lou Reed', 'Walk on the Wild Side', 1972],
+    ['Mott the Hoople', 'All the Young Dudes', 1972], ['Van Halen', "Ain't Talkin' 'bout Love", 1978], ['Styx', 'Come Sail Away', 1977],
+    ['Bob Seger', 'Old Time Rock & Roll', 1978], ['Tom Petty and the Heartbreakers', 'American Girl', 1976],
+    ['Tom Petty and the Heartbreakers', 'Refugee', 1979], ['Talking Heads', 'Psycho Killer', 1977],
+    ['Serú Girán', 'Seminare', 1978],
+    // 1980s
+    ['Talking Heads', 'Once in a Lifetime', 1980], ['AC/DC', 'For Those About to Rock (We Salute You)', 1981],
+    ['Judas Priest', 'Breaking the Law', 1980], ['Judas Priest', "You've Got Another Thing Comin'", 1982],
+    ['Motörhead', 'Ace of Spades', 1980], ['Iron Maiden', 'The Number of the Beast', 1982], ['Iron Maiden', 'Wasted Years', 1986],
+    ['Metallica', 'Seek & Destroy', 1983], ['Metallica', 'For Whom the Bell Tolls', 1984], ['Whitesnake', 'Still of the Night', 1987],
+    ['Def Leppard', 'Rock of Ages', 1983], ['Def Leppard', 'Love Bites', 1987], ['Mötley Crüe', 'Girls, Girls, Girls', 1987],
+    ['Mötley Crüe', 'Dr. Feelgood', 1989], ['Skid Row', '18 and Life', 1989], ['Bon Jovi', 'Bad Medicine', 1988],
+    ['Ozzy Osbourne', 'Mr. Crowley', 1980], ['Ozzy Osbourne', 'Bark at the Moon', 1983], ['Dio', 'Holy Diver', 1983],
+    ['Quiet Riot', 'Cum On Feel the Noize', 1983], ['Ratt', 'Round and Round', 1984], ['KISS', "Heaven's on Fire", 1984],
+    ['Simple Minds', "Don't You (Forget About Me)", 1985], ['Tom Petty', "Free Fallin'", 1989], ['John Mellencamp', 'Jack & Diane', 1982],
+    ['Bryan Adams', "Summer of '69", 1984], ['The Cult', 'She Sells Sanctuary', 1985],
+    ['The Smiths', 'There Is a Light That Never Goes Out', 1986], ['Pixies', 'Where Is My Mind?', 1988],
+    ['Pixies', 'Here Comes Your Man', 1989], ['Faith No More', 'Epic', 1989], ['Living Colour', 'Cult of Personality', 1988],
+    ['Aerosmith', "Janie's Got a Gun", 1989], ['Heart', 'Alone', 1987],
+    ['Serú Girán', 'Canción de Alicia en el país', 1980], ['Virus', 'Wadu wadu', 1981], ['Charly García', 'Yendo de la cama al living', 1982],
+    ['Miguel Ríos', 'Bienvenidos', 1982], ['Los Abuelos de la Nada', 'Mil horas', 1983], ['Soda Stereo', 'Sobredosis de TV', 1984],
+    ['Hombres G', 'Venezia', 1985], ['Soda Stereo', 'Prófugos', 1986], ['Soda Stereo', 'Signos', 1986],
+    ['Los Prisioneros', 'Sexo', 1986], ['Los Prisioneros', 'Por qué no se van', 1986], ['Duncan Dhu', 'En algún lugar', 1987],
+    ['Héroes del Silencio', 'Mar adentro', 1988],
+    // 1990s
+    ['Nirvana', 'Lithium', 1991], ['Nirvana', 'In Bloom', 1991], ['Pearl Jam', 'Even Flow', 1991], ['Pearl Jam', 'Black', 1991],
+    ['Metallica', 'The Unforgiven', 1991], ["Guns N' Roses", 'You Could Be Mine', 1991], ['Spin Doctors', 'Two Princes', 1991],
+    ['Pantera', 'Cowboys from Hell', 1990], ['Pantera', 'Walk', 1992], ['Megadeth', 'Symphony of Destruction', 1992],
+    ['Alice in Chains', 'Would?', 1992], ['4 Non Blondes', "What's Up?", 1992], ['The Cranberries', 'Dreams', 1992],
+    ['The Cranberries', 'Linger', 1993], ['Bon Jovi', 'Bed of Roses', 1992], ['Soundgarden', 'Spoonman', 1994],
+    ['Stone Temple Pilots', 'Interstate Love Song', 1994], ['Green Day', 'Longview', 1994], ['Green Day', 'When I Come Around', 1994],
+    ['The Offspring', 'Come Out and Play', 1994], ['Weezer', "Say It Ain't So", 1994], ['Blur', 'Girls & Boys', 1994],
+    ['Silverchair', 'Tomorrow', 1994], ['Oasis', 'Champagne Supernova', 1995], ['Radiohead', 'High and Dry', 1995],
+    ['Alanis Morissette', 'You Oughta Know', 1995], ['Alanis Morissette', 'Ironic', 1995], ['Everclear', 'Santa Monica', 1995],
+    ['Rage Against the Machine', 'Bulls on Parade', 1996], ['Radiohead', 'Paranoid Android', 1997], ['Foo Fighters', 'My Hero', 1997],
+    ['Korn', 'Freak on a Leash', 1998], ['The Offspring', "The Kids Aren't Alright", 1998], ['Lenny Kravitz', 'Fly Away', 1998],
+    ['Semisonic', 'Closing Time', 1998], ['Blink-182', "What's My Age Again?", 1999], ['Blink-182', 'All the Small Things', 1999],
+    ['Smash Mouth', 'All Star', 1999], ['Creed', 'Higher', 1999],
+    ['Rata Blanca', 'Mujer amante', 1990], ['Los Prisioneros', 'Estrechez de corazón', 1990], ['Héroes del Silencio', 'Maldito duende', 1990],
+    ['Attaque 77', 'Hacelo por mí', 1990], ['Fito Páez', 'El amor después del amor', 1992], ['Maná', 'Vivir sin aire', 1992],
+    ['Soda Stereo', 'Zoom', 1995], ['Soda Stereo', 'Ella usó mi cabeza como un revólver', 1995], ['Los Auténticos Decadentes', 'La guitarra', 1995],
+    ['Café Tacvba', 'Chilanga banda', 1996], ['Extremoduro', 'So payaso', 1996], ['Ska-P', 'El vals del obrero', 1996],
+    ['Maná', 'Clavado en un bar', 1997], ['Bersuit Vergarabat', 'Se viene', 1998], ['Gustavo Cerati', 'Puente', 1999],
+    // 2000s
+    ['Linkin Park', 'Crawling', 2000], ['Disturbed', 'Down with the Sickness', 2000], ['Papa Roach', 'Last Resort', 2000],
+    ['System of a Down', 'Aerials', 2001], ['The Strokes', 'Someday', 2001], ['Sum 41', 'Fat Lip', 2001], ['Jimmy Eat World', 'The Middle', 2001],
+    ['Foo Fighters', 'All My Life', 2002], ['Queens of the Stone Age', 'Go with the Flow', 2002], ['Audioslave', 'Show Me How to Live', 2002],
+    ['Red Hot Chili Peppers', 'By the Way', 2002], ['Coldplay', 'Clocks', 2002], ['Linkin Park', 'Faint', 2003], ['Muse', 'Hysteria', 2003],
+    ['Yeah Yeah Yeahs', 'Maps', 2003], ['Placebo', 'The Bitter End', 2003], ['Three Days Grace', 'I Hate Everything About You', 2003],
+    ['Blink-182', 'I Miss You', 2003], ['Hoobastank', 'The Reason', 2003], ['Green Day', 'Holiday', 2004], ['Kasabian', 'Club Foot', 2004],
+    ['Keane', 'Somewhere Only We Know', 2004], ['Velvet Revolver', 'Slither', 2004], ['Slipknot', 'Duality', 2004],
+    ['System of a Down', 'B.Y.O.B.', 2005], ['Franz Ferdinand', 'Do You Want To', 2005], ['Oasis', 'Lyla', 2005],
+    ['Avenged Sevenfold', 'Bat Country', 2005], ['Muse', 'Starlight', 2006], ['The Killers', 'When You Were Young', 2006],
+    ['Red Hot Chili Peppers', 'Snow (Hey Oh)', 2006], ['The Raconteurs', 'Steady, As She Goes', 2006],
+    ['Arctic Monkeys', 'Fluorescent Adolescent', 2007], ['The White Stripes', 'Icky Thump', 2007],
+    ['Mägo de Oz', 'Fiesta pagana', 2000], ['Molotov', 'Frijolero', 2003], ['Fito & Fitipaldis', 'Soldadito marinero', 2003],
+    ['El Cuarteto de Nos', 'Yendo a la casa de Damián', 2006], ['Zoé', 'Labios rotos', 2008],
 ];
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -159,7 +236,7 @@ function candidates(results, artist, title) {
     const ok = results.filter(r => r.previewUrl && norm(r.artistName).replace(/^the/, '').includes(a.slice(0, 12))
         && (norm(r.trackName).startsWith(t) || norm(r.trackName).includes(t)));
     // Sin versiones en vivo, karaoke ni demos si hay otra opción
-    const clean = ok.filter(r => !/live|karaoke|demo|instrumental|acoustic|ac[uú]stic|en vivo|remix/i.test(r.trackName + ' ' + (r.collectionName || '')));
+    const clean = ok.filter(r => !/live|karaoke|demo|instrumental|acoustic|ac[uú]stic|en vivo|remix|\bmix(es)?\b/i.test(r.trackName + ' ' + (r.collectionName || '')));
     const list = clean.length ? clean : ok;
     // La más antigua: más probable que sea la grabación original
     return list.sort((x, y) => String(x.releaseDate).localeCompare(String(y.releaseDate)));
@@ -180,7 +257,18 @@ function loudness(url) {
         { timeout: 60000 }, (e, o, err) => res(parseFloat(((err || '').match(/mean_volume: (-?[\d.]+)/) || [])[1]))));
 }
 
+// Las que ya están en hitster.json no se vuelven a buscar (--todo las rehace)
+const key = (a, t) => norm(a) + '|' + norm(t);
+const prev = new Map();
+if (!process.argv.includes('--todo') && fs.existsSync(OUT)) {
+    for (const s of JSON.parse(fs.readFileSync(OUT, 'utf8')).songs || []) prev.set(key(s.artist, s.title), s);
+}
+const dup = SONGS.map(([a, t]) => key(a, t)).filter((k, i, all) => all.indexOf(k) !== i);
+if (dup.length) console.log('Repetidas en la lista: ' + dup.join(' | '));
+
 for (const [artist, title, year] of SONGS) {
+    const old = prev.get(key(artist, title));
+    if (old) { out.push({ ...old, year }); continue; }
     let hit = null, list = [];
     for (const country of ['US', 'CL', 'ES']) {
         list = candidates(await itunes(`${artist} ${title}`, country), artist, title);
