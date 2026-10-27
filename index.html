@@ -2314,6 +2314,8 @@
 
         /* ===== Juegos: Hitster Rock ===== */
         .games-section { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
+        /* En la TV el menú ocupa un tercio de la pantalla: en Juegos se va con el scroll */
+        body.in-games .header { position: relative; }
         .hs-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: clamp(16px, 3vw, 28px); }
         .hs-title { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin: 0 0 6px; }
         .hs-sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 18px; line-height: 1.5; }
@@ -4295,6 +4297,7 @@
             // Juegos: sección propia; al salir se calla la canción en curso
             const gamesEl = document.getElementById('gamesSection');
             if (gamesEl) gamesEl.style.display = type === 'juegos' ? 'block' : 'none';
+            document.body.classList.toggle('in-games', type === 'juegos');
             if (type !== 'juegos' && typeof hitsterStopAudio === 'function') hitsterStopAudio();
             if (type === 'juegos') {
                 if (filterSectionEl) filterSectionEl.style.display = 'none';
@@ -7201,6 +7204,19 @@
             else if (matchMedia('(hover: hover)').matches) { try { el.focus({ preventScroll: true }); } catch (e) {} }
         }
 
+        // Deja el comienzo de la tarjeta arriba de la pantalla: al enfocar un
+        // botón de abajo, la TV centra ese botón y el año o el ganador
+        // quedaban tapados por el menú.
+        function hsShowTop() {
+            const card = hsRoot().querySelector('.hs-card');
+            if (!card) return;
+            const head = document.getElementById('mainHeader');
+            const sticky = head && getComputedStyle(head).position === 'sticky';
+            const top = card.getBoundingClientRect().top + window.scrollY - (sticky ? head.offsetHeight : 0) - 10;
+            // Sin animación: así corta el scroll suave que hace el foco
+            setTimeout(() => window.scrollTo({ top: Math.max(0, top), behavior: 'auto' }), 0);
+        }
+
         function hitsterStopAudio() {
             const a = hsAudio();
             if (a) { a.pause(); a.removeAttribute('src'); a.load(); }
@@ -7531,16 +7547,15 @@
                         </div>
                     </div>
                     <div class="hs-row" style="margin-bottom:14px;">
+                        <button class="btn btn-primary hs-big" id="hsNext" onclick="${winner || lost ? 'hitsterEnd()' : 'hitsterAdvance()'}">${winner ? '🏆 Ver ganador' : lost ? 'Ver resultado' : 'Siguiente ▶'}</button>
                         <button class="btn btn-glass" id="hsToken" onclick="hitsterToken()" ${p.tokens >= HS_MAX_TOKENS ? 'disabled style="opacity:.45"' : ''}>🎤 ${hsEsc(p.name)} dijo canción y artista: +1 🪙</button>
                         <span style="font-size:12px;color:var(--text-muted);">${p.tokens >= HS_MAX_TOKENS ? `Ya tiene el máximo de ${HS_MAX_TOKENS} fichas.` : 'Antes de revelar, ¿dijo bien las dos cosas?'}</span>
                     </div>
                     <div style="font-weight:800;margin-bottom:8px;">Línea de tiempo de ${hsEsc(p.name)}:</div>
                     <div class="hs-timeline">${hsSorted(p).map(hsCardHtml).join('')}</div>
-                    <div class="hs-row" style="margin-top:20px;">
-                        <button class="btn btn-primary hs-big" id="hsNext" onclick="${winner || lost ? 'hitsterEnd()' : 'hitsterAdvance()'}">${winner ? '🏆 Ver ganador' : lost ? 'Ver resultado' : 'Siguiente ▶'}</button>
-                    </div>
                 </div>`;
             hsFocus(document.getElementById('hsNext'));
+            hsShowTop();
         }
 
         // Ficha por decir canción y artista (una por turno, máximo 5)
@@ -7580,6 +7595,7 @@
                 </div>`;
             hs.phase = 'end';
             hsFocus(document.getElementById('hsAgain'));
+            hsShowTop();
         }
 
         /*
