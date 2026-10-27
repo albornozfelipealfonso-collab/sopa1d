@@ -2676,6 +2676,7 @@
                             <option value="Infantil">👶 Infantiles</option>
                             <option value="Música">🎶 Música</option>
                             <option value="Cultura">🔬 Cultura</option>
+                            <option value="Adultos">🔞 Adultos (+18)</option>
                             <option value="favs">⭐ Mis Favoritos</option>
                         </select>
                     </div>
@@ -2771,6 +2772,15 @@
                 <div class="tv-shelf-scroll" id="tvNewsShelfScroll"></div>
             </div>
 
+            <!-- CARRUSEL ADULTOS (+18) -->
+            <div class="tv-shelf" style="margin-bottom:28px;">
+                <div class="tv-shelf-header">
+                    <h3>🔞 Adultos (+18)</h3>
+                    <span class="tv-shelf-link" onclick="quickFilterTvBy('Adultos')">Ver todos los canales +18 →</span>
+                </div>
+                <div class="tv-shelf-scroll" id="tvAdultShelfScroll"></div>
+            </div>
+
 
         </div>
 
@@ -2833,6 +2843,7 @@
                 <button class="channel-pill" onclick="setTvExplorerCategory('Infantil', this)">👶 Infantiles</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Música', this)">🎶 Música</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Cultura', this)">🔬 Cultura</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('Adultos', this)">🔞 Adultos (+18)</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('favs', this)">⭐ Favoritos</button>
             </div>
 
@@ -6991,6 +7002,7 @@
                             <button type="button" class="tv-fs-cat-pill" data-cat="Infantil" onclick="setTvFsCategory('Infantil', this)">👶 Infantiles</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Música" onclick="setTvFsCategory('Música', this)">🎶 Música</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Cultura" onclick="setTvFsCategory('Cultura', this)">🔬 Cultura</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Adultos" onclick="setTvFsCategory('Adultos', this)">🔞 Adultos (+18)</button>
                         </div>
                     </div>
 
@@ -7477,6 +7489,13 @@
             if (newsScroll) {
                 newsScroll.innerHTML = newsList.map(ch => renderShelfCard(ch)).join('');
             }
+
+            // Adultos (+18)
+            const adultList = allLiveChannels.filter(c => c.category === 'Adultos').slice(0, 32);
+            const adultScroll = document.getElementById('tvAdultShelfScroll');
+            if (adultScroll) {
+                adultScroll.innerHTML = adultList.map(ch => renderShelfCard(ch)).join('');
+            }
         }
 
         function updateTvFavsShelf() {
@@ -7758,6 +7777,7 @@
                     else if (gl.includes('kid') || gl.includes('infant') || gl.includes('anim') || gl.includes('cartoon') || gl.includes('dibujo')) category = 'Infantil';
                     else if (gl.includes('cultur') || gl.includes('educ') || gl.includes('document')) category = 'Cultura';
                     else if (gl.includes('entreten') || gl.includes('show') || gl.includes('varied')) category = 'Entretenimiento';
+                    else if (gl.includes('adult') || gl.includes('xxx') || gl.includes('+18') || gl.includes('playboy') || gl.includes('venus') || gl.includes('brazzers') || gl.includes('dorcel') || gl.includes('penthouse') || gl.includes('hustler')) category = 'Adultos';
 
                     let country = 'Internacional';
                     if (tvgId) {

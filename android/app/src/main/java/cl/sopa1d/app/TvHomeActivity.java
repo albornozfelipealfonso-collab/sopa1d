@@ -475,7 +475,7 @@ public class TvHomeActivity extends Activity {
             JSONArray arr = new JSONArray(buf.toString("UTF-8"));
 
             List<String> order = Arrays.asList("Deportes", "Cine & Series", "24/7", "Infantil", "Noticias",
-                    "Entretenimiento", "Música", "Cultura", "General");
+                    "Entretenimiento", "Música", "Cultura", "General", "Adultos");
             Map<String, List<CatalogItem>> byCat = new HashMap<>();
             List<CatalogItem> featured = new ArrayList<>();
             List<CatalogItem> allItems = new ArrayList<>();
@@ -536,6 +536,7 @@ public class TvHomeActivity extends Activity {
             case "Entretenimiento": return "🎉";
             case "Música": return "🎵";
             case "Cultura": return "🏛️";
+            case "Adultos": return "🔞";
             default: return "📡";
         }
     }
