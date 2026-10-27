@@ -10,7 +10,7 @@
   },
   {
     "id": "ch_tnt_sports_cl2",
-    "name": "TNT Sports Premium HD (Señal 2 60fps)",
+    "name": "TNT Sports Premium HD (Chile - Señal 2 60fps)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
     "category": "Deportes",
     "country": "Chile",
@@ -19,7 +19,7 @@
   },
   {
     "id": "ch_tnt_sports_cl3",
-    "name": "TNT Sports Premium HD (Señal 3 Backup)",
+    "name": "TNT Sports Premium HD (Chile - Señal 3 Backup)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
     "category": "Deportes",
     "country": "Chile",
@@ -27,8 +27,107 @@
     "fixAudio": true
   },
   {
+    "id": "ch_tnt_sports_cl5",
+    "name": "TNT Sports Premium HD (Chile - Señal 4)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://38.224.231.176:8000/play/a02u/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl6",
+    "name": "TNT Sports Premium HD (Chile - Señal 5)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://45.173.231.22:8000/play/a06f/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl7",
+    "name": "TNT Sports Premium HD (Chile - Señal 6)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://190.234.82.52:8000/play/a0k9/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl8",
+    "name": "TNT Sports Premium HD (Chile - Señal 7)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://181.78.106.127:5000/play/ca026/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl9",
+    "name": "TNT Sports Premium HD (Chile - Señal 8)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://190.108.91.206:9050/play/a03i/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl10",
+    "name": "TNT Sports Premium HD (Chile - Señal 9)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://38.190.100.202:8000/play/a06q/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_cl11",
+    "name": "TNT Sports Premium HD (Chile - Señal 10)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://190.60.46.228:8888/play/a026/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_basico",
+    "name": "TNT Sports 2 Básico (Chile - Señal 1)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "https://stream1.bitred.cl/tnt_sports/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_basico_2",
+    "name": "TNT Sports 2 Básico (Chile - Señal 2)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://205.235.6.29:8000/play/a0xa/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_basico_3",
+    "name": "TNT Sports 2 Básico (Chile - Señal 3)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://38.224.231.176:8000/play/a023/index.m3u8",
+    "fixAudio": true
+  },
+  {
+    "id": "ch_tnt_sports_basico_4",
+    "name": "TNT Sports 2 Básico (Chile - Señal 4)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
+    "category": "Deportes",
+    "country": "Chile",
+    "url": "http://45.173.231.22:8000/play/a081/index.m3u8",
+    "fixAudio": true
+  },
+  {
     "id": "ch_tnt_sports_cl4",
-    "name": "TNT Sports HD (Argentina)",
+    "name": "TNT Sports HD (Argentina - Señal 1)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
     "category": "Deportes",
     "country": "Argentina",
@@ -36,12 +135,12 @@
     "fixAudio": true
   },
   {
-    "id": "ch_tnt_sports_basico",
-    "name": "TNT Sports 2 Básico (Chile)",
+    "id": "ch_tnt_sports_ar2",
+    "name": "TNT Sports Premium HD (Argentina - Señal 2)",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/TNT_Sports_2021_logo.svg/512px-TNT_Sports_2021_logo.svg.png",
     "category": "Deportes",
-    "country": "Chile",
-    "url": "https://stream1.bitred.cl/tnt_sports/index.m3u8",
+    "country": "Argentina",
+    "url": "http://190.128.214.97:64333/play/a03c/index.m3u8",
     "fixAudio": true
   },
   {
