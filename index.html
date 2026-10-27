@@ -2722,7 +2722,6 @@
                         <select id="tvGuideCategoryFilter" onchange="onTvGuideFilterChange()" class="custom-select" style="font-size:11px;padding:4px 6px;">
                             <option value="all">🔥 Categorías</option>
                             <option value="todos">📺 Todos Canales</option>
-                            <option value="zapping">🎵 Zapping Music</option>
                             <option value="rock">🎸 Rock & Metal</option>
                             <option value="Deportes">⚽ Deportes</option>
                             <option value="Cine & Series">🎬 Cine & Series</option>
@@ -2783,15 +2782,6 @@
                     <span class="tv-shelf-link" onclick="quickFilterTvBy('Cine & Series')">Ver canales de cine →</span>
                 </div>
                 <div class="tv-shelf-scroll" id="tvMoviesShelfScroll"></div>
-            </div>
-
-            <!-- CARRUSEL ZAPPING MUSIC -->
-            <div class="tv-shelf" style="margin-bottom:28px;">
-                <div class="tv-shelf-header">
-                    <h3>🎵 Zapping Music (Retro 80s, Classics 90s, Rock, Indie, Hits, K-Pop, Lo-Fi...)</h3>
-                    <span class="tv-shelf-link" onclick="quickFilterTvBy('zapping')">Ver todos los canales de Zapping Music →</span>
-                </div>
-                <div class="tv-shelf-scroll" id="tvZappingShelfScroll"></div>
             </div>
 
             <!-- CARRUSEL ROCK & METAL 24 HORAS -->
@@ -2909,7 +2899,6 @@
             <!-- CATEGORÍAS PILLS DEL EXPLORADOR -->
             <div class="channel-categories-bar" id="tvExplorerCategoriesBar" style="margin-bottom:16px;">
                 <button class="channel-pill active" onclick="setTvExplorerCategory('all', this)">📺 Todos Canales</button>
-                <button class="channel-pill" onclick="setTvExplorerCategory('zapping', this)">🎵 Zapping Music</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('rock', this)">🎸 Rock & Metal</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Chile', this)">🇨🇱 Chile</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Deportes', this)">⚽ Deportes</button>
@@ -7274,7 +7263,6 @@
                             <button type="button" class="tv-fs-cat-pill active" data-cat="all" onclick="setTvFsCategory('all', this)">📺 Todos Canales</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="favs" onclick="setTvFsCategory('favs', this)">⭐ Favoritos</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Chile" onclick="setTvFsCategory('Chile', this)">🇨🇱 Chile</button>
-                            <button type="button" class="tv-fs-cat-pill" data-cat="zapping" onclick="setTvFsCategory('zapping', this)">🎵 Zapping Music</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="rock" onclick="setTvFsCategory('rock', this)">🎸 Rock & Metal</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Deportes" onclick="setTvFsCategory('Deportes', this)">⚽ Deportes</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Cine & Series" onclick="setTvFsCategory('Cine & Series', this)">🎬 Cine & Series</button>
@@ -7727,13 +7715,6 @@
             const chileScroll = document.getElementById('tvChileShelfScroll');
             if (chileScroll) {
                 chileScroll.innerHTML = chileList.map(ch => renderShelfCard(ch)).join('');
-            }
-
-            // Zapping Music Destacados
-            const zappingList = allLiveChannels.filter(c => /zapping music/i.test(c.name)).slice(0, 30);
-            const zappingScroll = document.getElementById('tvZappingShelfScroll');
-            if (zappingScroll) {
-                zappingScroll.innerHTML = zappingList.map(ch => renderShelfCard(ch)).join('');
             }
 
             // Rock & Metal Destacados
