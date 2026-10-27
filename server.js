@@ -79,7 +79,7 @@ setInterval(cleanSegmentCache, 15000);
 // generando segmentos locales perfectamente alineados por keyframe y audio AAC continuo.
 // ============================================================
 const liveHlsSessions = new Map();
-const LIVE_HLS_BASE_DIR = path.join(os.tmpdir(), 'sopa1d_live_hls');
+const LIVE_HLS_BASE_DIR = path.join(os.tmpdir(), 'sopa1d_live_hls_' + process.pid);
 try { fs.mkdirSync(LIVE_HLS_BASE_DIR, { recursive: true }); } catch (e) {}
 
 function normalizeLiveStreamUrl(url) {
@@ -95,10 +95,10 @@ function normalizeLiveStreamUrl(url) {
 // Si la fuente original se congela, la reserva sigue alimentando al reproductor
 // y la imagen nunca se detiene mientras quede reserva.
 // ------------------------------------------------------------
-const LIVE_SEG_DUR = 3;                 // duración objetivo de cada segmento local (s)
-const LIVE_RAM_MAX_SEGS = 90;           // ~4.5 minutos de video guardados en RAM
-const LIVE_PLAYLIST_WINDOW = 20;        // segmentos visibles en la playlist publicada (~60s)
-const LIVE_DEFAULT_BUFFER_SEC = 18;     // retardo por defecto (s)
+const LIVE_SEG_DUR = 2;                 // duración objetivo de cada segmento local (s)
+const LIVE_RAM_MAX_SEGS = 45;           // ~4.5 minutos de video guardados en RAM
+const LIVE_PLAYLIST_WINDOW = 5;        // segmentos visibles en la playlist publicada (~60s)
+const LIVE_DEFAULT_BUFFER_SEC = 4;     // retardo por defecto (s)
 const LIVE_PINNED_URLS = new Set([
     'http://190.108.83.69:8000/play/a03i/index.m3u8',      // TNT Sports Premium HD (Chile 1)
     'http://200.59.191.177:8000/play/a0o9/index.m3u8?hls', // TNT Sports Premium HD (Señal 2 60fps)
@@ -108,7 +108,7 @@ const LIVE_PINNED_URLS = new Set([
 function clampBufferSec(v) {
     const n = parseInt(v, 10);
     if (!isFinite(n)) return LIVE_DEFAULT_BUFFER_SEC;
-    return Math.max(3, Math.min(60, n));
+    return Math.max(2, Math.min(45, n));
 }
 
 function destroyLiveHlsSession(sessionId) {
@@ -129,7 +129,7 @@ function destroyLiveHlsSession(sessionId) {
 }
 
 // Señales que ya se sabe que vienen entrelazadas: se desentrelazan desde el inicio
-const KNOWN_INTERLACED = ['200.59.191.177', '205.235.6.29', '38.134.250.110'];
+const KNOWN_INTERLACED = ['190.108.83.69', '200.59.191.177', '205.235.6.29', '38.134.250.110'];
 
 /*
  * El reproductor web (Video.js/VHS, que convierte el TS con mux.js) no sabe
@@ -180,15 +180,15 @@ function probeInterlaced(sess, segPath) {
 
 function spawnFfmpegForSession(sess) {
     if (sess.killed) return;
+    try { fs.mkdirSync(sess.dir, { recursive: true }); } catch (e) {}
     sess.spawnNo++;
     sess.m3u8Path = path.join(sess.dir, `out_${sess.spawnNo}.m3u8`);
     sess.pendingDisc = sess.allSegs.length > 0; // marcar discontinuidad al reconectar
-    const rawProxyInput = `http://127.0.0.1:${PORT}/proxy?raw=1&url=${encodeURIComponent(sess.streamUrl)}`;
     const segPattern = path.join(sess.dir, `s${sess.spawnNo}_%05d.ts`);
 
     const ffArgs = [
         '-hide_banner', '-loglevel', 'error',
-        // Tolerancia máxima a fallos de la fuente: nunca rendirse por recargas lentas o 404/5xx transitorios
+        '-user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         '-reconnect', '1',
         '-reconnect_streamed', '1',
         '-reconnect_on_network_error', '1',
@@ -198,10 +198,10 @@ function spawnFfmpegForSession(sess) {
         '-max_reload', '1000',
         '-m3u8_hold_counters', '1000',
         '-seg_max_retry', '6',
-        // Arrancar desde un punto seguro para tener reservas sin saltos de PPS
-        '-live_start_index', sess.allSegs.length > 0 ? '-3' : (sess.streamUrl.includes('stream1.bitred.cl') ? '-12' : '-5'),
+        // Arrancar siempre desde el borde en vivo (-1) para ir en directo y no repetir segmentos
+        '-live_start_index', sess.streamUrl.includes('stream1.bitred.cl') ? '-3' : '-1',
         '-fflags', '+discardcorrupt+genpts',
-        '-i', rawProxyInput,
+        '-i', sess.streamUrl,
         '-map', '0:v:0',
         '-map', '0:a:0?'];
 
@@ -296,31 +296,18 @@ function reserveCount(sess) {
 // Publicación a ritmo constante: el reproductor recibe 1 segmento por cada segmento de duración real
 function paceSession(sess) {
     if (sess.interlaced === null) return; // esperar a saber si hay que desentrelazar
-    const now = Date.now();
     const total = sess.allSegs.length;
-    const targetReserve = Math.ceil(sess.bufferSec / LIVE_SEG_DUR);
-
+    if (total < 2) return;
+    const holdSegs = sess.bufferSec <= 6 ? 0 : Math.max(0, Math.floor((sess.bufferSec - 4) / LIVE_SEG_DUR));
+    const desiredEnd = Math.max(2, total - holdSegs);
     if (sess.pubEnd === 0) {
-        // Arranque rápido y suave: si tenemos al menos 2 segmentos, arrancar para que el reproductor no espere
-        const sinceSpawn = now - sess.createdAt;
-        if (total >= targetReserve + 3 || total >= 3 || (sinceSpawn > 4000 && total >= 2)) {
-            sess.pubEnd = Math.max(Math.min(total, 2), total - targetReserve);
-            sess.nextReleaseAt = now + LIVE_SEG_DUR * 1000;
-            console.log(`[LIVE-DVR] ${sess.id} listo: ${sess.pubEnd} publicados, reserva ${reserveCount(sess)} seg (~${reserveCount(sess) * LIVE_SEG_DUR}s de delay anti-cortes)`);
-        }
+        sess.pubEnd = desiredEnd;
+        console.log(`[LIVE-DVR] ${sess.id} en vivo listo: ${sess.pubEnd}/${total} segmentos publicados`);
         return;
     }
-
-    if (now < sess.nextReleaseAt || sess.pubEnd >= total) return;
-    const released = sess.allSegs[sess.pubEnd];
-    sess.pubEnd++;
-    const reserve = reserveCount(sess);
-    // Si la reserva creció demasiado, publicar más rápido para acercarse al target; si la reserva es baja, mantener ritmo normal
-    let factor = 1.0;
-    if (reserve > targetReserve + 6) factor = 0.5;
-    else if (reserve > targetReserve + 2) factor = 0.8;
-    sess.nextReleaseAt = Math.max(now, sess.nextReleaseAt) + released.dur * 1000 * factor;
-    if (sess.nextReleaseAt < now - 2000) sess.nextReleaseAt = now;
+    if (desiredEnd > sess.pubEnd) {
+        sess.pubEnd = desiredEnd;
+    }
 }
 
 function getOrCreateLiveHlsSession(rawTargetUrl, bufferSec) {
@@ -402,7 +389,8 @@ setInterval(() => {
 
 function buildSessionM3u8(sess) {
     if (sess.pubEnd <= 0) return null;
-    const start = Math.max(sess.ramFloor, sess.pubEnd - LIVE_PLAYLIST_WINDOW);
+    const minFloor = Math.max(sess.ramFloor, sess.minStart || 0);
+    const start = Math.max(minFloor, sess.pubEnd - LIVE_PLAYLIST_WINDOW);
     const segs = sess.allSegs.slice(start, sess.pubEnd);
     if (segs.length === 0) return null;
     let discSeq = 0;
@@ -439,18 +427,16 @@ function sendM3u8(res, text) {
 function handleLiveHlsRemux(targetUrl, req, res, bufferSec, tuneToken) {
     const sess = getOrCreateLiveHlsSession(targetUrl, bufferSec);
 
-    // Nueva sintonización (no un refresco de playlist): si hay más historial en RAM que la reserva pedida,
-    // retroceder el borde publicado para entregar al reproductor un retardo completo desde el primer segundo.
+    // Al sintonizar o volver al canal (nuevo tuneToken), avanzar siempre al borde en vivo actual
+    // y fijar minStart para NO volver a entregar segmentos antiguos que ya se vieron antes de cambiar.
     if (tuneToken && tuneToken !== sess.tuneToken) {
         sess.tuneToken = tuneToken;
-        if (sess.pubEnd > 0) {
-            const targetReserve = Math.ceil(sess.bufferSec / LIVE_SEG_DUR);
-            const desired = Math.max(sess.ramFloor + 2, sess.allSegs.length - targetReserve);
-            if (desired < sess.pubEnd) {
-                sess.pubEnd = desired;
-                sess.nextReleaseAt = Date.now() + LIVE_SEG_DUR * 1000;
-                console.log(`[LIVE-DVR] ${sess.id} re-sintonizado con reserva completa de ${reserveCount(sess)} seg`);
-            }
+        if (sess.allSegs.length > 0) {
+            const holdSegs = sess.bufferSec <= 6 ? 0 : Math.max(0, Math.floor((sess.bufferSec - 4) / LIVE_SEG_DUR));
+            const liveHead = Math.max(sess.pubEnd, sess.allSegs.length - holdSegs);
+            sess.pubEnd = Math.min(sess.allSegs.length, Math.max(2, liveHead));
+            sess.minStart = Math.max(sess.ramFloor, sess.pubEnd - 3);
+            console.log(`[LIVE-DVR] ${sess.id} sintonizado en vivo (seg #${sess.minStart}..${sess.pubEnd} de ${sess.allSegs.length})`);
         }
     }
 

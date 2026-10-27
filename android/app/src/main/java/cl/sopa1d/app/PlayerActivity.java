@@ -70,35 +70,22 @@ public class PlayerActivity extends Activity {
     public static final String EXTRA_INDEX = "index";
 
     // Estas señales publican ventanas en vivo muy cortas: TNT mantiene solo
-    // 4 segmentos de ~5 s = 20 s en total. Pedir más buffer que la ventana
-    // entera es imposible de satisfacer, y quedarse muy atrás del borde hace
-    // que el servidor borre el segmento antes de terminar de reproducirlo.
-    // Por eso todo va holgadamente por debajo de esos 20 s.
-    private static final int MIN_BUFFER_MS = 8000;
-    private static final int MAX_BUFFER_MS = 18000;
-    private static final int BUFFER_FOR_PLAYBACK_MS = 2500;
-    private static final int BUFFER_AFTER_REBUFFER_MS = 4000;
+    // 4 segmentos de ~3 s = 12 s en total. Apuntamos cerca del borde en vivo
+    // (~3.5 s) para que la señal vaya al día y al cambiar y volver no repita
+    // los segmentos antiguos del inicio de la ventana.
+    private static final int MIN_BUFFER_MS = 4000;
+    private static final int MAX_BUFFER_MS = 14000;
+    private static final int BUFFER_FOR_PLAYBACK_MS = 1500;
+    private static final int BUFFER_AFTER_REBUFFER_MS = 2500;
 
     /**
-     * Retardo inicial respecto del directo, antes de conocer la ventana del
-     * canal. Luego se ajusta una vez con liveOffsetFor() (ver onTimelineChanged).
+     * Retardo objetivo respecto del directo (~3.5 s = 1 segmento antes del borde).
      */
-    private static final long LIVE_TARGET_OFFSET_MS = 8000;
+    private static final long LIVE_TARGET_OFFSET_MS = 3500;
 
-    /**
-     * Las ventanas varían mucho entre señales: TNT Chile 1 publica 4 segmentos
-     * de 5 s (20 s) con PROGRAM-DATE-TIME y la lista llega con 3-9 s de
-     * atraso; la Señal 2 publica 4 de 3 s (12 s) sin fecha. Un retardo fijo no
-     * sirve para ambas: 8 s dejaba a Chile 1 pegado al último segmento conocido
-     * (corte de ~1 s cada 5 s) y 14 s mandaba a la Señal 2 al inicio de la
-     * ventana, donde los segmentos expiran antes de terminar de bajarlos.
-     * Se apunta a la mitad de la ventana, sin pasar de 11 s antes del final.
-     */
     private static long liveOffsetFor(long windowMs, boolean hasProgramDateTime) {
-        long fromEnd = Math.min(windowMs / 2, 11000);
-        // Con PROGRAM-DATE-TIME ExoPlayer mide contra el reloj, no contra el
-        // final de la lista: se suma el atraso típico con que esta se publica.
-        return hasProgramDateTime ? fromEnd + 3000 : fromEnd;
+        long fromEnd = Math.min(Math.max(windowMs / 3, 3000), 6000);
+        return hasProgramDateTime ? fromEnd + 2000 : fromEnd;
     }
 
     /** El retardo ya se ajustó a la ventana del canal actual. */
@@ -670,26 +657,19 @@ public class PlayerActivity extends Activity {
     }
 
     /**
-     * Con la primera playlist ya se sabe cuánto dura la ventana del canal. Si
-     * el retardo ideal difiere del inicial, se reabre la fuente una sola vez
-     * con el correcto: HlsMediaSource no admite cambiarlo en caliente y
-     * replaceMediaItem() perdería el User-Agent y las banderas del extractor.
+     * Registra la ventana en vivo sin reabrir el MediaSource (reabrirlo con
+     * setMediaSource + prepare reiniciaba la sesión Astra desde el primer
+     * segmento y hacía que los primeros segundos se repitieran).
      */
     private void tuneLiveOffset(Timeline timeline) {
         if (timeline.isEmpty() || player == null) return;
         Timeline.Window w = timeline.getWindow(player.getCurrentMediaItemIndex(), new Timeline.Window());
         if (!w.isLive() || w.getDurationMs() == C.TIME_UNSET) return;
         liveOffsetTuned = true;
-
         long target = liveOffsetFor(w.getDurationMs(), w.windowStartTimeMs != C.TIME_UNSET);
-        Channel ch = ChannelStore.at(index);
         Log.i(TAG, "Ventana en vivo " + w.getDurationMs() + " ms"
                 + (w.windowStartTimeMs != C.TIME_UNSET ? " con fecha" : " sin fecha")
-                + " -> retardo " + target + " ms");
-        if (ch == null || Math.abs(target - LIVE_TARGET_OFFSET_MS) < 1500) return;
-
-        player.setMediaSource(buildSource(activeUrl, target));
-        player.prepare();
+                + " -> retardo objetivo " + target + " ms");
     }
 
     private MediaSource buildSource(String url, long targetOffsetMs) {

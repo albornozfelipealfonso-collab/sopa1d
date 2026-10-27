@@ -5852,12 +5852,12 @@
 
         // Buffer Anti-Cortes: retardo intencional (segundos) que el servidor guarda en reserva
         const TV_BUFFER_MODES = [
-            { sec: 18, label: '🛡️ Buffer: 18s', toast: '🛡️ Buffer Anti-Cortes 18s (recomendado)' },
-            { sec: 30, label: '🔒 Buffer: 30s', toast: '🔒 Ultra Buffer 30s: máxima estabilidad' },
-            { sec: 45, label: '🧱 Buffer: 45s', toast: '🧱 Buffer extremo 45s para señales muy inestables' },
-            { sec: 6,  label: '⚡ Buffer: 6s',  toast: '⚡ Buffer mínimo 6s (menos retardo, más riesgo de cortes)' }
+            { sec: 4,  label: '⚡ En Vivo (4s)', toast: '⚡ Modo En Vivo 4s: transmisión en tiempo real' },
+            { sec: 10, label: '🛡️ Buffer: 10s', toast: '🛡️ Buffer Anti-Cortes 10s (equilibrado)' },
+            { sec: 20, label: '🔒 Buffer: 20s', toast: '🔒 Buffer 20s: alta estabilidad' },
+            { sec: 35, label: '🧱 Buffer: 35s', toast: '🧱 Buffer extremo 35s para señales inestables' }
         ];
-        let tvBufferDelaySec = parseInt(localStorage.getItem('sopa1d_tv_buffer_sec') || '18', 10) || 18;
+        let tvBufferDelaySec = parseInt(localStorage.getItem('sopa1d_tv_buffer_sec_v2') || '4', 10) || 4;
 
         function updateTvBufferUI() {
             const lbl = document.getElementById('tvBufferLabel');
@@ -5870,7 +5870,7 @@
             const idx = TV_BUFFER_MODES.findIndex(x => x.sec === tvBufferDelaySec);
             const next = TV_BUFFER_MODES[(idx + 1) % TV_BUFFER_MODES.length];
             tvBufferDelaySec = next.sec;
-            localStorage.setItem('sopa1d_tv_buffer_sec', String(next.sec));
+            localStorage.setItem('sopa1d_tv_buffer_sec_v2', String(next.sec));
             updateTvBufferUI();
             showToast(next.toast);
             if (currentTvChannel) tuneTvChannel(currentTvChannel, false);
@@ -6169,21 +6169,31 @@
                         liveui: true,
                         preload: 'auto',
                         liveTracker: {
-                            trackingThreshold: 12,
-                            liveTolerance: 15
+                            trackingThreshold: 6,
+                            liveTolerance: 8
                         },
                         html5: {
                             vhs: {
-                                enableLowInitialPlaylist: true,
+                                enableLowInitialPlaylist: false,
                                 overrideNative: true,
-                                liveRangeSafeTimeDelta: 3,
-                                liveTolerance: 15,
-                                goalBufferLength: 15,
-                                maxBufferLength: 90,
-                                maxBufferSize: 120 * 1024 * 1024,
+                                liveRangeSafeTimeDelta: 1.5,
+                                liveTolerance: 8,
+                                goalBufferLength: 6,
+                                maxBufferLength: 30,
+                                maxBufferSize: 60 * 1024 * 1024,
                                 bandwidth: 12000000
                             }
                         }
+                    });
+
+                    // Al sintonizar un canal en vivo, colocarse siempre en el borde en vivo más reciente
+                    tvLivePlayer.on('loadedmetadata', function() {
+                        try {
+                            const tracker = tvLivePlayer.liveTracker;
+                            if (tracker && tracker.isLive && tracker.isLive()) {
+                                tracker.seekToLiveEdge();
+                            }
+                        } catch (e) {}
                     });
 
                     // Watchdog contra congelamientos (solo actúa si el canal se congela de verdad > 14s y está muy atrasado)
