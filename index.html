@@ -2665,6 +2665,7 @@
                         </select>
                         <select id="tvGuideCategoryFilter" onchange="onTvGuideFilterChange()" class="custom-select" style="font-size:11px;padding:4px 6px;">
                             <option value="all">🔥 Categorías</option>
+                            <option value="todos">📺 Todos Canales</option>
                             <option value="rock">🎸 Rock & Metal</option>
                             <option value="Deportes">⚽ Deportes</option>
                             <option value="Cine & Series">🎬 Cine & Series</option>
@@ -2821,7 +2822,7 @@
 
             <!-- CATEGORÍAS PILLS DEL EXPLORADOR -->
             <div class="channel-categories-bar" id="tvExplorerCategoriesBar" style="margin-bottom:16px;">
-                <button class="channel-pill active" onclick="setTvExplorerCategory('all', this)">🔥 Todos</button>
+                <button class="channel-pill active" onclick="setTvExplorerCategory('all', this)">📺 Todos Canales</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('rock', this)">🎸 Rock & Metal</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Chile', this)">🇨🇱 Chile</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Deportes', this)">⚽ Deportes</button>
@@ -6977,7 +6978,7 @@
                         </div>
 
                         <div class="tv-fs-cats-bar" id="tvFsCatsBar">
-                            <button type="button" class="tv-fs-cat-pill active" data-cat="all" onclick="setTvFsCategory('all', this)">🔥 Todos</button>
+                            <button type="button" class="tv-fs-cat-pill active" data-cat="all" onclick="setTvFsCategory('all', this)">📺 Todos Canales</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="favs" onclick="setTvFsCategory('favs', this)">⭐ Favoritos</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Chile" onclick="setTvFsCategory('Chile', this)">🇨🇱 Chile</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="rock" onclick="setTvFsCategory('rock', this)">🎸 Rock & Metal</button>
@@ -7244,7 +7245,7 @@
                     filtered = filtered.filter(ch => favs.includes(ch.id));
                 } else if (tvGuideCategory === 'rock') {
                     filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
-                } else if (tvGuideCategory !== 'all') {
+                } else if (tvGuideCategory !== 'all' && tvGuideCategory !== 'todos') {
                     filtered = filtered.filter(ch => ch.category && ch.category.toLowerCase() === tvGuideCategory.toLowerCase());
                 }
             }
@@ -7404,8 +7405,16 @@
         }
 
         function onTvGuideFilterChange() {
-            tvGuideCountry = document.getElementById('tvGuideCountryFilter').value;
             tvGuideCategory = document.getElementById('tvGuideCategoryFilter').value;
+            if (tvGuideCategory === 'todos') {
+                tvGuideCountry = 'all';
+                const countrySel = document.getElementById('tvGuideCountryFilter');
+                if (countrySel) countrySel.value = 'all';
+                const searchInp = document.getElementById('tvGuideSearchInput');
+                if (searchInp) searchInp.value = '';
+            } else {
+                tvGuideCountry = document.getElementById('tvGuideCountryFilter').value;
+            }
             renderTvGuideList();
         }
 
