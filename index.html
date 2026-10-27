@@ -2312,50 +2312,104 @@
         .tv-schedule-row .t { font-weight:700; font-size:14px; }
         .tv-schedule-row .d { font-size:12px; color:var(--text-secondary, #9ca3af); margin-top:3px; }
 
-        /* ===== Juegos: Hitster Rock ===== */
-        .games-section { max-width: 1200px; margin: 0 auto; padding: 24px 16px 60px; }
-        .hs-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: clamp(16px, 3vw, 28px); }
-        .hs-title { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin: 0 0 6px; }
-        .hs-sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 18px; line-height: 1.5; }
-        .hs-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 10px 0 16px; }
-        .hs-opt { min-width: 52px; padding: 12px 16px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
-        .hs-opt.active { border-color: #ff1e42; background: rgba(255,30,66,0.18); }
-        .hs-big { padding: 16px 28px; font-size: 18px; border-radius: 14px; }
-        .hs-names { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
-        .hs-names input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); color: #fff; font-size: 15px; }
-        .hs-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .hs-turn { font-size: clamp(20px, 3.4vw, 30px); font-weight: 900; }
+        /* ===== Juegos: Hitster Rock & Adivina la Canción (Optimizado para TV 16:9 y PC) ===== */
+        .games-section { max-width: 1280px; margin: 0 auto; padding: 20px 20px 40px; }
+        body.tv-mode.in-games #mainHeader,
+        body.tv-mode.in-games .site-footer { display: none !important; }
+        body.tv-mode.in-games { padding-bottom: 12px !important; }
+        body.tv-mode.in-games .games-section { padding: 14px 24px 16px; max-width: 1400px; }
+        .hs-card {
+            background: linear-gradient(145deg, rgba(20, 24, 38, 0.96) 0%, rgba(11, 14, 23, 0.98) 100%);
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.65);
+            border-radius: 20px;
+            padding: clamp(16px, 2.2vw, 24px);
+        }
+        .hs-title { font-size: clamp(22px, 3.2vw, 32px); font-weight: 900; margin: 0 0 6px; color: #fff; }
+        .hs-sub { color: #cbd5e1; font-size: 14px; margin: 0 0 14px; line-height: 1.45; }
+        .hs-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 8px 0 12px; }
+        .hs-opt { min-width: 54px; padding: 10px 16px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
+        .hs-opt.active { border-color: #ff1e42; background: rgba(255,30,66,0.28); box-shadow: 0 0 14px rgba(255,30,66,0.35); }
+        .hs-big { padding: 13px 24px; font-size: 17px; border-radius: 14px; font-weight: 800; }
+        .hs-names { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+        .hs-names input { width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.45); color: #fff; font-size: 15px; }
+        .hs-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .hs-turn { font-size: clamp(19px, 2.8vw, 26px); font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; }
         .hs-scores { display: flex; flex-wrap: wrap; gap: 8px; }
-        .hs-score { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.07); font-size: 13px; font-weight: 700; }
-        .hs-score.me { background: rgba(255,30,66,0.25); border: 1px solid #ff1e42; }
-        .hs-player { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
-        .hs-play { width: 84px; height: 84px; border-radius: 50%; border: none; background: #ff1e42; color: #fff; font-size: 34px; cursor: pointer; flex-shrink: 0; box-shadow: 0 8px 24px rgba(255,30,66,0.35); }
-        .hs-progress { flex: 1; min-width: 160px; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.12); overflow: hidden; }
-        .hs-progress > div { height: 100%; width: 0; background: #ff1e42; transition: width .25s linear; }
-        .hs-timeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
-        .hs-slot { min-width: 64px; padding: 10px 8px; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); color: #fff; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; }
-        .hs-slot small { font-size: 10px; font-weight: 600; color: var(--text-muted); }
-        .hs-slot:hover, .hs-slot:focus { border-color: #ff1e42; background: rgba(255,30,66,0.15); outline: none; }
-        .hs-song { width: clamp(84px, 11vw, 120px); border-radius: 12px; overflow: hidden; background: #15171f; border: 1px solid rgba(255,255,255,0.1); }
-        .hs-song img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-        .hs-song .y { font-size: 20px; font-weight: 900; text-align: center; padding: 4px 0 0; }
-        .hs-song .t { font-size: 10px; color: var(--text-secondary); text-align: center; padding: 0 6px 8px; line-height: 1.25; max-height: 3.8em; overflow: hidden; }
-        .hs-reveal { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
-        .hs-reveal img { width: clamp(110px, 18vw, 170px); border-radius: 14px; }
-        .hs-verdict { font-size: clamp(22px, 3.6vw, 32px); font-weight: 900; }
+        .hs-score { padding: 6px 13px; border-radius: 999px; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14); font-size: 13px; font-weight: 800; color: #e2e8f0; }
+        .hs-score.me { background: rgba(255,30,66,0.3); border: 2px solid #ff1e42; color: #fff; box-shadow: 0 0 12px rgba(255,30,66,0.35); }
+        .hs-player { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 12px 16px; border-radius: 16px; }
+        .hs-play { width: 72px; height: 72px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.25); background: linear-gradient(135deg, #ff1e42 0%, #d60027 100%); color: #fff; font-size: 30px; cursor: pointer; flex-shrink: 0; box-shadow: 0 8px 24px rgba(255,30,66,0.45); display: flex; align-items: center; justify-content: center; }
+        .hs-progress { flex: 1; min-width: 160px; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.14); overflow: hidden; }
+        .hs-progress > div { height: 100%; width: 0; background: linear-gradient(90deg, #ff1e42, #f5c518); transition: width .25s linear; }
+        .hs-timeline {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 10px;
+            align-items: stretch;
+            padding: 10px 6px 14px;
+            scroll-behavior: smooth;
+            background: rgba(0, 0, 0, 0.28);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .hs-slot {
+            min-width: 88px;
+            flex-shrink: 0;
+            padding: 12px 10px;
+            border-radius: 14px;
+            border: 2px dashed rgba(255,255,255,0.38);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            text-align: center;
+        }
+        .hs-slot small { font-size: 11px; font-weight: 700; color: #cbd5e1; line-height: 1.2; }
+        .hs-slot:hover, .hs-slot:focus, .hs-slot.tv-focus {
+            border-style: solid;
+            border-color: #f5c518 !important;
+            background: rgba(245, 197, 24, 0.22) !important;
+            color: #fff;
+            outline: none;
+        }
+        .hs-song {
+            width: 112px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #151926;
+            border: 2px solid rgba(255,255,255,0.18);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.45);
+            display: flex;
+            flex-direction: column;
+        }
+        .hs-song img { width: 100%; height: 84px; object-fit: cover; display: block; background: #0b0e17; }
+        .hs-song .y { font-size: 20px; font-weight: 900; text-align: center; padding: 4px 0 2px; color: #f5c518; background: rgba(0,0,0,0.35); }
+        .hs-song .t { font-size: 11px; color: #e2e8f0; text-align: center; padding: 4px 6px 8px; line-height: 1.25; max-height: 3.8em; overflow: hidden; font-weight: 600; }
+        .hs-reveal { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; background: rgba(255,255,255,0.04); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        .hs-reveal img { width: clamp(100px, 14vw, 145px); height: clamp(100px, 14vw, 145px); object-fit: cover; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+        .hs-verdict { font-size: clamp(20px, 3vw, 28px); font-weight: 900; }
         .hs-verdict.ok { color: #34d399; } .hs-verdict.bad { color: #f87171; }
-        .hs-lives { font-size: 22px; letter-spacing: 2px; }
+        .hs-lives { font-size: 20px; letter-spacing: 2px; }
         .nt-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-        .nt-opt { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 16px 18px; border-radius: 14px;
-            border: 2px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; min-height: 76px; }
-        .nt-opt b { font-size: clamp(15px, 2.2vw, 19px); line-height: 1.25; }
-        .nt-opt span { font-size: 13px; color: var(--text-secondary); }
-        .nt-opt:hover, .nt-opt:focus { border-color: #f5c518; background: rgba(245,197,24,0.12); outline: none; }
-        .nt-opt.ok { border-color: #34d399; background: rgba(52,211,153,0.2); }
-        .nt-opt.bad { border-color: #f87171; background: rgba(248,113,113,0.2); }
+        .nt-opt { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 14px 18px; border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); color: #fff; cursor: pointer; min-height: 70px; }
+        .nt-opt b { font-size: clamp(15px, 2vw, 18px); line-height: 1.25; }
+        .nt-opt span { font-size: 13px; color: #cbd5e1; }
+        .nt-opt:hover, .nt-opt:focus { border-color: #f5c518; background: rgba(245,197,24,0.16); outline: none; }
+        .nt-opt.ok { border-color: #34d399; background: rgba(52,211,153,0.22); }
+        .nt-opt.bad { border-color: #f87171; background: rgba(248,113,113,0.22); }
         .nt-opt:disabled { cursor: default; }
         @media (max-width: 560px) { .nt-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 560px) { .hs-play { width: 70px; height: 70px; font-size: 28px; } .hs-slot { min-width: 54px; } }
+        @media (max-width: 560px) { .hs-play { width: 64px; height: 64px; font-size: 26px; } .hs-slot { min-width: 72px; } }
 </style>
 </head>
 <body>
@@ -4313,6 +4367,7 @@
             // Juegos: sección propia; al salir se calla la canción en curso
             const gamesEl = document.getElementById('gamesSection');
             if (gamesEl) gamesEl.style.display = type === 'juegos' ? 'block' : 'none';
+            document.body.classList.toggle('in-games', type === 'juegos');
             if (type !== 'juegos' && typeof hitsterStopAudio === 'function') hitsterStopAudio();
             if (type === 'juegos') {
                 if (filterSectionEl) filterSectionEl.style.display = 'none';
@@ -5761,6 +5816,9 @@
 
                 const custom = getSavedCustomChannels();
                 allLiveChannels = [...custom, ...(loaded || [])];
+                allLiveChannels.forEach((c, idx) => {
+                    if (!c.id) c.id = 'ch_auto_' + idx;
+                });
             }
 
             const guideBadge = document.getElementById('tvGuideCountBadge');
@@ -7943,19 +8001,15 @@
             return hitsterSongs;
         }
 
-        // Resuelve dinámicamente el preview MP3 para las 1.542 canciones tanto en Hitster Rock como en Adivina la Canción (Web, PC .exe y APK Android TV)
+        // Resuelve dinámicamente el preview MP3 y carátula real para las 1.542 canciones tanto en Hitster Rock como en Adivina la Canción (Web, PC .exe y APK Android TV)
         function resolveGameSongPreview(song) {
             return new Promise((resolve) => {
                 if (!song || !song.preview) return resolve('');
-                if (song._resolvedPreview) return resolve(song._resolvedPreview);
-                if (!song.preview.startsWith('/api/song-preview')) return resolve(song.preview);
+                const needsRealCover = !song.cover || song.cover.includes('images.unsplash.com');
+                if (song._resolvedPreview && !needsRealCover) return resolve(song._resolvedPreview);
+                if (!song.preview.startsWith('/api/song-preview') && !needsRealCover) return resolve(song.preview);
 
-                // Si estamos en servidor local (PC .exe o node server.js), /api/song-preview funciona directo,
-                // pero en Android APK (appassets.androidplatform.net) o file:// resolvemos por JSONP de Deezer sin bloqueo CORS
                 const isLocalHttp = window.location.protocol.startsWith('http') && window.location.hostname !== 'appassets.androidplatform.net';
-                if (isLocalHttp) {
-                    return resolve(song.preview);
-                }
 
                 const cbName = '__dz_cb_' + Math.random().toString(36).slice(2, 10);
                 const q = encodeURIComponent((song.artist || '') + ' ' + (song.title || ''));
@@ -7969,8 +8023,8 @@
                     if (done) return;
                     done = true;
                     cleanup();
-                    resolve(song.preview);
-                }, 4000);
+                    resolve(song._resolvedPreview || song.preview);
+                }, 3800);
 
                 window[cbName] = (data) => {
                     if (done) return;
@@ -7979,22 +8033,23 @@
                     cleanup();
                     const list = (data && data.data) || [];
                     const hit = list.find(item => item && item.preview);
-                    if (hit && hit.preview) {
-                        song._resolvedPreview = hit.preview;
-                        if (!song.cover && hit.album && hit.album.cover_medium) {
-                            song.cover = hit.album.cover_medium;
+                    if (hit) {
+                        if (hit.album && (hit.album.cover_big || hit.album.cover_medium)) {
+                            song.cover = hit.album.cover_big || hit.album.cover_medium;
                         }
-                        resolve(hit.preview);
-                    } else {
-                        resolve(song.preview);
+                        if (hit.preview) {
+                            song._resolvedPreview = hit.preview;
+                            return resolve(isLocalHttp && song.preview.startsWith('/api/song-preview') ? song.preview : hit.preview);
+                        }
                     }
+                    resolve(song._resolvedPreview || song.preview);
                 };
                 script.onerror = () => {
                     if (done) return;
                     done = true;
                     clearTimeout(timer);
                     cleanup();
-                    resolve(song.preview);
+                    resolve(song._resolvedPreview || song.preview);
                 };
                 script.src = `https://api.deezer.com/search?output=jsonp&limit=5&q=${q}&callback=${cbName}`;
                 document.head.appendChild(script);
@@ -8076,6 +8131,15 @@
                 name: (hsCfg.names[i] || '').trim() || `Jugador ${i + 1}`,
                 cards: [deck.pop()],
                 tokens: HS_START_TOKENS,
+            }));
+            players.forEach(p => p.cards.forEach(c => {
+                resolveGameSongPreview(c).then(() => {
+                    if (hs && hs.phase === 'listen') {
+                        const tl = hsRoot()?.querySelector('.hs-timeline');
+                        const curP = hs.players[hs.turn];
+                        if (tl && curP === p) tl.innerHTML = hsTimelineHtml(hsSorted(curP), 'hitsterGuess', -1, -1);
+                    }
+                });
             }));
             hs = { players, deck, turn: 0, target: hsCfg.target, lives: 3, solo: players.length === 1, current: null, phase: 'listen', guess: null };
             hitsterNextSong();
@@ -8589,7 +8653,7 @@
 
         window.hitsterActive = function () {
             const sec = document.getElementById('gamesSection');
-            return (!!hs || !!nt) && !!sec && sec.style.display !== 'none';
+            return !!sec && sec.style.display !== 'none';
         };
 
         // Atrás (control de la TV / botón de Android): partida → configuración → menú
@@ -8720,6 +8784,18 @@
         }
 
         function move(dir) {
+            // En la línea de tiempo de Hitster, izquierda/derecha recorren todos los huecos en orden cronológico sin saltarse ninguno
+            if (current && current.classList && current.classList.contains('hs-slot') && (dir === 'left' || dir === 'right')) {
+                var slots = Array.prototype.slice.call(scope().querySelectorAll('button.hs-slot'));
+                var idx = slots.indexOf(current);
+                if (idx !== -1) {
+                    var targetSlot = dir === 'right' ? slots[idx + 1] : slots[idx - 1];
+                    if (targetSlot) {
+                        focusEl(targetSlot);
+                        return;
+                    }
+                }
+            }
             var list = candidates();
             if (!list.length) return;
             if (!current || !document.body.contains(current) || list.indexOf(current) === -1) {

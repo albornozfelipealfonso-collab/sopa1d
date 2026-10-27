@@ -187,16 +187,20 @@ final class Catalog {
         rows.add(new Row("🇨🇱 Más cine y series chilenas (gratis)", LOCAL + "chile.json#accesos"));
         // Juegos (en la versión web de la app): cada tarjeta abre su juego
         List<CatalogItem> games = new ArrayList<>();
-        CatalogItem nameTune = new CatalogItem("tv", "game:adivina", "🎯 Adivina la canción", "", 0,
-                "Repertorio de 1.542 clásicos del rock (1960–2010). Suena un fragmento y hay 4 opciones: mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.", null, null);
-        nameTune.genres = "Juego musical · 1.542 canciones";
-        games.add(nameTune);
-        CatalogItem hitster = new CatalogItem("tv", "game:hitster", "🎸 Hitster Rock", "", 0,
-                "Repertorio de 1.542 clásicos del rock (1960–2010). Adivina en qué año salió cada canción y ubícala en tu línea de tiempo. Para 1 a 6 jugadores.", null, null);
-        hitster.genres = "Juego musical · 1.542 canciones";
+        CatalogItem hitster = new CatalogItem("tv", "game:hitster", "🎸 Hitster Rock (1960–2010)", "2026", 9.8,
+                "Repertorio de 1.542 clásicos del rock (1960–2010). Escucha la canción, adivina en qué año salió y ubícala en tu línea de tiempo. Para 1 a 6 jugadores con control remoto.",
+                "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1280&auto=format&fit=crop&q=80");
+        hitster.genres = "Juego musical · 1.542 canciones Rock";
         games.add(hitster);
+        CatalogItem nameTune = new CatalogItem("tv", "game:adivina", "🎯 Adivina la canción", "2026", 9.6,
+                "Repertorio de 1.542 clásicos del rock (1960–2010). Suena un fragmento y hay 4 opciones en pantalla: mientras más rápido aciertas con el control, más puntos ganas.",
+                "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1280&auto=format&fit=crop&q=80");
+        nameTune.genres = "Trivia musical · 1.542 canciones Rock";
+        games.add(nameTune);
         // Arriba, justo después del Top 10 de películas, para verla sin bajar tanto
-        rows.add(1, new Row("🎮 Juegos", games));
+        rows.add(1, new Row("🎮 Juegos Musicales en TV", games));
         rows.add(new Row("💥 Acción", best("movies", 28)));
         rows.add(new Row("😂 Comedia", best("movies", 35)));
         rows.add(new Row("👻 Terror", best("movies", 27)));

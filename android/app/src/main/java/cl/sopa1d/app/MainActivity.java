@@ -41,6 +41,11 @@ import java.util.Set;
  */
 public class MainActivity extends Activity {
 
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(SystemBars.tvScale(base));
+    }
+
     private static final String TAG = "Sopa1D";
 
     /** Sección de index.html que se abre directo ("juegos"). */
@@ -168,6 +173,10 @@ public class MainActivity extends Activity {
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
+        if (isTv()) {
+            s.setTextZoom(94);
+            hideSystemUi(true);
+        }
         s.setSupportMultipleWindows(false);    // sin ventanas nuevas = sin popups
         s.setJavaScriptCanOpenWindowsAutomatically(false);
 
@@ -249,6 +258,11 @@ public class MainActivity extends Activity {
                         && url.getPath() != null && url.getPath().startsWith("/api/song-preview")) {
                     try {
                         String q = url.getQueryParameter("q");
+                        if (q == null || q.isEmpty()) {
+                            String artist = url.getQueryParameter("artist");
+                            String title = url.getQueryParameter("title");
+                            q = ((artist != null ? artist : "") + " " + (title != null ? title : "")).trim();
+                        }
                         if (q != null && !q.isEmpty()) {
                             String apiUrl = "https://api.deezer.com/search?limit=5&q=" + java.net.URLEncoder.encode(q, "UTF-8");
                             String json = Http.getString(apiUrl);
