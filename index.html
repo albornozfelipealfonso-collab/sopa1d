@@ -2430,6 +2430,7 @@
                 <button class="nav-link active" data-type="movies" onclick="switchTab('movies')">🎬 Películas</button>
                 <button class="nav-link" data-type="tvshows" onclick="switchTab('tvshows')">📺 Series</button>
                 <button class="nav-link" data-type="anime" onclick="switchTab('anime')">🌸 Anime</button>
+                <button class="nav-link" data-type="hentai" onclick="switchTab('hentai')">🎌 Hentai</button>
                 <button class="nav-link" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
                 <button class="nav-link" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="nav-link" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
@@ -2493,6 +2494,7 @@
                         <option value="movies">🎬 Películas</option>
                         <option value="tvshows">📺 Series</option>
                         <option value="anime">🌸 Anime</option>
+                        <option value="hentai">🎌 Hentai (+18)</option>
                         <option value="chile">🇨🇱 Chile</option>
                     <option value="channels">📡 TV en Vivo</option>
                     </select>
@@ -2720,6 +2722,7 @@
                         <select id="tvGuideCategoryFilter" onchange="onTvGuideFilterChange()" class="custom-select" style="font-size:11px;padding:4px 6px;">
                             <option value="all">🔥 Categorías</option>
                             <option value="todos">📺 Todos Canales</option>
+                            <option value="zapping">🎵 Zapping Music</option>
                             <option value="rock">🎸 Rock & Metal</option>
                             <option value="Deportes">⚽ Deportes</option>
                             <option value="Cine & Series">🎬 Cine & Series</option>
@@ -2730,6 +2733,7 @@
                             <option value="Infantil">👶 Infantiles</option>
                             <option value="Música">🎶 Música</option>
                             <option value="Cultura">🔬 Cultura</option>
+                            <option value="Hentai">🎌 Hentai (+18)</option>
                             <option value="Adultos">🔞 Adultos (+18)</option>
                             <option value="favs">⭐ Mis Favoritos</option>
                         </select>
@@ -2781,6 +2785,15 @@
                 <div class="tv-shelf-scroll" id="tvMoviesShelfScroll"></div>
             </div>
 
+            <!-- CARRUSEL ZAPPING MUSIC -->
+            <div class="tv-shelf" style="margin-bottom:28px;">
+                <div class="tv-shelf-header">
+                    <h3>🎵 Zapping Music (Retro 80s, Classics 90s, Rock, Indie, Hits, K-Pop, Lo-Fi...)</h3>
+                    <span class="tv-shelf-link" onclick="quickFilterTvBy('zapping')">Ver todos los canales de Zapping Music →</span>
+                </div>
+                <div class="tv-shelf-scroll" id="tvZappingShelfScroll"></div>
+            </div>
+
             <!-- CARRUSEL ROCK & METAL 24 HORAS -->
             <div class="tv-shelf" style="margin-bottom:28px;">
                 <div class="tv-shelf-header">
@@ -2824,6 +2837,15 @@
                     <span class="tv-shelf-link" onclick="quickFilterTvBy('Noticias')">Ver canales de noticias →</span>
                 </div>
                 <div class="tv-shelf-scroll" id="tvNewsShelfScroll"></div>
+            </div>
+
+            <!-- CARRUSEL HENTAI (+18) -->
+            <div class="tv-shelf" style="margin-bottom:28px;">
+                <div class="tv-shelf-header">
+                    <h3>🎌 Hentai (+18) · OVAs Sin Censura & Sub Español</h3>
+                    <span class="tv-shelf-link" onclick="quickFilterTvBy('Hentai')">Ver todos los canales Hentai →</span>
+                </div>
+                <div class="tv-shelf-scroll" id="tvHentaiShelfScroll"></div>
             </div>
 
             <!-- CARRUSEL ADULTOS (+18) -->
@@ -2887,6 +2909,7 @@
             <!-- CATEGORÍAS PILLS DEL EXPLORADOR -->
             <div class="channel-categories-bar" id="tvExplorerCategoriesBar" style="margin-bottom:16px;">
                 <button class="channel-pill active" onclick="setTvExplorerCategory('all', this)">📺 Todos Canales</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('zapping', this)">🎵 Zapping Music</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('rock', this)">🎸 Rock & Metal</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Chile', this)">🇨🇱 Chile</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Deportes', this)">⚽ Deportes</button>
@@ -2897,6 +2920,7 @@
                 <button class="channel-pill" onclick="setTvExplorerCategory('Infantil', this)">👶 Infantiles</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Música', this)">🎶 Música</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Cultura', this)">🔬 Cultura</button>
+                <button class="channel-pill" onclick="setTvExplorerCategory('Hentai', this)">🎌 Hentai (+18)</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Adultos', this)">🔞 Adultos (+18)</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('favs', this)">⭐ Favoritos</button>
             </div>
@@ -2923,6 +2947,7 @@
                 <button class="catalog-tab active" data-type="movies" onclick="switchTab('movies')">Películas</button>
                 <button class="catalog-tab" data-type="tvshows" onclick="switchTab('tvshows')">Series</button>
                 <button class="catalog-tab" data-type="anime" onclick="switchTab('anime')">Anime</button>
+                <button class="catalog-tab" data-type="hentai" onclick="switchTab('hentai')">🎌 Hentai</button>
                 <button class="catalog-tab" data-type="chile" onclick="switchTab('chile')">🇨🇱 Chile</button>
                 <button class="catalog-tab" data-type="juegos" onclick="switchTab('juegos')">🎮 Juegos</button>
                 <button class="catalog-tab" data-type="channels" onclick="switchTab('channels')">📡 TV en Vivo</button>
@@ -3703,6 +3728,10 @@
         }
 
         function selectQuickGenre(genreId, pillEl) {
+            if (genreId === 'hentai:all') {
+                switchTab('hentai');
+                return;
+            }
             document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
             if (pillEl) pillEl.classList.add('active');
             const genreSel = document.getElementById('genreFilter');
@@ -3805,7 +3834,17 @@
                 ['local:terror', '👻 Terror'], ['local:suspenso', '⚡ Suspenso']
             ],
             chile: [['chile:series', '📺 Series'], ['chile:peliculas', '🎬 Películas']],
+            hentai: [
+                ['hentai:sub_es', '🇪🇸 Sub Español'],
+                ['hentai:milf', '👩‍💼 Milf & Onee-san'],
+                ['hentai:vanilla', '💕 Vanilla & Romance'],
+                ['hentai:escolar', '🏫 Escolar'],
+                ['hentai:fantasia', '🔮 Fantasía & Elfas'],
+                ['hentai:maid', '🎀 Maid & Enfermeras'],
+                ['hentai:clasicos', '🏆 Clásicos Sin Censura']
+            ],
             anime: [
+                ['hentai:all', '🎌 Hentai (+18)'],
                 ['al:tag:Shounen', '⚔️ Shōnen'], ['al:tag:Shoujo', '🌸 Shōjo'], ['al:tag:Seinen', '🗡️ Seinen'],
                 ['al:tag:Isekai', '🌀 Isekai'], ['al:genre:Mecha', '🤖 Mecha'], ['al:genre:Action', '💥 Acción'],
                 ['al:genre:Romance', '💕 Romance'], ['al:genre:Comedy', '😂 Comedia'], ['al:genre:Sports', '⚽ Deportes'],
@@ -3826,7 +3865,7 @@
             const sel = document.getElementById('genreFilter');
             const bar = document.getElementById('quickGenresBar');
             let options;
-            if (type === 'anime' || type === 'chile') {
+            if (type === 'anime' || type === 'chile' || type === 'hentai') {
                 options = QUICK_GENRES[type];
             } else {
                 const list = genresByType[type] || [];
@@ -3836,7 +3875,7 @@
                 // Terror y Suspenso de series no vienen de la API (ver loadLocalSeriesGenre)
                 if (type === 'tvshows') options = options.concat(QUICK_GENRES.tvshows.filter(([id]) => id.startsWith('local:')));
             }
-            sel.innerHTML = `<option value="">${type === 'anime' ? '🌸 Tipo de anime' : type === 'chile' ? '🇨🇱 Series y películas' : '🎭 Géneros'}</option>` +
+            sel.innerHTML = `<option value="">${type === 'anime' ? '🌸 Tipo de anime' : type === 'hentai' ? '🎌 Categoría Hentai' : type === 'chile' ? '🇨🇱 Series y películas' : '🎭 Géneros'}</option>` +
                 options.map(([id, name]) => `<option value="${id}">${name}</option>`).join('');
             if (bar) {
                 bar.innerHTML = `<div class="genre-pill active" onclick="selectQuickGenre('', this)">🔥 Todos</div>` +
@@ -4018,6 +4057,151 @@
                 `https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(btn.dataset.list)}&autoplay=1&rel=0&hl=es`;
         }
 
+        /*
+         * Apartado Hentai (+18): catálogo de OVAs y series Hentai sin censura y
+         * Sub Español (hentai.json) con reproducción directa MP4 HD y soporte
+         * nativo para ExoPlayer en Android TV.
+         */
+        let hentaiData = null;
+        async function loadHentai(page) {
+            if (!hentaiData) {
+                hentaiData = await fetch('hentai.json').then(r => r.json()).catch(() => []);
+            }
+            let list = Array.isArray(hentaiData) ? [...hentaiData] : [];
+            if (currentGenre === 'hentai:sub_es') {
+                list = list.filter(x => x.lang === 'Sub Español');
+            } else if (currentGenre && currentGenre.startsWith('hentai:')) {
+                const cat = currentGenre.slice(7);
+                list = list.filter(x => x.category === cat);
+            }
+            if (currentYear) {
+                list = list.filter(x => String(x.year) === String(currentYear));
+            }
+            list = applySort(list);
+            totalPages = Math.max(1, Math.ceil(list.length / 24));
+            return list.slice((page - 1) * 24, page * 24);
+        }
+
+        function renderHentaiGrid(items) {
+            const area = document.getElementById('contentArea');
+            window._hentaiItems = items || [];
+            if (!items || !items.length) {
+                area.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-secondary);"><h3>Sin resultados en esta categoría de Hentai</h3></div>`;
+                return;
+            }
+            const esc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+            area.innerHTML = '<div class="media-grid">' + items.map((it, i) => {
+                const epCount = (it.episodes && it.episodes.length) || 1;
+                const badgeText = it.lang === 'Sub Español' ? '🇪🇸 SUB ESPAÑOL' : `🔞 ${epCount} OVA${epCount > 1 ? 'S' : ''}`;
+                const badgeStyle = it.lang === 'Sub Español' ? 'background:linear-gradient(135deg,#e50914,#b91c1c);' : 'background:linear-gradient(135deg,#db2777,#9333ea);';
+                return `
+                <div class="media-card" onclick="openHentaiModal(${i})">
+                    <div class="card-badge-top" style="${badgeStyle}">${esc(badgeText)}</div>
+                    <div class="media-poster-container">
+                        ${it.poster ? `<img class="media-poster" src="${esc(it.poster)}" alt="${esc(it.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+                        <div class="media-placeholder" style="${it.poster ? 'display:none' : 'display:flex'}">🎌</div>
+                        <div class="media-overlay"><div class="media-play-icon">▶</div></div>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-title" title="${esc(it.title)}">${esc(it.title)}</div>
+                        <div class="media-meta-row">
+                            <span class="media-rating">⭐ ${it.rating ? Number(it.rating).toFixed(1) : '8.0'}</span>
+                            <span class="media-year">${esc(it.year || '2024')}</span>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('') + '</div>';
+        }
+
+        function openHentaiModal(idx) {
+            const it = (window._hentaiItems || [])[idx];
+            if (!it || !it.episodes || !it.episodes.length) return;
+            if (tvLivePlayer) { try { tvLivePlayer.pause(); } catch (e) {} }
+            document.getElementById('hentaiModalOverlay')?.remove();
+            const esc = (t) => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+            const ov = document.createElement('div');
+            ov.id = 'hentaiModalOverlay';
+            ov.className = 'tv-schedule-overlay';
+            ov.onclick = (e) => { if (e.target === ov) closeHentaiModal(); };
+            const hasNative = !!(window.Sopa1D && typeof window.Sopa1D.playLiveList === 'function');
+            ov.innerHTML = `<div class="tv-schedule-card" style="width:min(1100px,100%);max-height:94vh;overflow-y:auto;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+                    <div>
+                        <h3 style="margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <span>🎌 ${esc(it.title)}</span>
+                            <span style="font-size:11px;padding:3px 10px;border-radius:999px;background:rgba(219,39,119,0.22);border:1px solid rgba(219,39,119,0.5);color:#f472b6;font-weight:700;">${esc(it.lang || 'Sin Censura')}</span>
+                            <span style="font-size:12px;color:var(--text-muted);font-weight:600;">⭐ ${it.rating || '8.0'} · ${esc(it.year || '')}</span>
+                        </h3>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        ${hasNative ? `<button class="btn btn-primary" style="padding:6px 14px;font-size:12px;" onclick="playHentaiNative(${idx})">📺 Reproductor Nativo TV</button>` : ''}
+                        <button class="btn btn-glass" onclick="closeHentaiModal()">✕</button>
+                    </div>
+                </div>
+                <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.12);">
+                    <video id="hentaiVideoPlayer" controls autoplay playsinline preload="auto" poster="${esc(it.backdrop || it.poster || '')}" style="width:100%;height:100%;background:#000;object-fit:contain;"></video>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;" id="hentaiEpButtons">
+                        ${it.episodes.map((ep, epIdx) => `<button class="genre-pill ${epIdx === 0 ? 'active' : ''}" data-ep-idx="${epIdx}" data-url="${esc(ep.url)}" onclick="selectHentaiEpisode(${idx}, ${epIdx}, this)">▶ ${esc(ep.title || ('OVA ' + (epIdx + 1)))}</button>`).join('')}
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn btn-glass" style="padding:6px 12px;font-size:12px;" onclick="copyHentaiUrl()">📋 Copiar MP4</button>
+                        <button class="btn btn-outline" style="padding:6px 12px;font-size:12px;" onclick="openHentaiVlc()">🚀 Abrir en VLC</button>
+                    </div>
+                </div>
+                ${it.overview ? `<p style="margin-top:12px;font-size:13px;color:var(--text-secondary);line-height:1.5;">${esc(it.overview)}</p>` : ''}
+            </div>`;
+            document.body.appendChild(ov);
+            window._currentHentaiItem = it;
+            window._currentHentaiEpIdx = 0;
+            const firstBtn = ov.querySelector('#hentaiEpButtons [data-url]');
+            if (firstBtn) selectHentaiEpisode(idx, 0, firstBtn);
+        }
+
+        function selectHentaiEpisode(itemIdx, epIdx, btn) {
+            if (!btn) return;
+            window._currentHentaiEpIdx = epIdx;
+            document.querySelectorAll('#hentaiEpButtons .genre-pill').forEach(b => b.classList.toggle('active', b === btn));
+            const v = document.getElementById('hentaiVideoPlayer');
+            if (v) {
+                v.src = btn.dataset.url;
+                v.play().catch(() => {});
+            }
+        }
+
+        function playHentaiNative(itemIdx) {
+            const it = (window._hentaiItems || [])[itemIdx] || window._currentHentaiItem;
+            if (!it || !it.episodes || !window.Sopa1D || typeof window.Sopa1D.playLiveList !== 'function') return;
+            const v = document.getElementById('hentaiVideoPlayer');
+            if (v) { try { v.pause(); } catch (e) {} }
+            const lista = it.episodes.map((ep, i) => ({
+                id: `${it.id}_ep_${i + 1}`,
+                name: `🎌 ${it.title} — ${ep.title || ('OVA ' + (i + 1))}`,
+                url: ep.url
+            }));
+            window.Sopa1D.playLiveList(JSON.stringify(lista), window._currentHentaiEpIdx || 0);
+        }
+
+        function copyHentaiUrl() {
+            const v = document.getElementById('hentaiVideoPlayer');
+            if (v && v.src) copyToClipboard(v.src);
+        }
+
+        function openHentaiVlc() {
+            const v = document.getElementById('hentaiVideoPlayer');
+            if (v && v.src) {
+                window.location.href = 'vlc://' + v.src;
+                showToast('🚀 Abriendo OVA en VLC Media Player...');
+            }
+        }
+
+        function closeHentaiModal() {
+            const v = document.getElementById('hentaiVideoPlayer');
+            if (v) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }
+            document.getElementById('hentaiModalOverlay')?.remove();
+        }
+
         function renderAniListGrid(items) {
             const area = document.getElementById('contentArea');
             window._aniItems = items;
@@ -4121,6 +4305,16 @@
             const area = document.getElementById('contentArea');
             area.innerHTML = renderSkeletonGrid();
             try {
+                if (currentType === 'hentai') {
+                    const items = await loadHentai(page);
+                    if (reqId === currentRequestId) {
+                        window._lastRenderedItems = null;
+                        renderHentaiGrid(items);
+                        renderPagination(page);
+                    }
+                    isLoading = false;
+                    return;
+                }
                 if (currentType === 'chile') {
                     const items = await loadChile(page);
                     if (reqId === currentRequestId) {
@@ -4412,7 +4606,7 @@
                 try { tvLivePlayer.pause(); } catch(e) {}
             }
 
-            const labels = { movies: 'Películas', tvshows: 'Series', anime: 'Anime', chile: 'series y películas chilenas', channels: 'TV en Vivo' };
+            const labels = { movies: 'Películas', tvshows: 'Series', anime: 'Anime', hentai: '🎌 Hentai (+18) Sin Censura', chile: 'series y películas chilenas', channels: 'TV en Vivo' };
             document.getElementById('catalogTitle').textContent = `Explorar ${labels[type] || 'Catálogo'}`;
 
             renderGenreControls(type);
@@ -4450,6 +4644,21 @@
             const pag = document.getElementById('pagination');
             area.innerHTML = renderSkeletonGrid();
             pag.innerHTML = '';
+            if (currentType === 'hentai') {
+                if (!hentaiData) {
+                    hentaiData = await fetch('hentai.json').then(r => r.json()).catch(() => []);
+                }
+                const qLow = query.toLowerCase();
+                const results = (hentaiData || []).filter(it =>
+                    (it.title || '').toLowerCase().includes(qLow) ||
+                    (it.overview || '').toLowerCase().includes(qLow) ||
+                    (it.category || '').toLowerCase().includes(qLow) ||
+                    (it.lang || '').toLowerCase().includes(qLow)
+                );
+                renderHentaiGrid(applySort(results));
+                document.getElementById('catalogTitle').textContent = `🎌 Hentai: "${query}" (${results.length})`;
+                return;
+            }
             try {
                 let url = `${getApiBase()}/search?q=${encodeURIComponent(query)}&page=1`;
                 const type = document.getElementById('typeFilter').value;
@@ -5881,6 +6090,11 @@
             const isLocalServer = window.location.protocol.startsWith('http');
             const chUrl = (ch.url || '').toLowerCase();
 
+            // Los archivos directos MP4 (como las OVAs de Hentai en Archive.org) soportan CORS y Range directo
+            if (/\.mp4(\?|$)/i.test(ch.url) && !forceProxy) {
+                return ch.url;
+            }
+
             // Identificar señales que requieren transcodificación de audio MP2/AC3 -> AAC en tiempo real
             const needsAudioFix = ch.fixAudio === true ||
                                   chUrl.includes('200.59.191.177') || 
@@ -6028,7 +6242,7 @@
                 const cur = currentTvChannel._currentStreamUrl || getTvStreamUrl(currentTvChannel);
                 tvLivePlayer.pause();
                 tvLivePlayer.src({
-                    type: 'application/x-mpegURL',
+                    type: /\.mp4(\?|$)/i.test(cur) ? 'video/mp4' : 'application/x-mpegURL',
                     src: cur
                 });
                 const p = tvLivePlayer.play();
@@ -6326,7 +6540,7 @@
                     }
                     tvLivePlayer.pause();
                     tvLivePlayer.src({
-                        type: 'application/x-mpegURL',
+                        type: /\.mp4(\?|$)/i.test(streamUrl) ? 'video/mp4' : 'application/x-mpegURL',
                         src: streamUrl
                     });
                     const playPromise = tvLivePlayer.play();
@@ -7060,6 +7274,7 @@
                             <button type="button" class="tv-fs-cat-pill active" data-cat="all" onclick="setTvFsCategory('all', this)">📺 Todos Canales</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="favs" onclick="setTvFsCategory('favs', this)">⭐ Favoritos</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Chile" onclick="setTvFsCategory('Chile', this)">🇨🇱 Chile</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="zapping" onclick="setTvFsCategory('zapping', this)">🎵 Zapping Music</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="rock" onclick="setTvFsCategory('rock', this)">🎸 Rock & Metal</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Deportes" onclick="setTvFsCategory('Deportes', this)">⚽ Deportes</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Cine & Series" onclick="setTvFsCategory('Cine & Series', this)">🎬 Cine & Series</button>
@@ -7070,6 +7285,7 @@
                             <button type="button" class="tv-fs-cat-pill" data-cat="Infantil" onclick="setTvFsCategory('Infantil', this)">👶 Infantiles</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Música" onclick="setTvFsCategory('Música', this)">🎶 Música</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Cultura" onclick="setTvFsCategory('Cultura', this)">🔬 Cultura</button>
+                            <button type="button" class="tv-fs-cat-pill" data-cat="Hentai" onclick="setTvFsCategory('Hentai', this)">🎌 Hentai (+18)</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Adultos" onclick="setTvFsCategory('Adultos', this)">🔞 Adultos (+18)</button>
                         </div>
                     </div>
@@ -7252,6 +7468,8 @@
                     filtered = filtered.filter(ch => favs.includes(ch.id));
                 } else if (tvFsCategory === 'Chile') {
                     filtered = filtered.filter(ch => ch.country === 'Chile');
+                } else if (tvFsCategory === 'zapping') {
+                    filtered = filtered.filter(ch => /zapping music/i.test(ch.name));
                 } else if (tvFsCategory === 'rock') {
                     filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
                 } else if (tvFsCategory !== 'all') {
@@ -7323,6 +7541,8 @@
                 if (tvGuideCategory === 'favs') {
                     const favs = getChannelFavorites();
                     filtered = filtered.filter(ch => favs.includes(ch.id));
+                } else if (tvGuideCategory === 'zapping') {
+                    filtered = filtered.filter(ch => /zapping music/i.test(ch.name));
                 } else if (tvGuideCategory === 'rock') {
                     filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
                 } else if (tvGuideCategory !== 'all' && tvGuideCategory !== 'todos') {
@@ -7509,6 +7729,13 @@
                 chileScroll.innerHTML = chileList.map(ch => renderShelfCard(ch)).join('');
             }
 
+            // Zapping Music Destacados
+            const zappingList = allLiveChannels.filter(c => /zapping music/i.test(c.name)).slice(0, 30);
+            const zappingScroll = document.getElementById('tvZappingShelfScroll');
+            if (zappingScroll) {
+                zappingScroll.innerHTML = zappingList.map(ch => renderShelfCard(ch)).join('');
+            }
+
             // Rock & Metal Destacados
             const rockList = allLiveChannels.filter(c => /rock|metal|punk|grunge|vh1|qello/i.test(c.name)).slice(0, 32);
             const rockScroll = document.getElementById('tvRockShelfScroll');
@@ -7556,6 +7783,13 @@
             const newsScroll = document.getElementById('tvNewsShelfScroll');
             if (newsScroll) {
                 newsScroll.innerHTML = newsList.map(ch => renderShelfCard(ch)).join('');
+            }
+
+            // Hentai (+18)
+            const hentaiTvList = allLiveChannels.filter(c => c.category === 'Hentai').slice(0, 36);
+            const hentaiTvScroll = document.getElementById('tvHentaiShelfScroll');
+            if (hentaiTvScroll) {
+                hentaiTvScroll.innerHTML = hentaiTvList.map(ch => renderShelfCard(ch)).join('');
             }
 
             // Adultos (+18)
@@ -7606,7 +7840,8 @@
         function quickFilterTvBy(categoryName) {
             tvExplorerCategory = categoryName;
             document.querySelectorAll('#tvExplorerCategoriesBar .channel-pill').forEach(pill => {
-                pill.classList.toggle('active', pill.textContent.includes(categoryName));
+                const oc = pill.getAttribute('onclick') || '';
+                pill.classList.toggle('active', pill.textContent.includes(categoryName) || oc.includes(`'${categoryName}'`));
             });
             renderTvExplorerGrid();
             const el = document.getElementById('tvExplorerCategoriesBar');
@@ -7699,6 +7934,8 @@
                 if (tvExplorerCategory === 'favs') {
                     const favs = getChannelFavorites();
                     filtered = filtered.filter(ch => favs.includes(ch.id));
+                } else if (tvExplorerCategory === 'zapping') {
+                    filtered = filtered.filter(ch => /zapping music/i.test(ch.name));
                 } else if (tvExplorerCategory === 'rock') {
                     filtered = filtered.filter(ch => /rock|metal|punk|grunge|vh1|qello/i.test(ch.name));
                 } else if (tvExplorerCategory === 'Chile') {

@@ -129,7 +129,7 @@ function destroyLiveHlsSession(sessionId) {
 }
 
 // Señales que ya se sabe que vienen entrelazadas: se desentrelazan desde el inicio
-const KNOWN_INTERLACED = ['190.108.83.69', '200.59.191.177', '205.235.6.29', '38.134.250.110', '38.224.231.176', '45.173.231.22', '190.234.82.52', '181.78.106.127', '190.108.91.206', '38.190.100.202', '190.60.46.228'];
+const KNOWN_INTERLACED = ['190.108.83.69', '200.59.191.177', '205.235.6.29', '38.134.250.110', '38.224.231.176', '45.173.231.22', '190.234.82.52', '181.78.106.127', '190.108.91.206', '38.190.100.202', '190.60.46.228', '190.128.214.97'];
 
 /*
  * El reproductor web (Video.js/VHS, que convierte el TS con mux.js) no sabe
@@ -1252,7 +1252,7 @@ function handleEpg(req, res) {
 
 // sopa1d.apk: copia local de la APK para instalarla en las TV con Downloader
 // (no está en el repo; donde no exista, sigue respondiendo 404).
-const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'series_genres.json', 'hitster.json', 'favicon.ico', 'sopa1d.apk']);
+const PUBLIC_FILES = new Set(['index.html', 'channels_spa.json', 'chile.json', 'hentai.json', 'series_genres.json', 'hitster.json', 'favicon.ico', 'sopa1d.apk']);
 
 /*
  * El proxy no va a la red local ni a este equipo. Responde con CORS abierto,
