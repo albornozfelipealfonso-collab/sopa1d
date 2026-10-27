@@ -245,6 +245,31 @@ public class MainActivity extends Activity {
                             "text/plain", "utf-8", new ByteArrayInputStream(new byte[0]));
                 }
 
+                if ("appassets.androidplatform.net".equals(url.getHost())
+                        && url.getPath() != null && url.getPath().startsWith("/api/song-preview")) {
+                    try {
+                        String q = url.getQueryParameter("q");
+                        if (q != null && !q.isEmpty()) {
+                            String apiUrl = "https://api.deezer.com/search?limit=5&q=" + java.net.URLEncoder.encode(q, "UTF-8");
+                            String json = Http.getString(apiUrl);
+                            org.json.JSONArray data = new org.json.JSONObject(json).optJSONArray("data");
+                            if (data != null) {
+                                for (int i = 0; i < data.length(); i++) {
+                                    String preview = data.getJSONObject(i).optString("preview");
+                                    if (preview != null && preview.startsWith("http")) {
+                                        java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(preview).openConnection();
+                                        c.setConnectTimeout(10000);
+                                        c.setReadTimeout(15000);
+                                        return new WebResourceResponse("audio/mpeg", null, c.getInputStream());
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.w(TAG, "Error resolviendo preview de cancion", e);
+                    }
+                }
+
                 // Sirve los assets locales bajo un origen https real, para que
                 // fetch() y localStorage funcionen como en el servidor web.
                 return assetLoader.shouldInterceptRequest(url);

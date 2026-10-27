@@ -188,12 +188,12 @@ final class Catalog {
         // Juegos (en la versión web de la app): cada tarjeta abre su juego
         List<CatalogItem> games = new ArrayList<>();
         CatalogItem nameTune = new CatalogItem("tv", "game:adivina", "🎯 Adivina la canción", "", 0,
-                "Suena un fragmento y hay 4 opciones: mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.", null, null);
-        nameTune.genres = "Juego musical";
+                "Repertorio de 1.542 clásicos del rock (1960–2010). Suena un fragmento y hay 4 opciones: mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.", null, null);
+        nameTune.genres = "Juego musical · 1.542 canciones";
         games.add(nameTune);
         CatalogItem hitster = new CatalogItem("tv", "game:hitster", "🎸 Hitster Rock", "", 0,
-                "Adivina en qué año salió cada canción de rock (1960–2010). Para 1 a 6 jugadores.", null, null);
-        hitster.genres = "Juego musical";
+                "Repertorio de 1.542 clásicos del rock (1960–2010). Adivina en qué año salió cada canción y ubícala en tu línea de tiempo. Para 1 a 6 jugadores.", null, null);
+        hitster.genres = "Juego musical · 1.542 canciones";
         games.add(hitster);
         // Arriba, justo después del Top 10 de películas, para verla sin bajar tanto
         rows.add(1, new Row("🎮 Juegos", games));

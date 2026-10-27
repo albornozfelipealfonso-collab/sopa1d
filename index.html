@@ -7923,6 +7923,64 @@
             return hitsterSongs;
         }
 
+        // Resuelve dinámicamente el preview MP3 para las 1.542 canciones tanto en Hitster Rock como en Adivina la Canción (Web, PC .exe y APK Android TV)
+        function resolveGameSongPreview(song) {
+            return new Promise((resolve) => {
+                if (!song || !song.preview) return resolve('');
+                if (song._resolvedPreview) return resolve(song._resolvedPreview);
+                if (!song.preview.startsWith('/api/song-preview')) return resolve(song.preview);
+
+                // Si estamos en servidor local (PC .exe o node server.js), /api/song-preview funciona directo,
+                // pero en Android APK (appassets.androidplatform.net) o file:// resolvemos por JSONP de Deezer sin bloqueo CORS
+                const isLocalHttp = window.location.protocol.startsWith('http') && window.location.hostname !== 'appassets.androidplatform.net';
+                if (isLocalHttp) {
+                    return resolve(song.preview);
+                }
+
+                const cbName = '__dz_cb_' + Math.random().toString(36).slice(2, 10);
+                const q = encodeURIComponent((song.artist || '') + ' ' + (song.title || ''));
+                const script = document.createElement('script');
+                let done = false;
+                const cleanup = () => {
+                    try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+                    if (script.parentNode) script.parentNode.removeChild(script);
+                };
+                const timer = setTimeout(() => {
+                    if (done) return;
+                    done = true;
+                    cleanup();
+                    resolve(song.preview);
+                }, 4000);
+
+                window[cbName] = (data) => {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    cleanup();
+                    const list = (data && data.data) || [];
+                    const hit = list.find(item => item && item.preview);
+                    if (hit && hit.preview) {
+                        song._resolvedPreview = hit.preview;
+                        if (!song.cover && hit.album && hit.album.cover_medium) {
+                            song.cover = hit.album.cover_medium;
+                        }
+                        resolve(hit.preview);
+                    } else {
+                        resolve(song.preview);
+                    }
+                };
+                script.onerror = () => {
+                    if (done) return;
+                    done = true;
+                    clearTimeout(timer);
+                    cleanup();
+                    resolve(song.preview);
+                };
+                script.src = `https://api.deezer.com/search?output=jsonp&limit=5&q=${q}&callback=${cbName}`;
+                document.head.appendChild(script);
+            });
+        }
+
         function renderGamesMenu() {
             hitsterStopAudio();
             hs = null;
@@ -7932,16 +7990,22 @@
                 <div class="hs-card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
                     <div style="font-size:64px;line-height:1;">🎸</div>
                     <div style="flex:1;min-width:220px;">
-                        <div style="font-size:22px;font-weight:900;">Hitster Rock</div>
-                        <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores. Repertorio de más de 1.000 clásicos del rock (1960–2010).</div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                            <div style="font-size:22px;font-weight:900;">Hitster Rock</div>
+                            <span style="background:rgba(229,9,20,0.2);border:1px solid rgba(229,9,20,0.5);color:#fca5a5;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;">🎵 1.542 canciones Rock (1960–2010)</span>
+                        </div>
+                        <div class="hs-sub" style="margin:6px 0 0;">Escucha un fragmento de una canción de rock de 1960 a 2010 y ubícala en tu línea de tiempo. ¿Fue antes o después de las que ya tienes? Para 1 a 6 jugadores. Repertorio completo de 1.542 clásicos del rock en inglés y español.</div>
                     </div>
                     <button class="btn btn-primary hs-big" id="hsOpenSetup" onclick="renderHitsterSetup()">Jugar ▶</button>
                 </div>
                 <div class="hs-card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:16px;">
                     <div style="font-size:64px;line-height:1;">🎯</div>
                     <div style="flex:1;min-width:220px;">
-                        <div style="font-size:22px;font-weight:900;">Adivina la canción</div>
-                        <div class="hs-sub" style="margin:6px 0 0;">Suena un fragmento de rock y hay 4 opciones: elige la canción y el artista. Mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.</div>
+                        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                            <div style="font-size:22px;font-weight:900;">Adivina la canción</div>
+                            <span style="background:rgba(56,189,248,0.2);border:1px solid rgba(56,189,248,0.5);color:#38bdf8;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;">🎵 1.542 canciones Rock (1960–2010)</span>
+                        </div>
+                        <div class="hs-sub" style="margin:6px 0 0;">Suena un fragmento del repertorio de 1.542 clásicos del rock (1960–2010) y hay 4 opciones: elige la canción y el artista. Mientras más rápido aciertas, más puntos. Para 1 a 6 jugadores.</div>
                     </div>
                     <button class="btn btn-primary hs-big" id="ntOpenSetup" onclick="renderNameTuneSetup()">Jugar ▶</button>
                 </div>`;
@@ -8020,17 +8084,11 @@
 
         async function hitsterPlay(restart) {
             const a = hsAudio();
-            if (!hs || !hs.current) return;
-            let src = hs.current.preview;
-            if (src && src.startsWith('/api/') && window.location.protocol === 'file:') {
-                try {
-                    const r = await fetch(`https://api.deezer.com/search?q=${encodeURIComponent(hs.current.artist + ' ' + hs.current.title)}`);
-                    const d = await r.json();
-                    if (d.data && d.data[0] && d.data[0].preview) src = d.data[0].preview;
-                } catch(e) {}
-            }
+            const activeSong = (hs && hs.current) ? hs.current : (typeof nt !== 'undefined' && nt && nt.current ? nt.current : null);
+            if (!activeSong) return;
+            const src = await resolveGameSongPreview(activeSong);
             if (restart || a.getAttribute('src') !== src) { a.src = src; a.currentTime = 0; }
-            a.volume = hsGain(hs.current);
+            a.volume = hsGain(activeSong);
             a.play().catch(() => {});
             hsUpdatePlayBtn();
         }
@@ -8322,15 +8380,18 @@
             const names = Array.from({ length: n }, (_, i) => ntCfg.names[i] || hsCfg.names[i] || '');
             hsRoot().innerHTML = `
                 <div class="hs-card">
-                    <h2 class="hs-title">🎯 Adivina la canción</h2>
-                    <p class="hs-sub">Suena un fragmento de rock (1960–2010) y hay 4 opciones. Elige la canción y el artista correctos:
+                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+                        <h2 class="hs-title" style="margin:0;">🎯 Adivina la canción</h2>
+                        <span style="background:rgba(56,189,248,0.2);border:1px solid rgba(56,189,248,0.5);color:#38bdf8;font-size:13px;font-weight:800;padding:4px 12px;border-radius:999px;">🎸 Repertorio: 1.542 canciones de Rock (1960–2010)</span>
+                    </div>
+                    <p class="hs-sub">Suena un fragmento de nuestro repertorio de <b>1.542 clásicos del rock (1960–2010, mayoría en inglés)</b> y hay 4 opciones. Elige la canción y el artista correctos:
                     mientras más rápido aciertas, más puntos (de ${NT_MAX} a ${NT_MIN}). Tienes ${NT_SECONDS} segundos.
                     ${n === 1 ? `Tu récord: <b>${ntRecord().toLocaleString()}</b> puntos.` : 'Se juega por turnos: gana quien sume más puntos.'}</p>
                     <div style="font-weight:800;">Jugadores</div>
                     <div class="hs-row">${[1, 2, 3, 4, 5, 6].map(k => `<button class="hs-opt ${k === n ? 'active' : ''}" onclick="ntCfgSet('players', ${k})">${k}</button>`).join('')}</div>
                     <div class="hs-names">${names.map((v, i) => `<input type="text" maxlength="16" placeholder="Jugador ${i + 1}" value="${hsEsc(v)}" oninput="ntCfg.names[${i}]=this.value">`).join('')}</div>
                     <div style="font-weight:800;">Canciones por jugador</div>
-                    <div class="hs-row">${[5, 10, 15].map(k => `<button class="hs-opt ${k === ntCfg.rounds ? 'active' : ''}" onclick="ntCfgSet('rounds', ${k})">${k}</button>`).join('')}</div>
+                    <div class="hs-row">${[5, 10, 15, 25, 50].map(k => `<button class="hs-opt ${k === ntCfg.rounds ? 'active' : ''}" onclick="ntCfgSet('rounds', ${k})">${k}</button>`).join('')}</div>
                     <div class="hs-row" style="margin-top:22px;">
                         <button class="btn btn-primary hs-big" id="ntStart" onclick="nameTuneStart()">▶ Empezar</button>
                         <button class="btn btn-glass" onclick="renderGamesMenu()">← Juegos</button>
@@ -8368,7 +8429,7 @@
             return hsShuffle([song, ...picks]);
         }
 
-        function ntNextSong() {
+        async function ntNextSong() {
             clearInterval(nt.timer);
             if (!nt.deck.length) nt.deck = hsShuffle(hitsterSongs);
             nt.current = nt.deck.pop();
@@ -8377,13 +8438,15 @@
             nt.answered = false;
             nt.started = 0;
             renderNameTuneQuestion();
+            const q = nt.current;
+            const src = await resolveGameSongPreview(q);
+            if (!nt || nt.current !== q || nt.phase !== 'question') return;
             const a = hsAudio();
-            a.src = nt.current.preview;
+            a.src = src;
             a.currentTime = 0;
-            a.volume = hsGain(nt.current);
+            a.volume = hsGain(q);
             a.play().catch(() => {});
             // El reloj parte cuando suena (si tarda en cargar no se pierde tiempo)
-            const q = nt.current;
             const start = () => { if (nt && nt.current === q && nt.phase === 'question' && !nt.started) ntStartClock(); };
             a.addEventListener('playing', start, { once: true });
             setTimeout(start, 5000);
