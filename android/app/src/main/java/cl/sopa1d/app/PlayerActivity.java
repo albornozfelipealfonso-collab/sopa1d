@@ -73,15 +73,15 @@ public class PlayerActivity extends Activity {
     // 4 segmentos de ~3 s = 12 s en total. Apuntamos cerca del borde en vivo
     // (~3.5 s) para que la señal vaya al día y al cambiar y volver no repita
     // los segmentos antiguos del inicio de la ventana.
-    private static final int MIN_BUFFER_MS = 4000;
-    private static final int MAX_BUFFER_MS = 14000;
-    private static final int BUFFER_FOR_PLAYBACK_MS = 1500;
-    private static final int BUFFER_AFTER_REBUFFER_MS = 2500;
+    private static final int MIN_BUFFER_MS = 6000;
+    private static final int MAX_BUFFER_MS = 20000;
+    private static final int BUFFER_FOR_PLAYBACK_MS = 2000;
+    private static final int BUFFER_AFTER_REBUFFER_MS = 3000;
 
     /**
-     * Retardo objetivo respecto del directo (~3.5 s = 1 segmento antes del borde).
+     * Retardo objetivo respecto del directo (~5 s para máxima fluidez y evitar caída de FPS).
      */
-    private static final long LIVE_TARGET_OFFSET_MS = 3500;
+    private static final long LIVE_TARGET_OFFSET_MS = 5000;
 
     private static long liveOffsetFor(long windowMs, boolean hasProgramDateTime) {
         long fromEnd = Math.min(Math.max(windowMs / 3, 3000), 6000);
@@ -116,8 +116,8 @@ public class PlayerActivity extends Activity {
     private int index;
     private int retries;
 
-    /** Tiempo máximo sin primer fotograma antes de pasar a decodificar por software. */
-    private static final long FIRST_FRAME_TIMEOUT_MS = 12000;
+    /** Tiempo máximo sin primer fotograma antes de evaluar decodificador. */
+    private static final long FIRST_FRAME_TIMEOUT_MS = 20000;
 
     /** Canales cuyo vídeo no pudo el hardware en esta sesión. */
     private static final Set<String> needsSoftwareVideo = new HashSet<>();
@@ -527,6 +527,13 @@ public class PlayerActivity extends Activity {
     private final Runnable firstFrameWatchdog = new Runnable() {
         @Override
         public void run() {
+            if (player == null || firstFrameShown) return;
+            // Si el reproductor sigue descargando datos de red (BUFFERING o IDLE), darle más tiempo sin forzar decodificación por CPU
+            int state = player.getPlaybackState();
+            if (state == Player.STATE_BUFFERING || state == Player.STATE_IDLE) {
+                ui.postDelayed(firstFrameWatchdog, 6000);
+                return;
+            }
             if (!firstFrameShown && !playerSoftwareVideo) {
                 switchToSoftwareVideo("sin imagen tras " + FIRST_FRAME_TIMEOUT_MS / 1000 + " s");
             }
@@ -685,9 +692,9 @@ public class PlayerActivity extends Activity {
                 .setUri(url)
                 .setLiveConfiguration(new MediaItem.LiveConfiguration.Builder()
                         .setTargetOffsetMs(targetOffsetMs)
-                        // Ajuste fino de velocidad para absorber deriva sin saltos audibles
-                        .setMinPlaybackSpeed(0.96f)
-                        .setMaxPlaybackSpeed(1.04f)
+                        // Ajuste suave de velocidad para evitar micro-tirones o caída de FPS
+                        .setMinPlaybackSpeed(0.98f)
+                        .setMaxPlaybackSpeed(1.02f)
                         .build())
                 .build();
 

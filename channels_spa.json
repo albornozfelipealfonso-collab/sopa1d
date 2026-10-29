@@ -45377,13 +45377,34 @@
     "url": "https://jmp2.uk/plu-69ef5682980899a9edf1a884.m3u8"
   },
   {
-    "id": "ch_ast_28688ca01c",
-    "name": "Playboy HD",
+    "name": "Playboy TV Latino HD (Señal 1)",
     "logo": "https://i.imgur.com/rL2v9pM.png",
+    "url": "http://200.59.191.177:8000/play/a0p3/index.m3u8",
+    "category": "Adultos",
+    "country": "Chile",
+    "fixAudio": true
+  },
+  {
+    "name": "Playboy TV Latino 1080p (Señal 2 - Full HD)",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/12135/index.m3u8",
+    "category": "Adultos",
+    "country": "Internacional"
+  },
+  {
+    "name": "Playboy TV Latino (Señal 3 - LA)",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6280/index.m3u8",
     "category": "Adultos",
     "country": "Internacional",
-    "url": "http://190.108.83.69:8000/play/a02p/index.m3u8",
-    "badge": "🔞 +18"
+    "fixAudio": true
+  },
+  {
+    "name": "Playboy TV (Señal 4)",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/527/index.m3u8",
+    "category": "Adultos",
+    "country": "Internacional"
   },
   {
     "id": "ch_ast_6b8743a7e9",
@@ -45401,15 +45422,6 @@
     "category": "Adultos",
     "country": "Internacional",
     "url": "http://190.108.83.69:8000/play/a013/index.m3u8",
-    "badge": "🔞 +18"
-  },
-  {
-    "id": "ch_ast_35de520d57",
-    "name": "Playboy",
-    "logo": "https://i.imgur.com/rL2v9pM.png",
-    "category": "Adultos",
-    "country": "Internacional",
-    "url": "http://200.59.191.177:8000/play/a0p3/index.m3u8",
     "badge": "🔞 +18"
   },
   {
@@ -45476,39 +45488,12 @@
     "badge": "🔞 +18 HD"
   },
   {
-    "id": "ch_adult_live_6",
-    "name": "Playboy TV",
-    "logo": "",
-    "category": "Adultos",
-    "country": "Internacional",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/527/index.m3u8",
-    "badge": "🔞 +18 HD"
-  },
-  {
     "id": "ch_adult_live_7",
     "name": "Dorcel Club",
     "logo": "",
     "category": "Adultos",
     "country": "Internacional",
     "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6197/index.m3u8",
-    "badge": "🔞 +18 HD"
-  },
-  {
-    "id": "ch_adult_live_8",
-    "name": "Playboy Plus",
-    "logo": "",
-    "category": "Adultos",
-    "country": "Internacional",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6242/index.m3u8",
-    "badge": "🔞 +18 HD"
-  },
-  {
-    "id": "ch_adult_live_9",
-    "name": "Playboy LA",
-    "logo": "",
-    "category": "Adultos",
-    "country": "Internacional",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6280/index.m3u8",
     "badge": "🔞 +18 HD"
   },
   {
@@ -45536,15 +45521,6 @@
     "category": "Adultos",
     "country": "Internacional",
     "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/12113/index.m3u8",
-    "badge": "🔞 +18 HD"
-  },
-  {
-    "id": "ch_adult_live_13",
-    "name": "Playboy",
-    "logo": "",
-    "category": "Adultos",
-    "country": "Internacional",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/12135/index.m3u8",
     "badge": "🔞 +18 HD"
   },
   {
@@ -46554,320 +46530,5 @@
     "country": "Internacional",
     "url": "https://yzzy.play-cdn7.com/20220702/3015_6d454d6c/index.m3u8",
     "badge": "🔞 +18 HD"
-  },
-  {
-    "name": "🎌 My Mother The Animation [Sin Censura]",
-    "logo": "https://archive.org/download/my-mother-the-animation-ova-sub-espanol/my-mother-the-animation-ova-sub-espanol.thumbs/My%20Mother%20The%20Animation%20Ova%20Sub%20Espa%C3%B1ol_000001.jpg",
-    "url": "https://archive.org/download/my-mother-the-animation-ova-sub-espanol/My%20Mother%20The%20Animation%20Ova%20Sub%20Espa%C3%B1ol.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Amakano - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21575-0ip8PayPgTH5.jpg",
-    "url": "https://archive.org/download/amakano-01-sub-espanolwww.-hentai-sd.net/Amakano%20-%2001%20Sub%20Espa%C3%B1ol%5Bwww.Hentai-SD.net%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Otokonoko Delivery [Sin Censura]",
-    "logo": "https://archive.org/download/otokonoko-delivery-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/otokonoko-delivery-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la.thumbs/Otokonoko%20Delivery%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA_000001.jpg",
-    "url": "https://archive.org/download/otokonoko-delivery-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/Otokonoko%20Delivery%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Chizuru-chan Kaihatsu Nikki - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/chizuru-chan-kaihatsu-nikki-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/chizuru-chan-kaihatsu-nikki-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la.thumbs/Chizuru-chan%20Kaihatsu%20Nikki%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA_000001.jpg",
-    "url": "https://archive.org/download/chizuru-chan-kaihatsu-nikki-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/Chizuru-chan%20Kaihatsu%20Nikki%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ero Ishi: Seijun Bishoujo [Sin Censura]",
-    "logo": "https://archive.org/download/ero-ishi-seijun-bishoujo-o-kotoba-takumi-ni-hametai-houdai-episodio-4-hentai-la-/ero-ishi-seijun-bishoujo-o-kotoba-takumi-ni-hametai-houdai-episodio-4-hentai-la-.thumbs/Ero%20Ishi-%20Seijun%20Bishoujo%20o%20Kotoba%20Takumi%20ni%20Hametai%20Houdai%20Episodio%204%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA_000001.jpg",
-    "url": "https://archive.org/download/ero-ishi-seijun-bishoujo-o-kotoba-takumi-ni-hametai-houdai-episodio-4-hentai-la-/Ero%20Ishi-%20Seijun%20Bishoujo%20o%20Kotoba%20Takumi%20ni%20Hametai%20Houdai%20Episodio%204%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ane Kyun! Yori The Animation [Sin Censura]",
-    "logo": "https://archive.org/download/green-eyes-ane-kyunyori-the-animation-1-sub-espanol-tio-hentai/green-eyes-ane-kyunyori-the-animation-1-sub-espanol-tio-hentai.thumbs/GreenEyesAneKyunyoriTheAnimation_1_Sub%20Espa%C3%B1ol%20%5BT%C3%ADoHentai%5D_000001.jpg",
-    "url": "https://archive.org/download/green-eyes-ane-kyunyori-the-animation-1-sub-espanol-tio-hentai/GreenEyesAneKyunyoriTheAnimation_1_Sub%20Espa%C3%B1ol%20%5BT%C3%ADoHentai%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Aku no Onna Kanbu: Full Moon Night R - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/aku-no-onna-kanbu-full-moon-night-r-02-sub-espanol-hentai-la/aku-no-onna-kanbu-full-moon-night-r-02-sub-espanol-hentai-la.thumbs/01%20Aku%20no%20Onna%20Kanbu%20Sub%20Espa%C3%B1ol%5Bwww.Hentai-SD.net%5D_000001.jpg",
-    "url": "https://archive.org/download/aku-no-onna-kanbu-full-moon-night-r-02-sub-espanol-hentai-la/01%20Aku%20no%20Onna%20Kanbu%20Sub%20Espa%C3%B1ol%5Bwww.Hentai-SD.net%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Sagurare Otome The Animation [Sin Censura]",
-    "logo": "https://archive.org/download/sagurare-otome-the-animation-1-sub-espanol-tio-hentaia/sagurare-otome-the-animation-1-sub-espanol-tio-hentaia.thumbs/SagurareOtomeTheAnimation_1_Sub%20Espa%C3%B1ol%20%5BT%C3%ADoHentaia%5D_000001.jpg",
-    "url": "https://archive.org/download/sagurare-otome-the-animation-1-sub-espanol-tio-hentaia/SagurareOtomeTheAnimation_1_Sub%20Espa%C3%B1ol%20%5BT%C3%ADoHentaia%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Reijoku no Yakata - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/reijokuno-yakata-2-sub-espanol-hd-tio-hentai/reijokuno-yakata-2-sub-espanol-hd-tio-hentai.thumbs/ReijokunoYakata_1_Sub%20Espa%C3%B1ol%20HD%20%5BT%C3%ADo%20Hentai%5D_000001.jpg",
-    "url": "https://archive.org/download/reijokuno-yakata-2-sub-espanol-hd-tio-hentai/ReijokunoYakata_1_Sub%20Espa%C3%B1ol%20HD%20%5BT%C3%ADo%20Hentai%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ai wa Kagi no Kazu dake... Fuuzoku Mansion [Sin Censura]",
-    "logo": "https://archive.org/download/01-ai-wa-kagi-no-kazu-dake...-fuuzoku-mansion-sub-espanol-www-hentai/01-ai-wa-kagi-no-kazu-dake...-fuuzoku-mansion-sub-espanol-www-hentai.thumbs/01_Ai_wa_Kagi_no_Kazu_Dake%E2%80%A6_Fuuzoku_Mansion_Sub_Espa%C3%B1ol_www_Hentai_000001.jpg",
-    "url": "https://archive.org/download/01-ai-wa-kagi-no-kazu-dake...-fuuzoku-mansion-sub-espanol-www-hentai/01_Ai_wa_Kagi_no_Kazu_Dake%E2%80%A6_Fuuzoku_Mansion_Sub_Espa%C3%B1ol_www_Hentai.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Enjo Kouhai [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx112936-MOPqLdKu7dgJ.jpg",
-    "url": "https://archive.org/download/enjo-kouhai-episodio-8-hentai-la-ver-hentai-en-espanol-hentai-la/Enjo%20Kouhai%20Episodio%208%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20-%20HentaiLA.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Korashime 2: Kyouikuteki Depaga Shidou - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/korashime-s-1-hentai-la-02/korashime-s-1-hentai-la-02.thumbs/Korashime%20S1%20%5BHentaiLA%5D%2001_000001.jpg",
-    "url": "https://archive.org/download/korashime-s-1-hentai-la-02/Korashime%20S1%20%5BHentaiLA%5D%2001.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Asa Made Shirudaku Oyakodon!! [Sin Censura]",
-    "logo": "https://archive.org/download/asa-made-shirudaku-oyakodon-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/asa-made-shirudaku-oyakodon-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la.thumbs/Asa%20made%20Shirudaku%20Oyakodon%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20HentaiLA_000001.jpg",
-    "url": "https://archive.org/download/asa-made-shirudaku-oyakodon-episodio-1-hentai-la-ver-hentai-en-espanol-hentai-la/Asa%20made%20Shirudaku%20Oyakodon%20Episodio%201%20HentaiLA%20-%20Ver%20Hentai%20en%20Espa%C3%B1ol%20HentaiLA.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Isekai Meikyuu de Harem wo (Sin Censura) - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx127090-ftd2rro80kk9.jpg",
-    "url": "https://archive.org/download/isekai-meikyuu-de-harem-wo-sub-indo/Isekai%20Meikyuu%20de%20Harem%20Wo%20(Sub%20Indo)/Otakudesu.watch_IsekaiH--01_720p.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Itadaki! Seieki [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21067-iqPTvtqwnCxA.jpg",
-    "url": "https://archive.org/download/itadaki-seieki-episode-1-english-subbed/Itadaki!%20Seieki%20Episode%201%20English%20Subbed.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Prison School (Uncensored) - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/Prison-School-/Prison-School-.thumbs/Prison%20School%20%5BDubbed%5D%20%5BUncensored%5D%20%5B720p%5D/Episode%2001%20-%20The%20Peep%20Job_000001.jpg",
-    "url": "https://archive.org/download/Prison-School-/Prison%20School%20%5BDubbed%5D%20%5BUncensored%5D%20%5B720p%5D/Episode%2001%20-%20The%20Peep%20Job.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Queen's Blade OVA (Uncensored) - OVA 1 [Sin Censura]",
-    "logo": "https://archive.org/download/queens-blade-seasons-1-3/queens-blade-seasons-1-3.thumbs/Queen's%20Blade%20(Seasons%201-3)/Queen's%20Blade%20-%20S01e01_000001.jpg",
-    "url": "https://archive.org/download/queens-blade-seasons-1-3/Queen's%20Blade%20(Seasons%201-3)/Queen's%20Blade%20-%20S01e01.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Amai Choubatsu [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101160-FBZBM5uRHoSZ.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-dump-v1/Amai%20Choubatsu/amai-choubatsu-watashi-wa-kanshu-sen-you-pet-season-1-720p-v1x.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ane Yome Quartet - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21240-Sqyin6RClcBb.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-dump-v1/Ane%20Yome%20Quartet/%5BSubDESU-H%5D%20Ane%20Yome%20Quartet%20-%2001%20%5BA3DD2060%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Anoko to Iikoto - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21370-T3woTRjM1YoA.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-dump-v1/Anoko%20to%20Iikoto/%5BHH%5D%20Anoko%20to%20Iikoto%20-%20Episode%201%20%5BDVD%5D%20%5B7302D1B5%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Araiya-san! Ore to Aitsu ga Onnayu de! [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx107974-qj1gNTABYHkU.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-dump-v1/Araiya-san!%20Ore%20to%20Aitsu%20ga%20Onnayu%20de!/araiya-san-ore-to-aitsu-ga-onnayu-de-season-1-720p-v1x.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Baku Ane - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b20933-Ah6Z7ZlMNGTv.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Baku%20Ane/Baku%20Ane%202%20Otouto%20Ippai%20Shibocchau%20zo!%20The%20Animation/Baku%20Ane%202%20-%20Otouto%20Ippai%20Shibocchau%20zo!%20The%20Animation%20(BD%201080p%20FLAC)%20%5BDF99F7BE%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Bible Black - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b368-VYmzhCrZlVXI.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Bible%20Black/1.%20Bible%20Black/%5BHR%5D%20Bible%20Black%20-%20Episode%201%20%5B073E8ABB%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Drop Out - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21614-JGE0d299OvMc.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Drop%20Out/%5BZetsubou%5D%20Dropout%20-%2001%20(HH)%20(480p)%20%5B4DF3213A%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ebenbourg no Kaze - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2372-DMHogUobqqqR.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Ebenbourg%20no%20Kaze/%5BKH%5D_Taboo_Charming_Mother_01_(h264)_%5BE51057F6%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Ecchi na Onee-chan ni Shiboraretai - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx108413-kveZWUdyhFMU.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Ecchi%20na%20Onee-chan%20ni%20Shiboraretai/ecchi-na-onee-chan-ni-shiboraretai-1-720p-v1x.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Eroge! H mo Game mo Kaihatsu Zanmai - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx10779-5cxtbMVFJ3jp.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Eroge!%20H%20mo%20Game%20mo%20Kaihatsu%20Zanmai/%5BSubDESU-H%5D%20Eroge!%20H%20mo%20Game%20mo%20Kaihatsu%20Zanmai%20-%2006%20(1280x720%20x264%208bit%20AAC)%20%5BE59F7825%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Euphoria - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx10851-FNTzFO5BJfPP.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Euphoria/Euphoria%20-%2001%20%5B6B0FE057%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Fault!! - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7053.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Fault!!/%5BEROBEAT%5D_Fault!!_-_01_%5Bx264%5D%5BD94B59CC%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Fella Hame Lips - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21785-ORbg3V81ivIf.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Fella%20Hame%20Lips/%5BZetsubou%5D%20Fella%20Hame%20Lips%20-%2001%20(HH)%20%5BDC7C4382%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Furueru Kuchibiru - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21617-ZtqzLoYJpgEC.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Furueru%20Kuchibiru/%5BRH%5D%20Furueru%20Kuchibiru%20-%2000%20%5BUncensored%5D%20%5B064CFB80%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Gaki ni Modotte Yarinaoshi!!! - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx107136-LEun0ifnhkKh.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Gaki%20ni%20Modotte%20Yarinaoshi!!!/%5BSakuraCircle%5D%20Gaki%20ni%20Modotte%20Yarinaoshi!!!%20-%2001%20(WEB%201920x1080%20Hi10P%20h264%20AAC)%20%5B39FD3383%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Gakuen - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21146-uuvyrVWPHLuy.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Gakuen/Gakuen%202/%5BEROBEAT%5D_Gakuen_2_-_1_%5Bx264%5D%5BDD7CCA68%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Gakuen de Jikan yo Tomare - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21146-uuvyrVWPHLuy.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Gakuen%20de%20Jikan%20yo%20Tomare/Gakuen_de_Jikan_yo_Tomare_01_%5B223435C7%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Genkaku Cool na Sensei ga Aheboteochi! - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21147-AiTWGYeUb1fh.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Genkaku%20Cool%20na%20Sensei%20ga%20Aheboteochi!/Genkaku%20Cool%20na%20Sensei%20ga%20Aheboteochi!%20-%2001%20%5BHH%5D%5BA7AE7516%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Hajimete no Hitozuma - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113947-POn7IuMfAJZp.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Hajimete%20no%20Hitozuma/Hajimete%20no%20Hitozuma%20-%2001%20(2020)%20%5B1080p-HEVC-AIDVDRip%5D%5BC1A2D6E0%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Harem Time The Animation - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx14991-JbNHVXm1eFim.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Harem%20Time%20The%20Animation/%5Bcoldhell%5D_Harem_Time_The_Animation_Feast_1_%5BDD1A7799%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Hatsu Inu - The Animation - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2798.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Hatsu%20Inu%20-%20The%20Animation/Hatsu%20Inu%202/Hatsu%20Inu%202%20The%20Animation%2001%20%5BVirgen%2Bdeysmacro%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Idol Sister [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21026-czrzMZNzcGYz.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Idol%20Sister/%5Berokuni%5D%20Idol%20Sister%20%5BBD%5D%5BAA765E44%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Imouto Bitch ni Shiboraretai - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx99555-G3kTjOT6Gx1i.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Imouto%20Bitch%20ni%20Shiboraretai/%5BSakuraCircle%5D%20Imouto%20Bitch%20ni%20Shiboraretai%20-%2001%20(DVD%20720x480%20h264%20AAC)%20%5BF1ED6062%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Imouto Paradise! - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/10668.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Imouto%20Paradise!/1.%20Imouto%20Paradise!/%5Berokuni%5D%20Imouto%20Paradise%20-%2001%20%5BBD%5D%5BDD44F45D%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Isekai Harem Monogatari - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx118166-bIpq0Yg0xWld.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Isekai%20Harem%20Monogatari/%5BSakuraCircle%5D%20Isekai%20Harem%20Monogatari%20-%2001%20(DVD%20720x480%20h264%20AAC)%20%5B37CBC071%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Jitaku Keibiin - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/98058-Cp9paXdp3VdW.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Jitaku%20Keibiin/Jitaku%20Keibiin%20(2019)/%5BSakuraCircle%5D%20Jitaku%20Keibiin%20(2019)%20-%2001%20(DVD%20720x480%20h264%20AAC)%20%5BF0B163CB%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 JK Bitch ni Shiboraretai - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/21819-a9yJnMPh1Rx0.png",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/JK%20Bitch%20ni%20Shiboraretai/%5BKLOPY%5D%20JK%20Bitch%20ni%20Shiboraretai%20-%2001%20(HH)%20%5B696719F9%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
-  },
-  {
-    "name": "🎌 Joshi Luck! - OVA 1 [Sin Censura]",
-    "logo": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx109326-eZrJOPw7DCzB.jpg",
-    "url": "https://archive.org/download/uncle-bane-hanime-v1.7/Joshi%20Luck!/Joshi%20Luck!%20-%2001%20(OVA%E3%81%98%E3%82%87%E3%81%97%E3%83%A9%E3%82%AF%EF%BC%81%20%EF%BC%831)%20%5B2019%5D%5B720p-HEVC-WEBRip%5D.mp4",
-    "category": "Hentai",
-    "country": "Japón"
   }
 ]

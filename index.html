@@ -2732,7 +2732,6 @@
                             <option value="Infantil">👶 Infantiles</option>
                             <option value="Música">🎶 Música</option>
                             <option value="Cultura">🔬 Cultura</option>
-                            <option value="Hentai">🎌 Hentai (+18)</option>
                             <option value="Adultos">🔞 Adultos (+18)</option>
                             <option value="favs">⭐ Mis Favoritos</option>
                         </select>
@@ -2829,15 +2828,6 @@
                 <div class="tv-shelf-scroll" id="tvNewsShelfScroll"></div>
             </div>
 
-            <!-- CARRUSEL HENTAI (+18) -->
-            <div class="tv-shelf" style="margin-bottom:28px;">
-                <div class="tv-shelf-header">
-                    <h3>🎌 Hentai (+18) · OVAs Sin Censura & Sub Español</h3>
-                    <span class="tv-shelf-link" onclick="quickFilterTvBy('Hentai')">Ver todos los canales Hentai →</span>
-                </div>
-                <div class="tv-shelf-scroll" id="tvHentaiShelfScroll"></div>
-            </div>
-
             <!-- CARRUSEL ADULTOS (+18) -->
             <div class="tv-shelf" style="margin-bottom:28px;">
                 <div class="tv-shelf-header">
@@ -2909,7 +2899,6 @@
                 <button class="channel-pill" onclick="setTvExplorerCategory('Infantil', this)">👶 Infantiles</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Música', this)">🎶 Música</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Cultura', this)">🔬 Cultura</button>
-                <button class="channel-pill" onclick="setTvExplorerCategory('Hentai', this)">🎌 Hentai (+18)</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('Adultos', this)">🔞 Adultos (+18)</button>
                 <button class="channel-pill" onclick="setTvExplorerCategory('favs', this)">⭐ Favoritos</button>
             </div>
@@ -7273,7 +7262,6 @@
                             <button type="button" class="tv-fs-cat-pill" data-cat="Infantil" onclick="setTvFsCategory('Infantil', this)">👶 Infantiles</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Música" onclick="setTvFsCategory('Música', this)">🎶 Música</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Cultura" onclick="setTvFsCategory('Cultura', this)">🔬 Cultura</button>
-                            <button type="button" class="tv-fs-cat-pill" data-cat="Hentai" onclick="setTvFsCategory('Hentai', this)">🎌 Hentai (+18)</button>
                             <button type="button" class="tv-fs-cat-pill" data-cat="Adultos" onclick="setTvFsCategory('Adultos', this)">🔞 Adultos (+18)</button>
                         </div>
                     </div>
@@ -7764,13 +7752,6 @@
             const newsScroll = document.getElementById('tvNewsShelfScroll');
             if (newsScroll) {
                 newsScroll.innerHTML = newsList.map(ch => renderShelfCard(ch)).join('');
-            }
-
-            // Hentai (+18)
-            const hentaiTvList = allLiveChannels.filter(c => c.category === 'Hentai').slice(0, 36);
-            const hentaiTvScroll = document.getElementById('tvHentaiShelfScroll');
-            if (hentaiTvScroll) {
-                hentaiTvScroll.innerHTML = hentaiTvList.map(ch => renderShelfCard(ch)).join('');
             }
 
             // Adultos (+18)
