@@ -45199,32 +45199,90 @@
     "url": "http://200.122.223.13:55000/play/zoom-banda-ku/index.m3u8"
   },
   {
-    "name": "Playboy TV Latino HD (Señal 1)",
-    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "name": "Playboy TV Latino HD (Señal 1 - Astra)",
     "url": "http://200.59.191.177:8000/play/a0p3/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
     "category": "Adultos",
-    "country": "Chile",
+    "country": "Latinoamérica",
     "fixAudio": true
   },
   {
-    "name": "Playboy TV Latino 1080p (Señal 2 - Full HD)",
+    "name": "Playboy TV Latino HD (Señal 2 - Astra Backup)",
+    "url": "http://190.108.83.69:8000/play/a02p/index.m3u8",
     "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Latinoamérica",
+    "fixAudio": true
+  },
+  {
+    "name": "Playboy TV Latino 1080p (Señal 3 - Full HD)",
     "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/12135/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Latinoamérica"
+  },
+  {
+    "name": "Playboy TV Latino (Señal 4 - LA)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6280/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Latinoamérica",
+    "fixAudio": true
+  },
+  {
+    "name": "Playboy TV (Señal 5 - Oficial)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/527/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
     "category": "Adultos",
     "country": "Internacional"
   },
   {
-    "name": "Playboy TV Latino (Señal 3 - LA)",
+    "name": "Playboy Plus HD (Señal 6)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6242/index.m3u8",
     "logo": "https://i.imgur.com/rL2v9pM.png",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/6280/index.m3u8",
     "category": "Adultos",
-    "country": "Internacional",
+    "country": "Internacional"
+  },
+  {
+    "name": "Playboy TV Europe HD (Señal 7)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/20026/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Europa"
+  },
+  {
+    "name": "Playboy TV Latino 1080p (Señal 8 - Backup FHD)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/8E52MW5BS9BCE7/12135/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Latinoamérica"
+  },
+  {
+    "name": "Playboy TV Latino (Señal 9 - Backup LA)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/8E52MW5BS9BCE7/6280/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Latinoamérica",
     "fixAudio": true
   },
   {
-    "name": "Playboy TV (Señal 4)",
+    "name": "Playboy Plus HD (Señal 10 - Backup)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/8E52MW5BS9BCE7/6242/index.m3u8",
     "logo": "https://i.imgur.com/rL2v9pM.png",
-    "url": "http://a0bn5xro.rostelekom.xyz/iptv/HBWPN23GZMELXN/527/index.m3u8",
+    "category": "Adultos",
+    "country": "Internacional"
+  },
+  {
+    "name": "Playboy TV Europe HD (Señal 11 - Backup)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/8E52MW5BS9BCE7/20026/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
+    "category": "Adultos",
+    "country": "Europa"
+  },
+  {
+    "name": "Playboy TV (Señal 12 - Backup)",
+    "url": "http://a0bn5xro.rostelekom.xyz/iptv/8E52MW5BS9BCE7/527/index.m3u8",
+    "logo": "https://i.imgur.com/rL2v9pM.png",
     "category": "Adultos",
     "country": "Internacional"
   },
