@@ -474,8 +474,8 @@ public class TvHomeActivity extends Activity {
             while ((n = in.read(b)) != -1) buf.write(b, 0, n);
             JSONArray arr = new JSONArray(buf.toString("UTF-8"));
 
-            List<String> order = Arrays.asList("Deportes", "Cine & Series", "24/7", "Infantil", "Noticias",
-                    "Entretenimiento", "Música", "Cultura", "General", "Adultos");
+            List<String> order = Arrays.asList("Deportes", "Cine & Series", "Noticias",
+                    "Entretenimiento", "Infantil", "Cultura", "Música", "24/7", "General", "Adultos");
             Map<String, List<CatalogItem>> byCat = new HashMap<>();
             List<CatalogItem> featured = new ArrayList<>();
             List<CatalogItem> allItems = new ArrayList<>();
@@ -515,10 +515,10 @@ public class TvHomeActivity extends Activity {
             // Favoritos guardados con una señal que la lista ya corrigió
             Favorites.reconcile(this, nameToUrl);
             out.put("⭐ Destacados", featured);
-            out.put("📺 Todos los canales (" + allItems.size() + ")", allItems);
             if (!chileItems.isEmpty()) out.put("🇨🇱 Canales de Chile", chileItems);
-            if (!rockItems.isEmpty()) out.put("🎸 Rock & Metal", rockItems);
             for (String cat : order) if (byCat.containsKey(cat)) out.put(iconFor(cat) + " " + cat, byCat.remove(cat));
+            out.put("📺 Todos los canales (" + allItems.size() + ")", allItems);
+            if (!rockItems.isEmpty()) out.put("🎸 Rock & Metal", rockItems);
             for (Map.Entry<String, List<CatalogItem>> e : byCat.entrySet()) out.put(e.getKey(), e.getValue());
         } catch (Exception e) {
             Log.w(TAG, "No se pudieron leer los canales", e);

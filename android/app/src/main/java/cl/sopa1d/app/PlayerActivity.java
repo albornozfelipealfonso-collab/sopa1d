@@ -297,34 +297,53 @@ public class PlayerActivity extends Activity {
 
     // ------------------------------------------------------- categorías
 
+    private static final String CAT_CHILE = "🇨🇱 Canales de Chile";
+    private static final String CAT_DEPORTES = "⚽ Deportes";
+    private static final String CAT_CINE = "🎬 Cine & Series";
+    private static final String CAT_NOTICIAS = "📰 Noticias";
+    private static final String CAT_ENTRETENIMIENTO = "🎉 Entretenimiento";
+    private static final String CAT_INFANTIL = "🧸 Infantil";
+    private static final String CAT_CULTURA = "🏛️ Cultura";
+    private static final String CAT_MUSICA = "🎵 Música";
+    private static final String CAT_247 = "🔁 24/7";
+    private static final String CAT_GENERAL = "📡 General";
+    private static final String CAT_ADULTOS = "🔞 Adultos";
     private static final String CAT_ALL = "📺 Todos los canales";
     private static final String CAT_FAVS = "★ Mis canales";
-    private static final String CAT_CHILE = "🇨🇱 Canales de Chile";
     private static final String CAT_ROCK = "🎸 Rock & Metal";
     private TextView categoryView;
     private final List<String> categories = new ArrayList<>();
     private int categoryIndex;
 
-    /** Todos, Mis canales (si hay) y las categorías de la lista, de más a menos canales. */
+    /** Categorías ordenadas con prioridad lógica para control remoto de TV */
     private void buildCategories() {
-        java.util.Map<String, Integer> count = new java.util.HashMap<>();
-        for (Channel ch : ChannelStore.get()) {
-            if (ch.category == null || ch.category.isEmpty()) continue;
-            Integer n = count.get(ch.category);
-            count.put(ch.category, n == null ? 1 : n + 1);
-        }
-        List<String> sorted = new ArrayList<>(count.keySet());
-        sorted.sort((a, b) -> count.get(b) - count.get(a));
-
         String previous = categories.isEmpty()
-                ? getSharedPreferences("player", MODE_PRIVATE).getString("category", CAT_ALL)
+                ? getSharedPreferences("player", MODE_PRIVATE).getString("category", CAT_CHILE)
                 : categories.get(categoryIndex);
         categories.clear();
+        categories.add(CAT_CHILE);
+        categories.add(CAT_DEPORTES);
+        categories.add(CAT_CINE);
+        categories.add(CAT_NOTICIAS);
+        categories.add(CAT_ENTRETENIMIENTO);
+        categories.add(CAT_INFANTIL);
+        categories.add(CAT_CULTURA);
+        categories.add(CAT_MUSICA);
+        categories.add(CAT_247);
+        categories.add(CAT_GENERAL);
+        categories.add(CAT_ADULTOS);
         categories.add(CAT_ALL);
         categories.add(CAT_FAVS);
-        categories.add(CAT_CHILE);
         categories.add(CAT_ROCK);
-        categories.addAll(sorted);
+
+        // Si hay categorías extra en la lista que no están en las estándar, agregarlas al final
+        java.util.Set<String> seen = new java.util.HashSet<>(categories);
+        for (Channel ch : ChannelStore.get()) {
+            if (ch.category != null && !ch.category.isEmpty() && !seen.contains(ch.category)) {
+                seen.add(ch.category);
+                categories.add(ch.category);
+            }
+        }
         categoryIndex = Math.max(0, categories.indexOf(previous));
     }
 
@@ -344,7 +363,27 @@ public class PlayerActivity extends Activity {
             if (favs != null) {
                 in = favs.contains(ch.url);
             } else if (CAT_CHILE.equals(cat)) {
-                in = "Chile".equalsIgnoreCase(ch.country);
+                in = "Chile".equalsIgnoreCase(ch.country) || (ch.name != null && ch.name.toLowerCase(Locale.ROOT).contains("chile"));
+            } else if (CAT_DEPORTES.equals(cat)) {
+                in = "Deportes".equalsIgnoreCase(ch.category);
+            } else if (CAT_CINE.equals(cat)) {
+                in = "Cine & Series".equalsIgnoreCase(ch.category) || "Cine".equalsIgnoreCase(ch.category) || "Series".equalsIgnoreCase(ch.category);
+            } else if (CAT_NOTICIAS.equals(cat)) {
+                in = "Noticias".equalsIgnoreCase(ch.category);
+            } else if (CAT_ENTRETENIMIENTO.equals(cat)) {
+                in = "Entretenimiento".equalsIgnoreCase(ch.category);
+            } else if (CAT_INFANTIL.equals(cat)) {
+                in = "Infantil".equalsIgnoreCase(ch.category);
+            } else if (CAT_CULTURA.equals(cat)) {
+                in = "Cultura".equalsIgnoreCase(ch.category);
+            } else if (CAT_MUSICA.equals(cat)) {
+                in = "Música".equalsIgnoreCase(ch.category) || "Musica".equalsIgnoreCase(ch.category);
+            } else if (CAT_247.equals(cat)) {
+                in = "24/7".equalsIgnoreCase(ch.category);
+            } else if (CAT_GENERAL.equals(cat)) {
+                in = "General".equalsIgnoreCase(ch.category);
+            } else if (CAT_ADULTOS.equals(cat)) {
+                in = "Adultos".equalsIgnoreCase(ch.category);
             } else if (CAT_ROCK.equals(cat)) {
                 String n = (ch.name == null ? "" : ch.name).toLowerCase(Locale.ROOT);
                 in = n.contains("rock") || n.contains("metal") || n.contains("punk") || n.contains("grunge") || n.contains("vh1") || n.contains("qello");
@@ -374,8 +413,29 @@ public class PlayerActivity extends Activity {
         channelAdapter.clear();
         channelAdapter.addAll(shown);
         list.setSelection(0);
-        categoryView.setText("📂  " + currentCategory() + "  ·  " + shown.size()
-                + (isTv ? "   ◀ OK ▶" : "   (toca para cambiar)"));
+        categoryView.setText("◀  " + currentCategory() + " (" + shown.size() + ")  ▶"
+                + (isTv ? "\n   Presiona ◀ o ▶ para cambiar categoría" : ""));
+    }
+
+    /** Salta directamente al primer canal de la siguiente o anterior categoría */
+    private void jumpCategory(int delta) {
+        if (categories.isEmpty()) buildCategories();
+        int n = categories.size();
+        for (int i = 0; i < n; i++) {
+            categoryIndex = ((categoryIndex + delta) % n + n) % n;
+            String cat = currentCategory();
+            if (CAT_ALL.equals(cat) || CAT_FAVS.equals(cat)) continue;
+            List<Channel> chs = categoryChannels();
+            if (!chs.isEmpty()) {
+                Channel first = chs.get(0);
+                Integer num = channelNumber.get(first);
+                index = num != null ? num : 0;
+                openChannel();
+                showStatus("📂 " + cat);
+                getSharedPreferences("player", MODE_PRIVATE).edit().putString("category", cat).apply();
+                return;
+            }
+        }
     }
 
     private void setupPanel() {
@@ -973,7 +1033,7 @@ public class PlayerActivity extends Activity {
         if (favBtn != null) ((TextView) favBtn).setText(Favorites.contains(this, ch.url) ? "★  Favorito" : "☆  Favorito");
         String cat = ch.category == null || ch.category.isEmpty() ? "" : ch.category + "   ·   ";
         osdInfo.setText(cat + (isTv
-                ? "▲ ▼ canal   ·   OK lista   ·   ◀ programación   ·   ▶ anterior (mantén: dos canales)   ·   0-9 ir al número"
+                ? "▲ ▼ canal   ·   OK lista (◀ ▶ categorías)   ·   Pág ▲ ▼ saltar categoría   ·   0-9 número"
                 : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía   ·   mantén ⇄: dos canales"));
         fillOsdGuide(ch);
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
@@ -1220,6 +1280,14 @@ public class PlayerActivity extends Activity {
                 togglePanel(false);
                 return true;
             }
+            if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_PAGE_DOWN || code == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                cycleCategory(1);
+                return true;
+            }
+            if (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_PAGE_UP || code == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                cycleCategory(-1);
+                return true;
+            }
             return super.dispatchKeyEvent(event); // la lista maneja el resto
         }
 
@@ -1240,14 +1308,25 @@ public class PlayerActivity extends Activity {
         switch (code) {
             case KeyEvent.KEYCODE_CHANNEL_UP:
             case KeyEvent.KEYCODE_DPAD_UP:
-            case KeyEvent.KEYCODE_PAGE_UP:
                 switchBy(1);
                 return true;
 
             case KeyEvent.KEYCODE_CHANNEL_DOWN:
             case KeyEvent.KEYCODE_DPAD_DOWN:
-            case KeyEvent.KEYCODE_PAGE_DOWN:
                 switchBy(-1);
+                return true;
+
+            case KeyEvent.KEYCODE_PAGE_UP:
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+            case KeyEvent.KEYCODE_PROG_GREEN:
+                jumpCategory(1);
+                return true;
+
+            case KeyEvent.KEYCODE_PAGE_DOWN:
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+            case KeyEvent.KEYCODE_PROG_RED:
+                jumpCategory(-1);
                 return true;
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
