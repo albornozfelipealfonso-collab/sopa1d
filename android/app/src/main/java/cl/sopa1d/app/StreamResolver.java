@@ -78,9 +78,9 @@ final class StreamResolver {
     private static List<String[]> findSubtitles(String html) {
         List<String[]> out = new ArrayList<>();
         StringBuilder text = new StringBuilder(html);
-        int idx = html.indexOf("eval(function(p,a,c,k,e,d)");
+        int idx = html.indexOf("eval(function(p,");
         if (idx >= 0) {
-            String un = unpack(html.substring(idx, Math.min(html.length(), idx + 60000)));
+            String un = unpack(html.substring(idx, Math.min(html.length(), idx + 120000)));
             if (un != null) text.append(un);
         }
         Matcher m = SUB_TRACK.matcher(text);
@@ -92,6 +92,7 @@ final class StreamResolver {
     }
 
     private static final Pattern M3U8 = Pattern.compile("https?://[^'\"\\s\\\\]+\\.m3u8[^'\"\\s\\\\]*");
+    private static final Pattern MEDIA_URL = Pattern.compile("https?://[^'\"\\s\\\\]+\\.(?:m3u8|mp4)[^'\"\\s\\\\]*");
     private static final Pattern JS_REDIRECT =
             Pattern.compile("window\\.location\\.href\\s*=\\s*['\"](https?://[^'\"]+)['\"]", Pattern.CASE_INSENSITIVE);
     private static final Pattern PACKED = Pattern.compile(
@@ -163,10 +164,13 @@ final class StreamResolver {
         String h = host.toLowerCase(Locale.ROOT);
         if (h.contains("vimeus") || h.contains("vimeos")) return 1;
         if (h.contains("streamwish")) return 2;
-        if (h.contains("filelions")) return 3;
-        if (h.contains("vidmoly")) return 4;
-        if (h.contains("vidhide") || h.contains("luluvdo")) return 5;
-        if (h.contains("uqload")) return 6;
+        if (h.contains("morencius")) return 3;
+        if (h.contains("filelions")) return 4;
+        if (h.contains("vidmoly")) return 5;
+        if (h.contains("vidhide") || h.contains("luluvdo") || h.contains("streamhide")) return 6;
+        if (h.contains("uqload")) return 7;
+        if (h.contains("wolfstream") || h.contains("dropload") || h.contains("hexload")) return 8;
+        if (h.contains("streamtape")) return 9;
         if (h.contains("voe") || h.contains("dood") || h.equals("ok")
                 || h.contains("mp4upload") || h.contains("primeload")) return -1;
         return 9;
@@ -221,23 +225,23 @@ final class StreamResolver {
     private static String findM3u8(String html) {
         // 1. Script empaquetado con el "packer" de Dean Edwards (Vimeus,
         //    Streamwish, Filelions, Vidhide, Uqload...)
-        int idx = html.indexOf("eval(function(p,a,c,k,e,d)");
+        int idx = html.indexOf("eval(function(p,");
         if (idx >= 0) {
-            String unpacked = unpack(html.substring(idx, Math.min(html.length(), idx + 60000)));
+            String unpacked = unpack(html.substring(idx, Math.min(html.length(), idx + 120000)));
             if (unpacked != null) {
-                Matcher m = M3U8.matcher(unpacked);
+                Matcher m = MEDIA_URL.matcher(unpacked);
                 if (m.find()) return m.group();
             }
         }
         // 2. Enlace directo en el HTML (Vidmoly)
-        Matcher direct = M3U8.matcher(html);
+        Matcher direct = MEDIA_URL.matcher(html);
         if (direct.find()) return direct.group();
         // 3. Cadenas base64 que esconden el enlace
         Matcher b64 = BASE64_STRING.matcher(html);
         while (b64.find()) {
             try {
                 String dec = new String(Base64.decode(b64.group(1), Base64.DEFAULT), StandardCharsets.UTF_8);
-                Matcher m = M3U8.matcher(dec);
+                Matcher m = MEDIA_URL.matcher(dec);
                 if (m.find()) return m.group();
             } catch (IllegalArgumentException ignored) {
             }
@@ -284,7 +288,7 @@ final class StreamResolver {
             h.put("Referer", referer);
             h.put("Origin", referer.substring(0, referer.length() - 1));
             Http.Response r = Http.get(m3u8, h, 7000);
-            return r.code >= 200 && r.code < 300 && r.body.contains("#EXTM3U");
+            return r.code >= 200 && r.code < 300 && (r.body.contains("#EXTM3U") || m3u8.contains(".mp4"));
         } catch (Exception e) {
             return false;
         }

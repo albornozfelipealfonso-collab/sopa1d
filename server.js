@@ -830,9 +830,9 @@ function decodeTonPlayerToken(token) {
  * empaquetado se reemplaza por su entrada del diccionario.
  */
 function unpackPacker(html) {
-    const idx = html.indexOf('eval(function(p,a,c,k,e,d)');
+    const idx = html.indexOf('eval(function(p,');
     if (idx === -1) return null;
-    const m = html.slice(idx, idx + 60000).match(/\}\('(.*)',\s*(\d+),\s*(\d+),\s*'(.*?)'\.split\('\|'\)/s);
+    const m = html.slice(idx, idx + 120000).match(/\}\('(.*)',\s*(\d+),\s*(\d+),\s*'(.*?)'\.split\('\|'\)/s);
     if (!m) return null;
     const base = parseInt(m[2], 10);
     const dict = m[4].split('|');
@@ -1025,7 +1025,7 @@ async function extractDirectHlsFromEmbed(embedUrl) {
             // 2. Desempaquetar el "packer" (Vimeus, Streamwish, Filelions, Vidhide…) sin ejecutarlo
             const unpacked = unpackPacker(html);
             if (unpacked) {
-                const m3u8Match = unpacked.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
+                const m3u8Match = unpacked.match(/https?:\/\/[^'"\s\\]+\.(?:m3u8|mp4)[^'"\s\\]*/);
                 if (m3u8Match) {
                     const result = { m3u8: m3u8Match[0], referer: originReferer, subtitles: findSubtitleTracks(unpacked + html) };
                     hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
@@ -1034,7 +1034,7 @@ async function extractDirectHlsFromEmbed(embedUrl) {
             }
 
             // 3. Buscar enlace .m3u8 directo en el HTML (Vidmoly, etc.)
-            const directM3u8 = html.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
+            const directM3u8 = html.match(/https?:\/\/[^'"\s\\]+\.(?:m3u8|mp4)[^'"\s\\]*/);
             if (directM3u8) {
                 const result = { m3u8: directM3u8[0], referer: originReferer, subtitles: findSubtitleTracks(html) };
                 hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
@@ -1046,7 +1046,7 @@ async function extractDirectHlsFromEmbed(embedUrl) {
             for (const raw of b64Matches) {
                 try {
                     const dec = Buffer.from(raw.slice(1, -1), 'base64').toString('utf8');
-                    const m3u8 = dec.match(/https?:\/\/[^'"\s\\]+\.m3u8[^'"\s\\]*/);
+                    const m3u8 = dec.match(/https?:\/\/[^'"\s\\]+\.(?:m3u8|mp4)[^'"\s\\]*/);
                     if (m3u8) {
                         const result = { m3u8: m3u8[0], referer: originReferer };
                         hlsExtractCache.set(embedUrl, { data: result, time: Date.now() });
@@ -1065,9 +1065,13 @@ function serverPriorityScore(srv) {
     const name = String(srv?.servidor || '').toLowerCase();
     if (name.includes('vimeus') || name.includes('vimeos')) return 1;
     if (name.includes('streamwish')) return 2;
-    if (name.includes('filelions')) return 3;
-    if (name.includes('vidmoly')) return 4;
-    if (name.includes('vidhide') || name.includes('luluvdo')) return 5;
+    if (name.includes('morencius')) return 3;
+    if (name.includes('filelions')) return 4;
+    if (name.includes('vidmoly')) return 5;
+    if (name.includes('vidhide') || name.includes('luluvdo') || name.includes('streamhide')) return 6;
+    if (name.includes('uqload')) return 7;
+    if (name.includes('wolfstream') || name.includes('dropload') || name.includes('hexload')) return 8;
+    if (name.includes('streamtape')) return 9;
     return 10;
 }
 

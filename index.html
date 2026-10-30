@@ -4959,11 +4959,21 @@
                     tag: '4K / HD',
                     color: '#f5c518',
                     type: 'iframe',
-                    // Rechaza cargar dentro de un iframe sandboxed ("Sandboxing is not allowed!")
                     allowSandbox: false,
                     url: isTv
                         ? `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`
                         : `https://multiembed.mov/?video_id=${id}&tmdb=1`
+                },
+                {
+                    id: '2embed',
+                    name: '⚡ Servidor 2Embed Ultra',
+                    tag: 'FULL HD · ULTRA',
+                    color: '#3b82f6',
+                    type: 'iframe',
+                    allowSandbox: false,
+                    url: isTv
+                        ? `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}`
+                        : `https://www.2embed.cc/embed/${id}`
                 },
                 {
                     id: 'vidsrcme',
