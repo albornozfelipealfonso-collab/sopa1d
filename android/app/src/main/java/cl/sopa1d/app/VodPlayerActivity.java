@@ -189,6 +189,15 @@ public class VodPlayerActivity extends Activity {
                             .setTrackTypeDisabled(androidx.media3.common.C.TRACK_TYPE_TEXT, !(Boolean) row)
                             .build());
                     refreshServerList();
+                } else if (row instanceof AspectOption) {
+                    togglePanel(false);
+                    AspectOption opt = (AspectOption) row;
+                    resizeIndex = opt.index;
+                    getSharedPreferences("vod_player", MODE_PRIVATE).edit().putInt("resize_mode", resizeIndex).apply();
+                    if (playerView != null) playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
+                    if (vodAspectBtn != null) vodAspectBtn.setText(RESIZE_SHORT[resizeIndex]);
+                    android.widget.Toast.makeText(VodPlayerActivity.this, RESIZE_NAMES[resizeIndex], android.widget.Toast.LENGTH_SHORT).show();
+                    refreshServerList();
                 } else if (row instanceof StreamResolver.Server) {
                     togglePanel(false);
                     int s = servers.indexOf(row);
@@ -317,6 +326,34 @@ public class VodPlayerActivity extends Activity {
 
     /** Ya reprodujo alguna vez (los "cargando" del arranque no son cortes). */
     private boolean everReady, seeking;
+        static final class AspectOption {
+        final int index;
+        final int mode;
+        final String label;
+        AspectOption(int index, int mode, String label) {
+            this.index = index;
+            this.mode = mode;
+            this.label = label;
+        }
+    }
+    private static final int[] RESIZE_MODES = {
+            androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIT,
+            androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM,
+            androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FILL
+    };
+    private static final String[] RESIZE_NAMES = {
+            "Ajustar a pantalla (original)",
+            "Zoom (sin barras negras)",
+            "Estirar (16:9)"
+    };
+    private static final String[] RESIZE_SHORT = {
+            "📺  Aspecto: Ajustar",
+            "📺  Aspecto: Zoom",
+            "📺  Aspecto: 16:9"
+    };
+    private int resizeIndex = 0;
+    private TextView vodAspectBtn;
+
     private String qualityLabel = "";
     private final java.util.ArrayDeque<Long> rebuffers = new java.util.ArrayDeque<>();
     private final Runnable seekDone = () -> seeking = false;
@@ -356,6 +393,7 @@ public class VodPlayerActivity extends Activity {
                 .setSeekForwardIncrementMs(SEEK_STEP_MS)
                 .build();
         playerView.setPlayer(player);
+        playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
         playerView.requestFocus();
 
         player.addListener(new Player.Listener() {
@@ -719,6 +757,13 @@ public class VodPlayerActivity extends Activity {
             labels.add((i == current ? "▶ " : "    ") + servers.get(i).label());
         }
         // Subtítulos sí / no (algunos videos ya los traen grabados en la imagen)
+                panelRows.add("📺 ASPECTO DE PANTALLA");
+        labels.add("📺  ASPECTO DE PANTALLA");
+        for (int i = 0; i < RESIZE_MODES.length; i++) {
+            panelRows.add(new AspectOption(i, RESIZE_MODES[i], RESIZE_NAMES[i]));
+            labels.add((i == resizeIndex ? "▶ " : "    ") + RESIZE_NAMES[i]);
+        }
+
         if (player != null && hasTextTracks()) {
             boolean off = player.getTrackSelectionParameters().disabledTrackTypes
                     .contains(androidx.media3.common.C.TRACK_TYPE_TEXT);
@@ -750,6 +795,15 @@ public class VodPlayerActivity extends Activity {
      * Calidad a mano: se fija la altura (mínimo y máximo) y ExoPlayer elige esa
      * pista. 0 = automática según el internet. Queda guardada para lo próximo.
      */
+        private void cycleResize() {
+        resizeIndex = (resizeIndex + 1) % RESIZE_MODES.length;
+        getSharedPreferences("vod_player", MODE_PRIVATE).edit().putInt("resize_mode", resizeIndex).apply();
+        if (playerView != null) playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
+        if (vodAspectBtn != null) vodAspectBtn.setText(RESIZE_SHORT[resizeIndex]);
+        android.widget.Toast.makeText(this, RESIZE_NAMES[resizeIndex], android.widget.Toast.LENGTH_SHORT).show();
+        refreshServerList();
+    }
+
     private void chooseQuality(int height) {
         WatchHistory.setQuality(this, height);
         applyQuality();
@@ -814,6 +868,11 @@ public class VodPlayerActivity extends Activity {
             return true;
         }
 
+                int kCode = event.getKeyCode();
+        if (kCode == KeyEvent.KEYCODE_TV_ZOOM_MODE || kCode == KeyEvent.KEYCODE_PROG_YELLOW || kCode == KeyEvent.KEYCODE_ZOOM_IN) {
+            cycleResize();
+            return true;
+        }
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_MENU:
                 togglePanel(!panelOpen);

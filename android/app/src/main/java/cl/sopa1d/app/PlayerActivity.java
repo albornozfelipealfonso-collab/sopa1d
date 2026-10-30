@@ -133,6 +133,15 @@ public class PlayerActivity extends Activity {
     private static final String[] RESIZE_NAMES = {
             "Ajustar a pantalla", "Recortar (llenar)", "Estirar"
     };
+        private TextView btnQuickFav, btnQuickAspect, btnQuickQuality;
+    private TextView osdBadgeQuality, osdBadgeAspect;
+    private int currentVideoHeight = 0;
+
+    private static final String[] RESIZE_SHORT = {
+            "📺 Ajustar", "📺 Zoom", "📺 Estirar"
+    };
+    private static final int[] QUALITY_STEPS = { 0, 1080, 720, 480, 360 };
+    private static final String[] QUALITY_STEP_NAMES = { "📶 Auto", "📶 1080p", "📶 720p", "📶 480p", "📶 360p" };
     private int resizeIndex = 0;
 
     private final Runnable hideBanner = new Runnable() {
@@ -155,7 +164,11 @@ public class PlayerActivity extends Activity {
         osdClock = findViewById(R.id.osdClock);
         osdNow = findViewById(R.id.osdNow);
         osdNext = findViewById(R.id.osdNext);
-        osdProgress = findViewById(R.id.osdProgress);
+                osdProgress = findViewById(R.id.osdProgress);
+        osdBadgeQuality = findViewById(R.id.osdBadgeQuality);
+        osdBadgeAspect = findViewById(R.id.osdBadgeAspect);
+        resizeIndex = getSharedPreferences("player", MODE_PRIVATE).getInt("resize_mode", 0);
+        if (resizeIndex < 0 || resizeIndex >= RESIZE_MODES.length) resizeIndex = 0;
         schedulePanel = findViewById(R.id.schedulePanel);
         scheduleTitle = findViewById(R.id.scheduleTitle);
         scheduleList = findViewById(R.id.scheduleList);
@@ -321,6 +334,9 @@ public class PlayerActivity extends Activity {
                 ? getSharedPreferences("player", MODE_PRIVATE).getString("category", CAT_CHILE)
                 : categories.get(categoryIndex);
         categories.clear();
+        if (!Favorites.urls(this).isEmpty()) {
+            categories.add(CAT_FAVS);
+        }
         categories.add(CAT_CHILE);
         categories.add(CAT_DEPORTES);
         categories.add(CAT_CINE);
@@ -333,7 +349,9 @@ public class PlayerActivity extends Activity {
         categories.add(CAT_GENERAL);
         categories.add(CAT_ADULTOS);
         categories.add(CAT_ALL);
-        categories.add(CAT_FAVS);
+        if (Favorites.urls(this).isEmpty()) {
+            categories.add(CAT_FAVS);
+        }
         categories.add(CAT_ROCK);
 
         // Si hay categorías extra en la lista que no están en las estándar, agregarlas al final
@@ -455,8 +473,17 @@ public class PlayerActivity extends Activity {
                 // Nombre en una sola línea: si no, los largos tapaban el programa
                 String name = ch.name.length() > 30 ? ch.name.substring(0, 29) + "…" : ch.name;
                 boolean fav = Favorites.contains(getContext(), ch.url);
-                sb.append(String.format(Locale.ROOT, "%3d %s %s", (number == null ? position : number) + 1,
-                        fav ? "★" : "  ", name));
+                int num = (number == null ? position : number) + 1;
+                sb.append(String.format(Locale.ROOT, "%3d ", num));
+                if (fav) {
+                    int starStart = sb.length();
+                    sb.append("★ ");
+                    sb.setSpan(new android.text.style.ForegroundColorSpan(0xFFF5C518), starStart, sb.length(), 0);
+                    sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), starStart, sb.length(), 0);
+                } else {
+                    sb.append("   ");
+                }
+                sb.append(name);
                 Epg.Program now = Epg.nowNext(ch.name, ch.country)[0];
                 if (now != null) {
                     int st = sb.length();
@@ -473,14 +500,40 @@ public class PlayerActivity extends Activity {
 
         // Selector de categoría arriba de la lista: OK y ◀ ▶ la cambian,
         // ▼ baja a los canales (búsqueda de foco normal).
+        btnQuickFav = findViewById(R.id.btnQuickFav);
+        btnQuickAspect = findViewById(R.id.btnQuickAspect);
+        btnQuickQuality = findViewById(R.id.btnQuickQuality);
+
+        if (btnQuickFav != null) {
+            btnQuickFav.setOnClickListener(v -> {
+                Channel cur = ChannelStore.at(index);
+                if (cur != null) {
+                    toggleFavorite(cur);
+                    updateQuickActions();
+                    if (channelAdapter != null) channelAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        if (btnQuickAspect != null) {
+            btnQuickAspect.setOnClickListener(v -> cycleResize());
+        }
+        if (btnQuickQuality != null) {
+            btnQuickQuality.setOnClickListener(v -> cycleQuality());
+        }
+        updateQuickActions();
+
         EditText search = findViewById(R.id.channelSearch);
         if (search != null) {
-            search.setVisibility(View.VISIBLE);
-            search.addTextChangedListener(new android.text.TextWatcher() {
-                @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
-                @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
-                @Override public void afterTextChanged(android.text.Editable s) { filterChannels(s.toString()); }
-            });
+            if (isTv) {
+                search.setVisibility(View.GONE);
+            } else {
+                search.setVisibility(View.VISIBLE);
+                search.addTextChangedListener(new android.text.TextWatcher() {
+                    @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+                    @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+                    @Override public void afterTextChanged(android.text.Editable s) { filterChannels(s.toString()); }
+                });
+            }
         }
 
         categoryView = findViewById(R.id.channelCategory);
@@ -528,7 +581,8 @@ public class PlayerActivity extends Activity {
             list.setSelection(pos != null ? pos : 0);
             // En la TV el foco empieza en la categoría: OK la cambia y ▼ baja
             // a los canales (ya posicionados en el actual, si está en ella).
-            if (isTv) categoryView.requestFocus(); else list.requestFocus();
+            updateQuickActions();
+            list.requestFocus();
         } else {
             // Al cerrar: búsqueda limpia y teclado fuera, para la próxima vez
             EditText search = findViewById(R.id.channelSearch);
@@ -652,6 +706,8 @@ public class PlayerActivity extends Activity {
                 .setBandwidthMeter(Quality.bandwidthMeter(this))
                 .setTrackSelector(Quality.trackSelector(this))
                 .build();
+        applyQuality();
+        playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
 
         player.addListener(new Player.Listener() {
             @Override
@@ -675,6 +731,14 @@ public class PlayerActivity extends Activity {
                 firstFrameShown = true;
                 ui.removeCallbacks(firstFrameWatchdog);
                 Log.i(TAG, "Primer fotograma mostrado");
+            }
+
+            @Override
+            public void onVideoSizeChanged(androidx.media3.common.VideoSize videoSize) {
+                if (videoSize.height > 0) {
+                    currentVideoHeight = videoSize.height;
+                    updateOsdBadges();
+                }
             }
 
             @Override
@@ -819,8 +883,83 @@ public class PlayerActivity extends Activity {
     /** Cicla el encuadre: útil cuando la señal deja bandas negras en TV. */
     private void cycleResize() {
         resizeIndex = (resizeIndex + 1) % RESIZE_MODES.length;
-        playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
+        getSharedPreferences("player", MODE_PRIVATE).edit().putInt("resize_mode", resizeIndex).apply();
+        if (playerView != null) playerView.setResizeMode(RESIZE_MODES[resizeIndex]);
         showBanner(RESIZE_NAMES[resizeIndex]);
+        updateQuickActions();
+        updateOsdBadges();
+    }
+
+    private void chooseQuality(int height) {
+        getSharedPreferences("player", MODE_PRIVATE).edit().putInt("quality_live", height).apply();
+        applyQuality();
+        updateQuickActions();
+        showBanner(height == 0 ? "📶 Calidad: Automática (según internet)" : "📶 Calidad fija: " + Quality.label(height));
+    }
+
+    private void cycleQuality() {
+        int curH = getSharedPreferences("player", MODE_PRIVATE).getInt("quality_live", 0);
+        int nextIdx = 0;
+        for (int i = 0; i < QUALITY_STEPS.length; i++) {
+            if (QUALITY_STEPS[i] == curH) {
+                nextIdx = (i + 1) % QUALITY_STEPS.length;
+                break;
+            }
+        }
+        chooseQuality(QUALITY_STEPS[nextIdx]);
+    }
+
+    private void applyQuality() {
+        if (player == null) return;
+        int h = getSharedPreferences("player", MODE_PRIVATE).getInt("quality_live", 0);
+        androidx.media3.common.TrackSelectionParameters.Builder b =
+                player.getTrackSelectionParameters().buildUpon().clearVideoSizeConstraints();
+        if (h > 0) b.setMinVideoSize(0, h).setMaxVideoSize(Integer.MAX_VALUE, h);
+        player.setTrackSelectionParameters(b.build());
+    }
+
+    private void updateQuickActions() {
+        if (btnQuickFav != null) {
+            Channel ch = ChannelStore.at(index);
+            boolean fav = ch != null && Favorites.contains(this, ch.url);
+            btnQuickFav.setText(fav ? "★ En Favoritos" : "☆ Favorito");
+            btnQuickFav.setTextColor(fav ? 0xFFF5C518 : 0xFFFFFFFF);
+        }
+        if (btnQuickAspect != null) {
+            btnQuickAspect.setText(RESIZE_SHORT[resizeIndex]);
+        }
+        if (btnQuickQuality != null) {
+            int curH = getSharedPreferences("player", MODE_PRIVATE).getInt("quality_live", 0);
+            String lbl = "📶 Auto";
+            for (int i = 0; i < QUALITY_STEPS.length; i++) {
+                if (QUALITY_STEPS[i] == curH) {
+                    lbl = QUALITY_STEP_NAMES[i];
+                    break;
+                }
+            }
+            btnQuickQuality.setText(lbl);
+        }
+    }
+
+    private void updateOsdBadges() {
+        if (osdBadgeQuality != null) {
+            if (currentVideoHeight > 0) {
+                osdBadgeQuality.setText(Quality.label(currentVideoHeight) + (currentVideoHeight >= 700 ? " HD" : ""));
+                osdBadgeQuality.setVisibility(View.VISIBLE);
+            } else {
+                osdBadgeQuality.setVisibility(View.GONE);
+            }
+        }
+        if (osdBadgeAspect != null) {
+            if (resizeIndex == 0) {
+                osdBadgeAspect.setText("AJUSTAR");
+            } else if (resizeIndex == 1) {
+                osdBadgeAspect.setText("ZOOM");
+            } else {
+                osdBadgeAspect.setText("16:9");
+            }
+            osdBadgeAspect.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -1036,6 +1175,8 @@ public class PlayerActivity extends Activity {
                 ? "▲ ▼ canal   ·   OK lista (◀ ▶ categorías)   ·   Pág ▲ ▼ saltar categoría   ·   0-9 número"
                 : "Desliza ↑ ↓ para cambiar de canal   ·   ← lista   ·   → guía   ·   mantén ⇄: dos canales"));
         fillOsdGuide(ch);
+        updateOsdBadges();
+        updateQuickActions();
         osdClock.setText(new java.text.SimpleDateFormat("HH:mm", Locale.ROOT).format(new java.util.Date()));
         if (ch.logo != null && !ch.logo.isEmpty()) {
             osdLogo.setVisibility(View.VISIBLE);
@@ -1280,13 +1421,17 @@ public class PlayerActivity extends Activity {
                 togglePanel(false);
                 return true;
             }
-            if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_PAGE_DOWN || code == KeyEvent.KEYCODE_MEDIA_NEXT) {
-                cycleCategory(1);
-                return true;
-            }
-            if (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_PAGE_UP || code == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
-                cycleCategory(-1);
-                return true;
+            View focused = getCurrentFocus();
+            boolean onQuickBtn = focused != null && (focused == btnQuickFav || focused == btnQuickAspect || focused == btnQuickQuality);
+            if (!onQuickBtn) {
+                if (code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_PAGE_DOWN || code == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                    cycleCategory(1);
+                    return true;
+                }
+                if (code == KeyEvent.KEYCODE_DPAD_LEFT || code == KeyEvent.KEYCODE_PAGE_UP || code == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                    cycleCategory(-1);
+                    return true;
+                }
             }
             return super.dispatchKeyEvent(event); // la lista maneja el resto
         }
@@ -1306,6 +1451,13 @@ public class PlayerActivity extends Activity {
         }
 
         switch (code) {
+            case KeyEvent.KEYCODE_PROG_BLUE:
+                cycleQuality();
+                return true;
+
+            case KeyEvent.KEYCODE_PROG_GREEN:
+                toggleFavorite(ChannelStore.at(index));
+                return true;
             case KeyEvent.KEYCODE_CHANNEL_UP:
             case KeyEvent.KEYCODE_DPAD_UP:
                 switchBy(1);
@@ -1319,7 +1471,6 @@ public class PlayerActivity extends Activity {
             case KeyEvent.KEYCODE_PAGE_UP:
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-            case KeyEvent.KEYCODE_PROG_GREEN:
                 jumpCategory(1);
                 return true;
 

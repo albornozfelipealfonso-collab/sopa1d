@@ -69,7 +69,24 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <TextView
+                <TextView
+            android:id="@+id/vodAspect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:text="📺  Aspecto"
+            android:textColor="@color/button_text"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+<TextView
             android:id="@+id/vodSendToTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
