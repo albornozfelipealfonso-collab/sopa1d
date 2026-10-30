@@ -347,7 +347,7 @@ public class PlayerActivity extends Activity {
         categories.add(CAT_MUSICA);
         categories.add(CAT_247);
         categories.add(CAT_GENERAL);
-        categories.add(CAT_ADULTOS);
+        if (ParentalControl.isAdultsEnabled(this)) categories.add(CAT_ADULTOS);
         categories.add(CAT_ALL);
         if (Favorites.urls(this).isEmpty()) {
             categories.add(CAT_FAVS);
@@ -377,6 +377,9 @@ public class PlayerActivity extends Activity {
         List<Channel> out = new ArrayList<>();
         java.util.Set<String> favs = CAT_FAVS.equals(cat) ? Favorites.urls(this) : null;
         for (Channel ch : all) {
+            if (!ParentalControl.isAdultsEnabled(this) && ParentalControl.isAdultChannel(ch.category, ch.name)) {
+                continue; // Control Parental
+            }
             boolean in;
             if (favs != null) {
                 in = favs.contains(ch.url);
@@ -606,6 +609,10 @@ public class PlayerActivity extends Activity {
             return;
         }
 
+        if (!ParentalControl.isAdultsEnabled(this) && ParentalControl.isAdultChannel(ch.category, ch.name)) {
+            showStatus("🔒 Canal bloqueado por Control Parental");
+            return;
+        }
         rememberChannel(ch);
         showOsd(ch);
         showStatus(getString(R.string.connecting));

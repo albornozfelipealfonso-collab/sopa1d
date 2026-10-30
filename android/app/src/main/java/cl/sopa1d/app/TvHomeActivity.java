@@ -141,7 +141,7 @@ public class TvHomeActivity extends Activity {
                 findViewById(R.id.navHome), findViewById(R.id.navSearch), findViewById(R.id.navMovies),
                 findViewById(R.id.navSeries), findViewById(R.id.navAnime), findViewById(R.id.navLive),
                 findViewById(R.id.navMyList), findViewById(R.id.navGuide), findViewById(R.id.navMusic),
-                findViewById(R.id.navGames), findViewById(R.id.navWeb)};
+                findViewById(R.id.navGames), findViewById(R.id.navSettings), findViewById(R.id.navWeb)};
         for (View v : navItems) {
             v.setOnClickListener(this::onNavClick);
             // ▶ desde el menú entra al contenido: la búsqueda de foco por
@@ -280,6 +280,10 @@ public class TvHomeActivity extends Activity {
     }
 
     private void onNavClick(View v) {
+        if (v.getId() == R.id.navSettings) {
+            showSettingsDialog();
+            return;
+        }
         if (v.getId() == R.id.navWeb) {
             startActivity(new Intent(this, MainActivity.class));
             return;
@@ -325,6 +329,124 @@ public class TvHomeActivity extends Activity {
             showMessage("Escribe lo que quieres ver: película, serie o anime");
         }
         rows.scrollToPosition(0);
+    }
+
+        private void reloadLiveChannels() {
+        liveByCategory = null;
+        liveByCategory = loadChannels();
+        if (selectedNav != null && selectedNav.getId() == R.id.navLive) {
+            showLive();
+        } else if (selectedNav != null && selectedNav.getId() == R.id.navHome) {
+            showHome();
+        }
+    }
+
+    private void showSettingsDialog() {
+        boolean adultsOn = ParentalControl.isAdultsEnabled(this);
+        String status = adultsOn ? "🔓 Canales Adultos: VISIBLES" : "🔒 Canales Adultos: OCULTOS (Modo Niños)";
+        String toggleAction = adultsOn ? "🔒 Ocultar canales adultos ahora" : "🔓 Activar canales adultos con PIN";
+
+        CharSequence[] items = new CharSequence[]{
+                status,
+                toggleAction,
+                "🔑 Cambiar PIN de Control Parental",
+                "❌ Cerrar"
+        };
+
+        new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("⚙️ Ajustes y Control Parental")
+                .setItems(items, (dialog, which) -> {
+                    if (which == 1) {
+                        if (adultsOn) {
+                            ParentalControl.setAdultsEnabled(this, false);
+                            reloadLiveChannels();
+                            android.widget.Toast.makeText(this, "🔒 Canales adultos ocultos (Modo Niños activo)", android.widget.Toast.LENGTH_SHORT).show();
+                        } else {
+                            promptPinToUnlock();
+                        }
+                    } else if (which == 2) {
+                        promptChangePin();
+                    }
+                })
+                .show();
+    }
+
+    private void promptPinToUnlock() {
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        input.setHint("PIN de 4 dígitos (predeterminado: 0000)");
+        input.setTextColor(0xFFFFFFFF);
+        input.setHintTextColor(0x80FFFFFF);
+        input.setGravity(android.view.Gravity.CENTER);
+        input.setTextSize(20);
+
+        new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("🔒 Ingresa PIN de Control Parental")
+                .setMessage("Ingresa el PIN de 4 dígitos para activar los canales de adultos:")
+                .setView(input)
+                .setPositiveButton("Desbloquear", (d, w) -> {
+                    String pin = input.getText().toString().trim();
+                    if (ParentalControl.checkPin(this, pin)) {
+                        ParentalControl.setAdultsEnabled(this, true);
+                        reloadLiveChannels();
+                        android.widget.Toast.makeText(this, "🔓 Canales para adultos activados", android.widget.Toast.LENGTH_SHORT).show();
+                    } else {
+                        android.widget.Toast.makeText(this, "❌ PIN incorrecto", android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void promptChangePin() {
+        final android.widget.EditText inputCurrent = new android.widget.EditText(this);
+        inputCurrent.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        inputCurrent.setHint("PIN actual (ej. 0000)");
+        inputCurrent.setTextColor(0xFFFFFFFF);
+        inputCurrent.setHintTextColor(0x80FFFFFF);
+        inputCurrent.setGravity(android.view.Gravity.CENTER);
+        inputCurrent.setTextSize(18);
+
+        new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("🔑 Cambiar PIN - Paso 1")
+                .setMessage("Ingresa tu PIN actual:")
+                .setView(inputCurrent)
+                .setPositiveButton("Siguiente", (d, w) -> {
+                    String cur = inputCurrent.getText().toString().trim();
+                    if (!ParentalControl.checkPin(this, cur)) {
+                        android.widget.Toast.makeText(this, "❌ PIN actual incorrecto", android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    promptNewPin();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void promptNewPin() {
+        final android.widget.EditText inputNew = new android.widget.EditText(this);
+        inputNew.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        inputNew.setHint("Nuevo PIN de 4 dígitos");
+        inputNew.setTextColor(0xFFFFFFFF);
+        inputNew.setHintTextColor(0x80FFFFFF);
+        inputNew.setGravity(android.view.Gravity.CENTER);
+        inputNew.setTextSize(18);
+
+        new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("🔑 Cambiar PIN - Paso 2")
+                .setMessage("Ingresa tu nuevo PIN de 4 dígitos:")
+                .setView(inputNew)
+                .setPositiveButton("Guardar", (d, w) -> {
+                    String np = inputNew.getText().toString().trim();
+                    if (np.length() >= 4) {
+                        ParentalControl.setPin(this, np);
+                        android.widget.Toast.makeText(this, "✅ PIN actualizado exitosamente", android.widget.Toast.LENGTH_SHORT).show();
+                    } else {
+                        android.widget.Toast.makeText(this, "❌ El PIN debe tener 4 dígitos", android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private void showHome() {
@@ -456,6 +578,7 @@ public class TvHomeActivity extends Activity {
         List<CatalogItem> favs = Favorites.asItems(this);
         if (!favs.isEmpty()) list.add(new Catalog.Row("★ Mis canales", favs));
         for (Map.Entry<String, List<CatalogItem>> e : liveByCategory.entrySet()) {
+            if (!ParentalControl.isAdultsEnabled(this) && e.getKey().contains("Adultos")) continue;
             list.add(new Catalog.Row(e.getKey(), e.getValue()));
         }
         return list;
@@ -492,6 +615,9 @@ public class TvHomeActivity extends Activity {
                 if (url.isEmpty() || ChannelHealth.isHidden(url, o.optBoolean("dead"))) continue;
                 String name = o.optString("name");
                 String cat = o.optString("category", "General");
+                if (!ParentalControl.isAdultsEnabled(this) && ParentalControl.isAdultChannel(cat, name)) {
+                    continue; // Control Parental: oculto para niños
+                }
                 String country = o.optString("country", "");
                 String logo = o.optString("logo", "");
                 CatalogItem ch = new CatalogItem("live", url, name, "", 0,

@@ -75,6 +75,7 @@
             <TextView android:id="@+id/navGames" style="@style/TvNavItem" android:tag="🎮|Juegos" android:text="🎮" />
             <TextView android:id="@+id/navGuide" style="@style/TvNavItem" android:tag="🗓️|Guía TV" android:text="🗓️" />
             <TextView android:id="@+id/navMyList" style="@style/TvNavItem" android:tag="❤️|Mi lista" android:text="❤️" />
+            <TextView android:id="@+id/navSettings" style="@style/TvNavItem" android:tag="⚙️|Ajustes" android:text="⚙️" />
 
             <View
                 android:layout_width="match_parent"
