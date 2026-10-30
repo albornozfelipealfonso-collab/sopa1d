@@ -42,6 +42,11 @@ public final class ChannelStore {
         channels = out;
     }
 
+    public static synchronized void setChannels(List<Channel> list) {
+        if (list == null) return;
+        channels = new ArrayList<>(list);
+    }
+
     public static synchronized List<Channel> get() {
         return channels;
     }

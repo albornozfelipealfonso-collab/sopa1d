@@ -210,6 +210,13 @@ public class TvHomeActivity extends Activity {
         tvIp = TvLink.startReceiver(this);
         Epg.addListener(onEpgUpdate);
 
+        // Cargar todos los canales en segundo plano de inmediato para tenerlos listos
+        io.execute(() -> {
+            if (liveByCategory == null) {
+                liveByCategory = loadChannels();
+            }
+        });
+
         // Al girar el celular se rehace la pantalla: se vuelve a la misma sección
         int startNav = savedInstanceState != null ? savedInstanceState.getInt("nav", R.id.navHome) : R.id.navHome;
         View startView = findViewById(startNav);
@@ -675,9 +682,12 @@ public class TvHomeActivity extends Activity {
     private void playLive(List<CatalogItem> row, int index) {
         try {
             CatalogItem selected = (row != null && index >= 0 && index < row.size()) ? row.get(index) : null;
+            if (allLiveJson == null || allLiveChannels == null || allLiveChannels.isEmpty()) {
+                liveByCategory = loadChannels();
+            }
             int targetIndex = index;
-            if (allLiveJson != null && allLiveChannels != null && !allLiveChannels.isEmpty()) {
-                ChannelStore.set(allLiveJson);
+            if (allLiveChannels != null && !allLiveChannels.isEmpty()) {
+                if (allLiveJson != null) ChannelStore.set(allLiveJson);
                 if (selected != null) {
                     for (int i = 0; i < allLiveChannels.size(); i++) {
                         if (selected.id.equals(allLiveChannels.get(i).id)) {
@@ -686,7 +696,7 @@ public class TvHomeActivity extends Activity {
                         }
                     }
                 }
-            } else {
+            } else if (row != null) {
                 JSONArray arr = new JSONArray();
                 for (CatalogItem c : row) {
                     arr.put(new JSONObject().put("id", c.id).put("name", c.title).put("url", c.id)

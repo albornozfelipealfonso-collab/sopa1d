@@ -333,6 +333,14 @@ public class PlayerActivity extends Activity {
         String previous = categories.isEmpty()
                 ? getSharedPreferences("player", MODE_PRIVATE).getString("category", CAT_CHILE)
                 : categories.get(categoryIndex);
+        Channel curCh = ChannelStore.at(index);
+        if (curCh != null) {
+            if ("Chile".equalsIgnoreCase(curCh.country)) {
+                previous = CAT_CHILE;
+            } else if (curCh.category != null && !curCh.category.isEmpty() && !curCh.category.equalsIgnoreCase("General")) {
+                previous = curCh.category;
+            }
+        }
         categories.clear();
         if (!Favorites.urls(this).isEmpty()) {
             categories.add(CAT_FAVS);
@@ -417,6 +425,26 @@ public class PlayerActivity extends Activity {
     }
 
     /** OK o ◀ ▶ sobre la categoría: pasar a la siguiente/anterior y filtrar la lista. */
+    private void showCategoryPicker() {
+        buildCategories();
+        final List<String> listCats = new ArrayList<>();
+        for (String c : categories) {
+            if (CAT_FAVS.equals(c) && Favorites.urls(this).isEmpty()) continue;
+            if (CAT_ADULTOS.equals(c) && !ParentalControl.isAdultsEnabled(this)) continue;
+            listCats.add(c);
+        }
+        final CharSequence[] items = listCats.toArray(new CharSequence[0]);
+        new android.app.AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+                .setTitle("📂 Seleccionar Categoría")
+                .setItems(items, (dialog, which) -> {
+                    String chosen = listCats.get(which);
+                    categoryIndex = Math.max(0, categories.indexOf(chosen));
+                    getSharedPreferences("player", MODE_PRIVATE).edit().putString("category", chosen).apply();
+                    applyCategory();
+                })
+                .show();
+    }
+
     private void cycleCategory(int delta) {
         if (categories.isEmpty()) return;
         int n = categories.size();
@@ -434,8 +462,7 @@ public class PlayerActivity extends Activity {
         channelAdapter.clear();
         channelAdapter.addAll(shown);
         list.setSelection(0);
-        categoryView.setText("◀  " + currentCategory() + " (" + shown.size() + ")  ▶"
-                + (isTv ? "\n   Presiona ◀ o ▶ para cambiar categoría" : ""));
+        categoryView.setText(currentCategory() + " (" + shown.size() + ") ▼");
     }
 
     /** Salta directamente al primer canal de la siguiente o anterior categoría */
@@ -460,6 +487,10 @@ public class PlayerActivity extends Activity {
     }
 
     private void setupPanel() {
+        if (ChannelStore.size() < 100) {
+            List<Channel> catAll = ChannelCatalog.all(this);
+            if (catAll != null && !catAll.isEmpty()) ChannelStore.setChannels(catAll);
+        }
         List<Channel> all = ChannelStore.get();
         channelNumber.clear();
         for (int i = 0; i < all.size(); i++) channelNumber.put(all.get(i), i);
@@ -539,8 +570,13 @@ public class PlayerActivity extends Activity {
             }
         }
 
+        View prevCatBtn = findViewById(R.id.btnCatPrev);
+        if (prevCatBtn != null) prevCatBtn.setOnClickListener(v -> cycleCategory(-1));
+        View nextCatBtn = findViewById(R.id.btnCatNext);
+        if (nextCatBtn != null) nextCatBtn.setOnClickListener(v -> cycleCategory(1));
+
         categoryView = findViewById(R.id.channelCategory);
-        categoryView.setOnClickListener(v -> cycleCategory(1));
+        categoryView.setOnClickListener(v -> showCategoryPicker());
         categoryView.setOnKeyListener((v, keyCode, e) -> {
             if (e.getAction() != KeyEvent.ACTION_DOWN) return false;
             if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) { cycleCategory(1); return true; }
